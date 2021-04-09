@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Build Strategy</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="/img/favicon.png">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto">
+    <script
+        src="https://code.jquery.com/jquery-3.1.1.js"
+        crossorigin="anonymous">
+    </script>
+    <script
+        src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+        integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
+        crossorigin="anonymous">
+    </script>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="/js/update_overlay.js"></script>
+</head>
+
+<body class="appBackground">
+    {{>user_header}}
+    <div class="main-content mediaHeaderWeb">
+
+        <div class="pageTitle">Build Strategy</div>
+        {{#if message}}
+            <div><p id="sotong">{{message}}</p></div>
+        {{/if}}
+        <div class="tableWrapper maxWidth displayProperty maxWidth700" id="tableWrapperBuildStrategy">
+            <form id="form1" name="form1" action="/build_strategy" role="form" method="post" class="width640 formMargin">
+                <input type="hidden" name="csrf" value="{{token}}">
+                <div class="width280 leftSide">
+                    <p>Name:  
+                        <label for="strategyName"></label>
+                        <input type="text" class="strategyExplorerText" name="strategyName" id="strategyName" maxlength="30" value="{{strategyName}}"/>
+                    </p>
+                    <p>Description:
+                        <label for="description"></label>
+                        <textarea id="description" class="strategyExplorerText" name="description" rows="6" cols="30" maxlength="300" placeholder="Description of your strategy">{{description}}</textarea>
+                    </p>
+                    <div class="displayProperty"> 
+                        <div>
+                            <label for="direction">Direction:</label>
+                            <div class="selectWrapper">
+                                <select name="direction" class="selectBox" id="direction">
+                                    <option value="long">long</option>
+                                    <option value="short">short</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="marginLeft40">
+                            <label for="timeframe">Time frame (mins):</label>
+                            <div class="selectWrapper">
+                                <select name="timeframe" class="selectBox" id="timeframe">
+                                    <option value="1">1</option>
+                                    <option value="5">5</option>
+                                    <option value="10">10</option>
+                                    <option value="15">15</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="marginTop10"> 
+                        <label for="positionWeight">Position Weight: </label>
+                        <div class="selectWrapper">
+                            <select name="positionWeight" id="positionWeight" class="selectBox width140">
+                                <option value="equalWeights">Equal Weights</option>
+                                <option value="weightedByStrength">Weighted by Strength</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="buffer"></div>
+                    <div class="entryConditionsDiv">
+                        <div class="myStrategiesTopBar">
+                            <a class="extraWeight" id="entryConditionsTitle">Entry Conditions</a>
+                            <i class="tiny material-icons" id="addEntryConditionButton">add_circle_outline</i>
+                        </div>
+                        <table id="entryConditions" class="conditionsTable"></table>
+                    </div>
+                    <p>
+                        <button type="submit" class="paymentModalYesButton buildStrategyButton" id="create" value="{{username}}">BUILD</button>
+                    </p>
+                </div>
+                <div id="rightSide" class="rightSide width280">
+                    <p>Max Allocation:  
+                        <label for="maxAllocation"></label>
+                        <input type="number" min="1" max="100" class="strategyExplorerText" name="maxAllocation" id="maxAllocation" value="{{maxAllocation}}" placeholder="Percentage of your portfolio"/>
+                    </p>
+                    <p>Max Concurrent Trades:  
+                        <label for="maxConcurrentTrades"></label>
+                        <input type="number" min="1" max="9" class="strategyExplorerText" name="maxConcurrentTrades" id="maxConcurrentTrades" value="{{maxConcurrentTrades}}"/>
+                    </p>
+                    <p>Start Time:  
+                        <label for="startTime"></label>
+                        <input type="number" min="0" max="389" class="strategyExplorerText" name="startTime" id="startTime" value="{{start}}" placeholder="Minutes after market opens"/>
+                    </p>
+                    <p>End Time:  
+                        <label for="endTime"></label>
+                        <input type="number" min="0" max="389" class="strategyExplorerText" name="endTime" id="endTime" value="{{end}}" placeholder="Minutes before market closes"/>
+                    </p>
+                    <div class="displayProperty marginBottom25 marginTop10"> 
+                        <div>
+                            <label for="watchlist">Watchlist: </label>
+                            <div class="selectWrapper">
+                                <select name="watchlist" class="selectBox width140" id="watchlist">
+                                    <option value="morningBreakouts">Morning Breakouts</option>
+                                    <option value="indexETFs">Index ETFs</option>
+                                    <option value="FAANG">FAANG stocks</option>
+                                    <option value="software">Software stocks</option>
+                                    <option value="travel">Travel stocks</option>
+                                    <option value="custom">Custom watchlist</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="text" class="strategyExplorerText" name="symbols" id="symbols" maxlength="100" placeholder="List of symbols separated by commas" value="{{customStockList}}"/>
+                    <div class="exitConditionsDiv">
+                        <div class="myStrategiesTopBar">
+                            <a class="extraWeight" id="exitConditionsTitle">Exit Conditions</a>
+                            <i class="tiny material-icons" id="addExitConditionButton">add_circle_outline</i>
+                        </div>
+                        <table id="exitConditions" class="conditionsTable"></table>
+                    </div>
+                </div>
+                <input type="hidden" name="list_of_entry_conditions" id="list_of_entry_conditions" value="{{listOfEntryConditions}}">
+                <input type="hidden" name="list_of_exit_conditions" id="list_of_exit_conditions" value="{{listOfExitConditions}}">
+            </form>
+            
+        </div>
+    </div>
+
+    <div class="strategyBuilderParentMobile mediaHeaderMobile">
+        <div class="pageTitle">Build Strategy</div>
+        {{#if message}}
+            <div><p id="sotong">{{message}}</p></div>
+        {{/if}}
+        <div class="tableWrapper displayProperty">
+            <form id="form1" name="form1" action="/build_strategy" role="form" method="post">
+                <input type="hidden" name="csrf" value="{{token}}">
+                 <p>Name:  
+                    <label for="strategyName"></label>
+                    <input type="text" class="strategyExplorerText" name="strategyName" id="strategyName" maxlength="30" value="{{strategyName}}"/>
+                </p>
+                <p>Description:
+                    <label for="description"></label>
+                    <textarea id="description" class="strategyExplorerText" name="description" rows="6" cols="30" maxlength="300" placeholder="Description of your strategy">{{description}}</textarea>
+                </p>
+                <div class="displayProperty"> 
+                    <div>
+                        <label for="direction">Direction:</label>
+                        <div class="selectWrapper">
+                            <select name="direction" class="selectBox" id="direction">
+                                <option value="long">long</option>
+                                <option value="short">short</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="marginLeft40">
+                        <label for="timeframe">Time frame (mins):</label>
+                        <div class="selectWrapper">
+                            <select name="timeframe" class="selectBox" id="timeframe">
+                                <option value="1">1</option>
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="marginTop10"> 
+                    <label for="positionWeight">Position Weight: </label>
+                    <div class="selectWrapper">
+                        <select name="positionWeight" id="positionWeight" class="selectBox width140">
+                            <option value="equalWeights">Equal Weights</option>
+                            <option value="weightedByStrength">Weighted by Strength</option>
+                        </select>
+                    </div>
+                </div>
+                <p>Max Allocation:  
+                    <label for="maxAllocation"></label>
+                    <input type="number" min="1" max="100" class="strategyExplorerText" name="maxAllocation" id="maxAllocation" value="{{maxAllocation}}" placeholder="Percentage of your portfolio"/>
+                </p>
+                <p>Max Concurrent Trades:  
+                    <label for="maxConcurrentTrades"></label>
+                    <input type="number" min="1" max="9" class="strategyExplorerText" name="maxConcurrentTrades" id="maxConcurrentTrades" value="{{maxConcurrentTrades}}"/>
+                </p>
+                <p>Start Time:  
+                    <label for="startTime"></label>
+                    <input type="number" min="0" max="389" class="strategyExplorerText" name="startTime" id="startTime" value="{{start}}" placeholder="Minutes after market opens"/>
+                </p>
+                <p>End Time:  
+                    <label for="endTime"></label>
+                    <input type="number" min="0" max="389" class="strategyExplorerText" name="endTime" id="endTime" value="{{end}}" placeholder="Minutes before market closes"/>
+                </p>
+                <div class="displayProperty marginBottom25 marginTop10"> 
+                    <div>
+                        <label for="watchlist">Watchlist: </label>
+                        <div class="selectWrapper">
+                            <select name="watchlist" class="selectBox width140" id="watchlist">
+                                <option value="morningBreakouts">Morning Breakouts</option>
+                                <option value="indexETFs">Index ETFs</option>
+                                <option value="FAANG">FAANG stocks</option>
+                                <option value="software">Software stocks</option>
+                                <option value="travel">Travel stocks</option>
+                                <option value="custom">Custom watchlist</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <input type="text" class="strategyExplorerText" name="symbols" id="symbols" maxlength="100" placeholder="List of symbols separated by commas" value="{{customStockList}}"/>
+                <div class="entryConditionsDiv">
+                    <div class="myStrategiesTopBar">
+                        <a class="extraWeight" id="entryConditionsTitle">Entry Conditions</a>
+                        <i class="tiny material-icons" id="addEntryConditionButton">add_circle_outline</i>
+                    </div>
+                    <table id="entryConditions" class="conditionsTable"></table>
+                </div>
+                <div class="exitConditionsDiv">
+                    <div class="myStrategiesTopBar">
+                        <a class="extraWeight" id="exitConditionsTitle">Exit Conditions</a>
+                        <i class="tiny material-icons" id="addExitConditionButton">add_circle_outline</i>
+                    </div>
+                    <table id="exitConditions" class="conditionsTable"></table>
+                </div>
+                <p>
+                    <button type="submit" class="paymentModalYesButton buildStrategyButton" id="create" value="{{username}}">BUILD</button>
+                </p>
+                <input type="hidden" name="list_of_entry_conditions" id="list_of_entry_conditions" value="{{listOfEntryConditions}}">
+                <input type="hidden" name="list_of_exit_conditions" id="list_of_exit_conditions" value="{{listOfExitConditions}}">
+            </form>
+        </div>
+    </div>
+
+    <div id="addEntryConditionModal" style="display:none">
+        <p class="modalTitle">Add Entry Condition</p>
+        <form>
+            <p id="entryConditionModalErrorMessage"></p>
+            <p class="paymentModalText" id="firstIndicatorDiv">First Indicator:  
+                <label for="firstIndicatorEntry"></label>
+                <select name="firstIndicatorEntry" id="firstIndicatorEntry">
+                    <option value="CurrentCandle" id="entry_FirstIndicator_CurrentCandle">Current candle</option>
+                    <option value="Gap" id="entry_FirstIndicator_Gap">Gap</option>
+                    <option value="PreviousNCandles" id="entry_FirstIndicator_PreviousNCandles">Previous N candles</option>
+                    <option value="Signal" id="entry_FirstIndicator_Signal">Signal</option>
+                </select>
+                <p></p>
+            </p>
+            <p class="paymentModalText">Comparator:  
+                <label for="comparatorEntry"></label>
+                <select name="comparatorEntry" id="comparatorEntry">
+                    <option value="BouncesHigherOff" id="entry_Comparator_BouncesHigherOff">Bounces higher off</option>
+                    <option value="BouncesLowerOff" id="entry_Comparator_BouncesLowerOff">Bounces lower off</option>
+                    <option value="BreaksAbove" id="entry_Comparator_BreaksAbove">Breaks above</option>
+                    <option value="BreaksBelow" id="entry_Comparator_BreaksBelow">Breaks below</option>
+                    <option value="Closes" id="entry_Comparator_Closes">Closes</option>
+                    <option value="ClosesAbove" id="entry_Comparator_ClosesAbove">Closes above</option>
+                    <option value="ClosesBelow" id="entry_Comparator_ClosesBelow">Closes below</option>
+                    <option value="FallsTo" id="entry_Comparator_FallsTo">Falls to</option>
+                    <option value="Has" id="entry_Comparator_Has">Has</option>
+                    <option value="RisesTo" id="entry_Comparator_RisesTo">Rises to</option>
+                </select>
+                <p></p>
+            </p>
+            <p class="paymentModalText">Second Indicator:  
+                <label for="secondIndicatorEntry"></label>
+                <select name="secondIndicatorEntry" id="secondIndicatorEntry">
+                    <option value="EMA" id="entry_SecondIndicator_EMA">EMA</option>
+                    <option value="Interval" id="entry_SecondIndicator_Interval">Interval</option>
+                    <option value="SMA" id="entry_SecondIndicator_SMA">SMA</option>
+                    <option value="VWAP" id="entry_SecondIndicator_VWAP">VWAP</option>
+                </select>
+                <p></p>
+                <input type="number" class="strategyExplorerText" name="entryConditionSecondIndicatorParameter" id="entryConditionSecondIndicatorParameter" min="0" max="390" step="1" value="" placeholder="EMA period"/><br>
+            </p>
+            <div id="entryButtons">
+                <button type="button" id="addEntryConditionModalButton" class="buyButton">ADD</button>
+                <button type="button" id="addEntryConditionCloseButton" class="cancelButton">CLOSE</button>
+            </div>
+            
+        </form>
+    </div>
+
+    <div id="addExitConditionModal" style="display:none">
+        <p class="modalTitle">Add Exit Condition</p>
+        <form>
+            <p id="exitConditionModalErrorMessage"></p>
+            <p class="paymentModalText" id="firstIndicatorDiv2">First Indicator:  
+                <label for="firstIndicatorExit"></label>
+                <select name="firstIndicatorExit" id="firstIndicatorExit">
+                    <option value="CurrentCandle" id="exit_FirstIndicator_CurrentCandle">Current candle</option>
+                    <option value="PreviousNCandles" id="exit_FirstIndicator_PreviousNCandles">Previous N candles</option>
+                </select>
+                <p></p>
+            </p>
+            <p class="paymentModalText">Comparator:  
+                <label for="comparatorExit"></label>
+                <select name="comparatorExit" id="comparatorExit">
+                    <option value="BouncesHigherOff" id="exit_Comparator_BouncesHigherOff">Bounces higher off</option>
+                    <option value="BouncesLowerOff" id="exit_Comparator_BouncesLowerOff">Bounces lower off</option>
+                    <option value="BreaksAbove" id="exit_Comparator_BreaksAbove">Breaks above</option>
+                    <option value="BreaksBelow" id="exit_Comparator_BreaksBelow">Breaks below</option>
+                    <option value="Closes" id="exit_Comparator_Closes">Closes</option>
+                    <option value="ClosesAbove" id="exit_Comparator_ClosesAbove">Closes above</option>
+                    <option value="ClosesBelow" id="exit_Comparator_ClosesBelow">Closes below</option>
+                    <option value="FallsTo" id="exit_Comparator_FallsTo">Falls to</option>
+                    <option value="Has" id="exit_Comparator_Has">Has</option>
+                    <option value="RisesTo" id="entry_Comparator_RisesTo">Rises to</option>
+                </select>
+                <p></p>
+            </p>
+            <p class="paymentModalText">Second Indicator:  
+                <label for="secondIndicatorExit"></label>
+                <select name="secondIndicatorExit" id="secondIndicatorExit">
+                    <option value="EMA" id="exit_SecondIndicator_EMA">EMA</option>
+                    <option value="Interval" id="exit_SecondIndicator_Interval">Interval</option>
+                    <option value="SMA" id="exit_SecondIndicator_SMA">SMA</option>
+                    <option value="VWAP" id="exit_SecondIndicator_VWAP">VWAP</option>
+                </select>
+                <p></p>
+                <input type="number" class="strategyExplorerText" name="exitConditionSecondIndicatorParameter" id="exitConditionSecondIndicatorParameter" min="0" max="390" step="1" value="" placeholder="EMA period"/><br>
+            </p>
+            <div id="exitButtons">
+                <button type="button" id="addExitConditionModalButton" class="buyButton">ADD</button>
+                <button type="button" id="addExitConditionCloseButton" class="cancelButton">CLOSE</button>
+            </div>
+            
+        </form>
+    </div>
+
+    <div id="successModal" style="display:none">
+        <div class="messageModal" id="successTitle">
+            <i class="material-icons marginRight15px messageModalIcon" id="successButton">check_circle_outline</i>
+            <div class="messageModalText">Developed strategy</div>
+        </div>
+    </div>
+
+    <div id="errorModal" style="display:none">
+        <div class="messageModal" id="errorTitle">
+            <i class="material-icons marginRight15px messageModalIcon" id="errorButton">error_outline</i>
+            <div class="messageModalText" id="errorText">An unexpected error occurred</div>
+        </div>
+    </div>
+
+    <input type="hidden" id="status" value="{{status}}">
+
+    <script src="/js/build_strategy_app.js"></script>
+</body>
+
+<div id="pageMask" class="initiallyHidden"></div>
+
+</html>

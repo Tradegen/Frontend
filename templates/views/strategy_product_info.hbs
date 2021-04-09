@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Strategy Info</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="/img/favicon.png">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto">
+    <script src="/js/update_overlay.js"></script>
+</head>
+
+<body class="appBackground">
+    {{>guest_header}}
+    <div class="main-content" id="main">
+        <div class="pageTitle alignCenter maxWidth80">{{strategyName}}</div>
+        <div class="maxWidth80">
+            <div class="strategyInfoTop">
+                <div class="strategyInfoLeftSide"><a class="extraWeight">Developed on: </a> {{developedOn}}</div>
+                <div class="strategyInfoRightSide marginRight0" id="price"><a class="extraWeight">Price: </a> {{salePrice}}</div><br>
+            </div>
+            <div class="strategyInfoBottom">
+                <div class="strategyInfoLeftSide"><a class="extraWeight">By: </a> {{developedBy}}</div>
+                <button type="button" class="productButton marginRight0 mediaMarginTop30" id="productButton">Purchase</button>
+            </div>
+        </div>
+
+        <div class="tradingBotStoreProductInfo marginTop50 maxWidth75">
+            <div class="tradingBotStoreProductTopRow mediaMarginBottom20">
+                <div class="strategyInfoDescription">{{description}}</div>
+            </div>
+            <div class="tradingBotStoreProductBottomRow">
+                <div class="tradingBotStoreProductFrequency block width24">
+                    <a class="tradingBotStoreProductTopText">Trade Frequency</a><br>
+                    <a class="tradingBotStoreProductBottomText">{{tradeFrequency}}</a>
+                </div>
+                <div class="tradingBotStoreProductFrequency block width24">
+                    <a class="tradingBotStoreProductTopText">Sharpe Ratio</a><br>
+                    <a class="tradingBotStoreProductBottomText">{{sharpeRatio}}</a>
+                </div>
+                <div class="tradingBotStoreProductFrequency block width24">
+                    <a class="tradingBotStoreProductTopText">Assets Traded</a><br>
+                    <a class="tradingBotStoreProductBottomText">{{assetsTraded}}</a>
+                </div>
+                <div class="tradingBotStoreProductFrequency block width24 mediaMarginBottom20">
+                    <a class="tradingBotStoreProductTopText">Alpha</a><br>
+                    <a class="tradingBotStoreProductBottomText">{{alpha}}</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="backtestGraphParent extraMarginBottom" id="backtestParent">
+            <div class="backtestGraphTopBar">
+                <div class="backtestGraphTopBarElement">
+                    <div class="backtestStatTitle">Total Return</div>
+                    <a id="backtestResult_TotalReturn">{{totalReturn}}</a>
+                </div>
+                <div class="backtestGraphTopBarElement">
+                    <div class="backtestStatTitle">Accuracy</div>
+                    <a id="backtestResult_Accuracy">{{accuracy}}</a>
+                </div>
+                <div class="backtestGraphTopBarElement">
+                    <div class="backtestStatTitle">Average Win</div>
+                    <a id="backtestResult_AverageWin">{{averageWin}}</a>
+                </div>
+                <div class="backtestGraphTopBarElement">
+                    <div class="backtestStatTitle">Average Loss</div>
+                    <a id="backtestResult_AverageLoss">{{averageLoss}}</a>
+                </div>
+                <div class="backtestGraphTopBarElement">
+                    <div class="backtestStatTitle">Trades</div>
+                    <a id="backtestResult_Trades">{{numberOfTrades}}</a>
+                </div>
+                <div class="backtestGraphTopBarElement backtestGraphLastElement">
+                    <div class="backtestStatTitle">Max Drawdown</div>
+                    <a id="backtestResult_MaxDrawdown">-{{maxDrawdown}}</a>
+                </div>
+            </div>
+            <div class="temp" id="temp">
+                <div id="chart" class="strategyExplorerChart"></div>
+            </div>
+        </div>
+
+        <div class="hiddenGraph">
+            <div class="mediaChartTitle2 marginTop50" id="mediaChartTitle">Backtest Results</div>
+            <div class="chartWrapper" id="chartWrapper">
+                <div id="chart2" class="strategyExplorerChart initiallyHidden"></div>
+            </div>
+        </div>
+
+        <div class="dropdownFAQS">
+            <div class="serviceFAQS">FAQs</div>
+            <div class="faqsDiv marginTop50 marginLeft25Percent" id="faq1">
+                <div class="faqsTopRow"><a class="faqsLeftSide">What is included in my order?</a><i class="material-icons faqsRightSide" id="icon1">expand_more</i></div>
+                <p class="faqsText" id="text1">
+                    Your order includes the source code for a trading bot, documentation on how to run the bot, and a backtest report.
+                    The documentation helps you connect your brokerage account and guides you through setting up the bot. The backtest
+                    report analyzes the historical performance of the underlying strategy and provides the transaction history.
+                </p>
+            </div>
+            <div class="faqsDiv marginLeft25Percent" id="faq2">
+                <div class="faqsTopRow"><a class="faqsLeftSide">Will you collect my financial information?</a><i class="material-icons faqsRightSide" id="icon2">expand_more</i></div>
+                <p class="faqsText" id="text2">
+                    We won't collect your financial information at any point. The checkout is done through PayPal and any financial information
+                    you enter won't touch our servers. We only collect your email address, so we can send the product to you automatically. When
+                    you connect the trading bot to your brokerage account, the information you enter is stored on your local copy of the code, 
+                    so we won't be able to see it.
+                </p>
+            </div>
+            <div class="faqsDiv marginLeft25Percent" id="faq3">
+                <div class="faqsTopRow"><a class="faqsLeftSide">How much technical knowledge do I need?</a><i class="material-icons faqsRightSide" id="icon3">expand_more</i></div>
+                <p class="faqsText" id="text3">
+                    We aim to make the trading bot as accessible as possible to the general public. Our documentation can help you get set up
+                    without having to code.
+                </p>
+            </div>
+            <div class="faqsDiv marginLeft25Percent" id="faq4">
+                <div class="faqsTopRow"><a class="faqsLeftSide">Which brokerage firms do you support?</a><i class="material-icons faqsRightSide" id="icon4">expand_more</i></div>
+                <p class="faqsText" id="text4">
+                    We currently only support TD Ameritrade. We're working on integrating other brokerage firms, such as Robinhood and Interactive Brokers, in the near future.
+                    Please make sure you have a TD Ameritrade account before buying trading bots from us.
+                </p>
+            </div>
+            <div class="faqsDiv marginLeft25Percent" id="faq5">
+                <div class="faqsTopRow"><a class="faqsLeftSide">How does the trading bot run?</a><i class="material-icons faqsRightSide" id="icon5">expand_more</i></div>
+                <p class="faqsText" id="text5">
+                    The trading bot runs locally on the command line. To run the trading bot, start the program at least 5 minutes before the market opens and leave it running until the market closes.
+                    Please make sure you have a stable internet connection before using the trading bot.
+                </p>
+            </div>
+            <div class="faqsDiv largeMarginBottom marginLeft25Percent" id="faq6">
+                <div class="faqsTopRow"><a class="faqsLeftSide">What happens if I lose internet connection while the bot is running?</a><i class="material-icons faqsRightSide" id="icon6">expand_more</i></div>
+                <p class="faqsText" id="text6">
+                    If you lose connection, the trading bot will stop running. It needs a stable internet connection to process market data in real-time and manage trades. The trading bot does not
+                    exit trades if you lose internet connection, so we highly recommend checking the bot after the market closes to make sure all positions were closed. It'll be safer to run the
+                    trading bot on a cloud platform (such as Google Cloud, Amazon Web Services, or Microsoft Azure) because they offer 24/7 runtime and more computing resources. We'll release a free
+                    guide on deploying trading bots to the cloud in the near future.
+                </p>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="sianjitpua" value="{{strategyID}}">
+    <input type="hidden" name="sotong" id="sotong" value="{{dataString}}">
+    <script src="/js/product_info_app.js"></script>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(function(){ 
+          initialize(google);
+        });
+    </script>
+</body>
+
+</html>

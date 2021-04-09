@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Settings</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="/img/favicon.png">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto">
+    <script
+        src="https://code.jquery.com/jquery-3.1.1.js"
+        crossorigin="anonymous">
+    </script>
+    <script
+        src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+        integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
+        crossorigin="anonymous">
+    </script>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="/js/update_overlay.js"></script>
+</head>
+
+<body class="appBackground">
+    {{>user_header}}
+    <div id="loadingPage" class="loadingPage">Loading settings data...</div>
+    <div class="main-content initiallyHidden mediaWidth75" id="mainContent">
+        <div class="pageTitle extraMarginBottom">Settings</div>
+        <div class="pageTitle wordWrap" id="email">{{email}}</div>
+        <div class="settingsText">
+            <a class="extraWeight">Net worth:</a> <a id="netWorth">{{netWorth}} QOIN</a>
+        </div>
+        <div class="settingsText">
+            <a class="extraWeight">Balance: </a><a id="balance">{{credits}}</a>
+        </div>
+        <div class="settingsText">
+           <a class="extraWeight">My referral code:</a> <a id="referralCode">{{referralCode}}</a>
+        </div>
+        <div class="settingsText">
+            <a class="extraWeight">Username: </a><a id="username">{{username}}</a>
+            <i class="material-icons icon-Settings" id="editUsernameIcon">create</i>
+        </div>
+        <div class="settingsText extraMarginBottom">
+            <a class="extraWeight">Saved referral code: </a><a id="savedReferralCode">{{savedReferralCode}}</a>
+            <i class="material-icons icon-Settings" id="editSavedReferralCodeIcon">create</i>
+        </div>
+        <div class="maxWidth helvetica initiallyHidden" id="verifyEmail">
+            <p class="lineHeight20">
+                Please verify your email before depositing QOIN.
+            </p>
+        </div>
+        <div class="creditsDivWrapper">
+            <div class="creditsDivLeft">
+                <div class="pageSubtitle extraMarginBottom">Deposit QOIN</div>
+                <p class="helvetica">Amount to deposit:  
+                    <label for="credits"></label>
+                    <input type="number" min="1" max="9999" value="10" class="settingsInput extraMarginBottom" name="credits" id="credits"/>
+                </p>
+                <button type="button" class="paymentModalYesButton largeMarginBottom marginLeft0" id="depositButton">Deposit</button>
+            </div>
+            <div class="creditsDivRight">
+                <div class="pageSubtitle extraMarginBottom">Withdraw QOIN</div>
+                <p class="helvetica">Amount to withdraw:  
+                    <label for="withdrawalAmount"></label>
+                    <input type="number" min="1" max="9999" value="10" class="settingsInput extraMarginBottom" name="withdrawalAmount" id="withdrawalAmount"/>
+                </p>
+                <button type="button" class="paymentModalYesButton largeMarginBottom marginLeft0" id="withdrawButton">Withdraw</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="editUsernameModal" style="display:none">
+        <div class="modalTitle">Edit Username</div>
+        <p>
+            <a class="paymentModalText">Username: </a>
+            <input type="text" class="settingsInput extraMarginBottom" name="newUsername" id="newUsername"/>
+        </p>
+        <button type="button" id="confirmEditButtonUsername" class="paymentModalYesButton">SAVE</button>
+        <button type="button" id="cancelEditButtonUsername" class="paymentModalCancelButton">CANCEL</button>
+    </div>
+
+    <div id="editSavedReferralCodeModal" style="display:none">
+        <div class="modalTitle">Edit Saved Referral Code</div>
+        <p>
+            <a class="paymentModalText">Saved referral code: </a>
+            <input type="text" class="settingsInput extraMarginBottom" name="newSavedReferralCode" id="newSavedReferralCode"/>
+        </p>
+        <button type="button" id="confirmEditButtonSavedReferralCode" class="paymentModalYesButton">SAVE</button>
+        <button type="button" id="cancelEditButtonSavedReferralCode" class="paymentModalCancelButton">CANCEL</button>
+    </div>
+
+    <div id="depositCreditModal"style="display:none">
+        <div class="paymentModalTitle">Confirm Deposit</div>
+        <div id="amountDeposit" class="paymentModalPrice"></div>
+        <p class="paymentModalText ">Would you like to proceed with the deposit?</p>
+        <button type="button" id="confirmDeposit" class="paymentModalYesButton">YES</button>
+        <button type="button" id="cancelDeposit" class="paymentModalCancelButton">CANCEL</button>
+    </div>
+
+    <div id="withdrawCreditModal"style="display:none">
+        <div class="paymentModalTitle">Confirm Withdrawal</div>
+        <div id="amount" class="paymentModalPrice"></div>
+        <p class="paymentModalText ">Would you like to proceed with the withdrawal?</p>
+        <button type="button" id="confirmWithdrawal" class="paymentModalYesButton">YES</button>
+        <button type="button" id="cancelWithdrawal" class="paymentModalCancelButton">CANCEL</button>
+    </div>
+
+    <div id="successModalUsername" style="display:none">
+        <div class="messageModal" id="successTitleUsername">
+            <i class="material-icons marginRight15px messageModalIcon" id="successButtonUsername">check_circle_outline</i>
+            <div class="messageModalText">Updated username</div>
+        </div>
+    </div>
+
+    <div id="errorModalUsername" style="display:none">
+        <div class="messageModal" id="errorTitleUsername">
+            <i class="material-icons marginRight15px messageModalIcon" id="errorButtonUsername">error_outline</i>
+            <div class="messageModalText" id="errorTextUsername">Error</div>
+        </div>
+    </div>
+
+    <div id="successModalSavedReferralCode" style="display:none">
+        <div class="messageModal" id="successTitleSavedReferralCode">
+            <i class="material-icons marginRight15px messageModalIcon" id="successButtonSavedReferralCode">check_circle_outline</i>
+            <div class="messageModalText">Updated saved referral code</div>
+        </div>
+    </div>
+
+    <div id="errorModalSavedReferralCode" style="display:none">
+        <div class="messageModal" id="errorTitleSavedReferralCode">
+            <i class="material-icons marginRight15px messageModalIcon" id="errorButtonSavedReferralCode">error_outline</i>
+            <div class="messageModalText" id="errorTextSavedReferralCode">Error</div>
+        </div>
+    </div>
+
+    <div id="successModalAddCredit" style="display:none">
+        <div class="messageModal" id="successTitleAddCredit">
+            <i class="material-icons marginRight15px messageModalIcon" id="successButtonAddCredit">check_circle_outline</i>
+            <div class="messageModalText">Payment complete</div>
+        </div>
+    </div>
+
+   <div id="errorModalAddCredit" style="display:none">
+        <div class="messageModal" id="errorTitleAddCredit">
+            <i class="material-icons marginRight15px messageModalIcon" id="errorButtonAddCredit">error_outline</i>
+            <div class="messageModalText" id="errorTextAddCredit">Error</div>
+        </div>
+    </div>
+
+    <div id="successModalWithdrawCredit" style="display:none">
+        <div class="messageModal" id="successTitleWithdrawCredit">
+            <i class="material-icons marginRight15px messageModalIcon" id="successButtonWithdrawCredit">check_circle_outline</i>
+            <div class="messageModalText">Withdrawal complete</div>
+        </div>
+    </div>
+
+    <div id="errorModalWithdrawCredit" style="display:none">
+        <div class="messageModal" id="errorTitleWithdrawCredit">
+            <i class="material-icons marginRight15px messageModalIcon" id="errorButtonWithdrawCredit">error_outline</i>
+            <div class="messageModalText" id="errorTextWithdrawCredit">Error</div>
+        </div>
+    </div>
+
+    <input type="hidden" id="sotong" value="{{token}}">
+    <input type="hidden" id="ayam" value="{{verifiedEmail}}">
+ 
+    <script src="/js/settings_app.js"></script>
+</body>
+
+<div id="pageMask" class="initiallyHidden"></div>
+
+</html>

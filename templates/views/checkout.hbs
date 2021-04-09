@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-T73ZF84');</script>
+    <!-- End Google Tag Manager -->
+    <title>Checkout</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="/img/favicon.png">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto">
+    <script
+        src="https://code.jquery.com/jquery-3.1.1.js"
+        crossorigin="anonymous">
+    </script>
+    <script
+        src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+        integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
+        crossorigin="anonymous">
+    </script>
+    <script src="/js/update_overlay.js"></script>
+</head>
+
+<body class="appBackground">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T73ZF84"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    {{>guest_header}}
+    <div class="main-content">
+        <div class="pageTitle">Checkout</div>
+
+        <div class="mediaWidth100">
+          <div class="yourPurchase">
+              <p class="buyPageSubtitle">
+                  Your Purchase
+              </p>
+              <p><a class="extraWeight">Strategy: </a> {{strategyName}}</p>
+              <p><a class="extraWeight">Developed On: </a> {{developedOn}}</p>
+              <p><a class="extraWeight">Description: </a> {{description}}</p>
+              <p><a class="extraWeight">Alpha: </a> {{alpha}}</p>
+              <p><a class="extraWeight">Brokerage Firm: </a>TD Ameritrade</p>
+              <p></p>
+          </div>
+        </div>
+
+        <div class="mediaWidth100">
+          <div class="payment" id="payment">
+              <p class="buyPageSubtitle">
+                  Payment
+              </p>
+              <p id="salePrice" class="fontSize20"><a class="extraWeight">Price: </a> ${{salePrice}}</p>
+              <div id="paypal-button-container" class="checkoutContainer"></div>
+              <p></p>
+          </div>
+        </div>
+
+        <input type="hidden" id="sotong" value="{{strategyID}}"/>
+        <input type="hidden" id="sianjitpua" value="{{salePrice}}"/>
+        <input type="hidden" id="tualiapnee" value="{{token}}">
+    </div>
+
+    <div id="errorModal" style="display:none">
+      <div class="buffer"></div>
+      <a class="modalTitle" id="errorTitle">Transaction Error</a>
+      <i class="material-icons" id="errorButton">close</i>
+    </div>
+
+    <script src="/js/checkout_app.js"></script>
+    <script src="https://www.paypal.com/sdk/js?client-id=AVUF3wcvQ2dlZSchBKCdhNuLxpJKp4b9xmDx6qEJiFEYoajFAW_3D-2kh8dKRiWjhJAOIqTWDp79qsPB">
+    </script>
+    <script>
+      paypal.Buttons({
+        createOrder: function(data, actions) {
+            var price = document.getElementById("sianjitpua").value;
+          return actions.order.create({
+            purchase_units: [{
+              amount: {
+                value: price
+              }
+            }]
+          });
+        },
+        onApprove: function(data, actions) {
+          return actions.order.capture().then(function(details) {
+            checkout(details.payer.email_address);
+          });
+        }
+      }).render('#paypal-button-container'); // Display payment options on your web page
+    </script>
+</body>
+
+</html>

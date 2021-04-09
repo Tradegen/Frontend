@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Token Info</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="/img/favicon.png">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto">
+    <script src="/js/update_overlay.js"></script>
+</head>
+
+<body class="appBackground">
+    {{#if loginStatus}}
+    {{>user_header}}
+    {{else}}
+    {{>guest_header}}
+    {{/if}}
+    <div class="main-content" id="main">
+        <div class="maxWidth80 displayProperty mediaHeaderWeb">
+            <div class="pageTitle"><a href="/strategy_info/{{strategyID}}" style="text-decoration: none; color: #333333" >{{strategyName}}</a></div>
+            <button type="button" class="symbolButton noHover">{{symbol}}</button>
+            <div class="tokenPrice">{{sharePrice}}</div>
+            <span class="priceWrapper" style="background-color: {{backgroundColor}}">{{priceChange}}</span>
+            <span class="buyTokensWrapper"><a href="/buy_new_tokens/{{strategyID}}" style="text-decoration: none; color: white">Buy tokens</a></span>
+        </div>
+        <div class="maxWidth80 mediaHeaderMobile">
+            <div class="displayProperty">
+                <div class="pageTitle"><a href="/strategy_info/{{strategyID}}" style="text-decoration: none; color: #333333">{{strategyName}}</a></div>
+                <button type="button" class="symbolButton noHover">{{symbol}}</button>
+            </div>
+            <div style="text-align: center">
+                <div class="tokenPrice" style="margin-bottom: 20px;">{{sharePrice}}</div>
+                <span class="priceWrapper" style="background-color: {{backgroundColor}}">{{priceChange}}</span>
+                <span class="buyTokensWrapper"><a href="/buy_new_tokens/{{strategyID}}" style="text-decoration: none; color: white">Buy tokens</a></span>
+            </div>
+        </div>
+        
+        <div class="maxWidth80" id="tokenInfoDesktop">
+            <div class="tradingBotStoreProductBottomRow tokenInfoExtra">
+                <div class="tradingBotStoreProductFrequency block width24">
+                    <a class="tradingBotStoreProductTopText">Launched on</a>
+                    <div class="buffer"></div>
+                    <a class="tradingBotStoreProductBottomText">{{deployedOn}}</a>
+                </div>
+                <div class="tradingBotStoreProductFrequency block width24">
+                    <a class="tradingBotStoreProductTopText">Market cap</a>
+                    <div class="buffer"></div>
+                    <a class="tradingBotStoreProductBottomText">{{marketCap}} QOIN</a>
+                </div>
+                <div class="tradingBotStoreProductFrequency block width24">
+                    <a class="tradingBotStoreProductTopText">Circulating supply</a>
+                    <div class="buffer"></div>
+                    <a class="tradingBotStoreProductBottomText">{{sharesPurchased}} {{symbol}}</a>
+                </div>
+                <div class="tradingBotStoreProductFrequency block width24 mediaMarginBottom20">
+                    <a class="tradingBotStoreProductTopText">Volume</a>
+                    <div class="buffer"></div>
+                    <a class="tradingBotStoreProductBottomText">{{volume}} {{symbol}}</a>
+                </div>
+            </div>
+        </div>
+        <div class="maxWidth80 initiallyHidden" id="tokenInfoMobile">
+            <div class="strategyInfoTop">
+                <div class="strategyInfoLeftSide"><a class="extraWeight">Launched on: </a> {{deployedOn}}</div>
+                <div class="strategyInfoRightSide" id="marketPrice"><a class="extraWeight">Market cap: </a> <a id="marketCap">{{marketCap}} QOIN</a></div><br>
+            </div>
+            <div class="strategyInfoBottom">
+                <div class="strategyInfoLeftSide"><a class="extraWeight">Circulating supply: </a> {{sharesPurchased}} {{symbol}}</div>
+                <div class="strategyInfoRightSide" id="sharesBought"><a class="extraWeight">Volume: </a> {{volume}} {{symbol}}</div>
+            </div>
+        </div>
+
+        <div class="backtestGraphParent" id="backtestParent2" style="display:none">
+            <div class="chartTitle" id="title2">Price History</div>
+            <div class="temp" id="temp2">
+                <div id="chart2" class="strategyExplorerChart"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="hiddenGraph">
+        <div class="mediaChartTitle">Price History</div>
+        <div class="chartWrapper">
+            <div id="chart3" class="strategyExplorerChart initiallyHidden"></div>
+        </div>
+    </div>
+
+    <input type="hidden" id="status" value="{{loginStatus}}">
+    <input type="hidden" id="strategyStatus" value="{{status}}">
+    <input type="hidden" name="sotong2" id="sotong2" value="{{dataString2}}">
+    
+    <script src="/js/token_info_app.js"></script>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(function(){ 
+          initialize(google);
+        });
+    </script>
+</body>
+
+</html>

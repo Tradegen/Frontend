@@ -1,0 +1,2901 @@
+body {
+  color: #333333;
+  font-family: 'Roboto Condensed';
+  margin: 0 auto;
+  padding: 0px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.slideshowDots {
+  position: relative;
+  color: rgba(161, 194, 250, 0.16);
+  padding-left: 40%;
+  font-size: 50px !important;
+}
+
+.dot:hover {
+  cursor: pointer;
+}
+
+.getStartedButtonRow {
+  margin-left: 30%;
+  margin-top: 60px;
+}
+
+.hiddenGraph {
+  display: none;
+}
+
+.mediaHeaderWeb {
+  display: block !important;
+}
+
+.mediaHeaderMobile {
+  display: none !important;
+}
+
+.platformIsFreeRow {
+  margin-top: 160px;
+}
+
+.platformIsFreeList {
+  list-style: none; /* Remove default bullets */
+  line-height: 30px;
+}
+
+.platformIsFreeList li::before {
+  content: "\2022";  /* Add content: \2022 is the CSS Code/unicode for a bullet */
+  color: #3e85f7; /* Change the color */
+  font-weight: bold; /* If you want it to be bold */
+  display: inline-block; /* Needed to add space between the bullet and the text */
+  width: 10px; /* Also needed for space (tweak if needed) */
+  margin-left: -10px; /* Also needed for space (tweak if needed) */
+}
+
+.maxWidth100 {
+  min-width: 100% !important;
+}
+
+.fontSize20 {
+  font-size: 20px !important;
+}
+
+textarea {
+  resize: none;
+}
+
+.tableRowHover:hover {
+  background-color: rgba(161, 194, 250, 0.16);
+}
+
+.filterLeft2 {
+  position: relative;
+  float: left;
+  font-size: 20px;
+  width: 70%;
+  text-align: right;
+}
+
+.filterRight2 {
+  position: relative;
+  float: right;
+  width: 20%;
+  margin-right: 8%;
+}
+
+.main-content {
+  flex-grow: 1;
+  margin-left: 15%;
+}
+
+.aboutPageImage {
+  width: 100px;
+  height: 100px;
+}
+
+.aboutPageWrapper {
+  height: 100px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 100%;
+  display: flex;
+}
+
+.aboutPageSubtitle {
+  font-size: 36px;  
+  font-weight: 600;
+  color: #333333;
+}
+
+footer {
+  color: black;
+  height: 350px;
+  background-color:white;
+  margin-top: 55px;
+  box-shadow: 0 -14px 14px -14px rgb(0 77 165 / 12%);
+  display: flex;
+  position: relative;
+  overflow: visible;
+}
+
+.footerBuffer {
+  width: 100% !important;
+  background-color: white;
+  height: 60px !important;
+  margin-bottom: -20px;
+}
+
+.navbarFooter {
+  overflow: visible;
+  background-color: white;
+  color: black;
+  margin-left: 20%;
+  height: 340px;
+  position: relative;
+  width: 30%;
+}
+
+.footerLeftParentDiv {
+  margin-left: 15%;
+  height: 340px;
+  width: 20%;
+  position: relative;
+}
+
+.footerLeftTop {
+  width: 100%;
+  height: 200px;
+}
+
+.footerFloatLeft {
+  position: relative;
+  float: left;
+  width: 45%;
+}
+
+.footerFloatRight {
+  position: relative;
+  float: right;
+  width: 45%;
+}
+
+.footerLeftBottom {
+  margin-top: 80px;
+  height: 90px;
+  width: 100%;
+  font-size: 14px;
+  color: #737373;
+}
+
+.footerImage {
+  margin-top: 70px;
+  height: auto;
+  width: auto;
+  max-height: 140px;
+  max-width: 200px;
+}
+
+img.icon {
+  height: auto;
+  width: auto;
+  height: 50px;
+  max-width: 200px;
+  padding-top: 15px;
+}
+
+.appNavbarIconWithName {
+  height: 40px;
+  width: 120px;
+  padding-top: 5px;
+}
+
+.appNavbarIcon {
+  height: auto;
+  width: auto;
+  max-height: 30px;
+  max-width: 50px;
+  padding-top: 10px;
+}
+
+.footerColumn {
+  position: relative;
+  width: 100%;
+  padding-top: 70px;
+  height: 340px;
+  margin-left: 5%;
+}
+
+.footerColumnTitle {
+  font-size: 20px;
+  font-weight: 550;
+  color: black !important;
+}
+
+header {
+  position: relative;
+  color: #22283c;
+  height: 80px;
+  background-color: white;
+  margin-bottom: 48px;
+  /*box-shadow: 2px 3px 8px rgb(0 77 165 / 12%);*/
+  opacity: 1;
+}
+
+/* The sticky class is added to the header with JS when it reaches its scroll position */
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 2;
+}
+
+/* Add some top padding to the page content to prevent sudden quick movement (as the header gets a new position at the top of the page (position:fixed and top:0) */
+.sticky + .main-content {
+  padding-top: 102px;
+}
+
+.creditsDivWrapper {
+  position: relative;
+  display: flex;
+}
+
+.creditsDivLeft {
+  position: relative;
+  margin-right: 80px;
+  z-index: inherit;
+}
+
+.creditsDivRight {
+  position: relative;
+}
+
+h1 {
+  font-size: 64px;
+  margin-bottom: 16px;
+}
+
+header a {
+  color: black;
+  text-decoration: none;
+}
+
+footer a {
+  color: black;
+  text-decoration: none;
+}
+
+.portrait {
+  width: 250px;
+}
+
+input {
+  border: 1px solid #cccccc;
+  padding: 8px;
+}
+
+button {
+  cursor: pointer;
+  border: 1px solid #888888;
+  background: #3e85f7;
+  color: white;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: 8px;
+  outline-width: 0px;
+  font-weight: 500;
+}
+
+.priceWrapper {
+  color: white;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 18px;
+  background-color: #16c784;
+  height: 24px;
+  margin-left: 20px;
+}
+
+.tokenPrice {
+  font-size: 22px;  
+  font-weight: 550;
+  color: #333333;
+  margin-left: 60px;
+  margin-top: 5px;
+}
+
+.symbolButton {
+  margin-left: 15px;
+  font-weight: 500;
+  border-radius: 8px;
+  padding-right: 8px;
+  padding-left: 8px;
+  background-color: #eff2f5;
+  color: #5f6368;
+  border-width: 0px;
+  height: 30px;
+  margin-top: 5px;
+}
+
+.buyTokensWrapper {
+  color: white;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 18px;
+  background-color: #3e85f7 ;
+  height: 24px;
+  margin-left: 40px;
+}
+
+.buyTokensWrapper:hover {
+  cursor: pointer;
+}
+
+.noHover {
+  pointer-events: none;
+}
+
+.tokenInfoWrapper {
+  position: relative;
+  width: 75%;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.tokenInfoExtra{
+  border-width: 0px !important;
+  background-color: #fbfbfb !important;
+}
+
+.payWithBalanceButton {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 16px;
+  padding-right: 16px;
+  border-radius: 10px;
+  background-color: #3e85f7;
+  font-weight: 500;
+}
+
+.buyButton {
+  margin-left: 10px;
+  width: 60px;
+  font-weight: 500;
+  border-radius: 8px;
+  padding-right: 8px;
+  padding-left: 8px;
+  background-color: #3e85f7;
+}
+
+.viewButton {
+  width: 60px;
+  font-weight: 500;
+  margin-left: 10px;
+  border-radius: 8px;
+  padding-right: 8px;
+  padding-left: 8px;
+  background-color: white;
+  color: #3e85f7;
+  border: 1px solid #3e85f7 !important;
+}
+
+.sellButton {
+  width: 60px;
+  font-weight: 500;
+  border-radius: 8px;
+  padding-right: 8px;
+  padding-left: 8px;
+  background-color: #3e85f7;
+  color: white;
+  margin-left: 10px;
+}
+
+.noButton {
+  width: 40px;
+  border-radius: 8px;
+  padding-right: 8px;
+  padding-left: 8px;
+  background-color: white;
+  color: #3e85f7;
+  border: 1px solid #3e85f7 !important;
+}
+
+.yesButton {
+  width: 45px;
+  border-radius: 8px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.detailsButton {
+  width: 70px;
+  font-weight: 550;
+  margin-left: 10px;
+  background-color: white;
+  color: #3e85f7;
+  border-radius: 8px;
+  border: 1px solid #3e85f7 !important;
+}
+
+.deleteButton {
+  width: 70px;
+  font-weight: 500;
+  background-color: #ea3943;
+  color: white;
+  border-radius: 8px;
+  border-color: #ea3943;
+}
+
+.cancelButton {
+  width: 75px;
+  font-weight: 500;
+  margin-left: 10px;
+  background-color: white;
+  color: #3e85f7;
+  border-radius: 8px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border: 1px solid #3e85f7 !important;
+}
+
+.runBacktestButton {
+  width: 90px;
+  font-weight: 550;
+  margin-left: 10px;
+  background-color: #3e85f7;
+  color: white;
+  border-radius: 8px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.contactFormButton {
+  background-color: #3e85f7;
+  border-radius: 8px;
+  font-weight: 550;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.navbar {
+  position: relative;
+  overflow: visible;
+  background-color: white;
+  color: black;
+  margin-left: 15%;
+  height: 80px;
+  opacity: 1;
+}
+
+.marginLeft2 {
+  margin-left: 2% !important;
+}
+
+.marginLeft8 {
+  margin-left: 8% !important;
+}
+
+.marginLeft18 {
+  margin-left: 18% !important;
+}
+
+.marginLeft25Percent {
+  margin-left: 25% !important;
+}
+
+.navbar a {
+  float: left;
+  font-size: 16px;
+  color: black;
+  text-align: center;
+  text-decoration: none;
+}
+
+.navbar a.icon {
+  padding: 0px;
+  width: 200px;
+  height: 60px;
+}
+
+.navbar .ft {
+  margin-top: 24px;
+  width: 150px;
+  display: inline-block;
+}
+
+.footerColumn .ft {
+  margin-top: 18px;
+  font-size: 14px;
+  width: 100%;
+  font-family: Helvetica !important;
+}
+
+.dropdown {
+  float: left;
+  overflow: visible;
+  position: relative;
+}
+
+.marginLeft40 {
+  margin-left: 40px !important;
+}
+
+.marginLeft30 {
+  margin-left: 30px !important;
+}
+
+.marginLeft80 {
+  margin-left: 80px !important;
+}
+
+.marginLeft10Percent {
+  margin-left: 10% !important;
+}
+
+.marginLeft15Percent {
+  margin-left: 15% !important;
+}
+
+.textAlignRight {
+  text-align: right !important;
+}
+
+.textAlignCenter {
+  text-align: center !important;
+  background-color: white;
+}
+
+.width220 {
+  width: 220px !important;
+}
+
+.width160 {
+  width: 160px !important;
+}
+
+.width140 {
+  width: 140px !important;
+}
+
+.width70 {
+  width: 70px !important;
+}
+
+.width90 {
+  width: 90px !important;
+}
+
+.paddingBottom16 {
+  padding-bottom: 16px !important;
+}
+
+.paddingBottom8 {
+  padding-bottom: 8px !important;
+}
+
+.dropdownMenuLinks {
+  padding-top: 6px !important;
+  padding-bottom: 6px !important;
+}
+
+.dropdown .store {
+  font-size: 18px;
+  font-weight: 550;
+  border: none;
+  outline: none;
+  color: #5f6368;
+  padding-top: 26px;
+  padding-bottom: 8px;
+  padding-left: 8px;
+  padding-right: 8px;
+  background-color: inherit;
+  font-family: 'Roboto', sans-serif;
+  margin: 0px;
+  overflow: visible;
+  position: relative;
+}
+
+.userHeaderNavbarLink {
+  font-size: 16px !important;
+  padding-top: 16px !important;
+}
+
+.dropdown .rightSide {
+  font-size: 16px;
+  font-weight: 500;
+  color: black;
+  padding-top: 32px;
+  padding-bottom: 24px;
+  padding-left: 12px;
+  padding-right: 12px;
+  background-color: inherit;
+  font-family: inherit;
+  margin: 0px;
+  overflow: visible;
+}
+
+.dropdown .dropbtn {
+  width: 200px;
+  font-size: 15px;
+  font-weight: 550;
+  border: none;
+  outline: none;
+  color: #5f6368;
+  padding-top: 10px;
+  padding-bottom: 24px;
+  padding-left: 16px;
+  padding-right: 16px;
+  background-color: inherit;
+  font-family: 'Roboto', sans-serif;
+  margin: 0px;
+  overflow: visible;
+}
+
+.navbar a:hover{
+  color: #3e85f7;
+}
+
+.navbar .noHover:hover{
+  color: #5f6368;
+}
+
+.footerColumn a:hover{
+  color: #3e85f7;
+}
+
+.width20{
+  width: 20% !important;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  z-index: 2;
+  min-width: 160px;
+  margin-top: 0px;
+  overflow: visible;
+  font-family: 'Roboto', sans-serif !important;
+}
+
+.dropdown-content a {
+  float: none;
+  color: #5f6368;
+  padding: 6px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+  font-size: 15px;
+  font-weight: 550 !important;
+}
+
+.dropdown-content a:hover {
+  background-color: rgba(161, 194, 250, 0.16);
+  color: #3e85f7;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+table {
+  font-family: 'Roboto Condensed';
+  border-collapse: collapse;
+}
+
+td, th {
+  padding: 8px;
+  word-wrap: break-word;
+}
+
+td {
+  padding-top: 12px !important;
+  padding-bottom: 12px !important;
+}
+
+th {
+  border-bottom: 1px solid #888888;
+  color: #9ea1a4;
+  line-height: 30px !important;
+  font-family: 'Roboto', sans-serif !important;
+  font-weight: 450;
+  font-size: 15px;
+}
+
+.ui-widget {
+  font-family: arial;
+  font-size: .8em;
+}
+
+.ui-widget-content {
+  border-radius: 5px;
+}
+
+.ui-dialog {
+  left: 0;
+  outline: 0 none;
+  padding: 0 !important;
+  position: absolute;
+  top: 0;
+}
+
+#success {
+  padding: 0;
+  margin: 0; 
+}
+
+.ui-dialog .ui-dialog-content {
+  border: 0 none;
+  overflow: auto;
+  position: relative;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 15px;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+  padding: 0.1em .5em;
+  position: relative;
+  font-size: 1em;
+}
+
+.ui-dialog-titlebar-close{
+  display: none;
+}
+
+.ui-dialog .ui-dialog-titlebar-close, .ui-icon-closethick {
+  width: 10px !important;
+  height: 10px !important;
+  color: black !important;
+  border: none !important;
+}
+
+.ui-dialog-titlebar {
+  display:none !important;
+}
+
+.contactInput {
+  border-radius: 5px;
+}
+
+.contactText {
+  border-radius: 5px;
+  border: 1px solid #cccccc;
+  padding: 8px;
+  width: 450px;
+}
+
+.strategyExplorerText {
+  border-radius: 5px;
+  border: 1px solid #cccccc;
+  padding: 8px;
+  width: 250px;
+}
+
+.floatLeft {
+  width: 40%;
+  float: left;
+}
+
+.floatRight {
+  width: 40%;
+  float: right;
+  margin-right: 15%;
+}
+
+.dropdownFAQS {
+  float: left;
+  overflow: hidden;
+  width: 80%;
+}
+
+.dropdownFAQS .dropbtnFAQS {
+  width: 100%;
+  font-size: 20px;  
+  font-weight: 500;
+  border-top: 1px solid #e0dede;
+  color: #333333;
+  background-color: inherit;
+  font-family: inherit;
+  margin: 0;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  cursor: pointer;
+}
+
+.dropdown-contentFAQS {
+  display: none;
+  width: 90%;
+  padding-left: 15px;
+}
+
+.dropdown-contentFAQS a {
+  float: none;
+  color: #333333;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+label {
+  display: block;
+}
+
+.check {
+  display: none;
+}
+
+.check:checked + label + div{
+  display: block;
+}
+
+.pageTitle {
+  font-size: 30px;  
+  font-weight: 600;
+  color: #333333;
+  padding-bottom: 30px;
+}
+
+.pageSubtitle {
+  font-size: 20px;  
+  font-weight: 550;
+  color: black;
+}
+
+.floatRight a {
+  line-height: 25px;
+}
+
+
+
+.loginButton {
+  margin-top: 20px;
+  margin-left: 30px;
+  font-size: 16px;
+  width: 120px;
+  border-radius: 10px;
+  background-color: #3e85f7;
+  color: white;
+  border: 1px solid #3e85f7 !important;
+}
+
+.errorMessage {
+  color: #ea3943;
+}
+
+.strategyName {
+  font-weight: 550;
+}
+
+.floatBottom {
+  float: bottom;
+}
+
+.transactionsTable {
+  font-size: 16px;
+  width: 100%;
+}
+
+.buildStrategyButton {
+  position: absolute;
+  bottom: 20px;
+  margin-bottom: 0px;
+  display: block !important;
+} 
+
+.transactionsTable td {
+  padding-top: 7px;
+  padding-bottom: 7px;
+  border-top: 1px solid #f2f0f0;
+}
+
+.checkoutOrderSummaryTitle {
+  font-size: 20px;
+  font-weight: 550;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.checkoutOrderSummaryContent {
+  font-size: 18px;
+}
+
+.formFieldTitle {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.contactFormInput {
+  width: 450px;
+  border-radius: 5px;
+}
+
+.temp {
+  width: 95%;
+  height: 550px;
+  position: relative;
+  float: left;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 20px;
+}
+
+.strategyExplorerChart {
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  width: 100%;
+  height: 520px;
+  padding-bottom: 20px;
+}
+
+.chartTitle {
+  font-weight: 550;
+  font-size: 24px;
+  text-align: center;
+  margin-top: 40px;
+}
+
+.backtestGraphParent {
+  width: 80%;
+  padding-bottom: 10px;
+  position: relative;
+  float: left;
+  margin-bottom: 80px;
+  background-color: white;
+  box-shadow: 0 3px 20px 0 rgb(0 77 165 / 7%);
+  border-radius: 10px;
+  margin-top: 50px;
+}
+
+.backtestGraphTopBar {
+  margin-top: 50px;
+  width: 98%;
+  height: 50px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.backtestGraphTopBarElement {
+  width: 16%;
+  height: 45px;
+  margin-left: 2px;
+  margin-right: 2px;
+  position: relative;
+  float: left;
+  text-align: center;
+  font-size: 20px;
+}
+
+.backtestGraphLastElement {
+  margin-right: 0px !important;
+  width: 15% !important;
+}
+
+.myStrategiesTopBar {
+  margin-top: 15px;
+  height: 40px;
+  width: 200px;
+}
+
+.backtestTable {
+  table-layout: auto;
+  width: 75%;
+}
+
+.backtestTable td {
+  padding: 6px;
+}
+
+i.icon-AccountCircle {
+  font-size: 30px;
+  vertical-align: middle;
+  width: 40px;
+  color: #3e85f7 !important;
+}
+
+i.icon-Settings {
+  font-size: 20px;
+  vertical-align: middle;
+  color: #3e85f7 !important;
+}
+
+i.icon-Settings:hover {
+  cursor: pointer;
+}
+
+i.icon-Cash {
+  font-size: 30px;
+  vertical-align: middle;
+  width: 30px;
+  color: #18c96e !important;
+}
+
+.navbarCashText {
+  font-size: 14px !important;
+  font-weight: 500 !important;
+}
+
+.navbar .navbarCashText:hover {
+  color: black;
+}
+
+.tableWrapper {
+  background-color: white;
+  box-shadow: 0 3px 20px 0 rgb(0 77 165 / 7%);
+  padding-left: 15px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-right: 15px;
+  margin-bottom: 40px;
+  border-radius: 10px;
+}
+
+.maxWidth64 {
+  width: 64%;
+}
+
+.maxWidth {
+  width: 78%;
+}
+
+.maxWidth73 {
+  width: 73%;
+}
+
+.maxWidth75 {
+  width: 75%;
+}
+
+.maxWidth80 {
+  width: 80%;
+}
+
+.maxWidth53 {
+  width: 53%;
+}
+
+.marginTop50 {
+  margin-top: 50px !important;
+}
+
+.marginTop30 {
+  margin-top: 30px !important;
+}
+
+.marginTop80 {
+  margin-top: 80px !important;
+}
+
+.width100 {
+  width: 100%;
+  display: flex;
+}
+
+.marginRight5 {
+  margin-right: 5%;
+}
+
+.marginRight25 {
+  margin-right: 25% !important;
+}
+
+.paddingRight15 {
+  padding-right: 15px;
+}
+
+.width280 {
+  width: 280px !important;
+}
+
+.tradingBotStoreProductInfo {
+  position: relative;
+  width: 80%;
+  float: left;
+  box-shadow: 0 3px 20px 0 rgb(0 77 165 / 7%);
+  border-radius: 10px;
+  background-color: white;
+  height: 160px;
+  margin-bottom: 50px;
+}
+
+.tradingBotStoreProductPrice {
+  margin-top: 25px;
+  margin-right: 5%;
+  font-size: 20px;
+  font-weight: 500;
+  position: relative;
+  float: right;
+  width: 45%;
+  text-align: right;
+}
+
+.tradingBotStoreProductTitle {
+  margin-top: 25px;
+  margin-left: 5%;
+  font-size: 22px;  
+  font-weight: 500;
+  position: relative;
+  float: left;
+  width: 45%;
+}
+
+.tradingBotStoreProductTopRow {
+  height: 80px;
+}
+
+.tradingBotStoreProductBottomRow {
+  height: 77px;
+  background-color: white;
+  border-top: 1px solid hsla(0, 0%, 53%, 0.40);
+  margin-left: 1%;
+  width: 98%;
+  margin-right: 1%;
+  margin-bottom: 2px;
+}
+
+.tradingBotStoreProductBottomRow .block {
+  display: inline-block;
+}
+
+.tradingBotStoreProductButton {
+  margin-top: 25px;
+  margin-right: 45px;
+  font-size: 20px;
+  font-weight: 500;
+  position: relative;
+  float: right;
+  width: 9%;
+  text-align: right;
+}
+
+.tradingBotStoreProductTopText {
+  font-size: 16px;
+  font-weight: 550;
+  color: #9ea1a4;
+}
+
+.tradingBotStoreProductBottomText {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.tradingBotStoreProductAccuracy {
+  margin-top: 20px;
+  position: relative;
+  float: left;
+  width: 20%;
+  text-align: center;
+}
+
+.tradingBotStoreProductFrequency {
+  margin-top: 20px;
+  position: relative;
+  width: 24%;
+  text-align: center;
+}
+
+.paddingLeft0 {
+  padding-left: 0px !important;
+}
+
+.paddingLeft20 {
+  padding-left: 20px !important;
+}
+
+.profileText {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  width: 100%;
+}
+
+.settingsText {
+  margin-top: 12px;
+  margin-bottom: 12px;
+  font-family: Helvetica;
+}
+
+.extraMarginBottom {
+  margin-bottom: 30px !important;
+}
+
+.settingsInput {
+  border-radius: 5px;
+  border: 1px solid #cccccc;
+  padding: 8px;
+  width: 100px;
+}
+
+.width24 {
+  width: 24%;
+}
+
+.strategyInfoRightSide {
+  font-size: 18px;
+  font-weight: 500;
+  position: relative;
+  float: right;
+  width: 50%;
+  text-align: right;
+}
+
+.strategyInfoLeftSide {
+  font-size: 18px;
+  font-weight: 500;
+  position: relative;
+  float: left;
+  width: 45%;
+  text-align: left;
+}
+
+.strategyInfoTop {
+  width: 100%;
+}
+
+.strategyInfoBottom {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.strategyInfoDescription {
+  padding-top: 20px;
+  margin-left: 30px;
+  margin-right: 30px;
+  font-size: 18px;
+}
+
+.yourPurchase {
+  position: relative;
+  width: 30%;
+  float: left;
+  background-color: white;
+  box-shadow: 0 3px 20px 0 rgb(0 77 165 / 7%);
+  border-radius: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 10px;
+  height: 330px;
+  font-family: 'Roboto Condensed' !important;
+}
+
+.payment {
+  position: relative;
+  width: 30%;
+  float: right;
+  margin-right: 25%;
+  background-color: white;
+  box-shadow: 0 3px 20px 0 rgb(0 77 165 / 7%);
+  border-radius: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 10px;
+  height: 330px;
+  text-align: center;
+  font-family: 'Roboto Condensed' !important;
+}
+
+.buyPageSubtitle {
+  font-size: 22px;  
+  font-weight: 500;
+  text-align: center;
+  color: #3e85f7;
+}
+
+input:focus {
+  border-color: #3e85f7;
+  border-width: 2px;
+  outline-width: 0px;
+}
+
+textarea:focus {
+  border-color: #3e85f7;
+  border-width: 2px;
+  outline-width: 0px;
+}
+
+.modalTitle {
+  font-weight: 550;
+  text-align: center;
+  font-size: 20px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.overflowScroll {
+  overflow: scroll;
+}
+
+.profileTopBar {
+  width: 70%;
+  margin-left: 5%;
+}
+
+.profileTopBarElement {
+  width: 20%;
+  margin-left: 2%;
+  margin-right: 2%;
+  text-align: center;
+  display: inline-block;
+}
+
+i.icon-ProfilePositions {
+  font-size: 30px;
+  color: #3e85f7 !important;
+}
+
+i.icon-ProfileShares {
+  font-size: 30px;
+  color: #3e85f7 !important;
+}
+
+i.icon-ProfileNetWorth {
+  font-size: 30px;
+  color: #3e85f7 !important;
+}
+
+i.icon-ProfileNetReturn {
+  font-size: 30px;
+  color: #3e85f7 !important;
+}
+
+.profileTableTitle {
+  font-weight: 500;
+  font-size: 18px;
+  margin-bottom: 20px;
+  margin-top: 5px;
+  color: #3e85f7;
+}
+
+.extraWeight {
+  font-weight: 550;
+}
+
+.font18 {
+  font-size: 18px;
+}
+
+.productButton {
+  position: relative;
+  float: right;
+  margin-top: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 14px;
+  padding-right: 14px;
+  font-size: 14px !important;
+}
+
+.platformIsFreeTitle {
+  text-align: center;
+  color: #3e85f7;
+  font-size: 30px;
+}
+
+.platformIsFreeList {
+  margin-left: 50px;
+  font-size: 20px;
+}
+
+.platformIsFreeCan {
+  margin-left: 30px;
+  font-size: 22px;
+}
+
+.textAlignCenter2 {
+  text-align: center !important;
+  font-size: 40px;
+  margin-bottom: 50px;
+}
+
+.howToMakeMoneyIcon {
+  color: #3e85f7 !important;
+  font-size: 50px !important;
+}
+
+.howToMakeMoneyRow {
+  margin-top: 160px;
+  margin-bottom: 140px;
+}
+
+.howToMakeMoneySubtitle {
+  font-size: 24px;
+}
+
+.howToMakeMoneyInfoRow {
+  position: relative;
+  width: 100%;
+  display: flex;
+  margin-top: 20px;
+}
+
+.howToMakeMoneyLeft {
+  position: relative;
+  float: left;
+  width: 40%;
+  text-align: center;
+}
+
+.howToMakeMoneyRight {
+  position: relative;
+  width: 50%;
+  font-size: 20px;
+  padding-top: 5px;
+}
+
+.howToMakeMoneyTitle
+{
+  font-size: 30px;
+  width: 90%;
+  min-width: 90%;
+  text-align: center;
+  height: 50px;
+}
+
+.howToMakeMoneyWrapper {
+  width: 70%;
+  margin-left: 10%;
+}
+
+.homePageInfoWrapperMiddle {
+  position: relative;
+  width: 60%;
+  margin-left: 15%;
+  box-shadow: 0 3px 20px 0  rgb(0 0 0 / 15%);
+  border: 0.1px solid #e0e0e0;
+  border-radius: 5px;
+}
+
+.homePageInfoWrapperLeft {
+  position: relative;
+  width: 40%;
+  margin-right: 5%;
+}
+
+.homePageInfoWrapperRight {
+  position: relative;
+  width: 52%;
+}
+
+.homePageInfoWrapperLeft2 {
+  position: relative;
+  width: 35%;
+  margin-right: 4%;
+  padding-top: 60px;
+}
+
+.homePageInfoWrapperRight2 {
+  position: relative;
+  width: 60%;
+}
+
+.moneyPageInfoWrapperLeft {
+  position: relative;
+  width: 65%;
+}
+
+.moneyPageInfoWrapperRight {
+  position: relative;
+  width: 30%;
+}
+
+.homePageSubText {
+  margin-top: 5px;
+  margin-left: 15px;
+}
+
+.homePageRow {
+  width: 100%;
+  display: flex;
+  position: relative;
+}
+
+.homePageFirst {
+  margin-top: 100px;
+}
+
+.homePageInfoTitle {
+  font-weight: 550;
+  font-size: 56px;
+  padding-right: 15%;
+}
+
+.homePageInfoText {
+  font-size: 24px;
+}
+
+.homePageNumber {
+  font-size: 30px;
+  color: #3e85f7;
+}
+
+.homePageNumberText {
+  margin-left: 10px;
+  font-size: 24px;
+  font-weight: 550;
+}
+
+.tokenInfoButton {
+  cursor: pointer;
+  background: white;
+  border: 2px solid #3e85f7;
+  color: #3e85f7;
+  padding-top: 11px;
+  padding-bottom: 11px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 10px;
+  outline-width: 0px;
+  font-size: 16px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 550;
+  letter-spacing: 0.4px;
+  margin-left: 20px;
+}
+
+.homePageButton {
+  cursor: pointer;
+  background: #3e85f7;
+  border: 1px solid #3e85f7;
+  color: white;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 10px;
+  outline-width: 0px;
+  font-size: 16px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 550;
+  letter-spacing: 0.4px;
+}
+
+.homePageButton2 {
+  cursor: pointer;
+  background: none;
+  color: #3e85f7;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 10px;
+  border: 1px solid white;
+  outline-width: 0px;
+  font-size: 16px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 550;
+  letter-spacing: 0.4px;
+  margin-left: 10px;
+}
+
+.homePageButton2:hover {
+  background: #f5f5f5;
+  border-color: #f5f5f5;
+  border-width: 0.01px;
+}
+
+.buttonRow {
+  width: 85%;
+  padding-top: 40px;
+}
+
+.homePageSecond {
+  margin-top: 300px;
+}
+
+.homePageThird {
+  margin-top: 180px;
+}
+
+.moneyPageImage {
+  width: 200px;
+  height: 200px;
+  margin-top: 40px;
+}
+
+.homePageImage {
+  min-width: 450px;
+  width: 90% !important;
+  height: 90% !important;
+  margin-top: 40px;
+}
+
+.homePageImage2 {
+  min-width: 450px;
+  width: 90% !important;
+  height: 90% !important;
+  margin-top: 10px;
+}
+
+.homePageImage3 {
+  width: 90% !important;
+  height: 80% !important;
+  margin-top: 40px;
+  min-width: 450px;
+}
+
+.homePageImage4 {
+  width: 90% !important;
+  height: 75% !important;
+  margin-top: 40px;
+  min-width: 450px;
+}
+
+.aboutPageContent {
+  font-size: 20px;
+  margin-bottom: 40px;
+  width: 80%;
+}
+
+.aboutPageTitle {
+  font-size: 36px;  
+  font-weight: 600;
+  color: #333333;
+  margin-top: 20px;
+}
+
+.moneyPageTitle {
+  font-size: 26px;  
+  font-weight: 550;
+  color: #333333;
+  margin-top: 20px;
+}
+
+.addCreditContainer {
+  width: 200px !important;
+}
+
+.largeMarginBottom {
+  margin-bottom: 50px !important;
+}
+
+.pageRight {
+  text-align: left !important;
+  padding-left: 0px !important;
+  margin-left: 0px !important;
+}
+
+.headerRightSide {
+  position: relative;
+  float: right;
+  margin-right: 2%;
+}
+
+.marginRight20 {
+  margin-right: 20% !important;
+}
+
+.marginRight15 {
+  margin-right: 15% !important;
+}
+
+.marginRight0 {
+  margin-right: 0px !important;
+}
+
+.initiallyHidden {
+  display: none;
+}
+
+.loadingPage {
+  text-align: center;
+  margin-top: 20%;
+  font-size: 20px;
+  color: #737373;
+}
+
+.modalCloseButton {
+  text-align: right;
+  font-size: 14px;
+}
+
+.modalCloseButton:hover {
+  cursor: pointer;
+}
+
+.modalCloseDiv {
+  width: 100%;
+  text-align: right;
+}
+
+.actionIcon {
+  color:#3e85f7;
+  font-size: 22px !important;
+  padding-top: 2px;
+  margin-left: 7px;
+  margin-right: 7px;
+}
+
+.actionIcon:hover {
+  cursor: pointer;
+}
+
+.buffer {
+  height: 10px;
+  width: 100%;
+}
+
+.marginLeft5 {
+  margin-left: 5px !important;
+}
+
+.checkoutContainer {
+  width: 80% !important;
+  margin-left: 8%;
+  margin-right: 8%;
+}
+
+.marginRight15px {
+  margin-right: 15px !important;
+}
+
+.displayProperty {
+  display: flex !important;
+}
+
+.displayInlineBlock {
+  display: inline-block !important;
+}
+
+.rightSide {
+  margin-left: 10%;
+  height: 600px !important;
+  margin-right: 30px;
+}
+
+.leftSide {
+  height: 600px !important;
+}
+
+.exitConditionsDiv {
+  margin-top: 0% !important;
+}
+
+.formMargin {
+  margin-left: 30px;
+}
+
+.orderConfirmationTitle {
+  font-size: 36px;
+  font-weight: 550;
+  margin-top: 30px;
+}
+
+.icon-OrderConfirmation {
+  font-size: 84px !important;
+  color: #58d665;
+}
+
+.serviceFAQS {
+  text-align: center;
+  font-weight: 550;
+  font-size: 24px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  width: 100%;
+  margin-right: 25%;
+}
+
+.marketsTableRowName {
+  text-align: left !important;
+}
+
+.marketsTableCirculatingSupply {
+  text-align: center !important;
+}
+
+.error404Page {
+  text-align: center;
+  margin-top: 25%;
+}
+
+.left404 {
+  font-size: 30px;
+  font-weight: 550;
+}
+
+.middle404 {
+  font-size: 48px;
+  font-weight: 500;
+  color: #737373;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.faqsDiv {
+  margin-left: 15%;
+  width: 50%;
+  border: 2px solid #e2e0eb;
+  border-radius: 5px;
+  padding: 15px;
+  margin-top: 15px;
+  background-color: white;
+  font-family: Helvetica;
+  height: auto;
+}
+
+.faqsTopRow {
+  width: 100%;
+  min-height: 20px;
+  height: auto;
+  position: relative;
+  overflow: hidden;
+}
+
+.faqsLeftSide {
+  position: relative;
+  float: left;
+  width: 90%;
+}
+
+.faqsRightSide {
+  position: relative;
+  float: right;
+  color: hsla(0, 0%, 53%, 0.40);
+  width: 9%;
+  text-align: right;
+}
+
+.faqsText {
+  color: #737373;
+  display: none;
+}
+
+.messageModal {
+  height: 20px !important;
+  font-size: 16px;
+  font-weight: 500;
+  padding-top: 8px;
+  display: flex;
+  background-color: inherit !important;
+}
+
+.messageModalIcon {
+  padding-top: 7px;
+  height: 20px !important;
+  width: 30px;
+}
+
+.messageModalText {
+  height: 20px !important;
+  padding-top: 10px !important;
+  background-color: inherit !important;
+}
+
+.successModalContent {
+  background-color: #00cf92 !important;
+  color: white !important;
+  border-width: 0px !important;
+  border-radius: 3px !important;
+  box-shadow: 0px 1px 0px 0px rgb(255 255 255 / 0%) !important;
+  z-index: 4 !important;
+}
+
+.errorModalContent {
+  background-color: #fe3957 !important;
+  color: white !important;
+  border-width: 0px !important;
+  border-radius: 3px !important;
+  box-shadow: 0px 1px 0px 0px rgb(255 255 255 / 0%) !important;
+  z-index: 4 !important;
+}
+
+.whiteBackground {
+  background: white !important;
+  box-shadow: 0 3px 20px 0 rgb(0 0 0 / 30%);
+  z-index: 4 !important;
+}
+
+#pageMask {
+  background: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 3;
+}
+
+.paymentModalText {
+  font-size: 16px !important;
+  color: #333 !important;
+}
+
+.paymentModalTitle {
+  color: #3e85f7;
+  font-size: 16px !important;
+  margin-top: 35px;
+}
+
+.paymentModalPrice {
+  font-size: 30px;
+  margin-top: 10px;
+  font-weight: bold;
+  color: #333;
+}
+
+.paymentModalCancelButton {
+  font-weight: 500;
+  margin-left: 10px;
+  background-color: white;
+  color: #3e85f7;
+  border-radius: 8px;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border: 1px solid #3e85f7 !important;
+}
+
+.paymentModalYesButton {
+  font-weight: 500;
+  margin-left: 10px;
+  background-color: #3e85f7;
+  color: white;
+  border-radius: 8px;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border: 1px solid #888888 !important;
+}
+
+.marginLeft0 {
+  margin-left: 0px !important;
+}
+
+.sellStrategyDiv {
+  padding-left: 40px !important;
+  padding-right: 40px !important;
+}
+
+.backtestStatTitle {
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.appBackground {
+  background-color: #fbfbfb !important;
+}
+
+.pageNumber{
+  height: 60px !important;
+  margin-bottom: 40px !important;
+}
+
+.updatesPagePanel {
+  min-height: 300px;
+  min-width: 350px;
+  width: 40%;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  padding: 20px;
+  position: relative;
+  display: block;
+}
+
+.updatesPanelLeft {
+  position: relative;
+  float: left;
+  font-size: 40px;  
+  font-weight: 550;
+  color: black;
+  margin-top: 20px;
+  width: 45%;
+}
+
+.updatesPanelRight {
+  position: relative;
+  float: right;
+  font-size: 22px;  
+  font-weight: 500;
+  color: #737373;
+  margin-left: 8%;
+  margin-top: 20px;
+  width: 45%;
+  text-align: right;
+}
+
+.homePageIconRow {
+  width: 100%;
+  margin-top: 300px;
+}
+
+.homePageIconPanel {
+  width: 23%;
+  position: relative;
+  margin-right: 10%;
+  height: 200px;
+  display: inline-block;
+}
+
+.homePageIcon {
+  color: #3e85f7 !important;
+  font-size: 75px !important;
+  margin-left: 20%;
+  margin-bottom: 30px;
+}
+
+.homePageIconTitle {
+  font-size: 28px !important;
+  font-weight: 550 !important;
+}
+
+.homePageIconText {
+  font-size: 22px !important;
+  margin-top: 30px;
+}
+
+.width640 {
+  width: 640px !important;
+  height: 600px !important;
+  display: flex;
+}
+
+.conditionsTable td, th {
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
+}
+
+.inlineBlock {
+  display: inline-block !important;
+}
+
+.selectWrapper{
+  border-radius: 7px;
+  display: inline-block;
+  overflow: hidden;
+  border:  solid #cccccc;
+  background-color: white;
+}
+
+.selectBox{
+  width: 80px;
+  height: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border: 0px;
+  outline: none;
+  background-color: white;
+}
+
+.selectBoxFilter {
+  width: auto;
+  height: 25px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border: 0px;
+  outline: none;
+  background-color: white;
+}
+
+.width120 {
+  width: 120px !important;
+}
+
+.marginTop10 {
+  margin-top: 10px !important;
+}
+
+.marginBottom25 {
+  margin-bottom: 25px !important;
+}
+
+.maxWidth700 {
+  max-width: 700px !important;
+  position: relative !important;
+}
+
+.height55 {
+  height: 45px !important;
+}
+
+.height50 {
+  height: 50px !important;
+}
+
+.paddingTop20 {
+  padding-top: 20px !important;
+}
+
+.helvetica {
+  font-family: Helvetica !important;
+}
+
+.credits {
+  font-family: Helvetica;
+  font-weight: 400;
+  color: #5f6368;
+  font-size: 15px !important;
+  padding-top: 5px;
+}
+
+.lineHeight20 {
+  line-height: 20px !important;
+}
+
+.policy p {
+  font-family: Helvetica;
+}
+
+.footerTop {
+  min-width: 100% !important;
+  width: 100% !important;
+  display: flex !important;
+}
+
+.positionInfoRight {
+  position: relative;
+  width: 55%;
+  font-size: 16px;
+  margin-left: 10%;
+}
+
+.positionInfoWrapper {
+  box-shadow: 0 3px 20px 0  rgb(0 0 0 / 15%);
+  border: 0.1px solid #e0e0e0;
+  border-radius: 5px;
+  width: 40%;
+  margin-left: 17.5%;
+  background-color: white;
+  margin-bottom: 50px;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-bottom: 30px;
+}
+
+.positionInfoTitle {
+  text-align: center !important;
+  font-size: 26px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  color: #3e85f7;
+}
+
+.positionInfoSubtitle {
+  font-size: 18px;
+  font-weight: 550;
+}
+
+.positionInfoLeft {
+  position: relative;
+  float: left;
+  width: 30%;
+}
+
+.positionInfoRow {
+  position: relative;
+  width: 100%;
+  display: flex;
+  border-top: 1px solid #f2f0f0;
+  height: 36px;
+  padding-top: 9px;
+}
+
+/*Media*/
+
+/* CSS for screens that are 700 pixels or less will be put in this section */
+@media screen and (max-width:700px) {
+  .main-content {
+    flex-grow: 1;
+    z-index: 1;
+  }
+
+  .mediaHeaderWeb {
+    display: none !important;
+  }
+
+  .mediaHeaderMobile {
+    display: block !important;
+  }
+
+  .mediaUpdatesPage {
+    width: 70% !important;
+    min-width: 70% !important;
+    font-size: 16px !important;
+  }
+
+  .aboutPageTitle {
+    font-size: 26px;  
+    font-weight: 550;
+    color: black;
+    margin-top: 20px;
+  }
+
+  .policy {
+    width: 75% !important;
+  }
+
+  .mediaWidth75 {
+    width: 75% !important;
+  }
+
+  .aboutPageContent {
+    width: 100% ;
+    font-size: 16px;
+  }
+
+  .contactFormInput {
+    width: 90% !important;
+    border-radius: 5px;
+  }
+
+  .contactText {
+    border-radius: 5px;
+    border: 1px solid #cccccc;
+    padding: 8px;
+    width: 90% !important;
+  }
+
+  .aboutPageTitle {
+    font-size: 28px !important;
+    font-weight: 550 !important;
+    margin-left: 0% !important;
+  }
+
+  .faqsDiv {
+    margin-left: 0% !important;
+    width: 80%;
+    border: 2px solid #e2e0eb;
+    border-radius: 5px;
+    padding: 15px;
+    margin-top: 15px;
+    background-color: white;
+    font-family: Helvetica;
+  }
+
+  .updatesPagePanel {
+    min-width: 70% !important;
+    width: 70% !important;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    padding: 20px;
+    position: relative;
+    display: inline-block !important;
+  }
+
+  .updatesPanelLeft {
+    font-size: 32px !important;  
+    font-weight: 550;
+    color: black;
+    margin-top: 20px;
+    min-width: 100% !important;
+  }
+  
+  .updatesPanelRight {
+    position: relative;
+    font-size: 20px !important; 
+    margin-left: 0% !important; 
+    font-weight: 500;
+    color: #737373;
+    margin-top: 15px;
+    min-width: 100% !important;
+    text-align: left !important;
+    display: block !important;
+    float: left !important;
+    margin-bottom: 20px !important;
+  }
+
+  .width100 {
+    width: 100% !important;
+    display: block !important;
+  }
+
+  .homePageRow {
+    width: 100%;
+    display: block !important;
+    position: relative;
+  }
+
+  .moneyPageRow {
+    width: 80%;
+    display: block !important;
+    position: relative;
+  }
+
+  .homePageInfoWrapperLeft {
+    position: relative;
+    width: 100% !important;
+    margin-right: 0% !important;
+  }
+
+  .homePageInfoWrapperRight {
+    position: relative;
+    width: 100% !important;
+  }
+
+  .homePageInfoWrapperLeft2 {
+    position: relative;
+    width: 100% !important;
+    margin-right: 0% !important;
+    padding-top: 20px;
+  }
+  
+  .homePageInfoWrapperRight2 {
+    position: relative;
+    width: 100% !important;
+  }
+
+  .buttonRow {
+    width: 100% !important;
+    padding-top: 20px !important;
+  }
+
+  .homePageImage2 {
+    min-width: 95% !important;
+    width: 95% !important;
+    height: 70% !important;
+    margin-top: 80px;
+  }
+
+  .homePageIconRow {
+    width: 100%;
+    margin-top: 100px !important;
+    height: auto;
+  }
+
+  .homePageIconPanel {
+    width: 90% !important;
+    position: relative;
+    margin-right: 0% !important;
+    height: auto !important;
+    display: block !important;
+    margin-top: 60px !important;
+  }
+
+  .homePageIconTitle {
+    font-size: 28px !important;
+    font-weight: 550 !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    display: block !important;
+  }
+  
+  .homePageIconText {
+    font-size: 22px !important;
+    margin-top: 30px;
+    width: 100% !important;
+    min-width: 100% !important;
+    display: block! important;
+  }
+
+  .homePageIcon {
+    color: #3e85f7 !important;
+    font-size: 100px !important;
+    margin-left: 20%;
+    margin-bottom: 30px;
+    display: block !important;
+  }
+
+  .mediaWidth100 {
+    width: 100% !important;
+    min-width: 100% !important;
+    display: block !important;
+  }
+
+  .homePageSecond {
+    margin-top: 140px !important;
+  }
+
+  .homePageImage {
+    min-width: 95% !important;
+    width: 95% !important;
+    height: 100% !important;
+    margin-top: 80px;
+  }
+
+  .homePageImage3 {
+    min-width: 95% !important;
+    width: 95% !important;
+    height: 100% !important;
+    margin-top: 80px;
+  }
+
+  .homePageImage4 {
+    min-width: 95% !important;
+    width: 95% !important;
+    height: 100% !important;
+    margin-top: 80px;
+  }
+
+  .footerLeftTop {
+    width: 100%;
+    height: 150px !important;
+  }
+
+  .footerColumn {
+    position: relative;
+    width: 100%;
+    padding-top: 30px !important;
+    height: auto !important;
+    margin-left: 30% !important;
+    margin-top: 40px !important;
+  }
+
+  .alignCenter {
+    text-align: center !important;
+  }
+
+  .copyright {
+    color: #737373 !important;
+    text-align: center !important;
+    margin-left: 20% !important;
+    min-width: 100% !important;
+    width: 100% !important;
+    margin-top: 50px !important;
+  }
+
+  .footerImage {
+    margin-top: 70px;
+    height: auto;
+    width: auto;
+    max-height: 110px;
+    max-width: 150px;
+    margin-left: 30% !important;
+  }
+
+  footer {
+    color: black;
+    height: auto !important;
+    background-color:white;
+    margin-top: 55px;
+    box-shadow: 0 -14px 14px -14px rgb(0 77 165 / 12%);
+    display: flex;
+    position: relative;
+    overflow: visible;
+  }
+
+  .navbar {
+    position: relative;
+    overflow: visible;
+    background-color: white;
+    color: black;
+    margin-left: 0% !important;
+    height: 50px;
+    min-width: 100% !important;
+  }
+
+  .icon-AccountCircle {
+    float: right !important;
+  }
+
+  img.icon {
+    height: auto;
+    width: auto;
+    max-height: 80px;
+    max-width: 100px;
+    margin-left: 5% !important;
+  }
+
+  .headerRightSide {
+    position: relative;
+    float: right;
+    margin-right: 0% !important;
+  }
+
+  .dropdown-content a {
+    float: none;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+    font-size: 18px !important;
+    font-weight: 550 !important;
+  }
+
+  .tradingBotStoreProductInfo {
+    position: relative;
+    width: 80%;
+    float: left;
+    box-shadow: 0 3px 20px 0 rgb(0 77 165 / 7%);
+    border-radius: 10px;
+    background-color: white;
+    height: auto !important;
+    margin-bottom: 50px !important;
+  }
+
+  .tradingBotStoreProductTopRow {
+    height: auto !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+
+  .tradingBotStoreProductPrice {
+    margin-top: 25px;
+    margin-right: 0% !important;
+    font-size: 20px;
+    font-weight: 500;
+    position: relative;
+    float: none !important;
+    width: 100% !important;
+    text-align: center !important;
+    margin-bottom: 15px !important;
+  }
+  
+  .tradingBotStoreProductTitle {
+    margin-top: 25px;
+    margin-left: 0% !important;
+    font-size: 22px;  
+    font-weight: 500;
+    position: relative;
+    float: none !important;
+    width: 100% !important;
+    text-align: center !important;
+    word-wrap: normal;
+  }
+
+  .tradingBotStoreProductBottomRow {
+    height: auto !important;
+    background-color: white;
+    border-top: 1px solid hsla(0, 0%, 53%, 0.40);
+    margin-left: 1%;
+    width: 98%;
+    margin-right: 1%;
+    margin-bottom: 2px;
+  }
+  
+  .tradingBotStoreProductBottomRow .block {
+    display: inline-block;
+  }
+  
+  .tradingBotStoreProductButton {
+    margin-top: 25px;
+    margin-right: 0px !important;
+    font-size: 20px;
+    font-weight: 500;
+    position: relative;
+    float: none !important;
+    width: 100% !important;
+    text-align: center !important;
+    margin-bottom: 30px !important;
+  }
+  
+  .tradingBotStoreProductTopText {
+    font-size: 16px;
+    font-weight: 550;
+    color: #737373;
+  }
+  
+  .tradingBotStoreProductBottomText {
+    font-size: 18px;
+    font-weight: 500;
+  }
+  
+  .tradingBotStoreProductAccuracy {
+    margin-top: 20px;
+    position: relative;
+    float: none !important;
+    width: 100% !important;
+    text-align: center;
+  }
+  
+  .tradingBotStoreProductFrequency {
+    margin-top: 20px;
+    position: relative;
+    width: 100% !important;
+    text-align: center;
+  }
+
+  .yourPurchase {
+    position: relative;
+    width: 75% !important;
+    float: none !important;
+    background-color: white;
+    box-shadow: 0 3px 20px 0 rgb(0 77 165 / 7%);
+    border-radius: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-bottom: 10px;
+    height: 330px;
+    font-family: 'Roboto Condensed' !important;
+    padding-top: 15px !important;
+  }
+  
+  .payment {
+    position: relative;
+    width: 75% !important;
+    float: none !important;
+    margin-right: 0% !important;
+    background-color: white;
+    box-shadow: 0 3px 20px 0 rgb(0 77 165 / 7%);
+    border-radius: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-bottom: 10px;
+    height: 330px;
+    text-align: center;
+    font-family: 'Roboto Condensed' !important;
+    padding-top: 15px !important;
+    margin-bottom: 30px !important;
+    margin-top: 30px !important;
+  }
+
+  .mediaMarginBottom20 {
+    margin-bottom: 20px !important;
+  }
+
+  .dropdownFAQS {
+    float: left;
+    overflow: hidden;
+    width: 90% !important;
+  }
+
+  .backtestGraphParent {
+    width: 80%;
+    padding-bottom: 10px;
+    position: relative;
+    float: left;
+    margin-bottom: 80px;
+    background-color: white;
+    box-shadow: 0 3px 20px 0 rgb(0 77 165 / 7%);
+    border-radius: 10px;
+    margin-top: 50px;
+    height: auto !important;
+  }
+  
+  .backtestGraphTopBar {
+    margin-top: 50px;
+    width: 100% !important;
+    height: auto !important;
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+  }
+
+  .backtestGraphTopBarElement {
+    width: 100% !important;
+    height: auto !important;
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+    position: relative;
+    float: none !important;
+    text-align: center;
+    font-size: 20px;
+    margin-bottom: 25px !important;
+  }
+
+  .strategyInfoRightSide {
+    font-size: 18px;
+    font-weight: 500;
+    position: relative;
+    float: none !important;
+    width: 100% !important;
+    text-align: center !important;
+    margin-top: 20px !important;
+  }
+  
+  .strategyInfoLeftSide {
+    font-size: 18px;
+    font-weight: 500;
+    position: relative;
+    float: none !important;
+    width: 100% !important;
+    text-align: center !important;
+  }
+
+  .strategyInfoTop {
+    width: 100%;
+  }
+  
+  .strategyInfoBottom {
+    width: 100%;
+    margin-top: 0px !important;
+    text-align: center !important;
+  }
+
+  .mediaMarginTop30 {
+    margin-top: 30px !important;
+  }
+
+  .productButton {
+    position: relative;
+    float: none !important;
+    margin-top: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 14px;
+    padding-right: 14px;
+    font-size: 14px !important;
+  }
+
+  .backtestPlaceholder {
+    margin-top: 30px !important;
+    display: none;
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+    margin-bottom: 20px !important;
+  }
+
+  .mediaTableWrap { 
+    overflow-x: auto;
+  }
+
+  .mediaTableWrap table { 
+    white-space: nowrap;
+  }
+
+  .mediaDisplayFlex {
+    display: flex !important;
+  }
+
+  .appNavbarIcon {
+    margin-left: 15px !important;
+  }
+
+  .wordWrap {
+    word-wrap: break-word !important;
+  }
+
+  .profileTopBar {
+    width: 100% !important;
+    margin-left: 0% !important;
+    height: auto !important;
+  }
+  
+  .profileTopBarElement {
+    width: 49% !important;
+    margin-left: 0% !important;
+    margin-right: 0% !important;
+    text-align: center;
+    display: inline-block !important;
+    margin-top: 20px !important;
+  }
+
+  .homePageInfoWrapperMiddle {
+    position: relative;
+    width: 100% !important;
+    margin-left: 0% !important;
+    box-shadow: 0 3px 20px 0  rgb(0 0 0 / 15%);
+    border: 0.1px solid #e0e0e0;
+  }
+
+  .mediaShiftLeft {
+    margin-left: -50px !important;
+    padding-left: 0px !important;
+  }
+
+  .howToMakeMoneyWrapper {
+    width: 100% !important;
+    margin-left: 0% !important;
+  }
+
+  .appNavbarIconWithName {
+    margin-left: 15px;
+  }
+
+  .positionInfoWrapper {
+    box-shadow: 0 3px 20px 0  rgb(0 0 0 / 15%);
+    border: 0.1px solid #e0e0e0;
+    border-radius: 5px;
+    width: 80% !important;
+    margin-left: 0% !important;
+    background-color: white;
+    margin-bottom: 30px !important;
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+    padding-bottom: 20px !important;
+  }
+
+  .positionInfoRow {
+    position: relative;
+    width: 100%;
+    display: flex;
+    border-top: 1px solid #f2f0f0;
+    height: 56px !important;
+    padding-top: 9px;
+  }
+
+  .mediaPageMask {
+    z-index: 3 !important;
+  }
+
+  .chartWrapper {
+    margin-left: 15%;
+    position: relative;
+  }
+
+  .mediaChartTitle {
+    text-align: center;
+    color: #3e85f7;
+    font-size: 24px;
+    margin-bottom: 30px;
+    margin-top: 20px;
+  }
+
+  .mediaChartTitle2 {
+    color: #3e85f7;
+    font-size: 24px;
+    margin-bottom: 30px;
+    margin-top: 50px;
+    margin-left: 15%;
+  }
+
+  .strategyExplorerChart {
+    height: 380px !important;
+  }
+
+  .hiddenGraph {
+    display: block !important;
+  }
+
+  .homePageButton2 {
+    cursor: pointer;
+    background: none;
+    color: #3e85f7;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 10px;
+    border: 1px solid white;
+    outline-width: 0px;
+    font-size: 16px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 550;
+    letter-spacing: 0.4px;
+    margin-left: 0px !important;
+    margin-top: 15px !important;
+  }
+
+  .platformIsFreeRow {
+    margin-top: 120px !important;
+  }
+
+  .howToMakeMoneyRow {
+    margin-top: 120px !important;
+    margin-bottom: 100px !important;
+  }
+
+  .strategyBuilderParentMobile {
+    margin-left: 5% !important;
+    min-width: 90% !important;
+    width: 90% !important;
+  }
+
+  .buildStrategyButton {
+    position: relative !important;
+    bottom: 0px;
+    margin-bottom: 0px;
+    display: block !important;
+  } 
+
+  .slideshowDots {
+    position: relative;
+    color: rgba(161, 194, 250, 0.16);
+    padding-left: 30% !important;
+    font-size: 40px !important;
+  }
+
+  .getStartedButtonRow {
+    margin-left: 0% !important;
+    margin-top: 60px;
+  }
+
+  .tokenPrice {
+    margin-left: 0px !important;
+  }
+
+  .priceWrapper {
+    margin-left: 0px !important;
+  }
+
+  .buyTokensWrapper {
+    margin-bottom: 20px !important;
+  }
+
+  .tokenInfoButton {
+    margin-top: 15px;
+  }
+}

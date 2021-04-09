@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Position Info</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="/img/favicon.png">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto">
+    <script src="/js/update_overlay.js"></script>
+</head>
+
+<body class="appBackground">
+    {{#if loginStatus}}
+    {{>user_header}}
+    {{else}}
+    {{>guest_header}}
+    {{/if}}
+    <div class="main-content" id="main">
+        <div class="homePageRow">
+            <div class="positionInfoWrapper">
+                <div class="positionInfoTitle">Position Info</div>
+                <div class="positionInfoRow">
+                    <div class="positionInfoLeft">
+                        <div class="positionInfoSubtitle">Position Name</div>
+                    </div>
+                    <div class="positionInfoRight">
+                        <a>{{positionName}}</a>
+                    </div>
+                </div>
+                <div class="positionInfoRow">
+                    <div class="positionInfoLeft">
+                        <div class="positionInfoSubtitle">Strategy Name</div>
+                    </div>
+                    <div class="positionInfoRight">
+                        <a id="strategyName">{{strategyName}}</a>
+                    </div>
+                </div>
+                <div class="positionInfoRow">
+                    <div class="positionInfoLeft">
+                        <div class="positionInfoSubtitle">Symbol</div>
+                    </div>
+                    <div class="positionInfoRight">
+                        <a id="symbol">{{symbol}}</a>
+                    </div>
+                </div>
+                <div class="positionInfoRow">
+                    <div class="positionInfoLeft">
+                        <div class="positionInfoSubtitle">Owned By</div>
+                    </div>
+                    <div class="positionInfoRight">
+                        <a id="owner">{{owner}}</a>
+                    </div>
+                </div>
+                <div class="positionInfoRow">
+                    <div class="positionInfoLeft">
+                        <div class="positionInfoSubtitle">Position Class</div>
+                    </div>
+                    <div class="positionInfoRight">
+                        <a>{{positionClass}}</a>
+                    </div>
+                </div>
+                <div class="positionInfoRow">
+                    <div class="positionInfoLeft">
+                        <div class="positionInfoSubtitle">Size</div>
+                    </div>
+                    <div class="positionInfoRight">
+                        <a>{{numberOfShares}} tokens</a>
+                    </div>
+                </div>
+                <div class="positionInfoRow">
+                    <div class="positionInfoLeft">
+                        <div class="positionInfoSubtitle">Purchased For</div>
+                    </div>
+                    <div class="positionInfoRight">
+                        <a>{{entryPrice}} QOIN / token</a>
+                    </div>
+                </div>
+                <div class="positionInfoRow">
+                    <div class="positionInfoLeft">
+                        <div class="positionInfoSubtitle">Market Value</div>
+                    </div>
+                    <div class="positionInfoRight">
+                        <a>{{currentMarketValue}} QOIN / token</a>
+                    </div>
+                </div>
+                <div class="positionInfoRow">
+                    <div class="positionInfoLeft">
+                        <div class="positionInfoSubtitle">ROI</div>
+                    </div>
+                    <div class="positionInfoRight">
+                        <a id="roi">{{roi}}%</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tableWrapper maxWidth" id="transactionHistoryDiv">
+            <div class="profileTableTitle helvetica">Transaction History</div>
+            <div class="mediaTableWrap">
+                <table id="transactionHistoryTable" class="transactionsTable"></table>
+            </div>
+        </div>
+        <div id="panels"></div>
+    </div>
+    <input type="hidden" id="status" value="{{loginStatus}}">
+    <input type="hidden" id="strategyStatus" value="{{status}}">
+    <input type="hidden" id="strategyID" value="{{strategyID}}">
+    <input type="hidden" name="sotong" id="sotong" value="{{transactionHistory}}">
+    <input type="hidden" id="userAddress" value="{{ownerAddress}}">
+    
+    <script src="/js/position_info_app.js"></script>
+</body>
+
+</html>

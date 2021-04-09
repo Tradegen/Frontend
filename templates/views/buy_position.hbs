@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Buy Position</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="/img/favicon.png">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto">
+    <script
+        src="https://code.jquery.com/jquery-3.1.1.js"
+        crossorigin="anonymous">
+    </script>
+    <script
+        src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+        integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
+        crossorigin="anonymous">
+    </script>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="/js/update_overlay.js"></script>
+</head>
+
+<body class="appBackground">
+    {{>user_header}}
+    <div class="main-content">
+        <div class="pageTitle">Buy a Position</div>
+
+        <div class="mediaWidth100">
+            <div class="yourPurchase">
+                <p class="buyPageSubtitle">
+                    Your Purchase
+                </p>
+                <p><a class="extraWeight">Strategy Name: </a> <a id="strategy">{{strategyName}}</a></p>
+                <div><a class="extraWeight">Symbol: </a> <a id="symbol">{{symbol}}</a></div><br>
+                <div><a class="extraWeight">Owned by: </a> <a id="owner">{{owner}}</a></div><br>
+                <div><a class="extraWeight">Description: </a> <a id="description">{{description}}</a></div><br>
+                <div><a class="extraWeight">Market price: </a> <a id="marketPrice">{{currentMarketValue}} QOIN / token</a></div><br>
+                <div><a class="extraWeight">Advertised price: </a> <a id="advertisedPrice">{{advertisedPrice}} QOIN / token</a></div>
+                
+                <p></p>
+            </div>
+        </div>
+
+        <div class="mediaWidth100">
+            <div class="payment" id="payment">
+                <p class="buyPageSubtitle">
+                    Payment
+                </p><br>
+                <p class="fontSize20"><a class="extraWeight">Total: </a><a id="totalPrice">{{price}} QOIN</a></p>
+                <div class="extraMarginBottom">
+                    <div id="shares" class="fontSize20"><a class="extraWeight">Tokens: </a> {{numberOfShares}}</div>
+                </div>
+                <button type="button" id="payWithBalance" class="payWithBalanceButton">PURCHASE</button>
+                <p></p>
+            </div>
+        </div>
+        <input type="hidden" id="sotong" value="{{positionID}}"/>
+        <input type="hidden" id="sianjitpua" value="{{fee}}"/>
+        <input type="hidden" id="tualiapnee" value="{{price}}"/>
+    </div>
+
+    <div id="payWithAccountBalanceModal" style="display:none">
+        <div class="paymentModalTitle">Buy Now</div>
+        <div id="cost" class="paymentModalPrice">{{price}} QOIN</div>
+        <p class="paymentModalText">Are you sure you want to submit your payment?</p>
+        <button type="button" id="confirmPayment" class="paymentModalYesButton">YES</button>
+        <button type="button" id="cancelPayment" class="paymentModalCancelButton">CANCEL</button>
+    </div>
+
+    <div id="successModal" style="display:none">
+        <div class="messageModal" id="successTitle">
+            <i class="material-icons marginRight15px messageModalIcon" id="successButton">check_circle_outline</i>
+            <div class="messageModalText">Payment complete</div>
+        </div>
+    </div>
+
+    <div id="errorModal" style="display:none">
+        <div class="messageModal" id="errorTitle">
+            <i class="material-icons marginRight15px messageModalIcon" id="errorButton">error_outline</i>
+            <div class="messageModalText" id="errorText">Error</div>
+        </div>
+    </div>
+
+    <input type="hidden" id="atas" value="{{token}}">
+    <input type="hidden" id="strategyID" value="{{strategyID}}">
+     <input type="hidden" id="ownerAddress" value="{{ownerAddress}}">
+
+    <script src="/js/buy_position_app.js"></script>
+</body>
+
+<div id="pageMask" class="initiallyHidden"></div>
+
+</html>

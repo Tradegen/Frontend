@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Strategy Info</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="/img/favicon.png">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto">
+    <script src="/js/update_overlay.js"></script>
+</head>
+
+<body class="appBackground">
+    {{#if loginStatus}}
+    {{>user_header}}
+    {{else}}
+    {{>guest_header}}
+    {{/if}}
+    <div class="main-content" id="main">
+        <div class="mediaHeaderWeb maxWidth80" id="strategyInfoDesktop">
+            <div class="pageTitle">{{strategyName}}</div>
+            <div class="maxWidth80">
+                <div class="strategyInfoTop">
+                    <div class="strategyInfoLeftSide">
+                        <div class="marginTop50"><a class="extraWeight">Developed on: </a> {{developedOn}}</div>
+                        <div style="margin-top: 20px"><a class="extraWeight">By: </a> {{developedBy}}</div>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="productButton marginRight0 marginTop50 initiallyHidden" id="tokenInfoButtonWeb">View token info</button>
+        </div>
+        <div class="maxWidth80 initiallyHidden" id="strategyInfoMobile">
+            <div class="pageTitle alignCenter">{{strategyName}}</div>
+            <div class="strategyInfoTop">
+                <div class="strategyInfoLeftSide"><a class="extraWeight">Developed on: </a> {{developedOn}}</div>
+                <div class="strategyInfoRightSide" id="marketPrice"><a class="extraWeight">By: </a> <a id="developer">{{developedBy}}</a></div><br>
+            </div>
+            <div class="strategyInfoBottom">
+                <button type="button" class="productButton marginRight0 mediaMarginTop30" id="tokenInfoButtonMobile">View token info</button>
+            </div>
+        </div>
+
+        <div class="tradingBotStoreProductInfo marginTop50 maxWidth80">
+            <div class="tradingBotStoreProductTopRow mediaMarginBottom20">
+                <div class="strategyInfoDescription">{{description}}</div>
+            </div>
+            <div class="tradingBotStoreProductBottomRow">
+                <div class="tradingBotStoreProductFrequency block">
+                    <a class="tradingBotStoreProductTopText">Trade Frequency</a><br>
+                    <a class="tradingBotStoreProductBottomText">{{tradeFrequency}}</a>
+                </div>
+                <div class="tradingBotStoreProductFrequency block">
+                    <a class="tradingBotStoreProductTopText">Sharpe Ratio</a><br>
+                    <a class="tradingBotStoreProductBottomText">{{sharpeRatio}}</a>
+                </div>
+                <div class="tradingBotStoreProductFrequency block">
+                    <a class="tradingBotStoreProductTopText">Assets Traded</a><br>
+                    <a class="tradingBotStoreProductBottomText">{{assetsTraded}}</a>
+                </div>
+                <div class="tradingBotStoreProductFrequency block mediaMarginBottom20">
+                    <a class="tradingBotStoreProductTopText">Alpha</a><br>
+                    <a class="tradingBotStoreProductBottomText">{{alpha}}</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="backtestGraphParent extraMarginBottom" id="backtestParent">
+            <div class="backtestGraphTopBar">
+                <div class="backtestGraphTopBarElement">
+                    <div class="backtestStatTitle">Total Return</div>
+                    <a id="backtestResult_TotalReturn">{{totalReturn}}</a>
+                </div>
+                <div class="backtestGraphTopBarElement">
+                    <div class="backtestStatTitle">Accuracy</div>
+                    <a id="backtestResult_Accuracy">{{accuracy}}</a>
+                </div>
+                <div class="backtestGraphTopBarElement">
+                    <div class="backtestStatTitle">Average Win</div>
+                    <a id="backtestResult_AverageWin">{{averageWin}}</a>
+                </div>
+                <div class="backtestGraphTopBarElement">
+                    <div class="backtestStatTitle">Average Loss</div>
+                    <a id="backtestResult_AverageLoss">{{averageLoss}}</a>
+                </div>
+                <div class="backtestGraphTopBarElement">
+                    <div class="backtestStatTitle">Trades</div>
+                    <a id="backtestResult_Trades">{{numberOfTrades}}</a>
+                </div>
+                <div class="backtestGraphTopBarElement backtestGraphLastElement">
+                    <div class="backtestStatTitle">Max Drawdown</div>
+                    <a id="backtestResult_MaxDrawdown">-{{maxDrawdown}}</a>
+                </div>
+            </div>
+            <div class="temp" id="temp">
+                <div id="chart" class="strategyExplorerChart"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="hiddenGraph">
+        <div class="mediaChartTitle">Backtest Results</div>
+        <div class="chartWrapper">
+            <div id="chart4" class="strategyExplorerChart initiallyHidden"></div>
+        </div>
+    </div>
+
+    <input type="hidden" id="status" value="{{loginStatus}}">
+    <input type="hidden" id="strategyStatus" value="{{status}}">
+    <input type="hidden" id="userAddress" value="{{address}}">
+    <input type="hidden" name="sotong" id="sotong" value="{{dataString}}">
+    <input type="hidden" name="sianjitpua" id="sianjitpua" value="{{strategyID}}">
+    
+    <script src="/js/strategy_info_app.js"></script>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(function(){ 
+          initialize(google);
+        });
+    </script>
+</body>
+
+</html>

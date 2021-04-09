@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Notifications</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="/img/favicon.png">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto">
+    <script src="/js/update_overlay.js"></script>
+</head>
+
+<body class="appBackground">
+    {{>user_header}}
+    <div id="loadingPage" class="loadingPage">Loading notifications...</div>
+    <div class="main-content initiallyHidden" id="mainContent">
+        <div class="maxWidth largeMarginBottom mediaHeaderWeb" id="web">
+            <div class="pageTitle footerFloatLeft">Notifications</div>
+            <div class="footerFloatRight">
+                <div class="filterLeft2">Filter by:</div>
+                <div class="filterRight2">
+                    <div class="selectWrapper">
+                        <select name="notificationsFilterBy" class="selectBoxFilter" id="notificationType">
+                            <option value="all">All</option>
+                            <option value="deposit">Deposit</option>
+                            <option value="withdrawal">Withdrawal</option>
+                            <option value="buildStrategy">Build Strategy</option>
+                            <option value="updateStrategy">Update Strategy</option>
+                            <option value="deleteStrategy">Delete Strategy</option>
+                            <option value="submittedStrategy">Submitted Strategy</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mediaHeaderMobile">
+            <div class="pageTitle">Notifications</div>
+            <div>Filter by:</div>
+            <div class="selectWrapper">
+                <select name="notificationsFilterBy" class="selectBoxFilter" id="notificationType">
+                    <option value="all">All</option>
+                    <option value="deposit">Deposit</option>
+                    <option value="withdrawal">Withdrawal</option>
+                    <option value="buildStrategy">Build Strategy</option>
+                    <option value="updateStrategy">Update Strategy</option>
+                    <option value="deleteStrategy">Delete Strategy</option>
+                    <option value="submittedStrategy">Submitted Strategy</option>
+                </select>
+            </div>
+        </div>
+        <div class="tableWrapper maxWidth paddingTop20" id="table">
+            <div class="mediaTableWrap">
+                <table id="notificationsTable" class="transactionsTable"></table>
+            </div>
+        </div>
+        <div id="panels"></div>
+        <div class="maxWidth textAlignRight pageNumber mediaDisplayFlex">
+            <i class="material-icons icon-AccountCircle" id="decreasePage">chevron_left</i>
+            <a id="pageNumber"></a>
+            <i class="material-icons icon-AccountCircle pageRight" id="increasePage">chevron_right</i>
+        </div>
+    </div>
+    <div class="main-content initiallyHidden" id="boh"></div>
+
+    <script src="/js/notifications_app.js"></script>
+</body>
+
+</html>

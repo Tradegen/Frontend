@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Profile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="/img/favicon.png">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto">
+    <script
+        src="https://code.jquery.com/jquery-3.1.1.js"
+        crossorigin="anonymous">
+    </script>
+    <script
+        src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+        integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
+        crossorigin="anonymous">
+    </script>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="/js/update_overlay.js"></script>
+</head>
+
+<body class="appBackground">
+    {{>user_header}}
+    <div id="loadingPage" class="loadingPage">Loading profile data...</div>
+    <div class="main-content initiallyHidden" id="mainContent">
+        <div class="pageTitle extraMarginBottom" id="username"></div>
+
+        <div class="profileTopBar extraMarginBottom">
+            <div class="profileTopBarElement">
+                <i class="material-icons icon-ProfilePositions">layers</i>
+                <div id="numberOfPositionsOwned" class="profileText extraWeight font18 helvetica"></div>
+                <div class="profileText helvetica">Positions</div>
+            </div>
+            <div class="profileTopBarElement">
+                <i class="material-icons icon-ProfileShares">apps</i>
+                <div id="totalNumberOfSharesOwned" class="profileText extraWeight font18 helvetica"></div>
+                <div class="profileText helvetica">Tokens</div>
+            </div>
+            <div class="profileTopBarElement">
+                <i class="material-icons icon-ProfileNetWorth">account_balance</i>
+                <div id="netWorth" class="profileText extraWeight font18 helvetica"></div>
+                <div class="profileText helvetica">Net Worth</div>
+            </div>
+            <div class="profileTopBarElement">
+                <i class="material-icons icon-ProfileNetReturn">timeline</i>
+                <div id="netReturn" class="profileText extraWeight font18 helvetica"></div>
+                <div class="profileText helvetica">Net Return</div>
+            </div>
+        </div>
+        
+        <div class="tableWrapper maxWidth" id="topPositionsDiv">
+            <div class="profileTableTitle helvetica">Top Positions</div>
+            <div class="mediaTableWrap">
+                <table id="topPositionsTable" class="transactionsTable"></table>
+            </div>
+        </div>
+        <div class="tableWrapper maxWidth" id="myStrategiesDiv">
+            <div class="profileTableTitle helvetica">My Strategies</div>
+            <div class="mediaTableWrap">
+                <table id="myStrategiesTable" class="transactionsTable"></table>
+            </div>
+        </div>
+        <div class="tableWrapper maxWidth" id="liveStrategiesDiv">
+            <div class="profileTableTitle helvetica">Live Strategies</div>
+            <div class="mediaTableWrap">
+                <table id="liveStrategiesTable" class="transactionsTable"></table>
+            </div>
+        </div>
+        <div class="tableWrapper maxWidth" id="positionsForSaleDiv">
+            <div class="profileTableTitle helvetica">Positions For Sale</div>
+            <div class="mediaTableWrap">
+                <table id="positionsForSaleTable" class="transactionsTable"></table>
+            </div>
+        </div>
+    </div>
+
+    <div id="cancelListingModal" style="display:none">
+        <div class="modalTitle">Cancel Listing</div>
+        <p id="cancelListingText" class="pageSubtitle"></p>
+        <p class="paymentModalText extraMarginBottom">Are you sure you want to cancel this listing?</p>
+        <button type="button" id="confirmCancellationButton" class="paymentModalYesButton">YES</button>
+        <button type="button" id="cancelCancellationButton" class="paymentModalCancelButton">NO</button>
+    </div>
+
+    <div id="editListingModal" style="display:none">
+        <div class="modalTitle">Edit Listing</div>
+        <p>
+            <a class="paymentModalText">Sale price: </a>
+            <input type="number" min="0" max="9999" value="" class="settingsInput extraMarginBottom" name="price" id="price"/>
+            <a class="paymentModalText">QOIN per token</a>
+        </p>
+        <button type="button" id="confirmEditButton" class="paymentModalYesButton">SAVE</button>
+        <button type="button" id="cancelEditButton" class="paymentModalCancelButton">CANCEL</button>
+    </div>
+
+    <div id="strategyDetailsModal" style="display:none" class="overflowScroll paddingLeft20">
+        <div class="buffer"></div>
+        <div class="modalCloseDiv">
+            <a id="closeStrategyDetailsModal" class="modalCloseButton"><i class="material-icons">close</i></a>
+        </div>
+        <div class="modalTitle" id="strategyDetailsTitle">Strategy Details</div>
+        <div class="paymentModalText">
+            <div><a class="extraWeight">Name: </a><a id="strategyDataName"></a></div><br>
+            <div><a class="extraWeight">Description: </a><a id="strategyDataDescription"></a></div><br>
+            <div><a class="extraWeight">Watchlist: </a><a id="strategyDataWatchlist"></a></div><br>
+            <div><a class="extraWeight">Symbols: </a><a  id="strategyDataSymbols"></a></div><br>
+            <div><a class="extraWeight">Max Allocation: </a><a id="strategyDataMaxAllocation"></a></div><br>
+            <div><a class="extraWeight">Max Concurrent Trades: </a><a id="strategyDataMaxConcurrentTrades"></a></div><br>
+            <div><a class="extraWeight">Position Weight: </a><a id="strategyDataPositionWeight"></a></div><br>
+            <div><a class="extraWeight">Timeframe: </a><a id="strategyDataTimeframe"></a></div><br>
+            <div><a class="extraWeight">Start Time: </a><a id="strategyDataStart"></a></div><br>
+            <div><a class="extraWeight">End Time: </a><a id="strategyDataEnd"></a></div><br>
+            <div><a class="extraWeight">Direction: </a><a id="strategyDataDirection"></a></div><br>
+            <div id="strategyDataEntryCondition"><a class="extraWeight">Entry Conditions:</a></div>
+            <ul id="entryConditionList"></ul>
+            <div id="strategyDataExitCondition"><a class="extraWeight">Exit Conditions:</a></div>
+            <ul id="exitConditionList"></ul>
+        </div>
+    </div>
+
+    <div id="sellStrategyModal" style="display:none" class="sellStrategyDiv">
+        <div class="modalTitle">Sell Strategy</div>
+        <p>
+            <a class="paymentModalText">Sale price: </a>
+            <input type="number" min="0" max="99.99" value="" class="settingsInput extraMarginBottom" name="strategyPrice" id="strategyPrice"/>
+        </p>
+        <p class="paymentModalText">
+            Submitting your strategy will get it compared against other submissions for the day. If your strategy has the top performance for the day, we'll list it on our store and create tokens for users to trade.
+            You'll keep 90% of profits from sales and receive a 2% royalty whenever a user buys new tokens in your strategy. Please note that we charge a submission fee of 1 QOIN for each strategy.
+        </p><br>
+        <button type="button" id="confirmSellButton" class="paymentModalYesButton">SUBMIT</button>
+        <button type="button" id="cancelSellButton" class="paymentModalCancelButton">CANCEL</button>
+    </div>
+
+    <div id="deleteStrategyModal" style="display:none">
+        <div class="modalTitle">Delete Strategy</div>
+        <p class="paymentModalText extraMarginBottom">
+            Are you sure you want to delete this strategy?
+        </p>
+        <button type="button" id="confirmDeleteButton" class="paymentModalYesButton">DELETE</button>
+        <button type="button" id="cancelDeleteButton" class="paymentModalCancelButton">CANCEL</button>
+    </div>
+
+    <div id="runBacktestModal" style="display:none">
+        <div class="modalTitle">Run Backtest</div>
+        <p id="runBacktestText" class="pageSubtitle"></p>
+        <p class="paymentModalText extraMarginBottom">Would you like to run a backtest on this strategy?</p>
+        <button type="button" id="confirmRunBacktestButton" class="paymentModalYesButton">YES</button>
+        <button type="button" id="cancelRunBacktestButton" class="paymentModalCancelButton">CANCEL</button>
+    </div>
+
+    <div id="editStrategyModal" style="display:none" class="sellStrategyDiv">
+        <div class="modalTitle">Edit Strategy</div>
+        <div class="paymentModalText">
+            <p> 
+                <a class="extraWeight">Name: </a>
+                <input type="text" class="strategyExplorerText" name="strategyNameEdit" id="strategyNameEdit" maxlength="30" value="{{strategyNameEdit}}"/>
+            </p>
+            <p>
+                <a class="extraWeight">Description: </a><br>
+                <textarea id="descriptionEdit" class="strategyExplorerText" name="descriptionEdit" rows="6" cols="30" maxlength="300" placeholder="Description of your strategy">{{descriptionEdit}}</textarea>
+            </p>
+            <p>
+                <a class="extraWeight">Watchlist: </a>
+                <select name="watchlistEdit" id="watchlistEdit">
+                    <option value="morningBreakouts">Morning Breakouts</option>
+                    <option value="indexETFs">Index ETFs</option>
+                    <option value="FAANG">FAANG stocks</option>
+                    <option value="software">Software stocks</option>
+                    <option value="travel">Travel stocks</option>
+                    <option value="custom">Custom watchlist</option>
+                </select>
+            </p>
+            <input type="text" class="strategyExplorerText" name="symbolsEdit" id="symbolsEdit" maxlength="100" placeholder="List of symbols separated by commas" value="{{customStockListEdit}}"/>
+            <p>
+                <a class="extraWeight">Time frame (mins): </a>
+                <select name="timeframeEdit" id="timeframeEdit">
+                    <option value="1">1</option>
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                </select>
+            </p>
+            <p>
+                <a class="extraWeight">Max allocation: </a>
+                <input type="number" min="1" max="100" class="strategyExplorerText" name="maxAllocationEdit" id="maxAllocationEdit" value="{{maxAllocationEdit}}" placeholder="Percentage of your portfolio"/>
+            </p>
+            <p>
+                <a class="extraWeight">Position weight: </a>
+                <select name="positionWeightEdit" id="positionWeightEdit">
+                    <option value="equalWeights">Equal weights</option>
+                    <option value="weightedByStrength">Weighted by strength</option>
+                </select>
+            </p>
+            <p>
+                <a class="extraWeight">Max concurrent trades: </a>
+                <input type="number" min="1" max="9" class="strategyExplorerText" name="maxConcurrentTradesEdit" id="maxConcurrentTradesEdit" value="{{maxConcurrentTradesEdit}}"/>
+            </p>
+            <p> 
+                <a class="extraWeight">Start time: </a>
+                <input type="number" min="0" max="389" class="strategyExplorerText" name="startTimeEdit" id="startTimeEdit" value="{{startEdit}}" placeholder="Minutes after market opens"/>
+            </p>
+            <p>
+                <a class="extraWeight">End time: </a>
+                <input type="number" min="0" max="389" class="strategyExplorerText" name="endTimeEdit" id="endTimeEdit" value="{{endEdit}}" placeholder="Minutes before market closes"/>
+            </p>
+            <p>
+                <a class="extraWeight">Direction: </a>
+                <select name="directionEdit" id="directionEdit">
+                    <option value="long">long</option>
+                    <option value="short">short</option>
+                </select>
+            </p>
+        </div>
+        <div class="extraMarginBottom"></div>
+        <button type="button" id="confirmEditStrategyButton" class="paymentModalYesButton">SAVE</button>
+        <button type="button" id="cancelEditStrategyButton" class="paymentModalCancelButton extraMarginBottom">CANCEL</button>
+    </div>
+
+    <div id="successModalCancel" class="height55" style="display:none">
+        <div class="messageModal" id="successTitleCancel">
+            <i class="material-icons marginRight15px messageModalIcon" id="successButtonCancel">check_circle_outline</i>
+            <div class="messageModalText">Cancelled listing</div>
+        </div>
+    </div>
+
+    <div id="errorModalCancel" class="height55" style="display:none">
+        <div class="messageModal" id="errorTitleCancel">
+            <i class="material-icons marginRight15px messageModalIcon" id="errorButtonCancel">error_outline</i>
+            <div class="messageModalText" id="errorTextCancel">Error</div>
+        </div>
+    </div>
+
+    <div id="successModalEdit" class="height55" style="display:none">
+        <div class="messageModal" id="successTitleEdit">
+            <i class="material-icons marginRight15px messageModalIcon" id="successButtonEdit">check_circle_outline</i>
+            <div class="messageModalText">Updated listing</div>
+        </div>
+    </div>
+
+    <div id="errorModalEdit" class="height55" style="display:none">
+        <div class="messageModal" id="errorTitleEdit">
+            <i class="material-icons marginRight15px messageModalIcon" id="errorButtonEdit">error_outline</i>
+            <div class="messageModalText" id="errorTextEdit">Error</div>
+        </div>
+    </div>
+
+    <div id="successModalSell" class="height55" style="display:none">
+        <div class="messageModal" id="successTitleSell">
+            <i class="material-icons marginRight15px messageModalIcon" id="successButtonSell">check_circle_outline</i>
+            <div class="messageModalText">Submitted strategy</div>
+        </div>
+    </div>
+
+    <div id="errorModalSell" class="height55" style="display:none">
+        <div class="messageModal" id="errorTitleSell">
+            <i class="material-icons marginRight15px messageModalIcon" id="errorButtonSell">error_outline</i>
+            <div class="messageModalText" id="errorTextSell">Error</div>
+        </div>
+    </div>
+
+    <div id="successModalDelete" class="height55" style="display:none">
+        <div class="messageModal" id="successTitleDelete">
+            <i class="material-icons marginRight15px messageModalIcon" id="successButtonDelete">check_circle_outline</i>
+            <div class="messageModalText">Deleted strategy</div>
+        </div>
+    </div>
+
+    <div id="errorModalDelete" class="height55" style="display:none">
+        <div class="messageModal" id="errorTitleDelete">
+            <i class="material-icons marginRight15px messageModalIcon" id="errorButtonDelete">error_outline</i>
+            <div class="messageModalText" id="errorTextDelete">Error</div>
+        </div>
+    </div>
+
+    <div id="successModalRunBacktest" class="height55" style="display:none">
+        <div class="messageModal" id="successTitleRunBacktest">
+            <i class="material-icons marginRight15px messageModalIcon" id="successButtonRunBacktest">check_circle_outline</i>
+            <div class="messageModalText">Running backtest</div>
+        </div>
+    </div>
+
+    <div id="errorModalRunBacktest" class="height55" style="display:none">
+        <div class="messageModal" id="errorTitleRunBacktest">
+            <i class="material-icons marginRight15px messageModalIcon" id="errorButtonRunBacktest">error_outline</i>
+            <div class="messageModalText" id="errorTextRunBacktest">Error</div>
+        </div>
+    </div>
+
+    <div id="successModalEditStrategy" class="height55"  style="display:none">
+        <div class="messageModal" id="successTitleEditStrategy">
+            <i class="material-icons marginRight15px messageModalIcon" id="successButtonEditStrategy">check_circle_outline</i>
+            <div class="messageModalText">Updated strategy</div>
+        </div>
+    </div>
+
+    <div id="errorModalEditStrategy" class="height55"  style="display:none">
+        <div class="messageModal" id="errorTitleEditStrategy">
+            <i class="material-icons marginRight15px messageModalIcon" id="errorButtonEditStrategy">error_outline</i>
+            <div class="messageModalText" id="errorTextEditStrategy">Error</div>
+        </div>
+    </div>
+    <input type="hidden" id="sotong" value="{{token}}">
+    <input type="hidden" id="sotong2" value="{{address}}">
+    <script src="/js/profile_app.js"></script>
+</body>
+
+<div id="pageMask" class="initiallyHidden"></div>
+
+</html>

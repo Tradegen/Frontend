@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Contact Us</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="/img/favicon.png">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto">
+    <script
+        src="https://code.jquery.com/jquery-3.1.1.js"
+        crossorigin="anonymous">
+    </script>
+    <script
+        src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+        integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
+        crossorigin="anonymous">
+    </script>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <script src="/js/update_overlay.js"></script>
+    {{>guest_header}}
+    <div class="main-content mediaWidth75">
+
+        <div class="pageTitle">Contact Customer Service</div>
+
+        <form class="contact helvetica" action="/contact" method="post" role="form">
+            {{#if message}}
+                <div><p id="errorMessage">{{message}}</p></div>
+            {{/if}}
+            <input type="hidden" name="csrf" value="{{token}}">
+            <label for="firstName" class="formFieldTitle">First Name:</label>
+            <input type="text" maxlength="25" class="contactFormInput" id="firstName" name="firstName" value="{{previousFirstName}}"><br><br>
+            <label for="lastName" class="formFieldTitle">Last Name:</label>
+            <input type="text" maxlength="25" class="contactFormInput" id="lastName" name="lastName" value="{{previousLastName}}"><br><br>
+            <label for="email" class="formFieldTitle">Your Email Address:</label>
+            <input type="text" maxlength="35" class="contactFormInput" id="email" name="email" value="{{previousEmail}}"><br><br>
+            <label for="subject" class="formFieldTitle">Subject:</label>
+            <input type="text" maxlength="40" class="contactFormInput" id="subject" name="subject" value="{{previousSubject}}"><br><br>
+            <label for="message" class="formFieldTitle">Message:</label>
+            <textarea id="message" class="contactText" name="message" rows="10" cols="50" maxlength="500" placeholder="How can we help you?">{{previousMessage}}</textarea><br><br>
+            <button type="submit" class="paymentModalYesButton">SEND</button>
+        </form>
+    </div>
+
+    <div id="successModal" class="height55" style="display:none">
+        <div class="messageModal" id="successTitle">
+            <i class="material-icons marginRight15px messageModalIcon" id="successButton">check_circle_outline</i>
+            <div class="messageModalText">Message sent</div>
+        </div>
+    </div>
+
+    <div id="errorModal" class="height55" style="display:none">
+        <div class="messageModal" id="errorTitle">
+            <i class="material-icons marginRight15px messageModalIcon" id="errorButton">error_outline</i>
+            <div class="messageModalText" id="errorText">An error occurred</div>
+        </div>
+    </div>
+
+    <input type="hidden" id="status" value="{{hasErrors}}">
+
+    {{>footer}}
+    <a class="footerBuffer"></a>
+    <script src="/js/contact_app.js"></script>
+</body>
+
+</html>

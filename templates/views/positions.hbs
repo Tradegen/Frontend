@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Positions</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="/img/favicon.png">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto">
+    <script
+        src="https://code.jquery.com/jquery-3.1.1.js"
+        crossorigin="anonymous">
+    </script>
+    <script
+        src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+        integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
+        crossorigin="anonymous">
+    </script>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="/js/update_overlay.js"></script>
+</head>
+
+<body class="appBackground">
+    {{>user_header}}
+    <div id="loadingPage" class="loadingPage">Loading positions...</div>
+    <div class="main-content initiallyHidden" id="mainContent">
+        <div class="maxWidth80 largeMarginBottom mediaHeaderWeb" id="web">
+            <div class="pageTitle footerFloatLeft">Positions</div>
+            <div class="footerFloatRight">
+                <div class="filterLeft2">Filter by:</div>
+                <div class="filterRight2">
+                    <div class="selectWrapper">
+                        <select name="positionFilterBy" class="selectBoxFilter" id="positionFilterBy">
+                            <option value="all">All</option>
+                            <option value="forSale">For Sale</option>
+                            <option value="notForSale">Not For Sale</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mediaHeaderMobile">
+            <div class="pageTitle">Positions</div>
+            <div>Filter by:</div>
+            <div class="selectWrapper">
+                <select name="positionFilterBy" class="selectBoxFilter" id="positionFilterBy">
+                    <option value="all">All</option>
+                    <option value="forSale">For Sale</option>
+                    <option value="notForSale">Not For Sale</option>
+                </select>
+            </div>
+        </div>
+        <div class="tableWrapper maxWidth paddingTop20" id="table">
+            <div class="mediaTableWrap">
+                <table id="positionsTable" class="transactionsTable"></table>
+            </div>
+        </div>
+        <div id="panels"></div>
+        <div class="maxWidth textAlignRight pageNumber mediaDisplayFlex">
+            <i class="material-icons icon-AccountCircle" id="decreasePage">chevron_left</i>
+            <a id="pageNumber"></a>
+            <i class="material-icons icon-AccountCircle pageRight" id="increasePage">chevron_right</i>
+        </div>
+    </div>
+    <div class="main-content initiallyHidden" id="boh"></div>
+
+    <div id="sellPositionModal" style="display:none">
+        <div class="modalTitle">Sell Position</div>
+        <p>
+            <a class="paymentModalText">Sale price: </a>
+            <input type="number" min="0" max="9999" value="" class="settingsInput extraMarginBottom" name="price" id="price"/>
+            <a class="paymentModalText">QOIN per token</a>
+        </p>
+        <p class="paymentModalText">
+            Your position will be listed in the marketplace. We'll charge a 3% transaction fee when your position sells to help keep the platform running. 
+        </p><br>
+        <button type="button" id="confirm" class="paymentModalYesButton">SELL</button>
+        <button type="button" id="cancel" class="paymentModalCancelButton">CANCEL</button>
+    </div>
+
+    <div id="successModal" style="display:none">
+        <div class="messageModal" id="successTitle">
+            <i class="material-icons marginRight15px messageModalIcon" id="successButton">check_circle_outline</i>
+            <div class="messageModalText">Listed position</div>
+        </div>
+    </div>
+
+    <div id="errorModal" style="display:none">
+        <div class="messageModal" id="errorTitle">
+            <i class="material-icons marginRight15px messageModalIcon" id="errorButton">error_outline</i>
+            <div class="messageModalText" id="errorText">Error</div>
+        </div>
+    </div>
+
+    <input type="hidden" id="sotong" value="{{token}}">
+
+    <script src="/js/positions_app.js"></script>
+</body>
+
+<div id="pageMask" class="initiallyHidden mediaPageMask"></div>
+
+</html>

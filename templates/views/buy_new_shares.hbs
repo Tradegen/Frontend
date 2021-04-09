@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Buy New Tokens</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="/img/favicon.png">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto">
+    <script
+        src="https://code.jquery.com/jquery-3.1.1.js"
+        crossorigin="anonymous">
+    </script>
+    <script
+        src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+        integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
+        crossorigin="anonymous">
+    </script>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="/js/update_overlay.js"></script>
+</head>
+
+<body class="appBackground">
+    {{>user_header}}
+    <div class="main-content">
+        <div class="pageTitle">Buy New Tokens</div>
+
+        <div class="mediaWidth100">
+            <div class="yourPurchase">
+                <p class="buyPageSubtitle">
+                    Your Purchase
+                </p>
+                <div class="buffer"></div>
+                <div><a class="extraWeight">Strategy:</a> <a href="/strategy_info/{{strategyID}}" style="text-decoration: none; color: inherit">{{strategyName}}</a></div>
+                <p><a class="extraWeight">Symbol:</a> {{symbol}}</p>
+                <p><a class="extraWeight">Description:</a> {{description}}</p>
+                <div id="marketPrice"><a class="extraWeight">Market price:</a> {{currentMarketValue}} QOIN / token</div>
+                <p>
+                    <a class="extraWeight">Tokens: </a>
+                    <input type="number" min="1" max="1000" value="1" class="settingsInput" name="shares" id="shares"/>
+                </p>
+                <p></p>
+            </div>
+        </div>
+
+        <div class="mediaWidth100">
+            <div class="payment" id="payment">
+                <p class="buyPageSubtitle">
+                    Payment
+                </p><br>
+                <p class="fontSize20"><a class="extraWeight">Total: </a><a id="totalPrice"></a></p>
+                <p><a id="sharesBought" class="fontSize20">1 / 1000 tokens</a></p><br>
+                <button type="button" id="payWithBalance" class="payWithBalanceButton">PURCHASE</button>
+                <p></p>
+            </div>
+        </div>
+        
+        <input type="hidden" id="sotong" value="{{strategyID}}"/>
+        <input type="hidden" id="lanjiao" value="{{userID}}"/>
+        <input type="hidden" id="sianjitpua" value="{{currentMarketValue}}"/>
+    </div>
+
+    <div id="payWithAccountBalanceModal" style="display:none">
+        <div class="paymentModalTitle">Buy Now</div>
+        <div id="cost" class="paymentModalPrice"></div>
+        <p class="paymentModalText">Are you sure you want to submit your payment?</p>
+        <button type="button" id="confirmPayment" class="paymentModalYesButton">YES</button>
+        <button type="button" id="cancelPayment" class="paymentModalCancelButton">CANCEL</button>
+    </div>
+
+    <div id="successModal" style="display:none">
+        <div class="messageModal" id="successTitle">
+            <i class="material-icons marginRight15px messageModalIcon" id="successButton">check_circle_outline</i>
+            <div class="messageModalText">Payment complete</div>
+        </div>
+    </div>
+
+    <div id="errorModal" style="display:none">
+        <div class="messageModal" id="errorTitle">
+            <i class="material-icons marginRight15px messageModalIcon" id="errorButton">error_outline</i>
+            <div class="messageModalText" id="errorText">Error</div>
+        </div>
+    </div>
+
+    <input type="hidden" id="atas" value="{{token}}">
+
+    <script src="/js/buy_new_shares_app.js"></script>
+</body>
+
+<div id="pageMask" class="initiallyHidden"></div>
+
+</html>
