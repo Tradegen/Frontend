@@ -35,6 +35,20 @@ document.addEventListener("DOMContentLoaded", async function() {
         document.getElementById("strategyName").style.cursor = "pointer";
     });
 
+    if (document.getElementById("listingPrice"))
+    {
+        let positionID = document.getElementById("positionID").value;
+        document.getElementById("listingPrice").addEventListener('click', function(){ window.location.href = '/buy_position/' + positionID; });
+        document.getElementById("listingPrice").addEventListener('mouseover', function(){ 
+            document.getElementById("listingPrice").style.cursor = "pointer";
+        });
+    }
+
+    document.getElementById("symbol").addEventListener('click', function(){ window.location.href = '/token_info/' + strategyID; });
+    document.getElementById("symbol").addEventListener('mouseover', function(){ 
+        document.getElementById("symbol").style.cursor = "pointer";
+    });
+
     const downColor = "#fe3957";
     const upColor = "#00cf92";
 
@@ -126,7 +140,7 @@ function buildTable()
         strategyName.setAttribute("class", "marketsTableRowName");
         row.appendChild(date);
         let price = document.createElement("td");
-        price.innerText =transactionHistoryData[i].price.toFixed(4) + " QOIN / token";
+        price.innerText =transactionHistoryData[i].price.toFixed(4) + " TGEN / token";
         price.setAttribute("class", "marketsTableRowName");
         row.appendChild(price);
         let userFrom = document.createElement("td");
@@ -188,7 +202,7 @@ function buildPanels()
         let priceBR = document.createElement("br");
         let priceData = document.createElement("a");
         priceData.setAttribute("class", "tradingBotStoreProductBottomText");
-        priceData.innerText = transactionHistoryData[i].price.toFixed(4) + " QOIN / token";
+        priceData.innerText = transactionHistoryData[i].price.toFixed(4) + " TGEN / token";
         priceData.style.fontWeight = "500";
         price.appendChild(priceText);
         price.appendChild(priceBR);

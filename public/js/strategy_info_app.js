@@ -61,6 +61,22 @@ function initialize(google)
                 window.location.href = '/token_info/' + encodeURIComponent(ID);
             });
         }
+
+        if (document.getElementById("transactionsButtonWeb"))
+        {
+            document.getElementById('transactionsButtonWeb').addEventListener('click', function(){
+                window.location.href = '/history/' + encodeURIComponent(ID);
+            });
+
+            document.getElementById('tradingBotButtonWeb').style.display = "block";
+        }
+
+        if (document.getElementById("transactionsButtonMobile"))
+        {
+            document.getElementById('transactionsButtonMobile').addEventListener('click', function(){
+                window.location.href = '/history/' + encodeURIComponent(ID);
+            });
+        }
     }
 
     if (strategyStatus != "Live")
@@ -73,6 +89,16 @@ function initialize(google)
         if (document.getElementById("tokenInfoButtonMobile"))
         {
             document.getElementById('tokenInfoButtonMobile').remove();
+        }
+
+        if (document.getElementById("transactionsButtonWeb"))
+        {
+            document.getElementById('transactionsButtonWeb').remove();
+        }
+
+        if (document.getElementById("transactionsButtonMobile"))
+        {
+            document.getElementById('transactionsButtonMobile').remove();
         }
     }
 }
@@ -94,6 +120,10 @@ function drawChart() {
     for (var i = 0; i < backtestData.strategyHistory.length; i+=1)
     {
         let temp = new Date(dates[i]);
+        if (!dates[i])
+        {
+            continue;
+        }
         let date = new Date(Date.UTC(dates[i].split("-")[0], parseInt(dates[i].split("-")[1]) - 1, dates[i].split("-")[2]) + (1000 * 60 * temp.getTimezoneOffset()));
         let options = {
             v: date,  
@@ -160,6 +190,10 @@ function drawChart4() {
     for (var i = 0; i < history.length; i+=1)
     {
         let temp = new Date(dates[i]);
+        if (!dates[i])
+        {
+            continue;
+        }
         let date = new Date(Date.UTC(dates[i].split("-")[0], parseInt(dates[i].split("-")[1]) - 1, dates[i].split("-")[2]) + (1000 * 60 * temp.getTimezoneOffset()));
         let options = {
             v: date,  
@@ -253,6 +287,10 @@ var sticky = header.offsetTop;
 
 // Add the sticky class to the header when you reach its scroll position. Remove "sticky" when you leave the scroll position
 function myFunction() {
+    if (isMobile.any())
+    {
+      return;
+    }
   if (window.pageYOffset > sticky) {
     header.classList.add("sticky");
   } else {

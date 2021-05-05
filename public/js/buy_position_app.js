@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
     {
         document.getElementById('successButton')
         .addEventListener('click', function(){
-            window.location.href = '/positions';
+            window.location.href = 'http://localhost:3000/positions';
         });
     }
 
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .addEventListener('click', hideErrorModal);
     }
 
-    if (document.getElementById('navbarCredits'))
+    if (document.getElementById('confirmPayment'))
     {
         document.getElementById('confirmPayment')
             .addEventListener('click', payWithAccountBalance);
@@ -160,7 +160,7 @@ function displaySuccessModal()
             $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
             setTimeout(function () {
                 $("#successModal").dialog("close");
-                window.location.href = '/positions';
+                window.location.href = 'http://localhost:3000/positions';
             }, 2000);
             if (!isMobile.any())
             {

@@ -5,6 +5,17 @@ var qs = require('qs');
 var router = express.Router();
 const { check, validationResult } = require('express-validator');
 const axios = require('axios');
+const sgMail = require('@sendgrid/mail')
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+router.get('/sitemap.xml', function(req, res) {
+  res.sendFile(path.resolve(__dirname, "../sitemap.xml"));
+});
+
+router.get('/robots.txt', function(req, res) {
+  res.sendFile(path.resolve(__dirname, "../robots.txt"));
+});
 
 //landing page if checkout was successful
 router.get('/success/:orderID', function (req, res, next) {
@@ -14,9 +25,34 @@ router.get('/success/:orderID', function (req, res, next) {
   
   res.render('success', { 
     loginStatus: loggedIn,
-    username: username,
+    username: username.substring(0, 8) + "...",
     orderID: orderID
   });
+});
+
+// Public positions page
+router.get('/public_positions/:address', function (req, res, next) {
+  
+  var loggedIn = (typeof req.session.user !== "undefined") ? true : false;
+  var username = loggedIn ? req.session.user : "";
+  let token = req.session.csrf;
+  let credits = (typeof req.session.credits !== "undefined") ? req.session.credits.toFixed(4) : "0.0000";
+  let address = req.params.address;
+
+  if (loggedIn && typeof address !== "undefined" && address != "")
+  {
+    res.render('public_positions', { 
+      loginStatus: loggedIn,
+      username: username.substring(0, 8) + "...",
+      token: token,
+      credits: credits,
+      address: address
+    });
+  }
+  else
+  {
+    res.redirect("/open_beta");
+  }
 });
 
 // Getting Started page
@@ -27,7 +63,7 @@ router.get('/get_started', function (req, res, next) {
 
   res.render('get_started', { 
     loginStatus: loggedIn,
-    username: username
+    username: username.substring(0, 8) + "..."
   });
 });
 
@@ -39,7 +75,7 @@ router.get('/open_beta', function (req, res, next) {
 
   res.render('open_beta', { 
     loginStatus: loggedIn,
-    username: username
+    username: username.substring(0, 8) + "..."
   });
 });
 
@@ -51,7 +87,7 @@ router.get('/token', function (req, res, next) {
 
   res.render('token', { 
     loginStatus: loggedIn,
-    username: username
+    username: username.substring(0, 8) + "..."
   });
 });
 
@@ -70,7 +106,7 @@ router.get('/white_paper', function (req, res, next) {
 
   res.render('white_paper', { 
     loginStatus: loggedIn,
-    username: username
+    username: username.substring(0, 8) + "..."
   });
 });
 
@@ -82,7 +118,7 @@ router.get('/updates', function (req, res, next) {
 
   res.render('updates', { 
     loginStatus: loggedIn,
-    username: username
+    username: username.substring(0, 8) + "..."
   });
 });
 
@@ -92,20 +128,20 @@ router.get('/build_strategy', function (req, res, next) {
   var loggedIn = (typeof req.session.user !== "undefined") ? true : false;
   var username = loggedIn ? req.session.user : "";
   let token = req.session.csrf;
-  let credits = (typeof req.session.credits !== "undefined") ? req.session.credits.toFixed(4) + " QOIN" : "0.0000 QOIN";
+  let credits = (typeof req.session.credits !== "undefined") ? req.session.credits.toFixed(4) : "0.0000";
 
   if (loggedIn)
   {
     res.render('build_strategy', { 
       loginStatus: loggedIn,
-      username: username,
+      username: username.substring(0, 8) + "...",
       token: token,
       credits: credits
     });
   }
   else
   {
-    res.redirect("/login");
+    res.redirect("/open_beta");
   }
   
 });
@@ -114,10 +150,20 @@ router.get('/build_strategy', function (req, res, next) {
 router.get('/store', function (req, res, next) {
   var loggedIn = (typeof req.session.user !== "undefined") ? true : false;
   var username = loggedIn ? req.session.user : "";
-  res.render('store', { 
-    loginStatus: loggedIn,
-    username: username
-  });
+  let credits = (typeof req.session.credits !== "undefined") ? req.session.credits.toFixed(4) : "0.0000";
+
+  if (loggedIn)
+  {
+    res.render('store', { 
+      loginStatus: loggedIn,
+      username: username.substring(0, 8) + "...",
+      credits: credits
+    });
+  }
+  else
+  {
+    res.redirect("/open_beta");
+  }
 });
 
 // Home Page
@@ -127,7 +173,7 @@ router.get('/', function (req, res, next) {
   var username = loggedIn ? req.session.user : "";
   res.render('index', { 
     loginStatus: loggedIn,
-    username: username,
+    username: username.substring(0, 8) + "...",
   });
 });
 
@@ -137,7 +183,7 @@ router.get('/about', function (req, res, next) {
   var username = loggedIn ? req.session.user : "";
   res.render('about', { 
     loginStatus: loggedIn,
-    username: username
+    username: username.substring(0, 8) + "..."
   });
 });
 
@@ -154,13 +200,16 @@ router.get('/contact', function (req, res, next) {
   
   res.render('contact', { 
     loginStatus: loggedIn,
-    username: username,
+    username: username.substring(0, 8) + "...",
     token: req.session.csrf
   });
 });
 
 // Checkout Page
 router.get('/checkout/:id', function (req, res, next) {
+  let credits = (typeof req.session.credits !== "undefined") ? req.session.credits.toFixed(4) : "0.0000";
+  var loggedIn = (typeof req.session.user !== "undefined") ? true : false;
+  var username = loggedIn ? req.session.user : "";
 
   let strategyID = req.params.id;
 
@@ -207,21 +256,40 @@ router.get('/checkout/:id', function (req, res, next) {
     let description = response.description;
     let developedOn = response.developedOn;
     let alpha = response.alpha;
+    let totalReturn = response.totalReturn;
+    let address = response.address;
+    let developer = response.developedBy;
 
     if (req.session.csrf === undefined && loggedIn == false)
     {
       req.session.csrf = crypto.randomBytes(100).toString('base64');
     }
 
-    res.render('checkout', { 
-      strategyName: strategyName,
-      description: description,
-      developedOn: developedOn,
-      alpha: alpha.toFixed(3),
-      salePrice: salePrice,
-      strategyID: strategyID,
-      token: req.session.csrf
-    });
+    let plus = (totalReturn >= 0) ? '+' : '';
+    let color = (totalReturn >= 0) ? "#16c784" : "ea3943";
+
+    if (loggedIn)
+    {
+      res.render('checkout', { 
+        strategyName: strategyName,
+        description: description,
+        developedOn: developedOn,
+        alpha: alpha.toFixed(3),
+        salePrice: salePrice,
+        strategyID: strategyID,
+        token: req.session.csrf,
+        credits: credits,
+        totalReturn: plus + totalReturn.toFixed(2),
+        color: color,
+        address: address,
+        developer: developer,
+        username: username.substring(0, 8) + "..."
+      });
+    }
+    else
+    {
+      res.redirect("/open_beta");
+    }
   }
   xhttpRep.open("POST", 'https://us-central1-stocks2-301304.cloudfunctions.net/getStrategyInfo', true);
   xhttpRep.withCredentials = true;
@@ -235,20 +303,20 @@ router.get('/positions', function (req, res, next) {
   var loggedIn = (typeof req.session.user !== "undefined") ? true : false;
   var username = loggedIn ? req.session.user : "";
   let token = req.session.csrf;
-  let credits = (typeof req.session.credits !== "undefined") ? req.session.credits.toFixed(4) + " QOIN" : "0.0000 QOIN";
+  let credits = (typeof req.session.credits !== "undefined") ? req.session.credits.toFixed(4) : "0.0000";
 
   if (loggedIn)
   {
     res.render('positions', { 
       loginStatus: loggedIn,
-      username: username,
+      username: username.substring(0, 8) + "...",
       token: token,
       credits: credits
     });
   }
   else
   {
-    res.redirect("/login");
+    res.redirect("/open_beta");
   }
   
 });
@@ -258,19 +326,19 @@ router.get('/marketplace', function (req, res, next) {
   
   var loggedIn = (typeof req.session.user !== "undefined") ? true : false;
   var username = loggedIn ? req.session.user : "";
-  let credits = (typeof req.session.credits !== "undefined") ? req.session.credits.toFixed(4) + " QOIN" : "0.0000 QOIN";
+  let credits = (typeof req.session.credits !== "undefined") ? req.session.credits.toFixed(4) : "0.0000";
 
   if (loggedIn)
   {
     res.render('marketplace', { 
       loginStatus: loggedIn,
-      username: username,
+      username: username.substring(0, 8) + "...",
       credits: credits
     });
   }
   else
   {
-    res.redirect("/login");
+    res.redirect("/open_beta");
   }
 });
 
@@ -279,19 +347,19 @@ router.get('/notifications', function (req, res, next) {
   
   var loggedIn = (typeof req.session.user !== "undefined") ? true : false;
   var username = loggedIn ? req.session.user : "";
-  let credits = (typeof req.session.credits !== "undefined") ? req.session.credits.toFixed(4) + " QOIN" : "0.0000 QOIN";
+  let credits = (typeof req.session.credits !== "undefined") ? req.session.credits.toFixed(4) : "0.0000";
 
   if (loggedIn)
   {
     res.render('notifications', { 
       loginStatus: loggedIn,
-      username: username,
+      username: username.substring(0, 8) + "...",
       credits: credits
     });
   }
   else
   {
-    res.redirect("/login");
+    res.redirect("/open_beta");
   }
 });
 
@@ -302,7 +370,7 @@ router.get('/privacy_policy', function (req, res, next) {
   var username = loggedIn ? req.session.user : "";
   res.render('privacy_policy', { 
     loginStatus: loggedIn,
-    username: username
+    username: username.substring(0, 8) + "..."
   });
 });
 
@@ -311,11 +379,11 @@ router.get('/settings', function (req, res, next) {
   
   var loggedIn = (typeof req.session.user !== "undefined") ? true : false;
   var username = loggedIn ? req.session.user : "";
-  let credits = (typeof req.session.credits !== "undefined") ? req.session.credits.toFixed(4) + " QOIN" : "0.0000 QOIN";
+  let credits = (typeof req.session.credits !== "undefined") ? req.session.credits.toFixed(4) : "0.0000";
 
   if (!loggedIn)
   {
-    return res.redirect("/login");
+    return res.redirect("/open_beta");
   }
 
   let temp2 = JSON.stringify({userID: username, token: req.session.token});
@@ -339,9 +407,14 @@ router.get('/settings', function (req, res, next) {
       verifiedEmail = "False";
     }
 
+    let dataObject = {
+      tradingBots: response.tradingBots
+    }
+    let dataString = JSON.stringify(dataObject);
+
     res.render('settings', { 
       loginStatus: loggedIn,
-      username: response.username,
+      username: username.substring(0, 8) + "...",
       email: response.email,
       phoneNumber: response.phoneNumber,
       netWorth: response.netWorth.toFixed(4),
@@ -349,7 +422,8 @@ router.get('/settings', function (req, res, next) {
       savedReferralCode: response.savedReferralCode,
       verifiedEmail: verifiedEmail,
       credits: credits,
-      token: req.session.csrf
+      token: req.session.csrf,
+      dataString: dataString
     });
   }
   xhttpRep.open("POST", 'https://us-central1-stocks2-301304.cloudfunctions.net/getSettingsData', true);
@@ -363,11 +437,11 @@ router.get('/strategies', function (req, res, next) {
   
   var loggedIn = (typeof req.session.user !== "undefined") ? true : false;
   var username = loggedIn ? req.session.user : "";
-  let credits = (typeof req.session.credits !== "undefined") ? req.session.credits.toFixed(4) + " QOIN" : "0.0000 QOIN";
+  let credits = (typeof req.session.credits !== "undefined") ? req.session.credits.toFixed(4) : "0.0000";
 
   res.render('strategies', { 
     loginStatus: loggedIn,
-    username: username,
+    username: username.substring(0, 8) + "...",
     credits: credits
   });
 });
@@ -379,7 +453,7 @@ router.get('/terms_and_conditions', function (req, res, next) {
   var username = loggedIn ? req.session.user : "";
   res.render('terms_and_conditions', { 
     loginStatus: loggedIn,
-    username: username
+    username: username.substring(0, 8) + "..."
   });
 });
 
@@ -388,19 +462,19 @@ router.get('/transactions', function (req, res, next) {
   
   var loggedIn = (typeof req.session.user !== "undefined") ? true : false;
   var username = loggedIn ? req.session.user : "";
-  let credits = (typeof req.session.credits !== "undefined") ? req.session.credits.toFixed(4) + " QOIN" : "0.0000 QOIN";
+  let credits = (typeof req.session.credits !== "undefined") ? req.session.credits.toFixed(4) : "0.0000";
 
   if (loggedIn)
   {
     res.render('transactions', { 
       loginStatus: loggedIn,
-      username: username,
+      username: username.substring(0, 8) + "...",
       credits: credits
     });
   }
   else
   {
-    res.redirect("/login");
+    res.redirect("/open_beta");
   }
 });
 
@@ -411,7 +485,7 @@ router.get('/faqs', function (req, res, next) {
   var username = loggedIn ? req.session.user : "";
   res.render('faqs', { 
     loginStatus: loggedIn,
-    username: username
+    username: username.substring(0, 8) + "..."
   });
 });
 
@@ -421,14 +495,14 @@ router.get('/profile/:address', function (req, res, next) {
   var loggedIn = (typeof req.session.user !== "undefined") ? true : false;
   var username = loggedIn ? req.session.user : "";
   let token = req.session.csrf;
-  let credits = (typeof req.session.credits !== "undefined") ? req.session.credits.toFixed(4) + " QOIN" : "0.0000 QOIN";
+  let credits = (typeof req.session.credits !== "undefined") ? req.session.credits.toFixed(4) : "0.0000";
   let address = req.params.address;
 
   if (loggedIn && typeof address !== "undefined" && address != "")
   {
     res.render('user_profile', { 
       loginStatus: loggedIn,
-      username: username,
+      username: username.substring(0, 8) + "...",
       token: token,
       credits: credits,
       address: address
@@ -436,7 +510,7 @@ router.get('/profile/:address', function (req, res, next) {
   }
   else
   {
-    res.redirect("/login");
+    res.redirect("/open_beta");
   }
 });
 
@@ -452,7 +526,7 @@ router.get('/profile', function (req, res, next) {
   }
   else
   {
-    res.redirect("/login");
+    res.redirect("/open_beta");
   }
 });
 
@@ -460,11 +534,12 @@ router.get('/profile', function (req, res, next) {
 router.get('/position_info/:address', function (req, res, next) {
   var loggedIn = (typeof req.session.user !== "undefined") ? true : false;
   var address = req.params.address;
-  let credits = (typeof req.session.credits !== "undefined") ? req.session.credits.toFixed(4) + " QOIN" : "0.0000 QOIN";
+  var username = loggedIn ? req.session.user : "";
+  let credits = (typeof req.session.credits !== "undefined") ? req.session.credits.toFixed(4) : "0.0000";
 
   if (!loggedIn)
   {
-    return res.redirect("/login");
+    return res.redirect("/open_beta");
   }
 
   let temp2 = JSON.stringify({address: address});
@@ -485,6 +560,7 @@ router.get('/position_info/:address', function (req, res, next) {
 
     res.render('position_info', { 
       loginStatus: loggedIn,
+      username: username.substring(0, 8) + "...",
       credits: credits,
       transactionHistory: dataString,
       strategyName: response.strategyName,
@@ -502,7 +578,8 @@ router.get('/position_info/:address', function (req, res, next) {
       positionID: response.positionID,
       currentMarketValue: response.currentMarketValue.toFixed(4),
       ownerAddress: response.ownerAddress,
-      symbol: response.symbol
+      symbol: response.symbol,
+      positionAddress: address
     });
   }
   xhttpRep.open("POST", 'https://us-central1-stocks2-301304.cloudfunctions.net/getPositionInfo', true);
@@ -511,11 +588,87 @@ router.get('/position_info/:address', function (req, res, next) {
   xhttpRep.send(temp2);
 });
 
+// Market Stats Page
+router.get('/market_stats', function (req, res, next) {
+  var loggedIn = (typeof req.session.user !== "undefined") ? "True" : "";
+  var username = loggedIn ? req.session.user : "";
+  let credits = (typeof req.session.credits !== "undefined") ? req.session.credits.toFixed(4) : "0.0000";
+
+  const xhttpRep = new XMLHttpRequest();
+  xhttpRep.onload = function(e) {
+    const response = JSON.parse(xhttpRep.responseText);
+
+    let developedStrategies = response.developedStrategies;
+    let marketCap = response.marketCap;
+    let numberOfStrategies = response.numberOfStrategies;
+    let numberOfTrades = response.numberOfTrades;
+    let positions = response.positions;
+    let volume = response.volume;
+    let users = response.users;
+    let marketCapChange = response.marketCapChange;
+    let volumeChange = response.volumeChange;
+    
+    let backgroundColor1 = "#16c784";
+    let plus1 = "";
+
+    if (marketCapChange >= 0)
+    {
+      plus1 = '+';
+      backgroundColor1 = "#16c784";
+    }
+    else
+    {
+      backgroundColor1 = "#ea3943";
+    }
+
+    let backgroundColor2 = "#16c784";
+    let plus2 = "";
+
+    if (volumeChange >= 0)
+    {
+      plus2 = "+";
+      backgroundColor2 = "#16c784";
+    }
+    else
+    {
+      backgroundColor2 = "#ea3943";
+    }
+
+    let dataObject2 = {
+      history: response.history
+    }
+    let dataString2 = JSON.stringify(dataObject2);
+
+    res.render('market_stats', { 
+      loginStatus: loggedIn,
+      username: username.substring(0, 8) + "...",
+      dataString2: dataString2,
+      credits: credits,
+      marketCap: marketCap.toFixed(4),
+      volume: volume,
+      numberOfStrategies: numberOfStrategies,
+      numberOfTrades: numberOfTrades,
+      positions: positions,
+      users: users,
+      marketCapChange: plus1 + marketCapChange.toFixed(2) + "%",
+      volumeChange: plus2 + volumeChange.toFixed(2) + "%",
+      developedStrategies: developedStrategies,
+      backgroundColor1: backgroundColor1,
+      backgroundColor2: backgroundColor2
+    });
+  }
+  xhttpRep.open("POST", 'https://us-central1-stocks2-301304.cloudfunctions.net/getMarketStats', true);
+  xhttpRep.withCredentials = true;
+  xhttpRep.setRequestHeader("Content-Type", "application/json");
+  xhttpRep.send();
+});
+
 // Token Info Page
 router.get('/token_info/:id', function (req, res, next) {
   var loggedIn = (typeof req.session.user !== "undefined") ? "True" : "";
   var strategyID = req.params.id;
-  let credits = (typeof req.session.credits !== "undefined") ? req.session.credits.toFixed(4) + " QOIN" : "0.0000 QOIN";
+  var username = loggedIn ? req.session.user : "";
+  let credits = (typeof req.session.credits !== "undefined") ? req.session.credits.toFixed(4) : "0.0000";
 
   if (typeof strategyID !== "string")
   {
@@ -580,8 +733,9 @@ router.get('/token_info/:id', function (req, res, next) {
 
     res.render('token_info', { 
       loginStatus: loggedIn,
+      username: username.substring(0, 8) + "...",
       strategyName: strategyName,
-      sharePrice: sharePrice.toFixed(4) + " QOIN",
+      sharePrice: sharePrice.toFixed(4) + " TGEN",
       sharesPurchased: sharesPurchased,
       dataString2: dataString2,
       credits: credits,
@@ -604,7 +758,8 @@ router.get('/token_info/:id', function (req, res, next) {
 router.get('/strategy_info/:id', function (req, res, next) {
   var loggedIn = (typeof req.session.user !== "undefined") ? "True" : "";
   var strategyID = req.params.id;
-  let credits = (typeof req.session.credits !== "undefined") ? req.session.credits.toFixed(4) + " QOIN" : "0.0000 QOIN";
+  var username = loggedIn ? req.session.user : "";
+  let credits = (typeof req.session.credits !== "undefined") ? req.session.credits.toFixed(4) : "0.0000";
 
   if (typeof strategyID !== "string")
   {
@@ -675,8 +830,9 @@ router.get('/strategy_info/:id', function (req, res, next) {
 
     res.render('strategy_info', { 
       loginStatus: loggedIn,
+      username: username.substring(0, 8) + "...",
       strategyName: strategyName,
-      sharePrice: sharePrice.toFixed(4) + " QOIN",
+      sharePrice: sharePrice.toFixed(4) + " TGEN",
       tradeFrequency: tradeFrequency.toFixed(2) + "/day",
       sharpeRatio: sharpeRatio.toFixed(3),
       assetsTraded: assetsTraded,
@@ -707,6 +863,10 @@ router.get('/strategy_info/:id', function (req, res, next) {
 
 // Product Info Page
 router.get('/product_info/:id', function (req, res, next) {
+  var loggedIn = (typeof req.session.user !== "undefined") ? "True" : "";
+  var strategyID = req.params.id;
+  var username = loggedIn ? req.session.user : "";
+  let credits = (typeof req.session.credits !== "undefined") ? req.session.credits.toFixed(4) : "0.0000";
   var strategyID = req.params.id;
 
   if (typeof strategyID !== "string")
@@ -767,25 +927,35 @@ router.get('/product_info/:id', function (req, res, next) {
     }
     let dataString = JSON.stringify(dataObject);
 
-    res.render('strategy_product_info', { 
-      strategyName: strategyName,
-      salePrice: "$" + salePrice.toFixed(2),
-      tradeFrequency: tradeFrequency.toFixed(2) + "/day",
-      sharpeRatio: sharpeRatio.toFixed(3),
-      assetsTraded: assetsTraded,
-      description: description,
-      accuracy: accuracy.toFixed(2) + "%",
-      maxDrawdown: maxDrawdown.toFixed(2) + "%",
-      averageWin: averageWin.toFixed(2) + "%",
-      averageLoss: averageLoss.toFixed(2) + "%",
-      totalReturn: totalReturn.toFixed(2) + "%",
-      numberOfTrades: numberOfTrades,
-      developedOn: developedOn,
-      developedBy: developedBy,
-      alpha: alpha.toFixed(3),
-      strategyID: strategyID,
-      dataString: dataString
-    });
+    if (loggedIn)
+    {
+      res.render('strategy_product_info', { 
+        strategyName: strategyName,
+        username: username.substring(0, 8) + "...",
+        salePrice: salePrice.toFixed(2) + " TGEN",
+        tradeFrequency: tradeFrequency.toFixed(2) + "/day",
+        sharpeRatio: sharpeRatio.toFixed(3),
+        assetsTraded: assetsTraded,
+        description: description,
+        accuracy: accuracy.toFixed(2) + "%",
+        maxDrawdown: maxDrawdown.toFixed(2) + "%",
+        averageWin: averageWin.toFixed(2) + "%",
+        averageLoss: averageLoss.toFixed(2) + "%",
+        totalReturn: totalReturn.toFixed(2) + "%",
+        numberOfTrades: numberOfTrades,
+        developedOn: developedOn,
+        developedBy: developedBy,
+        alpha: alpha.toFixed(3),
+        strategyID: strategyID,
+        dataString: dataString,
+        credits: credits
+      });
+    }
+    else
+    {
+      return res.redirect("/open_beta");
+    }
+    
   }
   xhttpRep.open("POST", 'https://us-central1-stocks2-301304.cloudfunctions.net/getProductInfo', true);
   xhttpRep.withCredentials = true;
@@ -798,11 +968,11 @@ router.get('/buy_position/:id', function (req, res, next) {
   var loggedIn = (typeof req.session.user !== "undefined") ? true : false;
   var username = loggedIn ? req.session.user : "";
   let token = req.session.csrf;
-  let credits = (typeof req.session.credits !== "undefined") ? req.session.credits.toFixed(4) + " QOIN" : "0.0000 QOIN";
+  let credits = (typeof req.session.credits !== "undefined") ? req.session.credits.toFixed(4) : "0.0000";
 
   if (!loggedIn)
   {
-    return res.redirect("/login");
+    return res.redirect("/open_beta");
   }
 
   const positionID = req.params.id;
@@ -865,6 +1035,7 @@ router.get('/buy_position/:id', function (req, res, next) {
 
     res.render('buy_position', { 
       strategyName: strategyName,
+      username: username.substring(0, 8) + "...",
       symbol: symbol,
       currentMarketValue: currentMarketValue.toFixed(4),
       advertisedPrice: advertisedPrice.toFixed(4),
@@ -892,11 +1063,11 @@ router.get('/buy_new_tokens/:id', function (req, res, next) {
   var loggedIn = (typeof req.session.user !== "undefined") ? true : false;
   var username = loggedIn ? req.session.user : "";
   let token = req.session.csrf;
-  let credits = (typeof req.session.credits !== "undefined") ? req.session.credits.toFixed(4) + " QOIN" : "0.0000 QOIN";
+  let credits = (typeof req.session.credits !== "undefined") ? req.session.credits.toFixed(4) : "0.0000";
 
   if (!loggedIn)
   {
-    return res.redirect("/login");
+    return res.redirect("/open_beta");
   }
 
   const strategyID = req.params.id;
@@ -948,6 +1119,7 @@ router.get('/buy_new_tokens/:id', function (req, res, next) {
 
     res.render('buy_new_shares', { 
       strategyName: strategyName,
+      username: username.substring(0, 8) + "...",
       currentMarketValue: currentMarketValue,
       savedReferralCode: savedReferralCode,
       strategyID: strategyID,
@@ -998,7 +1170,7 @@ async (req, res) => {
     var tokenResult = (err != "Bad token.") ? req.session.csrf : "";
     return res.render('contact', {
       loginStatus: loggedIn,
-      username: username,
+      username: username.substring(0, 8) + "...",
       message: err,
       token: tokenResult,
       previousFirstName: req.body.firstName,
@@ -1027,7 +1199,7 @@ async (req, res) => {
     {
       return res.render('contact', {
         loginStatus: loggedIn,
-        username: username,
+        username: username.substring(0, 8) + "...",
         message: "The message contains invalid characters.",
         token: tokenResult,
         previousFirstName: req.body.firstName,
@@ -1057,7 +1229,7 @@ async (req, res) => {
     {
       return res.render('contact', {
         loginStatus: loggedIn,
-        username: username,
+        username: username.substring(0, 8) + "...",
         message: "Please enter a valid first name.",
         token: tokenResult,
         previousFirstName: req.body.firstName,
@@ -1087,7 +1259,7 @@ async (req, res) => {
     {
       return res.render('contact', {
         loginStatus: loggedIn,
-        username: username,
+        username: username.substring(0, 8) + "...",
         message: "Please enter a valid last name.",
         token: tokenResult,
         previousFirstName: req.body.firstName,
@@ -1117,7 +1289,7 @@ async (req, res) => {
     {
       return res.render('contact', {
         loginStatus: loggedIn,
-        username: username,
+        username: username.substring(0, 8) + "...",
         message: "Please enter a valid email address.",
         token: tokenResult,
         previousFirstName: req.body.firstName,
@@ -1147,7 +1319,7 @@ async (req, res) => {
     {
       return res.render('contact', {
         loginStatus: loggedIn,
-        username: username,
+        username: username.substring(0, 8) + "...",
         message: "Subject contains invalid characters.",
         token: tokenResult,
         previousFirstName: req.body.firstName,
@@ -1167,7 +1339,7 @@ async (req, res) => {
     {
       return res.render('contact', {
         loginStatus: loggedIn,
-        username: username,
+        username: username.substring(0, 8) + "...",
         message: response.errorMessage,
         token: tokenResult,
         previousFirstName: req.body.firstName,
@@ -1182,7 +1354,7 @@ async (req, res) => {
     {
       return res.render('contact', {
         loginStatus: loggedIn,
-        username: username,
+        username: username.substring(0, 8) + "...",
         token: tokenResult,
         hasErrors: "false"
       });
@@ -1201,7 +1373,7 @@ router.post('/buy_new_shares_with_account_balance', function (req, res, next) {
 
   if (!loggedIn)
   {
-    return res.redirect("/login");
+    return res.redirect("/open_beta");
   }
 
   let userID = username;
@@ -1301,7 +1473,7 @@ router.post('/buy_position_with_account_balance', function (req, res, next) {
 
   if (!loggedIn)
   {
-    return res.redirect("/login");
+    return res.redirect("/open_beta");
   }
 
   let userID = username; 
@@ -1375,7 +1547,7 @@ router.post('/cancel_listing', function (req, res, next) {
 
   if (!loggedIn)
   {
-    return res.redirect("/login");
+    return res.redirect("/open_beta");
   }
 
   let positionID = req.body.positionID;
@@ -1441,7 +1613,7 @@ router.post('/edit_listing', function (req, res, next) {
 
   if (!loggedIn)
   {
-    return res.redirect("/login");
+    return res.redirect("/open_beta");
   }
 
   let positionID = req.body.positionID;
@@ -1525,7 +1697,7 @@ router.post('/edit_username', function (req, res, next) {
 
   if (!loggedIn)
   {
-    return res.redirect("/login");
+    return res.redirect("/open_beta");
   }
 
   let userID = username;
@@ -1594,7 +1766,7 @@ router.post('/edit_phone_number', function (req, res, next) {
 
   if (!loggedIn)
   {
-    return res.redirect("/login");
+    return res.redirect("/open_beta");
   }
 
   let userID = username;
@@ -1663,7 +1835,7 @@ router.post('/edit_saved_referral_code', function (req, res, next) {
 
   if (!loggedIn)
   {
-    return res.redirect("/login");
+    return res.redirect("/open_beta");
   }
 
   let userID = username;
@@ -1732,7 +1904,7 @@ router.post('/sell_position', function (req, res, next) {
 
   if (!loggedIn)
   {
-    return res.redirect("/login");
+    return res.redirect("/open_beta");
   }
 
   let positionID = req.body.positionID;
@@ -1816,28 +1988,14 @@ router.post('/sell_strategy', function (req, res, next) {
 
   if (!loggedIn)
   {
-    return res.redirect("/login");
+    return res.redirect("/open_beta");
   }
 
   let strategyID = req.body.strategyID;
   let csrf = req.body.csrf;
-  let price = req.body.price;
+  let symbol = req.body.symbol;
 
   if (typeof strategyID !== "string")
-  {
-    return res.status(200).json({
-      response: "Error",
-    });
-  }
-
-  if (typeof price !== "number")
-  {
-    return res.status(200).json({
-      response: "Error",
-    });
-  }
-
-  if (price < 0.01 || price > 9999.99)
   {
     return res.status(200).json({
       response: "Error",
@@ -1874,7 +2032,7 @@ router.post('/sell_strategy', function (req, res, next) {
 
   let temp2 = JSON.stringify({
     strategyID: strategyID,
-    price: price,
+    symbol: symbol,
     userID: username,
     token: req.session.token
   });
@@ -1905,7 +2063,7 @@ router.post('/delete_strategy', function (req, res, next) {
 
   if (!loggedIn)
   {
-    return res.redirect("/login");
+    return res.redirect("/open_beta");
   }
 
   let strategyID = req.body.strategyID;
@@ -1973,7 +2131,7 @@ router.post('/start_backtest', function (req, res, next) {
 
   if (!loggedIn)
   {
-    return res.redirect("/login");
+    return res.redirect("/open_beta");
   }
 
   let strategyID = req.body.strategyID;
@@ -2020,7 +2178,7 @@ router.post('/start_backtest', function (req, res, next) {
   });
   
   const xhttp = new XMLHttpRequest();
-  xhttp.open("POST", 'https://backtest-dot-stocks2-301304.uc.r.appspot.com/backtest/run_backtest', true);
+  xhttp.open("POST", 'http://localhost:6000/backtest/run_backtest', true);
   xhttp.withCredentials = true;
   xhttp.setRequestHeader("Content-Type", "application/json");
   xhttp.send(temp2);
@@ -2031,37 +2189,16 @@ router.post('/start_backtest', function (req, res, next) {
 });
 
 // Route to user profile after logging in 
-router.get('/ai-pee-ai-chee-ai-tua-liap-nee/:authID', async function (req, res, next) {
-  const auth0ID = req.params.authID;
+router.get('/ai-pee-ai-chee-ai-tua-liap-nee/:userID', async function (req, res, next) {
+  const userID = req.params.userID;
   const sessionID = req.session.id;
 
-  if (typeof auth0ID !== "string")
+  if (typeof userID !== "string")
   {
     return res.status(200).json({
       response: "Error",
     });
   }
- 
-  //clear all sessions associated with the user
-  await req.sessionStore.all((error, sessions) => {
-    if (sessions)
-    {
-      let sessionsToDelete = [];
-      for (const [key, value] of Object.entries(sessions))
-      {
-        if (value.auth0ID == auth0ID && key != sessionID)
-        {
-          sessionsToDelete.push(key);
-        }
-      }
-
-      for (let j = 0; j < sessionsToDelete.length; j+=1)
-      {
-        req.sessionStore.destroy(sessionsToDelete[j], function (err, dat) {               
-        }); 
-      }
-    }
-  });
 
   if (req.session.csrf === undefined)
   {
@@ -2075,7 +2212,7 @@ router.get('/ai-pee-ai-chee-ai-tua-liap-nee/:authID', async function (req, res, 
 
   let temp2 = JSON.stringify({
     token: req.session.token,
-    auth0ID: auth0ID,
+    userID: userID,
     length: req.session.token.length
   });
   
@@ -2087,7 +2224,7 @@ router.get('/ai-pee-ai-chee-ai-tua-liap-nee/:authID', async function (req, res, 
     {
       if (response.token == req.session.token)
       {
-        req.session.user = response.userID;
+        req.session.user = userID;
         req.session.credits = response.credits;
         req.session.address = response.address
         return res.redirect("/profile");
@@ -2166,7 +2303,7 @@ router.post('/build_strategy',
 , async (req, res) => {
   var loggedIn = (typeof req.session.user !== "undefined") ? true : false;
   var username = loggedIn ? req.session.user : "";
-  let credits = (typeof req.session.credits !== "undefined") ? req.session.credits.toFixed(4) + " QOIN" : "0.0000 QOIN";
+  let credits = (typeof req.session.credits !== "undefined") ? req.session.credits.toFixed(4) : "0.0000";
 
   let output = req.body;
   output.userID = username;
@@ -2176,7 +2313,7 @@ router.post('/build_strategy',
 
   if (!loggedIn)
   {
-    return res.redirect("/login");
+    return res.redirect("/open_beta");
   }
 
   if (typeof req.body.list_of_entry_conditions !== "string")
@@ -2196,7 +2333,7 @@ router.post('/build_strategy',
     return res.render('build_strategy', {
       message: err,
       loginStatus: loggedIn,
-      username: username,
+      username: username.substring(0, 8) + "...",
       strategyName: req.body.strategyName,
       description: req.body.description,
       watchlist: req.body.watchlist,
@@ -2218,7 +2355,7 @@ router.post('/build_strategy',
     return res.render('build_strategy', {
       message: "Strategy name must be shorter than 30 characters",
       loginStatus: loggedIn,
-      username: username,
+      username: username.substring(0, 8) + "...",
       strategyName: req.body.strategyName,
       description: req.body.description,
       watchlist: req.body.watchlist,
@@ -2253,7 +2390,7 @@ router.post('/build_strategy',
       return res.render('build_strategy', {
         message: "Strategy name contains invalid characters.",
         loginStatus: loggedIn,
-        username: username,
+        username: username.substring(0, 8) + "...",
         strategyName: req.body.strategyName,
         description: req.body.description,
         watchlist: req.body.watchlist,
@@ -2276,7 +2413,7 @@ router.post('/build_strategy',
     return res.render('build_strategy', {
       message: "Please enter a valid description.",
       loginStatus: loggedIn,
-      username: username,
+      username: username.substring(0, 8) + "...",
       strategyName: req.body.strategyName,
       description: req.body.description,
       watchlist: req.body.watchlist,
@@ -2310,7 +2447,7 @@ router.post('/build_strategy',
       return res.render('build_strategy', {
         message: "Description contains invalid characters.",
         loginStatus: loggedIn,
-        username: username,
+        username: username.substring(0, 8) + "...",
         strategyName: req.body.strategyName,
         description: req.body.description,
         watchlist: req.body.watchlist,
@@ -2340,7 +2477,7 @@ router.post('/build_strategy',
         return res.render('build_strategy', {
           message: "Strategy name already exists.",
           loginStatus: loggedIn,
-          username: username,
+          username: username.substring(0, 8) + "...",
           strategyName: req.body.strategyName,
           description: req.body.description,
           watchlist: req.body.watchlist,
@@ -2361,7 +2498,7 @@ router.post('/build_strategy',
         return res.render('build_strategy', {
           status: "Error",
           loginStatus: loggedIn,
-          username: username,
+          username: username.substring(0, 8) + "...",
           strategyName: req.body.strategyName,
           description: req.body.description,
           watchlist: req.body.watchlist,
@@ -2383,7 +2520,7 @@ router.post('/build_strategy',
     return res.render('build_strategy', {
       status: "Error",
       loginStatus: loggedIn,
-      username: username,
+      username: username.substring(0, 8) + "...",
       strategyName: req.body.strategyName,
       description: req.body.description,
       watchlist: req.body.watchlist,
@@ -2407,7 +2544,7 @@ router.post('/build_strategy',
     return res.render('build_strategy', {
       message: "Please add at least one entry condition.",
       loginStatus: loggedIn,
-      username: username,
+      username: username.substring(0, 8) + "...",
       strategyName: req.body.strategyName,
       description: req.body.description,
       watchlist: req.body.watchlist,
@@ -2430,7 +2567,7 @@ router.post('/build_strategy',
     return res.render('build_strategy', {
       message: "Please add at least one exit condition.",
       loginStatus: loggedIn,
-      username: username,
+      username: username.substring(0, 8) + "...",
       strategyName: req.body.strategyName,
       desription: req.body.description,
       watchlist: req.body.watchlist,
@@ -2455,7 +2592,7 @@ router.post('/build_strategy',
       return res.render('build_strategy', {
         status: "Success",
         loginStatus: loggedIn,
-        username: username,
+        username: username.substring(0, 8) + "...",
         strategyName: req.body.strategyName,
         description: req.body.description,
         watchlist: req.body.watchlist,
@@ -2478,7 +2615,7 @@ router.post('/build_strategy',
         status: "Error",
         initialErrorMessage: "Reached limit of 10 strategies",
         loginStatus: loggedIn,
-        username: username,
+        username: username.substring(0, 8) + "...",
         strategyName: req.body.strategyName,
         description: req.body.description,
         watchlist: req.body.watchlist,
@@ -2501,7 +2638,7 @@ router.post('/build_strategy',
         status: "Error",
         initialErrorMessage: "Error when building strategy",
         loginStatus: loggedIn,
-        username: username,
+        username: username.substring(0, 8) + "...",
         strategyName: req.body.strategyName,
         description: req.body.description,
         watchlist: req.body.watchlist,
@@ -2532,7 +2669,7 @@ router.post('/add_credits', function (req, res, next) {
 
   if (!loggedIn)
   {
-    return res.redirect("/login");
+    return res.redirect("/open_beta");
   }
 
   let numberOfCredits = req.body.numberOfCredits;
@@ -2578,7 +2715,7 @@ router.post('/withdraw_credits', function (req, res, next) {
 
   if (!loggedIn)
   {
-    return res.redirect("/login");
+    return res.redirect("/open_beta");
   }
 
   let amountToWithdraw = req.body.amountToWithdraw;
@@ -2624,7 +2761,6 @@ router.post('/process_checkout', function (req, res, next) {
 
   let price = req.body.price;
   let strategyID = req.body.strategyID;
-  let email = req.body.email;
   let csrf = req.body.csrf;
 
   if (csrf != req.session.csrf)
@@ -2636,13 +2772,19 @@ router.post('/process_checkout', function (req, res, next) {
 
   let temp2 = JSON.stringify({
     price: price,
-    email: email,
     strategyID: strategyID,
+    userID: username
   });
   
   const xhttp = new XMLHttpRequest();
   xhttp.onload = function(e) {
     const response = xhttp.responseText;
+
+    if (response == "Success")
+    {
+      console.log("added credits to session");
+      req.session.credits = req.session.credits - parseFloat(price);
+    }
 
     return res.status(200).json({
       response: response,
@@ -2667,7 +2809,7 @@ router.post('/edit_strategy', async function (req, res, next) {
 
   if (!loggedIn)
   {
-    return res.redirect("/login");
+    return res.redirect("/open_beta");
   }
 
   const allowedCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz !@#$%()';
@@ -2735,6 +2877,323 @@ router.post('/edit_strategy', async function (req, res, next) {
     }
   }
   xhttp.open("POST", 'https://us-central1-stocks2-301304.cloudfunctions.net/editStrategy', true);
+  xhttp.withCredentials = true;
+  xhttp.setRequestHeader("Content-Type", "application/json");
+  xhttp.send(temp2);
+});
+
+// Get public positions data
+router.post('/get_public_positions', async function (req, res, next) {
+  const loggedIn = (typeof req.session.user !== "undefined") ? true : false;
+  const userID = loggedIn ? req.session.user : "";
+  let address = req.body.address;
+
+  console.log(req.body);
+  let positions = [];
+  let username = "";
+  var cloud = axios.default.create({});
+  let url = 'https://us-central1-stocks2-301304.cloudfunctions.net/getPublicPositions';
+
+  if (!loggedIn)
+  {
+    return res.status(500).json({
+      response: "Error",
+    });
+  }
+
+  try 
+  {
+      let res2 = await cloud.post(url, { address: address });
+      positions = res2.data.positions;
+      username = res2.data.username;
+
+      if (typeof positions === "undefined")
+        {
+          return res.status(500).json({
+            response: "Error",
+          });
+        }
+  } 
+  catch (err) 
+  {
+    return res.status(500).json({
+      response: "Error",
+    });
+  }
+
+  res.status(200).json({
+    positions: positions,
+    username: username.substring(0, 8) + "..."
+  });
+});
+
+// Publish position
+router.post('/publish_position', function (req, res, next) {
+  var loggedIn = (typeof req.session.user !== "undefined") ? true : false;
+  var username = loggedIn ? req.session.user : "";
+
+  if (!loggedIn)
+  {
+    return res.redirect("/open_beta");
+  }
+
+  let positionID = req.body.positionID;
+  let csrf = req.body.csrf;
+
+  if (typeof positionID !== "string")
+  {
+    return res.status(200).json({
+      response: "Error",
+    });
+  }
+
+  const allowedCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz';
+  let found = false;
+  for (var i = 0; i < positionID.length; i+=1)
+  {
+    let character = positionID.charAt(i);
+    for (var j = 0; j < allowedCharacters.length; j+=1)
+    {
+        if (allowedCharacters.charAt(j) == character)
+        {
+            found = true;
+            break;
+        }
+    }
+    if (found == false)
+    {
+      return res.status(200).json({
+        response: "Error",
+      });
+    }
+  }
+
+  if (csrf != req.session.csrf)
+  {
+    return res.status(200).json({
+      response: "Error",
+    });
+  }
+
+  let temp2 = JSON.stringify({
+    positionID: positionID,
+    userID: username,
+    token: req.session.token
+  });
+  
+  const xhttp = new XMLHttpRequest();
+  xhttp.onload = function(e) {
+    const response = xhttp.responseText;
+
+    return res.status(200).json({
+      response: response,
+    });
+  }
+  xhttp.open("POST", 'https://us-central1-stocks2-301304.cloudfunctions.net/publishPosition', true);
+  xhttp.withCredentials = true;
+  xhttp.setRequestHeader("Content-Type", "application/json");
+  xhttp.send(temp2);
+});
+
+// Remove position
+router.post('/remove_position', function (req, res, next) {
+  var loggedIn = (typeof req.session.user !== "undefined") ? true : false;
+  var username = loggedIn ? req.session.user : "";
+
+  if (!loggedIn)
+  {
+    return res.redirect("/open_beta");
+  }
+
+  let positionID = req.body.positionID;
+  let csrf = req.body.csrf;
+
+  if (typeof positionID !== "string")
+  {
+    return res.status(200).json({
+      response: "Error",
+    });
+  }
+
+  const allowedCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz';
+  let found = false;
+  for (var i = 0; i < positionID.length; i+=1)
+  {
+    let character = positionID.charAt(i);
+    for (var j = 0; j < allowedCharacters.length; j+=1)
+    {
+        if (allowedCharacters.charAt(j) == character)
+        {
+            found = true;
+            break;
+        }
+    }
+    if (found == false)
+    {
+      return res.status(200).json({
+        response: "Error",
+      });
+    }
+  }
+
+  if (csrf != req.session.csrf)
+  {
+    return res.status(200).json({
+      response: "Error",
+    });
+  }
+
+  let temp2 = JSON.stringify({
+    positionID: positionID,
+    userID: username,
+    token: req.session.token
+  });
+  
+  const xhttp = new XMLHttpRequest();
+  xhttp.onload = function(e) {
+    const response = xhttp.responseText;
+
+    return res.status(200).json({
+      response: response,
+    });
+  }
+  xhttp.open("POST", 'https://us-central1-stocks2-301304.cloudfunctions.net/removePosition', true);
+  xhttp.withCredentials = true;
+  xhttp.setRequestHeader("Content-Type", "application/json");
+  xhttp.send(temp2);
+});
+
+// History Page
+router.get('/history/:id', function (req, res, next) {
+  let strategyID = req.params.id;
+  var loggedIn = (typeof req.session.user !== "undefined") ? true : false;
+  var username = loggedIn ? req.session.user : "";
+  let credits = (typeof req.session.credits !== "undefined") ? req.session.credits.toFixed(4) : "0.0000";
+
+  res.render('history', { 
+    loginStatus: loggedIn,
+    username: username.substring(0, 8) + "...",
+    credits: credits,
+    strategyID: strategyID
+  });
+});
+
+// Get history data
+router.post('/get_history', async function (req, res, next) {
+  const loggedIn = (typeof req.session.user !== "undefined") ? true : false;
+  const userID = loggedIn ? req.session.user : "";
+  let strategyID = req.body.strategyID;
+
+  let history = [];
+  let strategyName = "";
+  var cloud = axios.default.create({});
+  let url = 'https://us-central1-stocks2-301304.cloudfunctions.net/getHistory';
+
+  try 
+  {
+      let res2 = await cloud.post(url, { strategyID: strategyID });
+      history = res2.data.history;
+      strategyName = res2.data.strategyName;
+
+      if (typeof history === "undefined")
+        {
+          return res.status(500).json({
+            response: "Error",
+          });
+        }
+  } 
+  catch (err) 
+  {
+    return res.status(500).json({
+      response: "Error",
+    });
+  }
+
+  res.status(200).json({
+    history: history,
+    strategyName: strategyName
+  });
+});
+
+// Publish strategy
+router.post('/publish_strategy', function (req, res, next) {
+  var loggedIn = (typeof req.session.user !== "undefined") ? true : false;
+  var username = loggedIn ? req.session.user : "";
+
+  if (!loggedIn)
+  {
+    return res.redirect("/open_beta");
+  }
+
+  let strategyID = req.body.strategyID;
+  let csrf = req.body.csrf;
+  let price = req.body.price;
+
+  if (typeof strategyID !== "string")
+  {
+    return res.status(200).json({
+      response: "Error",
+    });
+  }
+
+  if (typeof price !== "number")
+  {
+    return res.status(200).json({
+      response: "Error",
+    });
+  }
+
+  if (price < 0.01 || price > 9999.99)
+  {
+    return res.status(200).json({
+      response: "Error",
+    });
+  }
+
+  const allowedCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz';
+  let found = false;
+  for (var i = 0; i < strategyID.length; i+=1)
+  {
+    let character = strategyID.charAt(i);
+    for (var j = 0; j < allowedCharacters.length; j+=1)
+    {
+        if (allowedCharacters.charAt(j) == character)
+        {
+            found = true;
+            break;
+        }
+    }
+    if (found == false)
+    {
+      return res.status(200).json({
+        response: "Error",
+      });
+    }
+  }
+
+  if (csrf != req.session.csrf)
+  {
+    return res.status(200).json({
+      response: "Error",
+    });
+  }
+
+  let temp2 = JSON.stringify({
+    strategyID: strategyID,
+    price: price,
+    userID: username,
+    token: req.session.token
+  });
+  
+  const xhttp = new XMLHttpRequest();
+  xhttp.onload = function(e) {
+    const response = xhttp.responseText;
+
+    return res.status(200).json({
+      response: response,
+    });
+  }
+  xhttp.open("POST", 'https://us-central1-stocks2-301304.cloudfunctions.net/publishStrategy', true);
   xhttp.withCredentials = true;
   xhttp.setRequestHeader("Content-Type", "application/json");
   xhttp.send(temp2);

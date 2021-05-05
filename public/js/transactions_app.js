@@ -118,6 +118,10 @@ document.addEventListener("DOMContentLoaded", async function() {
         {
             filterResults("Transaction fee");
         }
+        else if (selectedValue == "tradingBot")
+        {
+            filterResults("Trading Bot");
+        }
     });
 
     getData();
@@ -190,7 +194,7 @@ function buildTable()
         date.setAttribute("class", "marketsTableRowName");
         row.appendChild(date);
         let amount = document.createElement("td");
-        amount.innerText = plus + FILTERED_RESULTS[i].amount.toFixed(4) + " QOIN";
+        amount.innerText = plus + FILTERED_RESULTS[i].amount.toFixed(4) + " TGEN";
         if (found == true)
         {
             amount.style.color = upColor;
@@ -298,7 +302,7 @@ function buildPanels()
         let amountBR = document.createElement("br");
         let amountData = document.createElement("a");
         amountData.setAttribute("class", "tradingBotStoreProductBottomText");
-        amountData.innerText = plus + FILTERED_RESULTS[i].amount.toFixed(4) +  " QOIN";
+        amountData.innerText = plus + FILTERED_RESULTS[i].amount.toFixed(4) +  " TGEN";
         amountData.style.fontWeight = "500";
         if (found == true)
         {

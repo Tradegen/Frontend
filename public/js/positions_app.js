@@ -98,11 +98,21 @@ document.addEventListener("DOMContentLoaded", async function() {
     document.getElementById("successModal").style.display = "none";
     document.getElementById("errorModal").style.display = "none";
 
+    document.getElementById("publishPositionModal").style.display = "none";
+    document.getElementById("publishPositionModal").style.textAlign = "center";
+    document.getElementById("successModalPublish").style.display = "none";
+    document.getElementById("errorModalPublish").style.display = "none";
+
+    document.getElementById("removePositionModal").style.display = "none";
+    document.getElementById("removePositionModal").style.textAlign = "center";
+    document.getElementById("successModalRemove").style.display = "none";
+    document.getElementById("errorModalRemove").style.display = "none";
+
     if (document.getElementById('successButton'))
     {
         document.getElementById('successButton')
         .addEventListener('click', function(){
-            window.location.href = '/profile';
+            window.location.href = 'http://localhost:3000/profile';
         });
     }
 
@@ -110,6 +120,34 @@ document.addEventListener("DOMContentLoaded", async function() {
     {
         document.getElementById('errorButton')
             .addEventListener('click', hideErrorModal);
+    }
+
+    if (document.getElementById('successButtonPublish'))
+    {
+        document.getElementById('successButtonPublish')
+        .addEventListener('click', function(){
+            window.location.href = 'http://localhost:3000/profile';
+        });
+    }
+
+    if (document.getElementById('errorButtonPublish'))
+    {
+        document.getElementById('errorButtonPublish')
+            .addEventListener('click', hideErrorModalRemove);
+    }
+
+    if (document.getElementById('successButtonRemove'))
+    {
+        document.getElementById('successButtonRemove')
+        .addEventListener('click', function(){
+            window.location.href = 'http://localhost:3000/profile';
+        });
+    }
+
+    if (document.getElementById('errorButtonRemove'))
+    {
+        document.getElementById('errorButtonRemove')
+            .addEventListener('click', hideErrorModalRemove);
     }
 
     document.getElementById("successModal").style.fontSize = "16px";
@@ -120,6 +158,24 @@ document.addEventListener("DOMContentLoaded", async function() {
     document.getElementById("errorTitle").style.marginTop = "20px !important";
     document.getElementById("errorModal").style.fontWeight = "500";
     document.getElementById("errorTitle").style.marginBottom = "0px !important";
+
+    document.getElementById("successModalPublish").style.fontSize = "16px";
+    document.getElementById("successTitlePublish").style.marginTop = "20px !important";
+    document.getElementById("successModalPublish").style.fontWeight = "500";
+    document.getElementById("successTitlePublish").style.marginBottom = "0px !important";
+    document.getElementById("errorModalPublish").style.fontSize = "16px";
+    document.getElementById("errorTitlePublish").style.marginTop = "20px !important";
+    document.getElementById("errorModalPublish").style.fontWeight = "500";
+    document.getElementById("errorTitlePublish").style.marginBottom = "0px !important";
+
+    document.getElementById("successModalRemove").style.fontSize = "16px";
+    document.getElementById("successTitleRemove").style.marginTop = "20px !important";
+    document.getElementById("successModalRemove").style.fontWeight = "500";
+    document.getElementById("successTitleRemove").style.marginBottom = "0px !important";
+    document.getElementById("errorModalRemove").style.fontSize = "16px";
+    document.getElementById("errorTitleRemove").style.marginTop = "20px !important";
+    document.getElementById("errorModalRemove").style.fontWeight = "500";
+    document.getElementById("errorTitleRemove").style.marginBottom = "0px !important";
 
     getData();
 });
@@ -222,8 +278,7 @@ function buildTable()
     header_row.appendChild(header_title6);
     let header_title7 = document.createElement("th");
     header_title7.innerText = "Actions";
-    header_title7.setAttribute("class", "marketsTableRowData");
-    header_title7.style.textAlign = "center";
+    header_title7.setAttribute("class", "marketsTableRowName");
     header_row.appendChild(header_title7);
     table_head.appendChild(header_row);
     table.appendChild(table_head);
@@ -260,15 +315,15 @@ function buildTable()
         shareClass.setAttribute("class", "marketsTableRowName");
         row.appendChild(shareClass);
         let entryPrice = document.createElement("td");
-        entryPrice.innerText = FILTERED_POSITIONS[i].entryPrice.toFixed(4) + " QOIN";
+        entryPrice.innerText = FILTERED_POSITIONS[i].entryPrice.toFixed(4) + " TGEN";
         entryPrice.setAttribute("class", "marketsTableRowName");
         row.appendChild(entryPrice);
         let currentPrice = document.createElement("td");
-        currentPrice.innerText = FILTERED_POSITIONS[i].currentPrice.toFixed(4) + " QOIN";
+        currentPrice.innerText = FILTERED_POSITIONS[i].currentPrice.toFixed(4) + " TGEN";
         currentPrice.setAttribute("class", "marketsTableRowName");
         row.appendChild(currentPrice);
         let currentValue = document.createElement("td");
-        currentValue.innerText = value.toFixed(4) + " QOIN";
+        currentValue.innerText = value.toFixed(4) + " TGEN";
         currentValue.setAttribute("class", "marketsTableRowName");
         row.appendChild(currentValue);
         let change = document.createElement("td");
@@ -304,12 +359,28 @@ function buildTable()
 
         let actions = document.createElement("td");
         actions.setAttribute("class", "marketsTableRowName");
-        actions.style.textAlign = "center";
         let viewButton = document.createElement("i");
         viewButton.innerText = "timeline";
         viewButton.setAttribute("class", "material-icons actionIcon");
         let ID = FILTERED_POSITIONS[i].address;
         viewButton.addEventListener('click', function(){ window.location.href = '/position_info/' + ID; });
+
+        if (!FILTERED_POSITIONS[i].isPublic || FILTERED_POSITIONS[i].isPublic == false)
+        {
+            let publicButton = document.createElement("i");
+            publicButton.innerText = "public";
+            publicButton.setAttribute("class", "material-icons actionIcon");
+            actions.appendChild(publicButton);
+            publicButton.addEventListener('click', function(){ displayModalPublish(FILTERED_POSITIONS[i].positionID.toString()); });
+        }
+        else
+        {
+            let privateButton = document.createElement("i");
+            privateButton.innerText = "public_off";
+            privateButton.setAttribute("class", "material-icons actionIcon");
+            actions.appendChild(privateButton);
+            privateButton.addEventListener('click', function(){ displayModalRemove(FILTERED_POSITIONS[i].positionID.toString()); });
+        }
 
         if (FILTERED_POSITIONS[i].forSale == false)
         {
@@ -324,7 +395,6 @@ function buildTable()
         {
             actions.appendChild(viewButton);
         }
-        
         row.appendChild(actions);
 
         table_body.appendChild(row);
@@ -408,7 +478,7 @@ function buildPanels()
         let shareClassBR = document.createElement("br");
         let shareClassData = document.createElement("a");
         shareClassData.setAttribute("class", "tradingBotStoreProductBottomText");
-        shareClassData.innerText = FILTERED_POSITIONS[i].shareClass.toFixed(4) + " QOIN";
+        shareClassData.innerText = FILTERED_POSITIONS[i].shareClass.toFixed(4) + " TGEN";
         shareClassData.style.fontWeight = "500";
         shareClass.appendChild(shareClassText);
         shareClass.appendChild(shareClassBR);
@@ -421,7 +491,7 @@ function buildPanels()
         let entryPriceBR = document.createElement("br");
         let entryPriceData = document.createElement("a");
         entryPriceData.setAttribute("class", "tradingBotStoreProductBottomText");
-        entryPriceData.innerText = FILTERED_POSITIONS[i].entryPrice.toFixed(4) + " QOIN";
+        entryPriceData.innerText = FILTERED_POSITIONS[i].entryPrice.toFixed(4) + " TGEN";
         entryPriceData.style.fontWeight = "500";
         entryPrice.appendChild(entryPriceText);
         entryPrice.appendChild(entryPriceBR);
@@ -434,7 +504,7 @@ function buildPanels()
         let currentPriceBR = document.createElement("br");
         let currentPriceData = document.createElement("a");
         currentPriceData.setAttribute("class", "tradingBotStoreProductBottomText");
-        currentPriceData.innerText = FILTERED_POSITIONS[i].currentPrice.toFixed(4) + " QOIN";
+        currentPriceData.innerText = FILTERED_POSITIONS[i].currentPrice.toFixed(4) + " TGEN";
         currentPriceData.style.fontWeight = "500";
         currentPrice.appendChild(currentPriceText);
         currentPrice.appendChild(currentPriceBR);
@@ -447,7 +517,7 @@ function buildPanels()
         let currentValueBR = document.createElement("br");
         let currentValueData = document.createElement("a");
         currentValueData.setAttribute("class", "tradingBotStoreProductBottomText");
-        currentValueData.innerText = value.toFixed(4) + " QOIN";
+        currentValueData.innerText = value.toFixed(4) + " TGEN";
         currentValueData.style.fontWeight = "500";
         currentValue.appendChild(currentValueText);
         currentValue.appendChild(currentValueBR);
@@ -499,6 +569,23 @@ function buildPanels()
         if (FILTERED_POSITIONS[i].forSale == false)
         {
             buttons.appendChild(sellButton);
+        }
+
+        if (!FILTERED_POSITIONS[i].isPublic || FILTERED_POSITIONS[i].isPublic == false)
+        {
+            let publishButton = document.createElement("button");
+            publishButton.innerText = "Publish";
+            publishButton.setAttribute("class", "buyButton");
+            publishButton.addEventListener('click', function(){ displayModalPublish(FILTERED_POSITIONS[i].positionID.toString()); });
+            buttons.appendChild(publishButton);
+        }
+        else
+        {
+            let removeButton = document.createElement("button");
+            removeButton.innerText = "Remove";
+            removeButton.setAttribute("class", "buyButton");
+            removeButton.addEventListener('click', function(){ displayModalRemove(FILTERED_POSITIONS[i].positionID.toString()); });
+            buttons.appendChild(publishButton);
         }
 
         bottomRow.appendChild(size);
@@ -653,7 +740,7 @@ function displaySuccessModal()
             $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
             setTimeout(function () {
                 $("#successModal").dialog("close");
-                window.location.href = '/profile';
+                window.location.href = 'http://localhost:3000/profile';
             }, 2000);
             if (!isMobile.any())
             {
@@ -819,4 +906,256 @@ function customSort(ID)
     }
 
     buildTable();
+}
+
+function hideModalPublish() 
+{
+    document.getElementById('pageMask').style.display = "none";
+    $( "#publishPositionModal" ).dialog('close');
+}
+
+function displayModalPublish(id) 
+{
+    let width = (isMobile.any()) ? Math.min(screen.width, 460) : 460;
+    document.getElementById('pageMask').style.display = "block";
+    $( "#publishPositionModal" ).dialog({
+        height: 200,
+        width: width,
+        closeOnEscape: true,
+        dialogClass: 'whiteBackground',
+        open: function(event, ui) {
+            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
+        }
+    });
+    $( "#publishPositionModal" ).show();
+
+    document.getElementById('confirmPublish').addEventListener('click', function(){ publishPosition(id); });
+    document.getElementById('cancelPublish').addEventListener('click', hideModalPublish);
+}
+
+function publishPosition(id)
+{
+    let csrf = document.getElementById("sotong").value;
+    let temp = JSON.stringify({
+        positionID: id,
+        csrf: csrf
+    });
+    const xhttpRep = new XMLHttpRequest();
+    xhttpRep.onload = async function(e) {
+        // Handling response from the API for GET reports:
+        const response = JSON.parse(xhttpRep.responseText);
+
+        if (response.response == "Success")
+        {
+            displaySuccessModalPublish();
+            return;
+        }
+        else
+        {
+            displayErrorModalPublish(response.response);
+            return;
+        }
+    };
+    xhttpRep.open("POST", '/publish_position', true);
+    xhttpRep.withCredentials = true;
+    xhttpRep.setRequestHeader("Content-Type", "application/json");
+    xhttpRep.send(temp);
+
+    hideModalPublish();
+}
+
+function hideSuccessModalPublish() 
+{
+    $( "#successModalPublish" ).dialog('close');
+}
+
+function displaySuccessModalPublish() 
+{
+    let position = { my: "right top", at: "right-100 top", of: window };
+    if (isMobile.any())
+    {
+        position = { my: "bottom", at: "bottom", of: window }
+    }
+    let width = (isMobile.any()) ? screen.width : 210;
+    var Y = window.pageYOffset;
+    $( "#successModalPublish" ).dialog({
+        height: 55,
+        width: width,
+        closeOnEscape: true,
+        dialogClass: 'successModalContent',
+        position: position,
+        open: function(event, ui) {
+            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
+            setTimeout(function () {
+                $("#successModalPublish").dialog("close");
+                window.location.href = 'http://localhost:3000/profile';
+            }, 2000);
+            if (!isMobile.any())
+            {
+                $(this).parent().css({'top': Y+100});
+            }
+        }
+    });
+    $( "#successModalPublish" ).show()
+}
+
+function hideErrorModalPublish() 
+{
+    $( "#errorModalPublish" ).dialog('close');
+}
+
+function displayErrorModalPublish(message) 
+{
+    document.getElementById("errorTextPublish").innerText = message;
+    let position = { my: "right top", at: "right-100 top", of: window };
+    if (isMobile.any())
+    {
+        position = { my: "bottom", at: "bottom", of: window }
+    }
+    let width = (isMobile.any()) ? screen.width : 260;
+    var Y = window.pageYOffset;
+    $( "#errorModalPublish" ).dialog({
+        height: 55,
+        width: width,
+        closeOnEscape: true,
+        dialogClass: 'errorModalContent',
+        position: position,
+        open: function(event, ui) {
+            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
+            setTimeout(function () {
+                $("#errorModal").dialog("close");
+            }, 2000);
+            if (!isMobile.any())
+            {
+                $(this).parent().css({'top': Y+100});
+            }
+        }
+    });
+    $( "#errorModalPublish" ).show()
+}
+
+function hideModalRemove() 
+{
+    document.getElementById('pageMask').style.display = "none";
+    $( "#removePositionModal" ).dialog('close');
+}
+
+function displayModalRemove(id) 
+{
+    let width = (isMobile.any()) ? Math.min(screen.width, 460) : 460;
+    document.getElementById('pageMask').style.display = "block";
+    $( "#removePositionModal" ).dialog({
+        height: 200,
+        width: width,
+        closeOnEscape: true,
+        dialogClass: 'whiteBackground',
+        open: function(event, ui) {
+            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
+        }
+    });
+    $( "#removePositionModal" ).show();
+
+    document.getElementById('confirmRemove').addEventListener('click', function(){ removePosition(id); });
+    document.getElementById('cancelRemove').addEventListener('click', hideModalRemove);
+}
+
+function removePosition(id)
+{
+    let csrf = document.getElementById("sotong").value;
+    let temp = JSON.stringify({
+        positionID: id,
+        csrf: csrf
+    });
+    const xhttpRep = new XMLHttpRequest();
+    xhttpRep.onload = async function(e) {
+        // Handling response from the API for GET reports:
+        const response = JSON.parse(xhttpRep.responseText);
+
+        if (response.response == "Success")
+        {
+            displaySuccessModalRemove();
+            return;
+        }
+        else
+        {
+            displayErrorModalRemove(response.response);
+            return;
+        }
+    };
+    xhttpRep.open("POST", '/remove_position', true);
+    xhttpRep.withCredentials = true;
+    xhttpRep.setRequestHeader("Content-Type", "application/json");
+    xhttpRep.send(temp);
+
+    hideModalRemove();
+}
+
+function hideSuccessModalRemove() 
+{
+    $( "#successModalRemove" ).dialog('close');
+}
+
+function displaySuccessModalRemove() 
+{
+    let position = { my: "right top", at: "right-100 top", of: window };
+    if (isMobile.any())
+    {
+        position = { my: "bottom", at: "bottom", of: window }
+    }
+    let width = (isMobile.any()) ? screen.width : 210;
+    var Y = window.pageYOffset;
+    $( "#successModalRemove" ).dialog({
+        height: 55,
+        width: width,
+        closeOnEscape: true,
+        dialogClass: 'successModalContent',
+        position: position,
+        open: function(event, ui) {
+            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
+            setTimeout(function () {
+                $("#successModalRemove").dialog("close");
+                window.location.href = 'http://localhost:3000/profile';
+            }, 2000);
+            if (!isMobile.any())
+            {
+                $(this).parent().css({'top': Y+100});
+            }
+        }
+    });
+    $( "#successModalRemove" ).show()
+}
+
+function hideErrorModalRemove() 
+{
+    $( "#errorModalRemove" ).dialog('close');
+}
+
+function displayErrorModalRemove(message) 
+{
+    document.getElementById("errorTextRemove").innerText = message;
+    let position = { my: "right top", at: "right-100 top", of: window };
+    if (isMobile.any())
+    {
+        position = { my: "bottom", at: "bottom", of: window }
+    }
+    let width = (isMobile.any()) ? screen.width : 260;
+    var Y = window.pageYOffset;
+    $( "#errorModalRemove" ).dialog({
+        height: 55,
+        width: width,
+        closeOnEscape: true,
+        dialogClass: 'errorModalContent',
+        position: position,
+        open: function(event, ui) {
+            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
+            setTimeout(function () {
+                $("#errorModalRemove").dialog("close");
+            }, 2000);
+            if (!isMobile.any())
+            {
+                $(this).parent().css({'top': Y+100});
+            }
+        }
+    });
+    $( "#errorModalRemove" ).show()
 }

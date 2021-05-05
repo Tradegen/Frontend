@@ -27,7 +27,7 @@ function generateContent()
             title.innerText = listings[i].strategyName;
             let price = document.createElement("div");
             price.setAttribute("class", "tradingBotStoreProductPrice");
-            price.innerText = "Price: $" + listings[i].price.toString();
+            price.innerText = "Price: " + listings[i].price.toString() + " TGEN";
             topRow.appendChild(title);
             topRow.appendChild(price);
 
@@ -120,6 +120,10 @@ var sticky = header.offsetTop;
 
 // Add the sticky class to the header when you reach its scroll position. Remove "sticky" when you leave the scroll position
 function myFunction() {
+  if (isMobile.any())
+  {
+    return;
+  }
   if (window.pageYOffset > sticky) {
     header.classList.add("sticky");
   } else {

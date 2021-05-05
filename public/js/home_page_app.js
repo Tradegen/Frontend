@@ -29,15 +29,19 @@ window.addEventListener('DOMContentLoaded', function() {
     }
     
     document.getElementById("getStarted").addEventListener("click", function() {
-        window.location.href = '/open_beta';
+        window.location.href = 'http://localhost:3000/open_beta';
     })
 
     document.getElementById("getStarted2").addEventListener("click", function() {
-        window.location.href = '/open_beta';
+        window.location.href = 'http://localhost:3000/open_beta';
     })
 
     document.getElementById("learnMore").addEventListener("click", function() {
-      window.location.href = '/about';
+      window.location.href = 'http://localhost:3000/about';
+    })
+
+    document.getElementById("viewStrategies").addEventListener("click", function() {
+      window.location.href = 'http://localhost:3000/strategies';
     })
 
     INDEX = 0;
@@ -114,9 +118,9 @@ window.addEventListener('DOMContentLoaded', function() {
       document.getElementById("3").style.color = "rgba(161, 194, 250, 0.16)";
     })
 
-    slideshow();
+    //slideshow();
 
-    setInterval(slideshow, 2000);
+    //setInterval(slideshow, 2000);
 });
 
 // When the user scrolls the page, execute myFunction
@@ -130,6 +134,10 @@ var sticky = header.offsetTop;
 
 // Add the sticky class to the header when you reach its scroll position. Remove "sticky" when you leave the scroll position
 function myFunction() {
+  if (isMobile.any())
+  {
+    return;
+  }
   if (window.pageYOffset > sticky) {
     header.classList.add("sticky");
   } else {

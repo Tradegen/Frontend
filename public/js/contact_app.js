@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     {
         document.getElementById('successButton')
         .addEventListener('click', function(){
-            window.location.href = '/';
+            window.location.href = 'http://localhost:3000';
         });
     }
 
@@ -122,7 +122,7 @@ function displaySuccessModal()
             $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
             setTimeout(function () {
                 $("#successModal").dialog("close");
-                window.location.href = '/';
+                window.location.href = 'http://localhost:3000';
             }, 2000);
             if (!isMobile.any())
             {
@@ -178,6 +178,10 @@ var sticky = header.offsetTop;
 
 // Add the sticky class to the header when you reach its scroll position. Remove "sticky" when you leave the scroll position
 function myFunction() {
+    if (isMobile.any())
+    {
+      return;
+    }
   if (window.pageYOffset > sticky) {
     header.classList.add("sticky");
   } else {

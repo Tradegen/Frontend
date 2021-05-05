@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function () {
     {
         document.getElementById('successButton')
         .addEventListener('click', function(){
-            window.location.href = '/positions';
+            window.location.href = 'http://localhost:3000/positions';
         });
     }
 
@@ -60,8 +60,8 @@ document.addEventListener('DOMContentLoaded', function () {
     
     let marketPrice = document.getElementById("sianjitpua").value;
 
-    document.getElementById("cost").innerText = parseFloat(marketPrice).toFixed(4) + " QOIN";
-    document.getElementById("totalPrice").innerText = " " + parseFloat(marketPrice).toFixed(4) + " QOIN";
+    document.getElementById("cost").innerText = parseFloat(marketPrice).toFixed(4) + " TGEN";
+    document.getElementById("totalPrice").innerText = " " + parseFloat(marketPrice).toFixed(4) + " TGEN";
 
     document.getElementById("successModal").style.fontSize = "16px";
     document.getElementById("successTitle").style.marginTop = "20px !important";
@@ -104,8 +104,8 @@ document.getElementById("shares").addEventListener("input", function() {
 
     document.getElementById("shares").value = (value == "") ? value : sharesBoughtValue;    
     document.getElementById("sharesBought").innerText = sharesBoughtValue + " / 1000 tokens";  
-    document.getElementById("totalPrice").innerText = " " + total + " QOIN";  
-    document.getElementById("cost").innerText = " " + total + " QOIN";  
+    document.getElementById("totalPrice").innerText = " " + total + " TGEN";  
+    document.getElementById("cost").innerText = " " + total + " TGEN";  
 });
 
 function hideModal() 
@@ -190,7 +190,7 @@ function displaySuccessModal()
             $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
             setTimeout(function () {
                 $("#successModal").dialog("close");
-                window.location.href = '/positions';
+                window.location.href = 'http://localhost:3000/positions';
             }, 2000);
             if (!isMobile.any())
             {

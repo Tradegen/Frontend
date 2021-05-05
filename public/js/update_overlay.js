@@ -27,6 +27,27 @@ window.addEventListener('DOMContentLoaded', function() {
             window.location.href = '/open_beta';
         })
     }
+
+    if (document.getElementById("facebook"))
+    {
+        document.getElementById("facebook").addEventListener("mouseover", function() {
+            document.getElementById("facebook").style.cursor = "pointer";
+        })
+    }
+
+    if (document.getElementById("github"))
+    {
+        document.getElementById("github").addEventListener("mouseover", function() {
+            document.getElementById("github").style.cursor = "pointer";
+        })
+    }
+
+    if (document.getElementById("linkedin"))
+    {
+        document.getElementById("linkedin").addEventListener("mouseover", function() {
+            document.getElementById("linkedin").style.cursor = "pointer";
+        })
+    }
 });
 
 function updateOverlay() {

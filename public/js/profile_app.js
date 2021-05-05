@@ -43,6 +43,9 @@ document.addEventListener("DOMContentLoaded", async function() {
     document.getElementById("successModalSell").style.display = "none";
     document.getElementById("errorModalSell").style.display = "none";
 
+    document.getElementById("successModalPublish").style.display = "none";
+    document.getElementById("errorModalPublish").style.display = "none";
+
     document.getElementById("successModalDelete").style.display = "none";
     document.getElementById("errorModalDelete").style.display = "none";
 
@@ -55,7 +58,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     {
         document.getElementById('successButtonCancel')
             .addEventListener('click', function(){
-                window.location.href = '/profile';
+                window.location.href = 'http://localhost:3000/profile';
             });
     }
 
@@ -69,7 +72,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     {
         document.getElementById('successButtonEdit')
             .addEventListener('click', function() {
-                window.location.href = '/profile';
+                window.location.href = 'http://localhost:3000/profile';
             });
     }
 
@@ -83,7 +86,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     {
         document.getElementById('successButtonSell')
             .addEventListener('click', function(){
-                window.location.href = '/profile';
+                window.location.href = 'http://localhost:3000/profile';
             });
     }
 
@@ -93,11 +96,25 @@ document.addEventListener("DOMContentLoaded", async function() {
             .addEventListener('click', hideErrorModalSell);
     }
 
+    if (document.getElementById('successButtonPublish'))
+    {
+        document.getElementById('successButtonPublish')
+            .addEventListener('click', function(){
+                window.location.href = 'http://localhost:3000/profile';
+            });
+    }
+
+    if (document.getElementById('errorButtonPublish'))
+    {
+        document.getElementById('errorButtonPublish')
+            .addEventListener('click', hideErrorModalPublish);
+    }
+
     if (document.getElementById('successButtonDelete'))
     {
         document.getElementById('successButtonDelete')
             .addEventListener('click', function(){
-                window.location.href = '/profile';
+                window.location.href = 'http://localhost:3000/profile';
             });
     }
 
@@ -111,7 +128,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     {
         document.getElementById('successButtonRunBacktest')
             .addEventListener('click', function(){
-                window.location.href = '/profile';
+                window.location.href = 'http://localhost:3000/profile';
             });
     }
 
@@ -125,7 +142,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     {
         document.getElementById('successButtonEditStrategy')
             .addEventListener('click', function(){
-                window.location.href = '/profile';
+                window.location.href = 'http://localhost:3000/profile';
             });
     }
 
@@ -134,6 +151,10 @@ document.addEventListener("DOMContentLoaded", async function() {
         document.getElementById('errorButtonEditStrategy')
             .addEventListener('click', hideErrorModalEditStrategy);
     }
+
+    document.getElementById('viewPositionsIcon').addEventListener('mouseover', function() {
+        document.getElementById('viewPositionsIcon').style.cursor = "pointer";
+    });
 
     document.getElementById("successModalCancel").style.fontSize = "16px";
     document.getElementById("successTitleCancel").style.marginTop = "20px !important";
@@ -161,6 +182,15 @@ document.addEventListener("DOMContentLoaded", async function() {
     document.getElementById("errorTitleSell").style.marginTop = "20px !important";
     document.getElementById("errorModalSell").style.fontWeight = "500";
     document.getElementById("errorTitleSell").style.marginBottom = "0px !important";
+
+    document.getElementById("successModalPublish").style.fontSize = "16px";
+    document.getElementById("successTitlePublish").style.marginTop = "20px !important";
+    document.getElementById("successModalPublish").style.fontWeight = "500";
+    document.getElementById("successTitlePublish").style.marginBottom = "0px !important";
+    document.getElementById("errorModalPublish").style.fontSize = "16px";
+    document.getElementById("errorTitlePublish").style.marginTop = "20px !important";
+    document.getElementById("errorModalPublish").style.fontWeight = "500";
+    document.getElementById("errorTitlePublish").style.marginBottom = "0px !important";
 
     document.getElementById("successModalDelete").style.fontSize = "16px";
     document.getElementById("successTitleDelete").style.marginTop = "20px !important";
@@ -193,6 +223,12 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     document.getElementById("confirmDeleteButton").style.backgroundColor = "#fe3957";
 
+    let address = document.getElementById("sotong2").value;
+
+    document.getElementById('viewPositionsIcon').addEventListener('click', function() {
+        window.location.href = "/public_positions/" + encodeURIComponent(address);
+    });
+
     generateContent();
 });
 
@@ -224,9 +260,11 @@ function generateContent()
         let totalNumberOfSharesOwned = document.getElementById("totalNumberOfSharesOwned");
         totalNumberOfSharesOwned.innerText = response.totalNumberOfShares.toString();
         let netWorth = document.getElementById("netWorth");
-        netWorth.innerText = response.netWorth.toFixed(4) + " QOIN";
+        netWorth.innerText = response.netWorth.toFixed(4) + " TGEN";
         let netReturn = document.getElementById("netReturn");
         netReturn.innerText = plus + response.netReturn.toFixed(2) + "%";
+        let memberSince = document.getElementById("memberSince");
+        memberSince.innerText = response.memberSince;
 
         //My Strategies table
         const myStrategies = response.developedStrategies;
@@ -249,10 +287,18 @@ function generateContent()
         header_title13.innerText = "Strategy Name";
         header_title13.setAttribute("class", "marketsTableRowName");
         header_row3.appendChild(header_title13);
+        let header_title233 = document.createElement("th");
+        header_title233.innerText = "Total Return";
+        header_title233.setAttribute("class", "marketsTableRowName");
+        header_row3.appendChild(header_title233);
         let header_title23 = document.createElement("th");
         header_title23.innerText = "Developed On";
         header_title23.setAttribute("class", "marketsTableRowName");
         header_row3.appendChild(header_title23);
+        let header_title232 = document.createElement("th");
+        header_title232.innerText = "Today's Change";
+        header_title232.setAttribute("class", "marketsTableRowName");
+        header_row3.appendChild(header_title232);
         let header_title33 = document.createElement("th");
         header_title33.innerText = "Status";
         header_title33.setAttribute("class", "marketsTableRowName");
@@ -278,10 +324,75 @@ function generateContent()
             strategyName.setAttribute("class", "marketsTableRowName");
             strategyName.appendChild(strategyNameLink);
             row.appendChild(strategyName);
+            let totalReturn = document.createElement("td");
+            let arrow2 = document.createElement("i");
+            let text2 = document.createElement("a");
+            arrow2.setAttribute("class", "material-icons");
+            let percent2 = myStrategies[i].totalReturn;
+            if (percent2 > 0)
+            {
+                totalReturn.style.color = upColor;
+                arrow2.innerText = "arrow_drop_up";
+                arrow2.style.color = upColor;
+            }
+            else if (percent2 == 0)
+            {
+                totalReturn.style.color = "#737373";
+                arrow2.innerText = "arrow_right";
+                arrow2.style.color = "#737373";
+            }
+            else
+            {
+                totalReturn.style.color = downColor;
+                arrow2.innerText = "arrow_drop_down";
+                arrow2.style.color = downColor;
+                percent2 *= -1;
+            }
+            text2.innerText = percent2.toFixed(2) + "%";
+            totalReturn.setAttribute("class", "marketsTableRowName");
+            totalReturn.style.display = "flex";
+            arrow2.style.paddingTop = "4px";
+            text2.style.paddingTop = "7px";
+            totalReturn.appendChild(arrow2);
+            totalReturn.appendChild(text2);
+            row.appendChild(totalReturn);
             let developedOn = document.createElement("td");
             developedOn.innerText = myStrategies[i].developedOn;
             developedOn.setAttribute("class", "marketsTableRowName");
             row.appendChild(developedOn);
+            let todayChange = document.createElement("td");
+            let arrow1 = document.createElement("i");
+            let text1 = document.createElement("a");
+            arrow1.setAttribute("class", "material-icons");
+            let percent1 = 100 * myStrategies[i].todayChange;
+            if (percent1 > 0)
+            {
+                todayChange.style.color = upColor;
+                arrow1.innerText = "arrow_drop_up";
+                arrow1.style.color = upColor;
+            }
+            else if (percent1 == 0)
+            {
+                todayChange.style.color = "#737373";
+                arrow1.innerText = "arrow_right";
+                arrow1.style.color = "#737373";
+            }
+            else
+            {
+                todayChange.style.color = downColor;
+                arrow1.innerText = "arrow_drop_down";
+                arrow1.style.color = downColor;
+                percent1 *= -1;
+            }
+            text1.innerText = percent1.toFixed(2) + "%";
+            todayChange.setAttribute("class", "marketsTableRowName");
+            todayChange.style.display = "flex";
+            arrow1.style.paddingTop = "4px";
+            text1.style.paddingTop = "7px";
+            todayChange.appendChild(arrow1);
+            todayChange.appendChild(text1);
+            row.appendChild(todayChange);
+            
             let status = document.createElement("td");
             status.innerText = myStrategies[i].status;
             status.setAttribute("class", "marketsTableRowName");
@@ -384,137 +495,6 @@ function generateContent()
 
         table3.appendChild(table_body3);
 
-        //Top Positions table
-        const positions = response.topPositions;
-
-        if (positions.length == 0)
-        {
-            document.getElementById("topPositionsDiv").style.display = "none";
-        }
-
-        let table1 = document.getElementById("topPositionsTable");
-        table1.setAttribute("class", "transactionsTable");
-        while (table1.hasChildNodes())
-        {
-            table1.removeChild(table1.firstChild);
-        }
-        let table_body1 = document.createElement("tbody");
-        let table_head1 = document.createElement("thead");
-        let header_row1 = document.createElement("tr");
-        let header_title11 = document.createElement("th");
-        header_title11.innerText = "Strategy Name";
-        header_title11.setAttribute("class", "marketsTableRowName");
-        header_row1.appendChild(header_title11);
-        let header_title21 = document.createElement("th");
-        header_title21.innerText = "Entry Date";
-        header_title21.setAttribute("class", "marketsTableRowName");
-        header_row1.appendChild(header_title21);
-        let header_title111 = document.createElement("th");
-        header_title111.innerText = "Tokens";
-        header_title111.setAttribute("class", "marketsTableRowName");
-        header_row1.appendChild(header_title111);
-        let header_title1111 = document.createElement("th");
-        header_title1111.innerText = "Class";
-        header_title1111.setAttribute("class", "marketsTableRowName");
-        header_row1.appendChild(header_title1111);
-        let header_title31 = document.createElement("th");
-        header_title31.innerText = "Entry Price";
-        header_title31.setAttribute("class", "marketsTableRowName");
-        header_row1.appendChild(header_title31);
-        let header_title41 = document.createElement("th");
-        header_title41.innerText = "Current Price";
-        header_title41.setAttribute("class", "marketsTableRowName");
-        header_row1.appendChild(header_title41);
-        let header_title51 = document.createElement("th");
-        header_title51.innerText = "Current Value";
-        header_title51.setAttribute("class", "marketsTableRowName");
-        header_row1.appendChild(header_title51);
-        let header_title61 = document.createElement("th");
-        header_title61.innerText = "Change";
-        header_title61.setAttribute("class", "marketsTableRowName");
-        header_title61.style.textAlign = "center";
-        header_row1.appendChild(header_title61);
-        table_head1.appendChild(header_row1);
-        table1.appendChild(table_head1);
-
-        for(let i = 0; i < positions.length; i++)
-        {
-            let row = document.createElement("tr");
-
-            let plus = (positions[i].currentPrice > positions[i].entryPrice) ? '+' : '';
-            let percent = (100 * (positions[i].currentPrice - positions[i].entryPrice)) / positions[i].entryPrice;
-            let value = positions[i].currentPrice * positions[i].shares;
-
-            let strategyName = document.createElement("td");
-            let strategyNameLink = document.createElement("a");
-            strategyNameLink.innerText = positions[i].strategyName;
-            let strategyID = positions[i].strategyID;
-            strategyNameLink.addEventListener('click', function(){ window.location.href = '/strategy_info/' + strategyID; });
-            strategyNameLink.addEventListener('mouseover', function(){ strategyNameLink.style.cursor = "pointer"; });
-            strategyName.setAttribute("class", "marketsTableRowName");
-            strategyName.appendChild(strategyNameLink);
-            row.appendChild(strategyName);
-            let entryDate = document.createElement("td");
-            entryDate.innerText = positions[i].entryDate;
-            entryDate.setAttribute("class", "marketsTableRowName");
-            row.appendChild(entryDate);
-            let shares = document.createElement("td");
-            shares.innerText = positions[i].shares;
-            shares.setAttribute("class", "marketsTableRowName");
-            row.appendChild(shares);
-            let shareClass = document.createElement("td");
-            shareClass.innerText = positions[i].shareClass;
-            shareClass.setAttribute("class", "marketsTableRowName");
-            row.appendChild(shareClass);
-            let entryPrice = document.createElement("td");
-            entryPrice.innerText = positions[i].entryPrice.toFixed(4) + " QOIN";
-            entryPrice.setAttribute("class", "marketsTableRowName");
-            row.appendChild(entryPrice);
-            let currentPrice = document.createElement("td");
-            currentPrice.innerText = positions[i].currentPrice.toFixed(4) + " QOIN";
-            currentPrice.setAttribute("class", "marketsTableRowName");
-            row.appendChild(currentPrice);
-            let currentValue = document.createElement("td");
-            currentValue.innerText = value.toFixed(4) + " QOIN";
-            currentValue.setAttribute("class", "marketsTableRowName");
-            row.appendChild(currentValue);
-            let change = document.createElement("td");
-            let arrow = document.createElement("i");
-            let text= document.createElement("a");
-            arrow.setAttribute("class", "material-icons");
-            if (percent > 0)
-            {
-                change.style.color = upColor;
-                arrow.innerText = "arrow_drop_up";
-                arrow.style.color = upColor;
-            }
-            else if (percent == 0)
-            {
-                change.style.color = "#737373";
-                arrow.innerText = "arrow_right";
-                arrow.style.color = "#737373";
-            }
-            else
-            {
-                change.style.color = downColor;
-                arrow.innerText = "arrow_drop_down";
-                arrow.style.color = downColor;
-                percent *= -1;
-            }
-            text.innerText = percent.toFixed(2) + "%";
-            change.setAttribute("class", "marketsTableRowName");
-            change.style.display = "flex";
-            change.style.textAlign = "center";
-            text.style.paddingTop = "3px";
-            change.appendChild(arrow);
-            change.appendChild(text);
-            row.appendChild(change);
-
-            table_body1.appendChild(row);
-        }
-
-        table1.appendChild(table_body1);
-
         //Live Strategies table
         const strategies = response.liveStrategies;
 
@@ -597,7 +577,7 @@ function generateContent()
             sharesBought.setAttribute("class", "marketsTableCirculatingSupply");
             row.appendChild(sharesBought);
             let currentPrice = document.createElement("td");
-            currentPrice.innerText = strategies[i].currentPrice.toFixed(4) + " QOIN";
+            currentPrice.innerText = strategies[i].currentPrice.toFixed(4) + " TGEN";
             currentPrice.setAttribute("class", "marketsTableRowName");
             row.appendChild(currentPrice);
             let change = document.createElement("td");
@@ -632,14 +612,14 @@ function generateContent()
             change.appendChild(text);
             row.appendChild(change);
             let salePrice = document.createElement("td");
-            salePrice.innerText = "$" + strategies[i].salePrice;
+            salePrice.innerText = (strategies[i].forSale == true) ? strategies[i].salePrice + " TGEN" : "N/A";
             salePrice.setAttribute("class", "marketsTableRowName");
             if (match == true)
             {
                 row.appendChild(salePrice);
             }
             let sales = document.createElement("td");
-            sales.innerText = strategies[i].sales;
+            sales.innerText = (strategies[i].forSale == true) ? strategies[i].sales : "N/A";
             sales.setAttribute("class", "marketsTableRowName");
             if (match == true)
             {
@@ -649,11 +629,23 @@ function generateContent()
             let actions = document.createElement("td");
             actions.setAttribute("class", "marketsTableRowData");
             actions.style.textAlign = "center";
+
             let buyButton = document.createElement("button");
             buyButton.innerText = "Buy";
             buyButton.setAttribute("class", "buyButton");
             let ID = strategies[i].strategyID;
             buyButton.addEventListener('click', function(){ window.location.href = '/buy_new_tokens/' + ID; });
+
+            let publishButton = document.createElement("button");
+            publishButton.innerText = "Sell code";
+            publishButton.setAttribute("class", "cancelButton");;
+            publishButton.addEventListener('click', function(){ publish(ID); });
+
+            if (match == true && strategies[i].forSale == false)
+            {
+                actions.appendChild(publishButton);
+            }
+
             actions.appendChild(buyButton);
             row.appendChild(actions);
 
@@ -735,11 +727,11 @@ function generateContent()
             shareClass.setAttribute("class", "marketsTableRowName");
             row.appendChild(shareClass);
             let marketPrice = document.createElement("td");
-            marketPrice.innerText = positionsForSale[i].marketPrice.toFixed(4) + " QOIN";
+            marketPrice.innerText = positionsForSale[i].marketPrice.toFixed(4) + " TGEN";
             marketPrice.setAttribute("class", "marketsTableRowName");
             row.appendChild(marketPrice);
             let advertisedPrice = document.createElement("td");
-            advertisedPrice.innerText = positionsForSale[i].advertisedPrice.toFixed(4) + " QOIN";
+            advertisedPrice.innerText = positionsForSale[i].advertisedPrice.toFixed(4) + " TGEN";
             advertisedPrice.setAttribute("class", "marketsTableRowName");
             row.appendChild(advertisedPrice);
             let change = document.createElement("td");
@@ -800,7 +792,7 @@ function generateContent()
             {
                 editButton.addEventListener('click', function(){ 
                     let positionID = positionsForSale[i].positionID;
-                    window.location.href = '/buy_position/' + encodeURIComponent(positionID);
+                    window.location.href = 'http://localhost:3000/buy_position/' + encodeURIComponent(positionID);
                 });
             }
             editButton.addEventListener('mouseover', function(){ editButton.style.cursor = "pointer"; });
@@ -822,7 +814,7 @@ function generateContent()
             {
                 cancelButton.addEventListener('click', function(){ 
                     let positionAddress = positionsForSale[i].address;
-                    window.location.href = '/position_info/' + encodeURIComponent(positionAddress);
+                    window.location.href = 'http://localhost:3000/position_info/' + encodeURIComponent(positionAddress);
                 });
             }
             
@@ -1087,82 +1079,160 @@ function populateStrategyDiv(id)
 
             let modifiedName = "";
 
+            if (firstIndicator == "CurrentCandle")
+            {
+                modifiedName = "Current candle ";
+            }
+            else if (firstIndicator == "EMA")
+            {
+                modifiedName = "EMA" + firstIndicatorParameter.toString() + " ";
+            }
+            else if (firstIndicator == "Gap")
+            {
+                modifiedName = "Gap ";
+            }
+            else if (firstIndicator == "NthCandle")
+            {
+                let suffix = "th";
+                if ((firstIndicatorParameter % 10) == 1 && firstIndicatorParameter != 11)
+                {
+                    suffix = "st";
+                }
+                else if ((firstIndicatorParameter % 10) == 2 && firstIndicatorParameter != 12)
+                {
+                    suffix = "nd";
+                }
+                else if ((firstIndicatorParameter % 10) == 3 && firstIndicatorParameter != 13)
+                {
+                    suffix = "rd";
+                }
+                modifiedName = firstIndicatorParameter.toString() + suffix + " candle ";
+            }
+            else if (firstIndicator == "PreviousNCandles")
+            {
+                modifiedName = "Previous " + firstIndicatorParameter.toString() + " candles ";
+            }
+            else if (firstIndicator == "Signal")
+            {
+                modifiedName = "Signal ";
+            }
+            else if (firstIndicator == "SMA")
+            {
+                modifiedName = "SMA" + firstIndicatorParameter.toString() + " ";
+            }
+
             //check comparator
             if (comparator == "BouncesHigherOff")
             {
-                modifiedName = "Bounces higher off ";
+                modifiedName += "bounces higher off ";
             }
             else if (comparator == "BouncesLowerOff")
             {
-                modifiedName = "Bounces lower off ";
+                modifiedName += "bounces lower off ";
             }
             else if (comparator == "BreaksAbove")
             {
-                modifiedName = "Break above ";
+                modifiedName += "breaks above ";
             }
             else if (comparator == "BreaksBelow")
             {
-                modifiedName = "Break below ";
+                modifiedName += "breaks below ";
             }
             else if (comparator == "Closes")
             {
-                modifiedName = "Current candle closes ";
+                if (firstIndicator == "PreviousNCandles")
+                {
+                    modifiedName += " close ";
+                }
+                else
+                {
+                    modifiedName += " closes ";
+                }
             }
             else if (comparator == "ClosesAbove")
             {
-                modifiedName = "Close above ";
+                if (firstIndicator == "PreviousNCandles")
+                {
+                    modifiedName += " close above ";
+                }
+                else
+                {
+                    modifiedName += " closes above ";
+                }
             }
             else if (comparator == "ClosesBelow")
             {
-                modifiedName = "Close below ";
+                if (firstIndicator == "PreviousNCandles")
+                {
+                    modifiedName += " close below ";
+                }
+                else
+                {
+                    modifiedName += " closes below ";
+                };
             }
             else if (comparator == "FallsTo")
             {
-                modifiedName = "Falls to ";
+                modifiedName += "falls to ";
             }
             else if (comparator == "Has")
             {
-                modifiedName = "Current candle has ";
+                if (firstIndicator == "PreviousNCandles")
+                {
+                    modifiedName += " have ";
+                }
+                else
+                {
+                    modifiedName += " has ";
+                }
             }
             else if (comparator == "RisesTo")
             {
-                modifiedName = "Rises to ";
+                modifiedName += "rises to ";
             }
             else if (comparator == "UpByAtLeast")
             {
-                modifiedName = "Gap up by at least ";
+                modifiedName += "up by at least ";
             }
             else if (comparator == "UpByAtMost")
             {
-                modifiedName = "Gap up by at most ";
+                modifiedName += "up by at most ";
             }
             else if (comparator == "DownByAtLeast")
             {
-                modifiedName = "Gap down by at least ";
+                modifiedName += "down by at least ";
             }
             else if (comparator == "DownByAtMost")
             {
-                modifiedName = "Gap down by at most ";
+                modifiedName += "down by at most ";
             }
             else if (comparator == "GivenInFirst")
             {
-                modifiedName = "Signal given in first ";
+                modifiedName += "given in first ";
             }
             else if (comparator == "FallByAtLeast")
             {
-                modifiedName = "Previous " + firstIndicatorParameter.toString() + " candles fall by at least ";
+                modifiedName += " fall by at least ";
             }
             else if (comparator == "FallByAtMost")
             {
-                modifiedName = "Previous " + firstIndicatorParameter.toString() + " candles fall by at most ";
+                modifiedName += " fall by at most ";
             }
             else if (comparator == "RiseByAtLeast")
             {
-                modifiedName = "Previous " + firstIndicatorParameter.toString() + " candles rise by at least ";
+                modifiedName += " rise by at least ";
             }
             else if (comparator == "RiseByAtMost")
             {
-                modifiedName = "Previous " + firstIndicatorParameter.toString() + " candles rise by at most ";
+                modifiedName += " rise by at most ";
+            }
+            else if (comparator == "CrossesAbove")
+            {
+                modifiedName += " crosses above ";
+            }
+            else if (comparator == "CrossesBelow")
+            {
+                modifiedName += " crosses below ";
             }
 
             //check second indicator
@@ -1287,173 +1357,275 @@ function populateStrategyDiv(id)
 
             let modifiedName = "";
 
-            //check comparator
-        if (comparator == "BouncesHigherOff")
-        {
-            modifiedName = "Bounces higher off ";
-        }
-        else if (comparator == "BouncesLowerOff")
-        {
-            modifiedName = "Bounces lower off ";
-        }
-        else if (comparator == "BreaksAbove")
-        {
-            modifiedName = "Break above ";
-        }
-        else if (comparator == "BreaksBelow")
-        {
-            modifiedName = "Break below ";
-        }
-        else if (comparator == "Closes")
-        {
-            modifiedName = "Current candle closes ";
-        }
-        else if (comparator == "ClosesAbove")
-        {
-            modifiedName = "Close above ";
-        }
-        else if (comparator == "ClosesBelow")
-        {
-            modifiedName = "Close below ";
-        }
-        else if (comparator == "FallsTo")
-        {
-            modifiedName = "Falls to ";
-        }
-        else if (comparator == "Has")
-        {
-            modifiedName = "Current candle has ";
-        }
-        else if (comparator == "RisesTo")
-        {
-            modifiedName = "Rises to ";
-        }
-        else if (comparator == "FallByAtLeast")
-        {
-            modifiedName = "Previous " + firstIndicatorParameter.toString() + " candles fall by at least ";
-        }
-        else if (comparator == "FallByAtMost")
-        {
-            modifiedName = "Previous " + firstIndicatorParameter.toString() + " candles fall by at most ";
-        }
-        else if (comparator == "RiseByAtLeast")
-        {
-            modifiedName = "Previous " + firstIndicatorParameter.toString() + " candles rise by at least ";
-        }
-        else if (comparator == "RiseByAtMost")
-        {
-            modifiedName = "Previous " + firstIndicatorParameter.toString() + " candles rise by at most ";
-        }
+            if (firstIndicator == "CurrentCandle")
+            {
+                modifiedName = "Current candle ";
+            }
+            else if (firstIndicator == "EMA")
+            {
+                modifiedName = "EMA" + firstIndicatorParameter.toString() + " ";
+            }
+            else if (firstIndicator == "Gap")
+            {
+                modifiedName = "Gap ";
+            }
+            else if (firstIndicator == "NthCandle")
+            {
+                let suffix = "th";
+                if ((firstIndicatorParameter % 10) == 1 && firstIndicatorParameter != 11)
+                {
+                    suffix = "st";
+                }
+                else if ((firstIndicatorParameter % 10) == 2 && firstIndicatorParameter != 12)
+                {
+                    suffix = "nd";
+                }
+                else if ((firstIndicatorParameter % 10) == 3 && firstIndicatorParameter != 13)
+                {
+                    suffix = "rd";
+                }
+                modifiedName = firstIndicatorParameter.toString() + suffix + " candle ";
+            }
+            else if (firstIndicator == "PreviousNCandles")
+            {
+                modifiedName = "Previous " + firstIndicatorParameter.toString() + " candles ";
+            }
+            else if (firstIndicator == "Signal")
+            {
+                modifiedName = "Signal ";
+            }
+            else if (firstIndicator == "SMA")
+            {
+                modifiedName = "SMA" + firstIndicatorParameter.toString() + " ";
+            }
 
-        //check second indicator
-        if (secondIndicator == "AtLeastNTimesRange")
-        {
-            modifiedName += "at least " + secondIndicatorParameter.toString() + " times range";
-        }
-        else if (secondIndicator == "AtLeastNTimesVolume")
-        {
-            modifiedName += "at least " + secondIndicatorParameter.toString() + " times volume";
-        }
-        else if (secondIndicator == "AtMostNTimesRange")
-        {
-            modifiedName += "at most " + secondIndicatorParameter.toString() + " times range";
-        }
-        else if (secondIndicator == "AtMostNTimesVolume")
-        {
-            modifiedName += "at most " + secondIndicatorParameter.toString() + " times volume";
-        }
-        else if (secondIndicator == "Down")
-        {
-            modifiedName += "down";
-        }
-        else if (secondIndicator == "EMA")
-        {
-            modifiedName += "EMA" + secondIndicatorParameter.toString();
-        }
-        else if (secondIndicator == "HigherRange")
-        {
-            modifiedName += "higher range";
-        }
-        else if (secondIndicator == "HigherVolume")
-        {
-            modifiedName += "higher volume";
-        }
-        else if (secondIndicator == "HighOfEntryBar")
-        {
-            modifiedName += "high of entry bar";
-        }
-        else if (secondIndicator == "HighOfFirstNMinutes")
-        {
-            modifiedName += "high of first " + secondIndicatorParameter.toString() + " minutes";
-        }
-        else if (secondIndicator == "HighOfLastNMinutes")
-        {
-            modifiedName += "high of last " + secondIndicatorParameter.toString() + " minutes";
-        }
-        else if (secondIndicator == "Interval")
-        {
-            modifiedName += "$" + secondIndicatorParameter.toString() + " interval";
-        }
-        else if (secondIndicator == "LongBottomTail")
-        {
-            modifiedName += "long bottom tail";
-        }
-        else if (secondIndicator == "LongTopTail")
-        {
-            modifiedName += "long top tail";
-        }
-        else if (secondIndicator == "LowerRange")
-        {
-            modifiedName += "lower range";
-        }
-        else if (secondIndicator == "LowerVolume")
-        {
-            modifiedName += "lower volume";
-        }
-        else if (secondIndicator == "LowOfEntryBar")
-        {
-            modifiedName += "low of entry bar";
-        }
-        else if (secondIndicator == "LowOfFirstNMinutes")
-        {
-            modifiedName += "low of first " + secondIndicatorParameter.toString() + " minutes";
-        }
-        else if (secondIndicator == "LowOfLastNMinutes")
-        {
-            modifiedName += "low of last " + secondIndicatorParameter.toString() + " minutes";
-        }
-        else if (secondIndicator == "PreviousCandleHigh")
-        {
-            modifiedName += "previous candle high";
-        }
-        else if (secondIndicator == "PreviousCandleLow")
-        {
-            modifiedName += "previous candle low";
-        }
-        else if (secondIndicator == "ProfitTarget")
-        {
-            modifiedName = secondIndicatorParameter.toString() + "% profit target"
-        }
-        else if (secondIndicator == "SMA")
-        {
-            modifiedName += "SMA" + secondIndicatorParameter.toString();
-        }
-        else if (secondIndicator == "StopLoss")
-        {
-            modifiedName = secondIndicatorParameter.toString() + "% stop loss"
-        }
-        else if (secondIndicator == "Up")
-        {
-            modifiedName += "Up";
-        }
-        else if (secondIndicator == "VWAP")
-        {
-            modifiedName += "VWAP" + secondIndicatorParameter.toString();
-        }
-        else if (secondIndicator == "NPercent")
-        {
-            modifiedName += secondIndicatorParameter.toString() + "%";
-        }
+            //check comparator
+            if (comparator == "BouncesHigherOff")
+            {
+                modifiedName += "bounces higher off ";
+            }
+            else if (comparator == "BouncesLowerOff")
+            {
+                modifiedName += "bounces lower off ";
+            }
+            else if (comparator == "BreaksAbove")
+            {
+                modifiedName += "breaks above ";
+            }
+            else if (comparator == "BreaksBelow")
+            {
+                modifiedName += "breaks below ";
+            }
+            else if (comparator == "Closes")
+            {
+                if (firstIndicator == "PreviousNCandles")
+                {
+                    modifiedName += " close ";
+                }
+                else
+                {
+                    modifiedName += " closes ";
+                }
+            }
+            else if (comparator == "ClosesAbove")
+            {
+                if (firstIndicator == "PreviousNCandles")
+                {
+                    modifiedName += " close above ";
+                }
+                else
+                {
+                    modifiedName += " closes above ";
+                }
+            }
+            else if (comparator == "ClosesBelow")
+            {
+                if (firstIndicator == "PreviousNCandles")
+                {
+                    modifiedName += " close below ";
+                }
+                else
+                {
+                    modifiedName += " closes below ";
+                };
+            }
+            else if (comparator == "FallsTo")
+            {
+                modifiedName += "falls to ";
+            }
+            else if (comparator == "Has")
+            {
+                if (firstIndicator == "PreviousNCandles")
+                {
+                    modifiedName += " have ";
+                }
+                else
+                {
+                    modifiedName += " has ";
+                }
+            }
+            else if (comparator == "RisesTo")
+            {
+                modifiedName += "rises to ";
+            }
+            else if (comparator == "UpByAtLeast")
+            {
+                modifiedName += "up by at least ";
+            }
+            else if (comparator == "UpByAtMost")
+            {
+                modifiedName += "up by at most ";
+            }
+            else if (comparator == "DownByAtLeast")
+            {
+                modifiedName += "down by at least ";
+            }
+            else if (comparator == "DownByAtMost")
+            {
+                modifiedName += "down by at most ";
+            }
+            else if (comparator == "GivenInFirst")
+            {
+                modifiedName += "given in first ";
+            }
+            else if (comparator == "FallByAtLeast")
+            {
+                modifiedName += " fall by at least ";
+            }
+            else if (comparator == "FallByAtMost")
+            {
+                modifiedName += " fall by at most ";
+            }
+            else if (comparator == "RiseByAtLeast")
+            {
+                modifiedName += " rise by at least ";
+            }
+            else if (comparator == "RiseByAtMost")
+            {
+                modifiedName += " rise by at most ";
+            }
+            else if (comparator == "CrossesAbove")
+            {
+                modifiedName += " crosses above ";
+            }
+            else if (comparator == "CrossesBelow")
+            {
+                modifiedName += " crosses below ";
+            }
+
+            //check second indicator
+            if (secondIndicator == "AtLeastNTimesRange")
+            {
+                modifiedName += "at least " + secondIndicatorParameter.toString() + " times range";
+            }
+            else if (secondIndicator == "AtLeastNTimesVolume")
+            {
+                modifiedName += "at least " + secondIndicatorParameter.toString() + " times volume";
+            }
+            else if (secondIndicator == "AtMostNTimesRange")
+            {
+                modifiedName += "at most " + secondIndicatorParameter.toString() + " times range";
+            }
+            else if (secondIndicator == "AtMostNTimesVolume")
+            {
+                modifiedName += "at most " + secondIndicatorParameter.toString() + " times volume";
+            }
+            else if (secondIndicator == "Down")
+            {
+                modifiedName += "down";
+            }
+            else if (secondIndicator == "EMA")
+            {
+                modifiedName += "EMA" + secondIndicatorParameter.toString();
+            }
+            else if (secondIndicator == "HigherRange")
+            {
+                modifiedName += "higher range";
+            }
+            else if (secondIndicator == "HigherVolume")
+            {
+                modifiedName += "higher volume";
+            }
+            else if (secondIndicator == "HighOfEntryBar")
+            {
+                modifiedName += "high of entry bar";
+            }
+            else if (secondIndicator == "HighOfFirstNMinutes")
+            {
+                modifiedName += "high of first " + secondIndicatorParameter.toString() + " minutes";
+            }
+            else if (secondIndicator == "HighOfLastNMinutes")
+            {
+                modifiedName += "high of last " + secondIndicatorParameter.toString() + " minutes";
+            }
+            else if (secondIndicator == "Interval")
+            {
+                modifiedName += "$" + secondIndicatorParameter.toString() + " interval";
+            }
+            else if (secondIndicator == "LongBottomTail")
+            {
+                modifiedName += "long bottom tail";
+            }
+            else if (secondIndicator == "LongTopTail")
+            {
+                modifiedName += "long top tail";
+            }
+            else if (secondIndicator == "LowerRange")
+            {
+                modifiedName += "lower range";
+            }
+            else if (secondIndicator == "LowerVolume")
+            {
+                modifiedName += "lower volume";
+            }
+            else if (secondIndicator == "LowOfEntryBar")
+            {
+                modifiedName += "low of entry bar";
+            }
+            else if (secondIndicator == "LowOfFirstNMinutes")
+            {
+                modifiedName += "low of first " + secondIndicatorParameter.toString() + " minutes";
+            }
+            else if (secondIndicator == "LowOfLastNMinutes")
+            {
+                modifiedName += "low of last " + secondIndicatorParameter.toString() + " minutes";
+            }
+            else if (secondIndicator == "PreviousCandleHigh")
+            {
+                modifiedName += "previous candle high";
+            }
+            else if (secondIndicator == "PreviousCandleLow")
+            {
+                modifiedName += "previous candle low";
+            }
+            else if (secondIndicator == "ProfitTarget")
+            {
+                modifiedName = secondIndicatorParameter.toString() + "% profit target";
+            }
+            else if (secondIndicator == "SMA")
+            {
+                modifiedName += "SMA" + secondIndicatorParameter.toString();
+            }
+            else if (secondIndicator == "StopLoss")
+            {
+                modifiedName = secondIndicatorParameter.toString() + "% stop loss";
+            }
+            else if (secondIndicator == "Up")
+            {
+                modifiedName += "Up";
+            }
+            else if (secondIndicator == "VWAP")
+            {
+                modifiedName += "VWAP" + secondIndicatorParameter.toString();
+            }
+            else if (secondIndicator == "NMinutes")
+            {
+                modifiedName += secondIndicatorParameter.toString() + " minutes";
+            }
+            else if (secondIndicator == "NPercent")
+            {
+                modifiedName += secondIndicatorParameter.toString() + "%";
+            }
 
             let listElement = document.createElement("li");
             listElement.innerText = modifiedName;
@@ -1519,11 +1691,11 @@ function displaySellStrategyModal(id)
 
 function sellStrategy(id)
 {
-    let price = parseFloat(document.getElementById('strategyPrice').value);
+    let symbol = parseFloat(document.getElementById('strategySymbol').value);
     let csrf = document.getElementById("sotong").value;
     let temp = JSON.stringify({
         strategyID: id,
-        price: price,
+        symbol: symbol,
         csrf: csrf
       });
     const xhttpRep = new XMLHttpRequest();
@@ -1549,6 +1721,65 @@ function sellStrategy(id)
     xhttpRep.send(temp);
 
     hideSellStrategyModal();
+}
+
+function hidePublishStrategyModal() 
+{
+    document.getElementById('pageMask').style.display = "none";
+    $( "#publishStrategyModal" ).dialog('close');
+}
+
+function displayPublishStrategyModal(id) 
+{
+    let width = (isMobile.any()) ? Math.min(screen.width, 520) : 520;
+    document.getElementById('pageMask').style.display = "block";
+    $( "#publishStrategyModal" ).dialog({
+        height: 400,
+        width: width,
+        dialogClass: "whiteBackground",
+        closeOnEscape: true,
+        open: function(event, ui) {
+            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
+        }
+    });
+    $( "#publishStrategyModal" ).show();
+
+    document.getElementById('confirmPublishButton').addEventListener('click', function(){ publishStrategy(id); });
+    document.getElementById('cancelPublishButton').addEventListener('click', hidePublishStrategyModal);
+}
+
+function publishStrategy(id)
+{
+    let price = parseFloat(document.getElementById('strategyPrice').value);
+    let csrf = document.getElementById("sotong").value;
+    let temp = JSON.stringify({
+        strategyID: id,
+        price: price,
+        csrf: csrf
+      });
+    const xhttpRep = new XMLHttpRequest();
+    xhttpRep.onload = async function(e) {
+        // Handling response from the API for GET reports:
+        const response = JSON.parse(xhttpRep.responseText);
+
+        if (response.response == "Success")
+        {
+            displaySuccessModalPublish();
+            return;
+        }
+        else
+        {
+            displayErrorModalPublish(response.response);
+            return;
+        }
+    };
+
+    xhttpRep.open("POST", '/publish_strategy', true);
+    xhttpRep.withCredentials = true;
+    xhttpRep.setRequestHeader("Content-Type", "application/json");
+    xhttpRep.send(temp);
+
+    hidePublishStrategyModal();
 }
 
 function displayDeleteStrategyModal(id) 
@@ -1609,24 +1840,20 @@ function deleteStrategy(id)
     hideDeleteStrategyModal();
 }
 
-document.getElementById("strategyPrice").addEventListener("input", function() {
-    let value = document.getElementById("strategyPrice").value;
+document.getElementById("strategySymbol").addEventListener("input", function() {
+    let value = document.getElementById("strategySymbol").value;
 
-    if (parseFloat(value) > 99.99)
+    if (value.length > 5)
     {
         value = value.slice(0, value.length - 1);
     }
 
-    if (value.length == 0 || parseFloat(value) == 0)
+    if (value.length == 0)
     {
         value = "";
     }
-    else if (value.indexOf(".") != -1)
-    {
-        value = value.slice(0, (value.indexOf("."))+3);
-    }
 
-    document.getElementById("strategyPrice").value = value;    
+    document.getElementById("strategySymbol").value = value;    
 });
 
 function hideSuccessModalCancel() 
@@ -1653,7 +1880,7 @@ function displaySuccessModalCancel()
             $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
             setTimeout(function () {
                 $("#successModalCancel").dialog("close");
-                window.location.href = '/profile';
+                window.location.href = 'http://localhost:3000/profile';
             }, 2000);
             if (!isMobile.any())
             {
@@ -1723,7 +1950,7 @@ function displaySuccessModalEdit()
             $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
             setTimeout(function () {
                 $("#successModalEdit").dialog("close");
-                window.location.href = '/profile';
+                window.location.href = 'http://localhost:3000/profile';
             }, 2000);
             if (!isMobile.any())
             {
@@ -1793,7 +2020,7 @@ function displaySuccessModalSell()
             $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
             setTimeout(function () {
                 $("#successModalSell").dialog("close");
-                window.location.href = '/profile';
+                window.location.href = 'http://localhost:3000/profile';
             }, 2000);
             if (!isMobile.any())
             {
@@ -1839,6 +2066,76 @@ function displayErrorModalSell(message)
     $( "#errorModalSell" ).show()
 }
 
+function hideSuccessModalPublish() 
+{
+    $( "#successModalPublish" ).dialog('close');
+}
+
+function displaySuccessModalPublish() 
+{
+    let position = { my: "right top", at: "right-100 top", of: window };
+    if (isMobile.any())
+    {
+        position = { my: "bottom", at: "bottom", of: window }
+    }
+    let width = (isMobile.any()) ? screen.width : 230;
+    var Y = window.pageYOffset;
+    $( "#successModalPublish" ).dialog({
+        height: 55,
+        width: width,
+        closeOnEscape: true,
+        dialogClass: 'successModalContent',
+        position: position,
+        open: function(event, ui) {
+            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
+            setTimeout(function () {
+                $("#successModalPublish").dialog("close");
+                window.location.href = 'http://localhost:3000/profile';
+            }, 2000);
+            if (!isMobile.any())
+            {
+                $(this).parent().css({'top': Y+100});
+            }
+        }
+    });
+    $( "#successModalPublish" ).show()
+}
+
+function hideErrorModalPublish() 
+{
+    $( "#errorModalPublish" ).dialog('close');
+}
+
+function displayErrorModalPublish(message) 
+{
+    document.getElementById("errorText").innerText = message;
+    let position = { my: "right top", at: "right-100 top", of: window };
+    if (isMobile.any())
+    {
+        position = { my: "bottom", at: "bottom", of: window }
+    }
+    let width = (isMobile.any()) ? screen.width : 260;
+    var Y = window.pageYOffset;
+    $( "#errorModalPublish" ).dialog({
+        height: 55,
+        width: width,
+        closeOnEscape: true,
+        dialogClass: 'errorModalContent',
+        position: position,
+        open: function(event, ui) {
+            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
+            setTimeout(function () {
+                $("#errorModalPublish").dialog("close");
+            }, 2000);
+            if (!isMobile.any())
+            {
+                $(this).parent().css({'top': Y+100});
+            }
+        }
+    });
+    $( "#errorModalPublish" ).show()
+}
+
 function hideSuccessModalDelete() 
 {
     $( "#successModalDelete" ).dialog('close');
@@ -1863,7 +2160,7 @@ function displaySuccessModalDelete()
             $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
             setTimeout(function () {
                 $("#successModalDelete").dialog("close");
-                window.location.href = '/profile';
+                window.location.href = 'http://localhost:3000/profile';
             }, 2000);
             if (!isMobile.any())
             {
@@ -1991,7 +2288,7 @@ function displaySuccessModalRunBacktest()
             $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
             setTimeout(function () {
                 $("#successModalRunBacktest").dialog("close");
-                window.location.href = '/profile';
+                window.location.href = 'http://localhost:3000/profile';
             }, 2000);
             if (!isMobile.any())
             {
@@ -2145,7 +2442,7 @@ function displaySuccessModalEditStrategy()
             $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
             setTimeout(function () {
                 $("#successModalEditStrategy").dialog("close");
-                window.location.href = '/profile';
+                window.location.href = 'http://localhost:3000/profile';
             }, 2000);
             if (!isMobile.any())
             {
@@ -2522,3 +2819,23 @@ function myFunction() {
     header.classList.remove("sticky");
   }
 }
+
+document.getElementById("strategyPrice").addEventListener("input", function() {
+    let value = document.getElementById("strategyPrice").value;
+
+    if (parseFloat(value) > 99.99)
+    {
+        value = value.slice(0, value.length - 1);
+    }
+
+    if (value.length == 0 || parseFloat(value) == 0)
+    {
+        value = "";
+    }
+    else if (value.indexOf(".") != -1)
+    {
+        value = value.slice(0, (value.indexOf("."))+3);
+    }
+
+    document.getElementById("strategyPrice").value = value;    
+});

@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     {
         document.getElementById('successButton')
         .addEventListener('click', function(){
-            window.location.href = '/profile';
+            window.location.href = 'http://localhost:3000/profile';
         });
     }
 
@@ -293,82 +293,160 @@ function updateEntryConditionTable()
 
         let modifiedName = "";
 
+        if (firstIndicator == "CurrentCandle")
+        {
+            modifiedName = "Current candle ";
+        }
+        else if (firstIndicator == "EMA")
+        {
+            modifiedName = "EMA" + firstIndicatorParameter.toString() + " ";
+        }
+        else if (firstIndicator == "Gap")
+        {
+            modifiedName = "Gap ";
+        }
+        else if (firstIndicator == "NthCandle")
+        {
+            let suffix = "th";
+            if ((firstIndicatorParameter % 10) == 1 && firstIndicatorParameter != 11)
+            {
+                suffix = "st";
+            }
+            else if ((firstIndicatorParameter % 10) == 2 && firstIndicatorParameter != 12)
+            {
+                suffix = "nd";
+            }
+            else if ((firstIndicatorParameter % 10) == 3 && firstIndicatorParameter != 13)
+            {
+                suffix = "rd";
+            }
+            modifiedName = firstIndicatorParameter.toString() + suffix + " candle ";
+        }
+        else if (firstIndicator == "PreviousNCandles")
+        {
+            modifiedName = "Previous " + firstIndicatorParameter.toString() + " candles ";
+        }
+        else if (firstIndicator == "Signal")
+        {
+            modifiedName = "Signal ";
+        }
+        else if (firstIndicator == "SMA")
+        {
+            modifiedName = "SMA" + firstIndicatorParameter.toString() + " ";
+        }
+
         //check comparator
         if (comparator == "BouncesHigherOff")
         {
-            modifiedName = "Bounces higher off ";
+            modifiedName += "bounces higher off ";
         }
         else if (comparator == "BouncesLowerOff")
         {
-            modifiedName = "Bounces lower off ";
+            modifiedName += "bounces lower off ";
         }
         else if (comparator == "BreaksAbove")
         {
-            modifiedName = "Break above ";
+            modifiedName += "breaks above ";
         }
         else if (comparator == "BreaksBelow")
         {
-            modifiedName = "Break below ";
+            modifiedName += "breaks below ";
         }
         else if (comparator == "Closes")
         {
-            modifiedName = "Current candle closes ";
+            if (firstIndicator == "PreviousNCandles")
+            {
+                modifiedName += " close ";
+            }
+            else
+            {
+                modifiedName += " closes ";
+            }
         }
         else if (comparator == "ClosesAbove")
         {
-            modifiedName = "Close above ";
+            if (firstIndicator == "PreviousNCandles")
+            {
+                modifiedName += " close above ";
+            }
+            else
+            {
+                modifiedName += " closes above ";
+            }
         }
         else if (comparator == "ClosesBelow")
         {
-            modifiedName = "Close below ";
+            if (firstIndicator == "PreviousNCandles")
+            {
+                modifiedName += " close below ";
+            }
+            else
+            {
+                modifiedName += " closes below ";
+            };
         }
         else if (comparator == "FallsTo")
         {
-            modifiedName = "Falls to ";
+            modifiedName += "falls to ";
         }
         else if (comparator == "Has")
         {
-            modifiedName = "Current candle has ";
+            if (firstIndicator == "PreviousNCandles")
+            {
+                modifiedName += " have ";
+            }
+            else
+            {
+                modifiedName += " has ";
+            }
         }
         else if (comparator == "RisesTo")
         {
-            modifiedName = "Rises to ";
+            modifiedName += "rises to ";
         }
         else if (comparator == "UpByAtLeast")
         {
-            modifiedName = "Gap up by at least ";
+            modifiedName += "up by at least ";
         }
         else if (comparator == "UpByAtMost")
         {
-            modifiedName = "Gap up by at most ";
+            modifiedName += "up by at most ";
         }
         else if (comparator == "DownByAtLeast")
         {
-            modifiedName = "Gap down by at least ";
+            modifiedName += "down by at least ";
         }
         else if (comparator == "DownByAtMost")
         {
-            modifiedName = "Gap down by at most ";
+            modifiedName += "down by at most ";
         }
         else if (comparator == "GivenInFirst")
         {
-            modifiedName = "Signal given in first ";
+            modifiedName += "given in first ";
         }
         else if (comparator == "FallByAtLeast")
         {
-            modifiedName = "Previous " + firstIndicatorParameter.toString() + " candles fall by at least ";
+            modifiedName += " fall by at least ";
         }
         else if (comparator == "FallByAtMost")
         {
-            modifiedName = "Previous " + firstIndicatorParameter.toString() + " candles fall by at most ";
+            modifiedName += " fall by at most ";
         }
         else if (comparator == "RiseByAtLeast")
         {
-            modifiedName = "Previous " + firstIndicatorParameter.toString() + " candles rise by at least ";
+            modifiedName += " rise by at least ";
         }
         else if (comparator == "RiseByAtMost")
         {
-            modifiedName = "Previous " + firstIndicatorParameter.toString() + " candles rise by at most ";
+            modifiedName += " rise by at most ";
+        }
+        else if (comparator == "CrossesAbove")
+        {
+            modifiedName += " crosses above ";
+        }
+        else if (comparator == "CrossesBelow")
+        {
+            modifiedName += " crosses below ";
         }
 
         //check second indicator
@@ -456,9 +534,17 @@ function updateEntryConditionTable()
         {
             modifiedName += "previous candle low";
         }
+        else if (secondIndicator == "ProfitTarget")
+        {
+            modifiedName = secondIndicatorParameter.toString() + "% profit target";
+        }
         else if (secondIndicator == "SMA")
         {
             modifiedName += "SMA" + secondIndicatorParameter.toString();
+        }
+        else if (secondIndicator == "StopLoss")
+        {
+            modifiedName = secondIndicatorParameter.toString() + "% stop loss";
         }
         else if (secondIndicator == "Up")
         {
@@ -618,62 +704,160 @@ function updateExitConditionTable()
 
         let modifiedName = "";
 
+        if (firstIndicator == "CurrentCandle")
+        {
+            modifiedName = "Current candle ";
+        }
+        else if (firstIndicator == "EMA")
+        {
+            modifiedName = "EMA" + firstIndicatorParameter.toString() + " ";
+        }
+        else if (firstIndicator == "Gap")
+        {
+            modifiedName = "Gap ";
+        }
+        else if (firstIndicator == "NthCandle")
+        {
+            let suffix = "th";
+            if ((firstIndicatorParameter % 10) == 1 && firstIndicatorParameter != 11)
+            {
+                suffix = "st";
+            }
+            else if ((firstIndicatorParameter % 10) == 2 && firstIndicatorParameter != 12)
+            {
+                suffix = "nd";
+            }
+            else if ((firstIndicatorParameter % 10) == 3 && firstIndicatorParameter != 13)
+            {
+                suffix = "rd";
+            }
+            modifiedName = firstIndicatorParameter.toString() + suffix + " candle ";
+        }
+        else if (firstIndicator == "PreviousNCandles")
+        {
+            modifiedName = "Previous " + firstIndicatorParameter.toString() + " candles ";
+        }
+        else if (firstIndicator == "Signal")
+        {
+            modifiedName = "Signal ";
+        }
+        else if (firstIndicator == "SMA")
+        {
+            modifiedName = "SMA" + firstIndicatorParameter.toString() + " ";
+        }
+
         //check comparator
         if (comparator == "BouncesHigherOff")
         {
-            modifiedName = "Bounces higher off ";
+            modifiedName += "bounces higher off ";
         }
         else if (comparator == "BouncesLowerOff")
         {
-            modifiedName = "Bounces lower off ";
+            modifiedName += "bounces lower off ";
         }
         else if (comparator == "BreaksAbove")
         {
-            modifiedName = "Break above ";
+            modifiedName += "breaks above ";
         }
         else if (comparator == "BreaksBelow")
         {
-            modifiedName = "Break below ";
+            modifiedName += "breaks below ";
         }
         else if (comparator == "Closes")
         {
-            modifiedName = "Current candle closes ";
+            if (firstIndicator == "PreviousNCandles")
+            {
+                modifiedName += " close ";
+            }
+            else
+            {
+                modifiedName += " closes ";
+            }
         }
         else if (comparator == "ClosesAbove")
         {
-            modifiedName = "Close above ";
+            if (firstIndicator == "PreviousNCandles")
+            {
+                modifiedName += " close above ";
+            }
+            else
+            {
+                modifiedName += " closes above ";
+            }
         }
         else if (comparator == "ClosesBelow")
         {
-            modifiedName = "Close below ";
+            if (firstIndicator == "PreviousNCandles")
+            {
+                modifiedName += " close below ";
+            }
+            else
+            {
+                modifiedName += " closes below ";
+            };
         }
         else if (comparator == "FallsTo")
         {
-            modifiedName = "Falls to ";
+            modifiedName += "falls to ";
         }
         else if (comparator == "Has")
         {
-            modifiedName = "Current candle has ";
+            if (firstIndicator == "PreviousNCandles")
+            {
+                modifiedName += " have ";
+            }
+            else
+            {
+                modifiedName += " has ";
+            }
         }
         else if (comparator == "RisesTo")
         {
-            modifiedName = "Rises to ";
+            modifiedName += "rises to ";
+        }
+        else if (comparator == "UpByAtLeast")
+        {
+            modifiedName += "up by at least ";
+        }
+        else if (comparator == "UpByAtMost")
+        {
+            modifiedName += "up by at most ";
+        }
+        else if (comparator == "DownByAtLeast")
+        {
+            modifiedName += "down by at least ";
+        }
+        else if (comparator == "DownByAtMost")
+        {
+            modifiedName += "down by at most ";
+        }
+        else if (comparator == "GivenInFirst")
+        {
+            modifiedName += "given in first ";
         }
         else if (comparator == "FallByAtLeast")
         {
-            modifiedName = "Previous " + firstIndicatorParameter.toString() + " candles fall by at least ";
+            modifiedName += " fall by at least ";
         }
         else if (comparator == "FallByAtMost")
         {
-            modifiedName = "Previous " + firstIndicatorParameter.toString() + " candles fall by at most ";
+            modifiedName += " fall by at most ";
         }
         else if (comparator == "RiseByAtLeast")
         {
-            modifiedName = "Previous " + firstIndicatorParameter.toString() + " candles rise by at least ";
+            modifiedName += " rise by at least ";
         }
         else if (comparator == "RiseByAtMost")
         {
-            modifiedName = "Previous " + firstIndicatorParameter.toString() + " candles rise by at most ";
+            modifiedName += " rise by at most ";
+        }
+        else if (comparator == "CrossesAbove")
+        {
+            modifiedName += " crosses above ";
+        }
+        else if (comparator == "CrossesBelow")
+        {
+            modifiedName += " crosses below ";
         }
 
         //check second indicator
@@ -761,17 +945,9 @@ function updateExitConditionTable()
         {
             modifiedName += "previous candle low";
         }
-        else if (secondIndicator == "ProfitTarget")
-        {
-            modifiedName = secondIndicatorParameter.toString() + "% profit target"
-        }
         else if (secondIndicator == "SMA")
         {
             modifiedName += "SMA" + secondIndicatorParameter.toString();
-        }
-        else if (secondIndicator == "StopLoss")
-        {
-            modifiedName = secondIndicatorParameter.toString() + "% stop loss"
         }
         else if (secondIndicator == "Up")
         {
@@ -781,9 +957,21 @@ function updateExitConditionTable()
         {
             modifiedName += "VWAP" + secondIndicatorParameter.toString();
         }
+        else if (secondIndicator == "NMinutes")
+        {
+            modifiedName += secondIndicatorParameter.toString() + " minutes";
+        }
         else if (secondIndicator == "NPercent")
         {
             modifiedName += secondIndicatorParameter.toString() + "%";
+        }
+        else if (secondIndicator == "ProfitTarget")
+        {
+            modifiedName = secondIndicatorParameter.toString() + "% Profit target";
+        }
+        else if (secondIndicator == "StopLoss")
+        {
+            modifiedName = secondIndicatorParameter.toString() + "% Stop loss";
         }
 
         let row = document.createElement("tr");
@@ -859,6 +1047,30 @@ document.getElementById("firstIndicatorEntry").addEventListener('change', functi
             document.getElementById("entryConditionFirstIndicatorParameter").remove();
         }
     }
+    else if (selectedValue == "EMA")
+    {
+        options = makeComparatorsEntryEMA();
+        options2 = makeOptionsEntryCrossesAbove();
+
+        document.getElementById("entryConditionSecondIndicatorParameter").style.display = "block";
+        document.getElementById("entryConditionSecondIndicatorParameter").value = "";
+        document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "EMA period";
+
+        if (document.getElementById("entryConditionFirstIndicatorParameter"))
+        {
+            document.getElementById("entryConditionFirstIndicatorParameter").remove();
+        }
+
+        let firstIndicatorDiv = document.getElementById("firstIndicatorDiv");
+        let firstIndicatorInput = document.createElement("input");
+        firstIndicatorInput.setAttribute("type", "number");
+        firstIndicatorInput.setAttribute("class", "strategyExplorerText");
+        firstIndicatorInput.setAttribute("name", "entryConditionFirstIndicatorParameter");
+        firstIndicatorInput.setAttribute("id", "entryConditionFirstIndicatorParameter");
+        firstIndicatorInput.setAttribute("placeholder", "EMA period");
+        firstIndicatorInput.style.marginTop = "15px";
+        firstIndicatorDiv.appendChild(firstIndicatorInput);
+    }
     else if (selectedValue == "Gap")
     {
         options = makeComparatorsEntryGap();
@@ -873,14 +1085,43 @@ document.getElementById("firstIndicatorEntry").addEventListener('change', functi
             document.getElementById("entryConditionFirstIndicatorParameter").remove();
         }
     }
-    else if (selectedValue == "PreviousNCandles")
+    else if (selectedValue == "NthCandle")
     {
-        options = makeComparatorsEntryPreviousNCandles();
-        options2 = makeOptionsEntryPreviousNCandles();
+        options = makeComparatorsEntryCurrentCandle();
+        options2 = makeOptionsEntryBouncesHigherOff();
 
         document.getElementById("entryConditionSecondIndicatorParameter").style.display = "block";
         document.getElementById("entryConditionSecondIndicatorParameter").value = "";
-        document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "Percent fall";
+        document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "EMA period";
+
+        if (document.getElementById("entryConditionFirstIndicatorParameter"))
+        {
+            document.getElementById("entryConditionFirstIndicatorParameter").remove();
+        }
+
+        let firstIndicatorDiv = document.getElementById("firstIndicatorDiv");
+        let firstIndicatorInput = document.createElement("input");
+        firstIndicatorInput.setAttribute("type", "number");
+        firstIndicatorInput.setAttribute("class", "strategyExplorerText");
+        firstIndicatorInput.setAttribute("name", "entryConditionFirstIndicatorParameter");
+        firstIndicatorInput.setAttribute("id", "entryConditionFirstIndicatorParameter");
+        firstIndicatorInput.setAttribute("placeholder", "Number of candles");
+        firstIndicatorInput.style.marginTop = "15px";
+        firstIndicatorDiv.appendChild(firstIndicatorInput);
+    }
+    else if (selectedValue == "PreviousNCandles")
+    {
+        options = makeComparatorsEntryPreviousNCandles();
+        options2 = makeOptionsEntryCloses();
+
+        document.getElementById("entryConditionSecondIndicatorParameter").style.display = "none";
+        document.getElementById("entryConditionSecondIndicatorParameter").value = "";
+        document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "";
+
+        if (document.getElementById("entryConditionFirstIndicatorParameter"))
+        {
+            document.getElementById("entryConditionFirstIndicatorParameter").remove();
+        }
 
         let firstIndicatorDiv = document.getElementById("firstIndicatorDiv");
         let firstIndicatorInput = document.createElement("input");
@@ -905,6 +1146,30 @@ document.getElementById("firstIndicatorEntry").addEventListener('change', functi
         {
             document.getElementById("entryConditionFirstIndicatorParameter").remove();
         }
+    }
+    else if (selectedValue == "SMA")
+    {
+        options = makeComparatorsEntrySMA();
+        options2 = makeOptionsEntryCrossesAbove();
+
+        document.getElementById("entryConditionSecondIndicatorParameter").style.display = "block";
+        document.getElementById("entryConditionSecondIndicatorParameter").value = "";
+        document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "SMA period";
+
+        if (document.getElementById("entryConditionFirstIndicatorParameter"))
+        {
+            document.getElementById("entryConditionFirstIndicatorParameter").remove();
+        }
+
+        let firstIndicatorDiv = document.getElementById("firstIndicatorDiv");
+        let firstIndicatorInput = document.createElement("input");
+        firstIndicatorInput.setAttribute("type", "number");
+        firstIndicatorInput.setAttribute("class", "strategyExplorerText");
+        firstIndicatorInput.setAttribute("name", "entryConditionFirstIndicatorParameter");
+        firstIndicatorInput.setAttribute("id", "entryConditionFirstIndicatorParameter");
+        firstIndicatorInput.setAttribute("placeholder", "SMA period");
+        firstIndicatorInput.style.marginTop = "15px";
+        firstIndicatorDiv.appendChild(firstIndicatorInput);
     }
 
     for (var i = 0; i < options.length; i+=1)
@@ -1168,14 +1433,43 @@ document.getElementById("firstIndicatorExit").addEventListener('change', functio
             document.getElementById("exitConditionFirstIndicatorParameter").remove();
         }
     }
-    else if (selectedValue == "PreviousNCandles")
+    else if (selectedValue == "EMA")
     {
-        options = makeComparatorsExitPreviousNCandles();
-        options2 = makeOptionsExitPreviousNCandles();
+        options = makeComparatorsExitEMA();
+        options2 = makeOptionsExitCrossesAbove();
 
         document.getElementById("exitConditionSecondIndicatorParameter").style.display = "block";
         document.getElementById("exitConditionSecondIndicatorParameter").value = "";
-        document.getElementById("exitConditionSecondIndicatorParameter").placeholder = "Percent fall";
+        document.getElementById("exitConditionSecondIndicatorParameter").placeholder = "EMA period";
+
+        if (document.getElementById("exitConditionFirstIndicatorParameter"))
+        {
+            document.getElementById("exitConditionFirstIndicatorParameter").remove();
+        }
+
+        let firstIndicatorDiv = document.getElementById("firstIndicatorDiv2");
+        let firstIndicatorInput = document.createElement("input");
+        firstIndicatorInput.setAttribute("type", "number");
+        firstIndicatorInput.setAttribute("class", "strategyExplorerText");
+        firstIndicatorInput.setAttribute("name", "exitConditionFirstIndicatorParameter");
+        firstIndicatorInput.setAttribute("id", "exitConditionFirstIndicatorParameter");
+        firstIndicatorInput.setAttribute("placeholder", "EMA period");
+        firstIndicatorInput.style.marginTop = "15px";
+        firstIndicatorDiv.appendChild(firstIndicatorInput);
+    }
+    else if (selectedValue == "NthCandle")
+    {
+        options = makeComparatorsExitCurrentCandle();
+        options2 = makeOptionsExitBouncesHigherOff();
+
+        document.getElementById("exitConditionSecondIndicatorParameter").style.display = "block";
+        document.getElementById("exitConditionSecondIndicatorParameter").value = "";
+        document.getElementById("exitConditionSecondIndicatorParameter").placeholder = "EMA period";
+
+        if (document.getElementById("exitConditionFirstIndicatorParameter"))
+        {
+            document.getElementById("exitConditionFirstIndicatorParameter").remove();
+        }
 
         let firstIndicatorDiv = document.getElementById("firstIndicatorDiv2");
         let firstIndicatorInput = document.createElement("input");
@@ -1184,6 +1478,54 @@ document.getElementById("firstIndicatorExit").addEventListener('change', functio
         firstIndicatorInput.setAttribute("name", "exitConditionFirstIndicatorParameter");
         firstIndicatorInput.setAttribute("id", "exitConditionFirstIndicatorParameter");
         firstIndicatorInput.setAttribute("placeholder", "Number of candles");
+        firstIndicatorInput.style.marginTop = "15px";
+        firstIndicatorDiv.appendChild(firstIndicatorInput);
+    }
+    else if (selectedValue == "PreviousNCandles")
+    {
+        options = makeComparatorsExitPreviousNCandles();
+        options2 = makeOptionsExitCloses();
+
+        document.getElementById("exitConditionSecondIndicatorParameter").style.display = "none";
+        document.getElementById("exitConditionSecondIndicatorParameter").value = "";
+        document.getElementById("exitConditionSecondIndicatorParameter").placeholder = "";
+
+        if (document.getElementById("exitConditionFirstIndicatorParameter"))
+        {
+            document.getElementById("exitConditionFirstIndicatorParameter").remove();
+        }
+
+        let firstIndicatorDiv = document.getElementById("firstIndicatorDiv2");
+        let firstIndicatorInput = document.createElement("input");
+        firstIndicatorInput.setAttribute("type", "number");
+        firstIndicatorInput.setAttribute("class", "strategyExplorerText");
+        firstIndicatorInput.setAttribute("name", "exitConditionFirstIndicatorParameter");
+        firstIndicatorInput.setAttribute("id", "exitConditionFirstIndicatorParameter");
+        firstIndicatorInput.setAttribute("placeholder", "Number of candles");
+        firstIndicatorInput.style.marginTop = "15px";
+        firstIndicatorDiv.appendChild(firstIndicatorInput);
+    }
+    else if (selectedValue == "SMA")
+    {
+        options = makeComparatorsExitSMA();
+        options2 = makeOptionsExitCrossesAbove();
+
+        document.getElementById("exitConditionSecondIndicatorParameter").style.display = "block";
+        document.getElementById("exitConditionSecondIndicatorParameter").value = "";
+        document.getElementById("exitConditionSecondIndicatorParameter").placeholder = "SMA period";
+
+        if (document.getElementById("exitConditionFirstIndicatorParameter"))
+        {
+            document.getElementById("exitConditionFirstIndicatorParameter").remove();
+        }
+
+        let firstIndicatorDiv = document.getElementById("firstIndicatorDiv2");
+        let firstIndicatorInput = document.createElement("input");
+        firstIndicatorInput.setAttribute("type", "number");
+        firstIndicatorInput.setAttribute("class", "strategyExplorerText");
+        firstIndicatorInput.setAttribute("name", "exitConditionFirstIndicatorParameter");
+        firstIndicatorInput.setAttribute("id", "exitConditionFirstIndicatorParameter");
+        firstIndicatorInput.setAttribute("placeholder", "SMA period");
         firstIndicatorInput.style.marginTop = "15px";
         firstIndicatorDiv.appendChild(firstIndicatorInput);
     }
@@ -1648,7 +1990,7 @@ function displaySuccessModal()
             $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
             setTimeout(function () {
                 $("#successModal").dialog("close");
-                window.location.href = '/profile';
+                window.location.href = 'http://localhost:3000/profile';
             }, 2000);
             if (!isMobile.any())
             {
@@ -1875,6 +2217,22 @@ document.getElementById("comparatorEntry").addEventListener('change', function()
         document.getElementById("entryConditionSecondIndicatorParameter").style.display = "block";
         document.getElementById("entryConditionSecondIndicatorParameter").value = "";
         document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "Percent rise";
+    }
+    else if (selectedValue == "CrossesAbove")
+    {
+        options = makeOptionsEntryCrossesAbove();
+
+        document.getElementById("entryConditionSecondIndicatorParameter").style.display = "block";
+        document.getElementById("entryConditionSecondIndicatorParameter").value = "";
+        document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "EMA period";
+    }
+    else if (selectedValue == "CrossesBelow")
+    {
+        options = makeOptionsEntryCrossesBelow();
+
+        document.getElementById("entryConditionSecondIndicatorParameter").style.display = "block";
+        document.getElementById("entryConditionSecondIndicatorParameter").value = "";
+        document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "EMA period";
     }
 
     for (var i = 0; i < options.length; i+=1)
@@ -2316,6 +2674,44 @@ function makeOptionsEntryPreviousNCandles()
     return options;
 }
 
+function makeOptionsEntryCrossesAbove()
+{
+    let options = [];
+
+    let option1 = document.createElement("option");
+    option1.value = "EMA";
+    option1.id = "entry_SecondIndicator_EMA";
+    option1.innerText = "EMA";
+    options.push(option1);
+
+    let option2 = document.createElement("option");
+    option2.value = "SMA";
+    option2.id = "entry_SecondIndicator_SMA";
+    option2.innerText = "SMA";
+    options.push(option2);
+
+    return options;
+}
+
+function makeOptionsEntryCrossesBelow()
+{
+    let options = [];
+
+    let option1 = document.createElement("option");
+    option1.value = "EMA";
+    option1.id = "entry_SecondIndicator_EMA";
+    option1.innerText = "EMA";
+    options.push(option1);
+
+    let option2 = document.createElement("option");
+    option2.value = "SMA";
+    option2.id = "entry_SecondIndicator_SMA";
+    option2.innerText = "SMA";
+    options.push(option2);
+
+    return options;
+}
+
 document.getElementById("comparatorExit").addEventListener('change', function() {
     const selectedValue = document.getElementById("comparatorExit").value;
 
@@ -2439,6 +2835,22 @@ document.getElementById("comparatorExit").addEventListener('change', function() 
         document.getElementById("exitConditionSecondIndicatorParameter").style.display = "block";
         document.getElementById("exitConditionSecondIndicatorParameter").value = "";
         document.getElementById("exitConditionSecondIndicatorParameter").placeholder = "Percent rise";
+    }
+    else if (selectedValue == "CrossesAbove")
+    {
+        options = makeOptionsExitCrossesAbove();
+
+        document.getElementById("exitConditionSecondIndicatorParameter").style.display = "block";
+        document.getElementById("exitConditionSecondIndicatorParameter").value = "";
+        document.getElementById("exitConditionSecondIndicatorParameter").placeholder = "EMA period";
+    }
+    else if (selectedValue == "CrossesBelow")
+    {
+        options = makeOptionsExitCrossesBelow();
+
+        document.getElementById("exitConditionSecondIndicatorParameter").style.display = "block";
+        document.getElementById("exitConditionSecondIndicatorParameter").value = "";
+        document.getElementById("exitConditionSecondIndicatorParameter").placeholder = "EMA period";
     }
 
     for (var i = 0; i < options.length; i+=1)
@@ -2902,6 +3314,44 @@ function makeOptionsExitPreviousNCandles()
     return options;
 }
 
+function makeOptionsExitCrossesAbove()
+{
+    let options = [];
+
+    let option1 = document.createElement("option");
+    option1.value = "EMA";
+    option1.id = "exit_SecondIndicator_EMA";
+    option1.innerText = "EMA";
+    options.push(option1);
+
+    let option2 = document.createElement("option");
+    option2.value = "SMA";
+    option2.id = "exit_SecondIndicator_SMA";
+    option2.innerText = "SMA";
+    options.push(option2);
+
+    return options;
+}
+
+function makeOptionsExitCrossesBelow()
+{
+    let options = [];
+
+    let option1 = document.createElement("option");
+    option1.value = "EMA";
+    option1.id = "exit_SecondIndicator_EMA";
+    option1.innerText = "EMA";
+    options.push(option1);
+
+    let option2 = document.createElement("option");
+    option2.value = "SMA";
+    option2.id = "exit_SecondIndicator_SMA";
+    option2.innerText = "SMA";
+    options.push(option2);
+
+    return options;
+}
+
 
 //COMPARATORS
 
@@ -3007,6 +3457,24 @@ function makeComparatorsEntryPreviousNCandles()
 {
     let options = [];
 
+    let option0 = document.createElement("option");
+    option0.value = "Closes";
+    option0.id = "entry_Comparator_Closes";
+    option0.innerText = "Close";
+    options.push(option0);
+
+    let option01 = document.createElement("option");
+    option01.value = "ClosesAbove";
+    option01.id = "entry_Comparator_ClosesAbove";
+    option01.innerText = "Close above";
+    options.push(option01);
+
+    let option02 = document.createElement("option");
+    option02.value = "ClosesBelow";
+    option02.id = "entry_Comparator_ClosesBelow";
+    option02.innerText = "Close below";
+    options.push(option02);
+
     let option1 = document.createElement("option");
     option1.value = "FallByAtLeast";
     option1.id = "entry_Comparator_FallByAtLeast";
@@ -3020,16 +3488,22 @@ function makeComparatorsEntryPreviousNCandles()
     options.push(option2);
 
     let option3 = document.createElement("option");
-    option3.value = "RiseByAtLeast";
-    option3.id = "entry_Comparator_RiseByAtLeast";
-    option3.innerText = "Rise by at least";
+    option3.value = "Has";
+    option3.id = "entry_Comparator_Has";
+    option3.innerText = "Have";
     options.push(option3);
 
     let option4 = document.createElement("option");
-    option4.value = "RiseByAtMost";
-    option4.id = "entry_Comparator_RiseByAtMost";
-    option4.innerText = "Rise by at most";
+    option4.value = "RiseByAtLeast";
+    option4.id = "entry_Comparator_RiseByAtLeast";
+    option4.innerText = "Rise by at least";
     options.push(option4);
+
+    let option5 = document.createElement("option");
+    option5.value = "RiseByAtMost";
+    option5.id = "entry_Comparator_RiseByAtMost";
+    option5.innerText = "Rise by at most";
+    options.push(option5);
 
     return options;
 }
@@ -3043,6 +3517,44 @@ function makeComparatorsEntrySignal()
     option1.id = "entry_Comparator_GivenInFirst";
     option1.innerText = "Given in first";
     options.push(option1);
+
+    return options;
+}
+
+function makeComparatorsEntryEMA()
+{
+    let options = [];
+
+    let option1 = document.createElement("option");
+    option1.value = "CrossesAbove";
+    option1.id = "entry_Comparator_CrossesAbove";
+    option1.innerText = "Crosses above";
+    options.push(option1);
+
+    let option2 = document.createElement("option");
+    option2.value = "CrossesBelow";
+    option2.id = "entry_Comparator_CrossesBelow";
+    option2.innerText = "Crosses below";
+    options.push(option2);
+
+    return options;
+}
+
+function makeComparatorsEntrySMA()
+{
+    let options = [];
+
+    let option1 = document.createElement("option");
+    option1.value = "CrossesAbove";
+    option1.id = "entry_Comparator_CrossesAbove";
+    option1.innerText = "Crosses above";
+    options.push(option1);
+
+    let option2 = document.createElement("option");
+    option2.value = "CrossesBelow";
+    option2.id = "entry_Comparator_CrossesBelow";
+    option2.innerText = "Crosses below";
+    options.push(option2);
 
     return options;
 }
@@ -3118,6 +3630,24 @@ function makeComparatorsExitPreviousNCandles()
 {
     let options = [];
 
+    let option0 = document.createElement("option");
+    option0.value = "Closes";
+    option0.id = "exit_Comparator_Closes";
+    option0.innerText = "Close";
+    options.push(option0);
+
+    let option01 = document.createElement("option");
+    option01.value = "ClosesAbove";
+    option01.id = "exit_Comparator_ClosesAbove";
+    option01.innerText = "Close above";
+    options.push(option01);
+
+    let option02 = document.createElement("option");
+    option02.value = "ClosesBelow";
+    option02.id = "exit_Comparator_ClosesBelow";
+    option02.innerText = "Close below";
+    options.push(option02);
+
     let option1 = document.createElement("option");
     option1.value = "FallByAtLeast";
     option1.id = "exit_Comparator_FallByAtLeast";
@@ -3131,16 +3661,61 @@ function makeComparatorsExitPreviousNCandles()
     options.push(option2);
 
     let option3 = document.createElement("option");
-    option3.value = "RiseByAtLeast";
-    option3.id = "exit_Comparator_RiseByAtLeast";
-    option3.innerText = "Rise by at least";
+    option3.value = "Has";
+    option3.id = "exit_Comparator_Has";
+    option3.innerText = "Have";
     options.push(option3);
 
     let option4 = document.createElement("option");
-    option4.value = "RiseByAtMost";
-    option4.id = "exit_Comparator_RiseByAtMost";
-    option4.innerText = "Rise by at most";
+    option4.value = "RiseByAtLeast";
+    option4.id = "exit_Comparator_RiseByAtLeast";
+    option4.innerText = "Rise by at least";
     options.push(option4);
+
+    let option5 = document.createElement("option");
+    option5.value = "RiseByAtMost";
+    option5.id = "exit_Comparator_RiseByAtMost";
+    option5.innerText = "Rise by at most";
+    options.push(option5);
+
+
+    return options;
+}
+
+function makeComparatorsExitEMA()
+{
+    let options = [];
+
+    let option1 = document.createElement("option");
+    option1.value = "CrossesAbove";
+    option1.id = "exit_Comparator_CrossesAbove";
+    option1.innerText = "Crosses above";
+    options.push(option1);
+
+    let option2 = document.createElement("option");
+    option2.value = "CrossesBelow";
+    option2.id = "exit_Comparator_CrossesBelow";
+    option2.innerText = "Crosses below";
+    options.push(option2);
+
+    return options;
+}
+
+function makeComparatorsExitSMA()
+{
+    let options = [];
+
+    let option1 = document.createElement("option");
+    option1.value = "CrossesAbove";
+    option1.id = "exit_Comparator_CrossesAbove";
+    option1.innerText = "Crosses above";
+    options.push(option1);
+
+    let option2 = document.createElement("option");
+    option2.value = "CrossesBelow";
+    option2.id = "exit_Comparator_CrossesBelow";
+    option2.innerText = "Crosses below";
+    options.push(option2);
 
     return options;
 }

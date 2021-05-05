@@ -1,9 +1,5 @@
 window.addEventListener('DOMContentLoaded', function() {
     generateContent();
-
-    document.getElementById("enterAppButton").addEventListener("click", function() {
-        window.location.href = "/login";
-    })
 });
 
 function generateContent()
@@ -51,6 +47,10 @@ var sticky = header.offsetTop;
 
 // Add the sticky class to the header when you reach its scroll position. Remove "sticky" when you leave the scroll position
 function myFunction() {
+    if (isMobile.any())
+    {
+      return;
+    }
   if (window.pageYOffset > sticky) {
     header.classList.add("sticky");
   } else {

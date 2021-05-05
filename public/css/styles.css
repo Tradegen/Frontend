@@ -37,7 +37,7 @@ body {
 }
 
 .platformIsFreeRow {
-  margin-top: 160px;
+  margin-top: 260px;
 }
 
 .platformIsFreeList {
@@ -47,7 +47,7 @@ body {
 
 .platformIsFreeList li::before {
   content: "\2022";  /* Add content: \2022 is the CSS Code/unicode for a bullet */
-  color: #3e85f7; /* Change the color */
+  color: #5271FF; /* Change the color */
   font-weight: bold; /* If you want it to be bold */
   display: inline-block; /* Needed to add space between the bullet and the text */
   width: 10px; /* Also needed for space (tweak if needed) */
@@ -55,7 +55,7 @@ body {
 }
 
 .maxWidth100 {
-  min-width: 100% !important;
+  width: 100% ;
 }
 
 .fontSize20 {
@@ -81,8 +81,7 @@ textarea {
 .filterRight2 {
   position: relative;
   float: right;
-  width: 20%;
-  margin-right: 8%;
+  width: 25%;
 }
 
 .main-content {
@@ -110,9 +109,9 @@ textarea {
 }
 
 footer {
-  color: black;
+  color: white;
   height: 350px;
-  background-color:white;
+  background-color:#252e42;
   margin-top: 55px;
   box-shadow: 0 -14px 14px -14px rgb(0 77 165 / 12%);
   display: flex;
@@ -122,19 +121,18 @@ footer {
 
 .footerBuffer {
   width: 100% !important;
-  background-color: white;
+  background-color: #252e42;
   height: 60px !important;
   margin-bottom: -20px;
 }
 
 .navbarFooter {
   overflow: visible;
-  background-color: white;
-  color: black;
-  margin-left: 20%;
+  background-color: #252e42;
+  margin-left: 10%;
   height: 340px;
   position: relative;
-  width: 30%;
+  width: 40%;
 }
 
 .footerLeftParentDiv {
@@ -146,13 +144,13 @@ footer {
 
 .footerLeftTop {
   width: 100%;
-  height: 200px;
+  height: 150px;
 }
 
 .footerFloatLeft {
   position: relative;
-  float: left;
-  width: 45%;
+  display: flex !important;
+  width: 100%;
 }
 
 .footerFloatRight {
@@ -166,7 +164,7 @@ footer {
   height: 90px;
   width: 100%;
   font-size: 14px;
-  color: #737373;
+  color: #9ea2ab;
 }
 
 .footerImage {
@@ -182,12 +180,12 @@ img.icon {
   width: auto;
   height: 50px;
   max-width: 200px;
-  padding-top: 15px;
+  padding-top: 10px;
 }
 
 .appNavbarIconWithName {
   height: 40px;
-  width: 120px;
+  width: 140px;
   padding-top: 5px;
 }
 
@@ -199,9 +197,35 @@ img.icon {
   padding-top: 10px;
 }
 
+.appNavbarTradegenToken {
+  height: 23px;
+  width: 23px;
+  max-height: 30px;
+  max-width: 50px;
+  padding-top: 13px;
+}
+
+.appNavbarCeloToken {
+  height: 22px;
+  width: 24px;
+  max-height: 30px;
+  max-width: 50px;
+  padding-top: 14px;
+  margin-left: 25px;
+}
+
+.appNavbarCeloDollarToken {
+  height: 20px;
+  width: 20px;
+  max-height: 30px;
+  max-width: 50px;
+  padding-top: 14px;
+  margin-left: 25px;
+}
+
 .footerColumn {
   position: relative;
-  width: 100%;
+  width: 25%;
   padding-top: 70px;
   height: 340px;
   margin-left: 5%;
@@ -210,13 +234,13 @@ img.icon {
 .footerColumnTitle {
   font-size: 20px;
   font-weight: 550;
-  color: black !important;
+  color: white !important;
 }
 
 header {
   position: relative;
   color: #22283c;
-  height: 80px;
+  height: 70px;
   background-color: white;
   margin-bottom: 48px;
   /*box-shadow: 2px 3px 8px rgb(0 77 165 / 12%);*/
@@ -236,9 +260,16 @@ header {
   padding-top: 102px;
 }
 
+.socialIcon {
+  color: #9ea2ab;
+  font-size: 30px !important;
+  margin-left: 20px;
+}
+
 .creditsDivWrapper {
   position: relative;
   display: flex;
+  margin-left: 80px;
 }
 
 .creditsDivLeft {
@@ -262,7 +293,7 @@ header a {
 }
 
 footer a {
-  color: black;
+  color: #9ea2ab;
   text-decoration: none;
 }
 
@@ -278,7 +309,7 @@ input {
 button {
   cursor: pointer;
   border: 1px solid #888888;
-  background: #3e85f7;
+  background: #5271FF;
   color: white;
   padding-top: 8px;
   padding-bottom: 8px;
@@ -333,7 +364,7 @@ button {
   border-radius: 8px;
   font-weight: 500;
   font-size: 18px;
-  background-color: #3e85f7 ;
+  background-color: #5271FF ;
   height: 24px;
   margin-left: 40px;
 }
@@ -364,7 +395,7 @@ button {
   padding-left: 16px;
   padding-right: 16px;
   border-radius: 10px;
-  background-color: #3e85f7;
+  background-color: #5271FF;
   font-weight: 500;
 }
 
@@ -375,7 +406,7 @@ button {
   border-radius: 8px;
   padding-right: 8px;
   padding-left: 8px;
-  background-color: #3e85f7;
+  background-color: #5271FF;
 }
 
 .viewButton {
@@ -386,8 +417,8 @@ button {
   padding-right: 8px;
   padding-left: 8px;
   background-color: white;
-  color: #3e85f7;
-  border: 1px solid #3e85f7 !important;
+  color: #5271FF;
+  border: 1px solid #5271FF !important;
 }
 
 .sellButton {
@@ -396,7 +427,7 @@ button {
   border-radius: 8px;
   padding-right: 8px;
   padding-left: 8px;
-  background-color: #3e85f7;
+  background-color: #5271FF;
   color: white;
   margin-left: 10px;
 }
@@ -407,8 +438,8 @@ button {
   padding-right: 8px;
   padding-left: 8px;
   background-color: white;
-  color: #3e85f7;
-  border: 1px solid #3e85f7 !important;
+  color: #5271FF;
+  border: 1px solid #5271FF !important;
 }
 
 .yesButton {
@@ -423,9 +454,9 @@ button {
   font-weight: 550;
   margin-left: 10px;
   background-color: white;
-  color: #3e85f7;
+  color: #5271FF;
   border-radius: 8px;
-  border: 1px solid #3e85f7 !important;
+  border: 1px solid #5271FF !important;
 }
 
 .deleteButton {
@@ -442,18 +473,18 @@ button {
   font-weight: 500;
   margin-left: 10px;
   background-color: white;
-  color: #3e85f7;
+  color: #5271FF;
   border-radius: 8px;
   padding-left: 8px;
   padding-right: 8px;
-  border: 1px solid #3e85f7 !important;
+  border: 1px solid #5271FF !important;
 }
 
 .runBacktestButton {
   width: 90px;
   font-weight: 550;
   margin-left: 10px;
-  background-color: #3e85f7;
+  background-color: #5271FF;
   color: white;
   border-radius: 8px;
   padding-left: 8px;
@@ -461,7 +492,7 @@ button {
 }
 
 .contactFormButton {
-  background-color: #3e85f7;
+  background-color: #5271FF;
   border-radius: 8px;
   font-weight: 550;
   padding-left: 8px;
@@ -473,8 +504,8 @@ button {
   overflow: visible;
   background-color: white;
   color: black;
-  margin-left: 15%;
-  height: 80px;
+  margin-left: 7%;
+  height: 70px;
   opacity: 1;
 }
 
@@ -519,6 +550,7 @@ button {
   font-size: 14px;
   width: 100%;
   font-family: Helvetica !important;
+  color: #9ea2ab !important;
 }
 
 .dropdown {
@@ -568,6 +600,10 @@ button {
   width: 140px !important;
 }
 
+.width130 {
+  width: 130px !important;
+}
+
 .width70 {
   width: 70px !important;
 }
@@ -590,7 +626,7 @@ button {
 }
 
 .dropdown .store {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 550;
   border: none;
   outline: none;
@@ -643,7 +679,7 @@ button {
 }
 
 .navbar a:hover{
-  color: #3e85f7;
+  color: #5271FF;
 }
 
 .navbar .noHover:hover{
@@ -651,7 +687,7 @@ button {
 }
 
 .footerColumn a:hover{
-  color: #3e85f7;
+  color: #5271FF;
 }
 
 .width20{
@@ -682,7 +718,7 @@ button {
 
 .dropdown-content a:hover {
   background-color: rgba(161, 194, 250, 0.16);
-  color: #3e85f7;
+  color: #5271FF;
 }
 
 .dropdown:hover .dropdown-content {
@@ -690,7 +726,7 @@ button {
 }
 
 table {
-  font-family: 'Roboto Condensed';
+  font-family: 'Roboto', sans-serif !important;
   border-collapse: collapse;
 }
 
@@ -764,6 +800,8 @@ th {
 .ui-dialog-titlebar {
   display:none !important;
 }
+
+
 
 .contactInput {
   border-radius: 5px;
@@ -862,14 +900,14 @@ label {
 
 
 .loginButton {
-  margin-top: 20px;
+  margin-top: 18px;
   margin-left: 30px;
   font-size: 16px;
   width: 120px;
-  border-radius: 10px;
-  background-color: #3e85f7;
+  border-radius: 8px;
+  background-color: #5271FF;
   color: white;
-  border: 1px solid #3e85f7 !important;
+  border: 1px solid #5271FF !important;
 }
 
 .errorMessage {
@@ -885,7 +923,7 @@ label {
 }
 
 .transactionsTable {
-  font-size: 16px;
+  font-size: 15px;
   width: 100%;
 }
 
@@ -916,6 +954,11 @@ label {
 .formFieldTitle {
   font-size: 14px;
   margin-bottom: 5px;
+}
+
+.formFieldTitleContact {
+  font-size: 16px;
+  margin-bottom: 8px;
 }
 
 .contactFormInput {
@@ -1004,13 +1047,13 @@ i.icon-AccountCircle {
   font-size: 30px;
   vertical-align: middle;
   width: 40px;
-  color: #3e85f7 !important;
+  color: #5271FF !important;
 }
 
 i.icon-Settings {
   font-size: 20px;
   vertical-align: middle;
-  color: #3e85f7 !important;
+  color: #5271FF !important;
 }
 
 i.icon-Settings:hover {
@@ -1042,6 +1085,8 @@ i.icon-Cash {
   padding-right: 15px;
   margin-bottom: 40px;
   border-radius: 10px;
+  margin-left: -10%;
+  width: 100%;
 }
 
 .maxWidth64 {
@@ -1080,8 +1125,12 @@ i.icon-Cash {
   margin-top: 80px !important;
 }
 
+.marginLeftMinus10 {
+  margin-left: -10% !important;
+}
+
 .width100 {
-  width: 100%;
+  width: 100% !important;
   display: flex;
 }
 
@@ -1091,6 +1140,14 @@ i.icon-Cash {
 
 .marginRight25 {
   margin-right: 25% !important;
+}
+
+.marginRight22 {
+  margin-right: 22% !important;
+}
+
+.marginRight17 {
+  margin-right: 17% !important;
 }
 
 .paddingRight15 {
@@ -1291,17 +1348,17 @@ i.icon-Cash {
   font-size: 22px;  
   font-weight: 500;
   text-align: center;
-  color: #3e85f7;
+  color: #5271FF;
 }
 
 input:focus {
-  border-color: #3e85f7;
+  border-color: #5271FF;
   border-width: 2px;
   outline-width: 0px;
 }
 
 textarea:focus {
-  border-color: #3e85f7;
+  border-color: #5271FF;
   border-width: 2px;
   outline-width: 0px;
 }
@@ -1319,36 +1376,35 @@ textarea:focus {
 }
 
 .profileTopBar {
-  width: 70%;
-  margin-left: 5%;
+  width: 100%;
 }
 
 .profileTopBarElement {
-  width: 20%;
-  margin-left: 2%;
-  margin-right: 2%;
+  width: 16%;
+  margin-left: 1.6%;
+  margin-right: 1.6%;
   text-align: center;
   display: inline-block;
 }
 
 i.icon-ProfilePositions {
   font-size: 30px;
-  color: #3e85f7 !important;
+  color: #5271FF !important;
 }
 
 i.icon-ProfileShares {
   font-size: 30px;
-  color: #3e85f7 !important;
+  color: #5271FF !important;
 }
 
 i.icon-ProfileNetWorth {
   font-size: 30px;
-  color: #3e85f7 !important;
+  color: #5271FF !important;
 }
 
 i.icon-ProfileNetReturn {
   font-size: 30px;
-  color: #3e85f7 !important;
+  color: #5271FF !important;
 }
 
 .profileTableTitle {
@@ -1356,7 +1412,7 @@ i.icon-ProfileNetReturn {
   font-size: 18px;
   margin-bottom: 20px;
   margin-top: 5px;
-  color: #3e85f7;
+  color: #5271FF;
 }
 
 .extraWeight {
@@ -1369,18 +1425,18 @@ i.icon-ProfileNetReturn {
 
 .productButton {
   position: relative;
-  float: right;
   margin-top: 10px;
   padding-top: 10px;
   padding-bottom: 10px;
   padding-left: 14px;
   padding-right: 14px;
-  font-size: 14px !important;
+  font-size: 16px !important;
+  border: 1px solid #5271FF !important;
 }
 
 .platformIsFreeTitle {
   text-align: center;
-  color: #3e85f7;
+  color: #5271FF;
   font-size: 30px;
 }
 
@@ -1401,12 +1457,12 @@ i.icon-ProfileNetReturn {
 }
 
 .howToMakeMoneyIcon {
-  color: #3e85f7 !important;
+  color: #5271FF !important;
   font-size: 50px !important;
 }
 
 .howToMakeMoneyRow {
-  margin-top: 160px;
+  margin-top: 140px;
   margin-bottom: 140px;
 }
 
@@ -1458,6 +1514,15 @@ i.icon-ProfileNetReturn {
   border-radius: 5px;
 }
 
+.contactWrapper {
+  position: relative;
+  width: 40%;
+  margin-left: 29%;
+  box-shadow: 0 3px 20px 0  rgb(0 0 0 / 15%);
+  border: 0.1px solid #e0e0e0;
+  border-radius: 5px;
+}
+
 .homePageInfoWrapperLeft {
   position: relative;
   width: 40%;
@@ -1476,9 +1541,20 @@ i.icon-ProfileNetReturn {
   padding-top: 60px;
 }
 
+.homePageInfoWrapperLeft3 {
+  position: relative;
+  width: 55%;
+}
+
 .homePageInfoWrapperRight2 {
   position: relative;
   width: 60%;
+}
+
+.homePageInfoWrapperRight3 {
+  position: relative;
+  width: 40%;
+  padding-top: 60px;
 }
 
 .moneyPageInfoWrapperLeft {
@@ -1508,7 +1584,7 @@ i.icon-ProfileNetReturn {
 
 .homePageInfoTitle {
   font-weight: 550;
-  font-size: 56px;
+  font-size: 40px;
   padding-right: 15%;
 }
 
@@ -1518,7 +1594,7 @@ i.icon-ProfileNetReturn {
 
 .homePageNumber {
   font-size: 30px;
-  color: #3e85f7;
+  color: #5271FF;
 }
 
 .homePageNumberText {
@@ -1530,8 +1606,8 @@ i.icon-ProfileNetReturn {
 .tokenInfoButton {
   cursor: pointer;
   background: white;
-  border: 2px solid #3e85f7;
-  color: #3e85f7;
+  border: 2px solid #5271FF;
+  color: #5271FF;
   padding-top: 11px;
   padding-bottom: 11px;
   padding-left: 20px;
@@ -1547,8 +1623,8 @@ i.icon-ProfileNetReturn {
 
 .homePageButton {
   cursor: pointer;
-  background: #3e85f7;
-  border: 1px solid #3e85f7;
+  background: #5271FF;
+  border: 1px solid #5271FF;
   color: white;
   padding-top: 12px;
   padding-bottom: 12px;
@@ -1565,7 +1641,7 @@ i.icon-ProfileNetReturn {
 .homePageButton2 {
   cursor: pointer;
   background: none;
-  color: #3e85f7;
+  color: #5271FF;
   padding-top: 12px;
   padding-bottom: 12px;
   padding-left: 20px;
@@ -1592,7 +1668,11 @@ i.icon-ProfileNetReturn {
 }
 
 .homePageSecond {
-  margin-top: 300px;
+  margin-top: 400px;
+}
+
+.homePageAlgoRow {
+  margin-top: 260px;
 }
 
 .homePageThird {
@@ -1615,8 +1695,11 @@ i.icon-ProfileNetReturn {
 .homePageImage2 {
   min-width: 450px;
   width: 90% !important;
-  height: 90% !important;
-  margin-top: 10px;
+  height: 70% !important;
+  margin-top: 80px;
+  box-shadow: 0 3px 20px 0  rgb(0 0 0 / 15%);
+  border: 0.1px solid #e0e0e0;
+  border-radius: 5px;
 }
 
 .homePageImage3 {
@@ -1673,6 +1756,10 @@ i.icon-ProfileNetReturn {
   margin-right: 2%;
 }
 
+.marginRight10 {
+  margin-right: 10% !important;
+}
+
 .marginRight20 {
   margin-right: 20% !important;
 }
@@ -1683,6 +1770,10 @@ i.icon-ProfileNetReturn {
 
 .marginRight0 {
   margin-right: 0px !important;
+}
+
+.floatRightProduct {
+  float: right !important;
 }
 
 .initiallyHidden {
@@ -1711,7 +1802,7 @@ i.icon-ProfileNetReturn {
 }
 
 .actionIcon {
-  color:#3e85f7;
+  color:#5271FF;
   font-size: 22px !important;
   padding-top: 2px;
   margin-left: 7px;
@@ -1750,7 +1841,7 @@ i.icon-ProfileNetReturn {
 }
 
 .rightSide {
-  margin-left: 10%;
+  margin-left: 40px;
   height: 600px !important;
   margin-right: 30px;
 }
@@ -1914,7 +2005,7 @@ i.icon-ProfileNetReturn {
 }
 
 .paymentModalTitle {
-  color: #3e85f7;
+  color: #5271FF;
   font-size: 16px !important;
   margin-top: 35px;
 }
@@ -1930,19 +2021,19 @@ i.icon-ProfileNetReturn {
   font-weight: 500;
   margin-left: 10px;
   background-color: white;
-  color: #3e85f7;
+  color: #5271FF;
   border-radius: 8px;
   padding-left: 16px;
   padding-right: 16px;
   padding-top: 10px;
   padding-bottom: 10px;
-  border: 1px solid #3e85f7 !important;
+  border: 1px solid #5271FF !important;
 }
 
 .paymentModalYesButton {
   font-weight: 500;
   margin-left: 10px;
-  background-color: #3e85f7;
+  background-color: #5271FF;
   color: white;
   border-radius: 8px;
   padding-left: 16px;
@@ -1973,6 +2064,7 @@ i.icon-ProfileNetReturn {
 .pageNumber{
   height: 60px !important;
   margin-bottom: 40px !important;
+  width: 90%
 }
 
 .updatesPagePanel {
@@ -1984,6 +2076,7 @@ i.icon-ProfileNetReturn {
   padding: 20px;
   position: relative;
   display: block;
+  margin-left: 28.5%;
 }
 
 .updatesPanelLeft {
@@ -2010,7 +2103,7 @@ i.icon-ProfileNetReturn {
 
 .homePageIconRow {
   width: 100%;
-  margin-top: 300px;
+  margin-top: 340px;
 }
 
 .homePageIconPanel {
@@ -2022,7 +2115,7 @@ i.icon-ProfileNetReturn {
 }
 
 .homePageIcon {
-  color: #3e85f7 !important;
+  color: #5271FF !important;
   font-size: 75px !important;
   margin-left: 20%;
   margin-bottom: 30px;
@@ -2161,7 +2254,7 @@ i.icon-ProfileNetReturn {
   font-size: 26px;
   margin-top: 30px;
   margin-bottom: 30px;
-  color: #3e85f7;
+  color: #5271FF;
 }
 
 .positionInfoSubtitle {
@@ -2182,6 +2275,18 @@ i.icon-ProfileNetReturn {
   border-top: 1px solid #f2f0f0;
   height: 36px;
   padding-top: 9px;
+}
+
+.updatesPageWeb {
+  width: 100%;
+}
+
+.addressButton {
+  text-overflow: ellipsis;
+}
+
+.width19 {
+  width: 19%;
 }
 
 /*Media*/
@@ -2247,7 +2352,7 @@ i.icon-ProfileNetReturn {
 
   .faqsDiv {
     margin-left: 0% !important;
-    width: 80%;
+    width: 90%;
     border: 2px solid #e2e0eb;
     border-radius: 5px;
     padding: 15px;
@@ -2257,13 +2362,14 @@ i.icon-ProfileNetReturn {
   }
 
   .updatesPagePanel {
-    min-width: 70% !important;
-    width: 70% !important;
+    min-width: 80% !important;
+    width: 80% !important;
     background-color: #f5f5f5;
     border-radius: 8px;
     padding: 20px;
     position: relative;
     display: inline-block !important;
+    margin-left: 5% !important;
   }
 
   .updatesPanelLeft {
@@ -2307,8 +2413,9 @@ i.icon-ProfileNetReturn {
 
   .homePageInfoWrapperLeft {
     position: relative;
-    width: 100% !important;
+    width: 80% !important;
     margin-right: 0% !important;
+    margin-left: 10% !important;
   }
 
   .homePageInfoWrapperRight {
@@ -2318,14 +2425,28 @@ i.icon-ProfileNetReturn {
 
   .homePageInfoWrapperLeft2 {
     position: relative;
-    width: 100% !important;
+    width: 80% !important;
     margin-right: 0% !important;
-    padding-top: 20px;
+    padding-top: 30px;
+    margin-left: 10% !important;
   }
   
   .homePageInfoWrapperRight2 {
     position: relative;
     width: 100% !important;
+  }
+
+  .homePageInfoWrapperLeft3 {
+    position: relative;
+    width: 100% !important;
+    margin-right: 0% !important;
+    padding-top: 30px;
+  }
+  
+  .homePageInfoWrapperRight3 {
+    position: relative;
+    width: 80% !important;
+    margin-left: 10% !important;
   }
 
   .buttonRow {
@@ -2334,9 +2455,10 @@ i.icon-ProfileNetReturn {
   }
 
   .homePageImage2 {
-    min-width: 95% !important;
-    width: 95% !important;
-    height: 70% !important;
+    min-width: 90% !important;
+    width: 90% !important;
+    height: 100% !important;
+    margin-left: 5% !important;
     margin-top: 80px;
   }
 
@@ -2353,6 +2475,8 @@ i.icon-ProfileNetReturn {
     height: auto !important;
     display: block !important;
     margin-top: 60px !important;
+    margin-left: 5% !important;
+    text-align: center;
   }
 
   .homePageIconTitle {
@@ -2372,7 +2496,7 @@ i.icon-ProfileNetReturn {
   }
 
   .homePageIcon {
-    color: #3e85f7 !important;
+    color: #5271FF !important;
     font-size: 100px !important;
     margin-left: 20%;
     margin-bottom: 30px;
@@ -2429,7 +2553,7 @@ i.icon-ProfileNetReturn {
   }
 
   .copyright {
-    color: #737373 !important;
+    color: #9ea2ab !important;
     text-align: center !important;
     margin-left: 20% !important;
     min-width: 100% !important;
@@ -2441,15 +2565,15 @@ i.icon-ProfileNetReturn {
     margin-top: 70px;
     height: auto;
     width: auto;
-    max-height: 110px;
-    max-width: 150px;
-    margin-left: 30% !important;
+    max-height: 180px;
+    max-width: 250px;
+    margin-left: 22% !important;
   }
 
   footer {
-    color: black;
+    color: #9ea2ab;
     height: auto !important;
-    background-color:white;
+    background-color:#252e42;
     margin-top: 55px;
     box-shadow: 0 -14px 14px -14px rgb(0 77 165 / 12%);
     display: flex;
@@ -2474,8 +2598,8 @@ i.icon-ProfileNetReturn {
   img.icon {
     height: auto;
     width: auto;
-    max-height: 80px;
-    max-width: 100px;
+    max-height: 70px;
+    max-width: 150px;
     margin-left: 5% !important;
   }
 
@@ -2755,15 +2879,16 @@ i.icon-ProfileNetReturn {
 
   .homePageInfoWrapperMiddle {
     position: relative;
-    width: 100% !important;
-    margin-left: 0% !important;
+    width: 95% !important;
+    margin-left: 2.5% !important;
     box-shadow: 0 3px 20px 0  rgb(0 0 0 / 15%);
     border: 0.1px solid #e0e0e0;
   }
 
   .mediaShiftLeft {
-    margin-left: -50px !important;
+    margin-left: -55px !important;
     padding-left: 0px !important;
+    padding-right: 15px;
   }
 
   .howToMakeMoneyWrapper {
@@ -2808,14 +2933,14 @@ i.icon-ProfileNetReturn {
 
   .mediaChartTitle {
     text-align: center;
-    color: #3e85f7;
+    color: #5271FF;
     font-size: 24px;
     margin-bottom: 30px;
     margin-top: 20px;
   }
 
   .mediaChartTitle2 {
-    color: #3e85f7;
+    color: #5271FF;
     font-size: 24px;
     margin-bottom: 30px;
     margin-top: 50px;
@@ -2833,7 +2958,7 @@ i.icon-ProfileNetReturn {
   .homePageButton2 {
     cursor: pointer;
     background: none;
-    color: #3e85f7;
+    color: #5271FF;
     padding-top: 12px;
     padding-bottom: 12px;
     padding-left: 20px;
@@ -2897,5 +3022,64 @@ i.icon-ProfileNetReturn {
 
   .tokenInfoButton {
     margin-top: 15px;
+  }
+
+  .mediaMarginLeft0 {
+    margin-left: 0% !important;
+  }
+
+  .mediaWidth100Percent {
+    width: 100% !important;
+    min-width: 100% !important;
+  }
+
+  .homePageIcon {
+    margin-left: 0% !important;
+  }
+
+  .platformIsFreeCan {
+    margin-left: 15px !important;
+  }
+
+  .howToMakeMoneyLeft {
+    float: none !important;
+  }
+
+  .howToMakeMoneyInfoRow {
+    display: block !important;
+  }
+
+  .howToMakeMoneyRight {
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+    width: 93% !important;
+    margin-top: 10px !important;
+  }
+
+  .mediaMarginLeft10 {
+    margin-left: 10% !important;
+  }
+
+  .mediaWhitePaper {
+    width: 80% !important;
+    margin-left: 10% !important;
+  }
+
+  .mediaWidth90 {
+    width: 90% !important;
+    margin-left: 5% !important;
+  }
+
+  .contactWrapper {
+    position: relative;
+    width: 80%;
+    margin-left: 5% !important;
+    box-shadow: 0 3px 20px 0  rgb(0 0 0 / 15%);
+    border: 0.1px solid #e0e0e0;
+    border-radius: 5px;
+  }
+
+  .homePageAlgoRow {
+    margin-top: 20px;
   }
 }

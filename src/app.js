@@ -10,6 +10,7 @@ var Auth0Strategy = require('passport-auth0');
 var flash = require('connect-flash');
 var authRouter = require('../routes/auth');
 var indexRouter = require('../routes/index');
+var usersRouter = require('../routes/users');
 var processingRouter = require('../routes/processing');
 const bodyParser = require("body-parser");
 var MemoryStore = require('memorystore')(session);
@@ -97,19 +98,29 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(flash());
 
-app.use(
+/*app.use(
   helmet.contentSecurityPolicy({
     directives: {
-      defaultSrc: ["'self'", "https://www.paypal.com", "https://www.stocks2.io", "https://stocks2.io", "https://t.paypal.com", "https://www.gstatic.com/charts/loader.js"],
-      scriptSrc: ["'self'", "https://code.jquery.com/jquery-3.1.1.js", "https://code.jquery.com/ui/1.12.1/jquery-ui.js", "https://www.paypal.com", "https://www.paypal.com/sdk/js", "https://t.paypal.com", "https://www.gstatic.com/charts/loader.js", "https://www.googletagmanager.com"],// , (req, res) => `'nonce-${ res.locals.nonce }'`],
-      objectSrc: ["'none'", "https://t.paypal.com", "https://www.gstatic.com/charts/loader.js"],
-      styleSrc: ["'self'", "https://www.paypal.com", "'unsafe-inline'", "https://t.paypal.com", "https://www.gstatic.com/charts/loader.js", "https://fonts.googleapis.com"],
-      imgSrc: ["'self'", "data:", "https://t.paypal.com", "https://www.gstatic.com/charts/loader.js"],
+      defaultSrc: ["'self'", "https://www.gstatic.com/charts/loader.js", "https://unpkg.com"],
+      scriptSrc: ["'self'", "https://code.jquery.com/jquery-3.1.1.js", "https://unpkg.com", "https://code.jquery.com/ui/1.12.1/jquery-ui.js", "https://www.gstatic.com/charts/loader.js", "https://www.googletagmanager.com"],// , (req, res) => `'nonce-${ res.locals.nonce }'`],
+      objectSrc: ["'none'", "https://www.gstatic.com/charts/loader.js"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://www.gstatic.com/charts/loader.js", "https://fonts.googleapis.com"],
+      imgSrc: ["'self'", "data:", "https://www.gstatic.com/charts/loader.js"],
       fontSrc: ["'self'", "https://fonts.googleapis.com", "https://fonts.gstatic.com"],
       upgradeInsecureRequests: [],
     },
   })
 );
+
+app.use(function (req, res, next) {
+  if (req.url.split("/")[1] == 'checkout' || req.url == '/settings' || req.url.split("/")[1] == 'product_info'
+  || req.url.split("/")[1] == 'strategy_info' || req.url.split("/")[1] == 'terms_and_conditions' || req.url.split("/")[1] == 'store'
+  || req.url.split("/")[1] == 'privacy_policy' || req.url.split("/")[1] == '' || req.url.split("/")[1] == 'how_to_make_money'
+  || req.url.split("/")[1] == 'faqs' || req.url.split("/")[1] == 'about' || req.url.split("/")[1] == 'token_info') {
+      res.set('Content-Security-Policy', '');
+  }
+  next();
+});*/
 
 // Setup static directory to serve
 app.use(express.static(publicDirectoryPath))
@@ -127,12 +138,14 @@ app.use(function (req, res, next) {
 
 app.use('/', authRouter);
 app.use('/', indexRouter);
+app.use('/', usersRouter);
 app.use('/', processingRouter);
 
 // Catch 404 error
 app.get('*', (req, res) => {
     res.render('404', {
         title: '404',
+        name: 'Xavier Negron',
         errorMessage: 'Page not found.'
     })
 })

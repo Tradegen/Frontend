@@ -18,51 +18,156 @@ var isMobile = {
 	any: function() { return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows()); }
 };
 
-function checkout(email)
-{
-    let csrf = document.getElementById("tualiapnee").value;
-    let strategyID = document.getElementById("sotong").value;
-    let price = document.getElementById("sianjitpua").value;
+// When the user scrolls the page, execute myFunction
+window.onscroll = function() {myFunction()};
 
-    let temp = JSON.stringify({
-        strategyID: strategyID,
-        email: email,
-        price: price,
-        csrf: csrf
-      });
-    const xhttpRep = new XMLHttpRequest();
-    xhttpRep.onload = async function(e) {
-        // Handling response from the API for GET reports:
-        const response = JSON.parse(xhttpRep.responseText);
+// Get the header
+var header = document.getElementById("myHeader");
 
-        let orderID = response.response.split("!!!")[1];
+// Get the offset position of the navbar
+var sticky = header.offsetTop;
 
-        if (typeof orderID !== "undefined")
-        {
-            window.location.href = "/success/" + encodeURIComponent(orderID);
-        }
-        else
-        {
-            displayErrorModal();
-        }
-    };
-
-    xhttpRep.open("POST", '/process_checkout', true);
-    xhttpRep.withCredentials = true;
-    xhttpRep.setRequestHeader("Content-Type", "application/json");
-    xhttpRep.send(temp);
+// Add the sticky class to the header when you reach its scroll position. Remove "sticky" when you leave the scroll position
+function myFunction() {
+    if (isMobile.any())
+    {
+      return;
+    }
+  if (window.pageYOffset > sticky) {
+    header.classList.add("sticky");
+  } else {
+    header.classList.remove("sticky");
+  }
 }
 
-function displayErrorModal() 
-{
-    document.getElementById("errorModal").style.backgroundColor = "white";
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById("payWithAccountBalanceModal").style.display = "none";
+    document.getElementById("payWithAccountBalanceModal").style.textAlign = "center";
+    document.getElementById("successModal").style.display = "none";
+    document.getElementById("errorModal").style.display = "none";
+
+    if (document.getElementById('payWithBalance'))
+    {
+        document.getElementById('payWithBalance')
+            .addEventListener('click', displayModal);
+    }
+
+    if (document.getElementById('cancelPayment'))
+    {
+        document.getElementById('cancelPayment')
+            .addEventListener('click', hideModal);
+    }
+
+    if (document.getElementById('successButton'))
+    {
+        document.getElementById('successButton')
+        .addEventListener('click', function(){
+            window.location.href = '/settings';
+        });
+    }
+
+    if (document.getElementById('errorButton'))
+    {
+        document.getElementById('errorButton')
+            .addEventListener('click', hideErrorModal);
+    }
+
+    if (document.getElementById('confirmPayment'))
+    {
+        document.getElementById('confirmPayment')
+            .addEventListener('click', checkout);
+    }
+
+    document.getElementById("successModal").style.fontSize = "16px";
+    document.getElementById("successTitle").style.marginTop = "20px !important";
+    document.getElementById("successModal").style.fontWeight = "500";
+    document.getElementById("successTitle").style.marginBottom = "0px !important";
     document.getElementById("errorModal").style.fontSize = "16px";
     document.getElementById("errorTitle").style.marginTop = "20px !important";
     document.getElementById("errorModal").style.fontWeight = "500";
     document.getElementById("errorTitle").style.marginBottom = "0px !important";
-    document.getElementById('errorButton').style.color = "#ea3943";
 
-    let position = { my: "left", at: "top", of: "#payment" };
+    let address = document.getElementById("address").value;
+    let strategyID = document.getElementById("sotong").value;
+
+    document.getElementById("strategyNameLink").addEventListener('click', function(){ window.location.href = '/strategy_info/' + encodeURIComponent(strategyID); });
+    document.getElementById("strategyNameLink").addEventListener('mouseover', function(){ 
+        document.getElementById("strategyNameLink").style.cursor = "pointer";
+    });
+
+    document.getElementById("developerLink").addEventListener('click', function(){ window.location.href = '/profile/' + encodeURIComponent(address); });
+    document.getElementById("developerLink").addEventListener('mouseover', function(){ 
+        document.getElementById("developerLink").style.cursor = "pointer";
+    });
+});
+
+function hideModal() 
+{
+    document.getElementById('pageMask').style.display = "none";
+    $( "#payWithAccountBalanceModal" ).dialog('close');
+}
+
+function displayModal() 
+{
+    let width = (isMobile.any()) ? Math.min(screen.width, 480) : 480;
+
+    document.getElementById('pageMask').style.display = "block";
+    $( "#payWithAccountBalanceModal" ).dialog({
+        height: 220,
+        width: width,
+        dialogClass: "whiteBackground",
+        closeOnEscape: true,
+        open: function(event, ui) {
+            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
+        }
+    });
+    $( "#payWithAccountBalanceModal" ).show()
+}
+
+function hideSuccessModal() 
+{
+    $( "#successModal" ).dialog('close');
+}
+
+function displaySuccessModal() 
+{
+    let position = { my: "right top", at: "right-100 top", of: window };
+    if (isMobile.any())
+    {
+        position = { my: "bottom", at: "bottom", of: window }
+    }
+    let width = (isMobile.any()) ? screen.width : 240;
+    var Y = window.pageYOffset;
+    $( "#successModal" ).dialog({
+        height: 55,
+        width: width,
+        closeOnEscape: true,
+        dialogClass: 'successModalContent',
+        position: position,
+        open: function(event, ui) {
+            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
+            setTimeout(function () {
+                $("#successModal").dialog("close");
+                window.location.href = '/settings';
+            }, 2000);
+            if (!isMobile.any())
+            {
+                $(this).parent().css({'top': Y+100});
+            }
+        }
+    });
+    $( "#successModal" ).show()
+}
+
+function hideErrorModal() 
+{
+    $( "#errorModal" ).dialog('close');
+}
+
+function displayErrorModal(message) 
+{
+    document.getElementById("errorText").innerText = message;
+    let position = { my: "right top", at: "right-100 top", of: window };
     if (isMobile.any())
     {
         position = { my: "bottom", at: "bottom", of: window }
@@ -82,27 +187,45 @@ function displayErrorModal()
             }, 2000);
             if (!isMobile.any())
             {
-                $(this).parent().css({'top': Y+50});
+                $(this).parent().css({'top': Y+100});
             }
         }
     });
     $( "#errorModal" ).show()
 }
 
-// When the user scrolls the page, execute myFunction
-window.onscroll = function() {myFunction()};
+function checkout()
+{
+    let csrf = document.getElementById("tualiapnee").value;
+    let strategyID = document.getElementById("sotong").value;
+    let price = document.getElementById("sianjitpua").value;
 
-// Get the header
-var header = document.getElementById("myHeader");
+    let temp = JSON.stringify({
+        strategyID: strategyID,
+        price: price,
+        csrf: csrf
+      });
+    const xhttpRep = new XMLHttpRequest();
+    xhttpRep.onload = async function(e) {
+        // Handling response from the API for GET reports:
+        const response = JSON.parse(xhttpRep.responseText);
 
-// Get the offset position of the navbar
-var sticky = header.offsetTop;
+        if (response.response == "Success")
+        {
+            displaySuccessModal();
+            return;
+        }
+        else
+        {
+            displayErrorModal(response.response);
+            return;
+        }
+    };
 
-// Add the sticky class to the header when you reach its scroll position. Remove "sticky" when you leave the scroll position
-function myFunction() {
-  if (window.pageYOffset > sticky) {
-    header.classList.add("sticky");
-  } else {
-    header.classList.remove("sticky");
-  }
+    xhttpRep.open("POST", '/process_checkout', true);
+    xhttpRep.withCredentials = true;
+    xhttpRep.setRequestHeader("Content-Type", "application/json");
+    xhttpRep.send(temp);
+
+    hideModal();
 }

@@ -136,19 +136,10 @@ document.addEventListener("DOMContentLoaded", async function() {
     document.getElementById("errorModalWithdrawCredit").style.fontWeight = "500";
     document.getElementById("errorTitleWithdrawCredit").style.marginBottom = "0px !important";
 
-    document.getElementById("amount").innerText = "10.00 QOIN"; 
-    document.getElementById("amountDeposit").innerText = "10.00 QOIN"; 
-    
-    let verifiedEmail = document.getElementById("ayam").value;
+    document.getElementById("amount").innerText = "10.00 TGEN"; 
+    document.getElementById("amountDeposit").innerText = "10.00 TGEN"; 
 
-    if (verifiedEmail == "True")
-    {
-        document.getElementById("verifyEmail").style.display = "none";
-    }
-    else
-    {
-        document.getElementById("verifyEmail").style.display = "block";
-    }
+    buildTable();
 
     document.getElementById("loadingPage").remove();
     document.getElementById("mainContent").style.display = "block";
@@ -184,7 +175,7 @@ document.getElementById("credits").addEventListener("input", function() {
     let creditValue = (value == "") ? 0 : parseInt(value);
 
     document.getElementById("credits").value = creditValue;  
-    document.getElementById("amountDeposit").innerText = creditValue.toFixed(2) + " QOIN";   
+    document.getElementById("amountDeposit").innerText = creditValue.toFixed(2) + " TGEN";   
 });
 
 document.getElementById("withdrawalAmount").addEventListener("input", function() {
@@ -203,7 +194,7 @@ document.getElementById("withdrawalAmount").addEventListener("input", function()
     let creditValue = (value == "") ? 0 : parseInt(value);
 
     document.getElementById("withdrawalAmount").value = creditValue; 
-    document.getElementById("amount").innerText = creditValue.toFixed(2) + " QOIN";   
+    document.getElementById("amount").innerText = creditValue.toFixed(2) + " TGEN";   
 });
 
 function hideEditUsernameModal() 
@@ -404,7 +395,7 @@ function displaySuccessModalUsername()
             $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
             setTimeout(function () {
                 $("#successModalUsername").dialog("close");
-                window.location.href = '/profile';
+                window.location.href = 'http://localhost:3000/profile';
             }, 2000);
             if (!isMobile.any())
             {
@@ -474,7 +465,7 @@ function displaySuccessModalSavedReferralCode()
             $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
             setTimeout(function () {
                 $("#successModalSavedReferralCode").dialog("close");
-                window.location.href = '/profile';
+                window.location.href = 'http://localhost:3000/profile';
             }, 2000);
             if (!isMobile.any())
             {
@@ -603,7 +594,7 @@ function displaySuccessModalAddCredit()
             $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
             setTimeout(function () {
                 $("#successModalAddCredit").dialog("close");
-                window.location.href = '/profile';
+                window.location.href = 'http://localhost:3000/profile';
             }, 2000);
             if (!isMobile.any())
             {
@@ -732,7 +723,7 @@ function displaySuccessModalWithdrawCredit()
             $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
             setTimeout(function () {
                 $("#successModalWithdrawCredit").dialog("close");
-                window.location.href = '/profile';
+                window.location.href = 'http://localhost:3000/profile';
             }, 2000);
             if (!isMobile.any())
             {
@@ -794,4 +785,168 @@ function myFunction() {
   } else {
     header.classList.remove("sticky");
   }
+}
+
+function buildTable()
+{
+    let dataString = document.getElementById("dataString").value;
+    let tradingBots = JSON.parse(dataString).tradingBots;
+
+    const downColor = "#fe3957";
+    const upColor = "#00cf92";
+
+    if (tradingBots.length == 0)
+    {
+        document.getElementById("tradingBotsDiv").style.display = "none";
+    }
+
+    let table3 = document.getElementById("tradingBotsTable");
+    table3.setAttribute("class", "transactionsTable");
+    while (table3.hasChildNodes())
+    {
+        table3.removeChild(table3.firstChild);
+    }
+    let table_body3 = document.createElement("tbody");
+    let table_head3 = document.createElement("thead");
+    let header_row3 = document.createElement("tr");
+    let header_title13 = document.createElement("th");
+    header_title13.innerText = "Strategy Name";
+    header_title13.setAttribute("class", "marketsTableRowName");
+    header_row3.appendChild(header_title13);
+    let header_title232 = document.createElement("th");
+    header_title232.innerText = "Total Return";
+    header_title232.setAttribute("class", "marketsTableRowName");
+    header_row3.appendChild(header_title232);
+    let header_title233 = document.createElement("th");
+    header_title233.innerText = "Purchased For";
+    header_title233.setAttribute("class", "marketsTableRowName");
+    header_row3.appendChild(header_title233);
+    let header_title23 = document.createElement("th");
+    header_title23.innerText = "Trades";
+    header_title23.setAttribute("class", "marketsTableRowName");
+    header_row3.appendChild(header_title23);
+    let header_title73 = document.createElement("th");
+    let header_title2322 = document.createElement("th");
+    header_title2322.innerText = "Today's Change";
+    header_title2322.setAttribute("class", "marketsTableRowName");
+    header_row3.appendChild(header_title2322);
+    header_title73.innerText = "Actions";
+    header_title73.setAttribute("class", "marketsTableRowData");
+    header_title73.style.textAlign = "center";
+    header_row3.appendChild(header_title73);
+
+    table_head3.appendChild(header_row3);
+    table3.appendChild(table_head3);
+
+    for(let i = 0; i < tradingBots.length; i++)
+    {
+        let row = document.createElement("tr");
+
+        let strategyName = document.createElement("td");
+        let strategyNameLink = document.createElement("a");
+        strategyNameLink.innerText = tradingBots[i].strategyName;
+        let strategyID = tradingBots[i].strategyID;
+        strategyNameLink.addEventListener('click', function(){ window.location.href = '/strategy_info/' + strategyID; });
+        strategyNameLink.addEventListener('mouseover', function(){ strategyNameLink.style.cursor = "pointer"; });
+        strategyName.setAttribute("class", "marketsTableRowName");
+        strategyName.appendChild(strategyNameLink);
+        row.appendChild(strategyName);
+        let totalReturn = document.createElement("td");
+        let arrow2 = document.createElement("i");
+        let text2 = document.createElement("a");
+        arrow2.setAttribute("class", "material-icons");
+        let percent2 = tradingBots[i].totalReturn;
+        if (percent2 > 0)
+        {
+            totalReturn.style.color = upColor;
+            arrow2.innerText = "arrow_drop_up";
+            arrow2.style.color = upColor;
+        }
+        else if (percent2 == 0)
+        {
+            totalReturn.style.color = "#737373";
+            arrow2.innerText = "arrow_right";
+            arrow2.style.color = "#737373";
+        }
+        else
+        {
+            totalReturn.style.color = downColor;
+            arrow2.innerText = "arrow_drop_down";
+            arrow2.style.color = downColor;
+            percent2 *= -1;
+        }
+        text2.innerText = percent2.toFixed(2) + "%";
+        totalReturn.setAttribute("class", "marketsTableRowName");
+        totalReturn.style.display = "flex";
+        arrow2.style.paddingTop = "4px";
+        text2.style.paddingTop = "7px";
+        totalReturn.appendChild(arrow2);
+        totalReturn.appendChild(text2);
+        row.appendChild(totalReturn);
+        let purchasedFor = document.createElement("td");
+        purchasedFor.innerText = tradingBots[i].salePrice + " TGEN";
+        purchasedFor.setAttribute("class", "marketsTableRowName");
+        row.appendChild(purchasedFor);
+        let numberOfTrades = document.createElement("td");
+        numberOfTrades.innerText = tradingBots[i].numberOfTrades;
+        numberOfTrades.setAttribute("class", "marketsTableRowName");
+        row.appendChild(numberOfTrades);
+        let todayChange = document.createElement("td");
+        let arrow3 = document.createElement("i");
+        let text3 = document.createElement("a");
+        arrow3.setAttribute("class", "material-icons");
+        let percent3 = tradingBots[i].todayChange * 100;
+        if (percent3 > 0)
+        {
+            todayChange.style.color = upColor;
+            arrow3.innerText = "arrow_drop_up";
+            arrow3.style.color = upColor;
+        }
+        else if (percent3 == 0)
+        {
+            todayChange.style.color = "#737373";
+            arrow3.innerText = "arrow_right";
+            arrow3.style.color = "#737373";
+        }
+        else
+        {
+            todayChange.style.color = downColor;
+            arrow3.innerText = "arrow_drop_down";
+            arrow3.style.color = downColor;
+            percent3 *= -1;
+        }
+        text3.innerText = percent3.toFixed(2) + "%";
+        todayChange.setAttribute("class", "marketsTableRowName");
+        todayChange.style.display = "flex";
+        arrow3.style.paddingTop = "4px";
+        text3.style.paddingTop = "7px";
+        todayChange.appendChild(arrow3);
+        todayChange.appendChild(text3);
+        row.appendChild(todayChange);
+
+        let actions = document.createElement("td");
+        actions.setAttribute("class", "marketsTableRowData");
+        actions.style.textAlign = "center";
+        let docsButton = document.createElement("button");
+        docsButton.innerText = "Docs";
+        docsButton.setAttribute("class", "viewButton");
+        let historyButton = document.createElement("button");
+        historyButton.innerText = "History";
+        historyButton.setAttribute("class", "viewButton");
+        historyButton.style.width = "70px";
+        historyButton.addEventListener('click', function(){ window.location.href = '/history/' + strategyID; });
+        let downloadButton = document.createElement("button");
+        downloadButton.innerText = "Download";
+        downloadButton.setAttribute("class", "runBacktestButton");
+        downloadButton.style.fontWeight = "500";
+
+        actions.appendChild(docsButton);
+        actions.appendChild(historyButton);
+        actions.appendChild(downloadButton);
+
+        row.appendChild(actions);
+        table_body3.appendChild(row);
+    }
+
+    table3.appendChild(table_body3);
 }

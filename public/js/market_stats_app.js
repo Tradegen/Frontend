@@ -45,16 +45,13 @@ function drawChart2() {
     let rawData = document.getElementById("sotong2").value;
 
     let data = JSON.parse(rawData);
-    let history = data.shareHistory;
+    let history = data.history;
     var chart2 = new GOOGLE.visualization.AreaChart(document.getElementById('chart2'));
 
     var dateFormat = new google.visualization.DateFormat({pattern: "MMM d, yyyy"});
 
     let output = [];
-    output.push(['Date', 'Price']);
-
-    let maxValue = 0.0;
-    let minValue = 99999.0;
+    output.push(['Date', 'Market Cap']);
 
     for (var i = 0; i < history.length; i+=1)
     {
@@ -64,9 +61,7 @@ function drawChart2() {
             v: date,  
             f: dateFormat.formatValue(date)
         }
-        output.push([options, history[i].price]);
-        maxValue = Math.max(maxValue, history[i].price);
-        minValue = Math.min(minValue, history[i].price);
+        output.push([options, history[i].marketCap]);
     }
 
     var data2 = GOOGLE.visualization.arrayToDataTable(output);
@@ -95,9 +90,7 @@ function drawChart2() {
             }
         },
         vAxis: {
-            minValue: Math.max(0.0000, minValue - 0.0005),
-            maxValue: maxValue + 0.0005,
-            title: "Token Price",
+            title: "Market Cap",
             titleTextStyle: {
                 fontSize: 16,
                 italic: false
@@ -112,16 +105,13 @@ function drawChart3() {
     let rawData = document.getElementById("sotong2").value;
 
     let data = JSON.parse(rawData);
-    let history = data.shareHistory;
+    let history = data.history;
     var chart3 = new GOOGLE.visualization.AreaChart(document.getElementById('chart3'));
 
     var dateFormat = new google.visualization.DateFormat({pattern: "MMM d, yyyy"});
 
     let output = [];
-    output.push(['Date', 'Price']);
-
-    let maxValue = 0.0;
-    let minValue = 99999.0;
+    output.push(['Date', 'Market Cap']);
 
     for (var i = 0; i < history.length; i+=1)
     {
@@ -131,9 +121,7 @@ function drawChart3() {
             v: date,  
             f: dateFormat.formatValue(date)
         }
-        output.push([options, history[i].price]);
-        maxValue = Math.max(maxValue, history[i].price);
-        minValue = Math.min(minValue, history[i].price);
+        output.push([options, history[i].marketCap]);
     }
 
     var data3 = GOOGLE.visualization.arrayToDataTable(output);
@@ -164,9 +152,7 @@ function drawChart3() {
             }
         },
         vAxis: {
-            minValue: Math.max(0.000, minValue - 0.005),
-            maxValue: maxValue + 0.005,
-            title: "Token Price",
+            title: "Market Cap",
             titleTextStyle: {
                 fontSize: 16,
                 italic: false

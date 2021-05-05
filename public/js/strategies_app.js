@@ -178,7 +178,7 @@ function buildTable()
         sharesBought.style.fontWeight = "500";
         row.appendChild(sharesBought);
         let currentPrice = document.createElement("td");
-        currentPrice.innerText = FILTERED_STRATEGIES[i].sharePrice.toFixed(4) + " QOIN";
+        currentPrice.innerText = FILTERED_STRATEGIES[i].sharePrice.toFixed(4) + " TGEN";
         currentPrice.setAttribute("class", "marketsTableRowName");
         currentPrice.style.fontWeight = "500";
         row.appendChild(currentPrice);
@@ -309,7 +309,7 @@ function buildPanels()
         let currentPriceBR = document.createElement("br");
         let currentPriceData = document.createElement("a");
         currentPriceData.setAttribute("class", "tradingBotStoreProductBottomText");
-        currentPriceData.innerText = STRATEGIES[i].sharePrice.toFixed(4) + " QOIN";
+        currentPriceData.innerText = STRATEGIES[i].sharePrice.toFixed(4) + " TGEN";
         currentPriceData.style.fontWeight = "500";
         currentPrice.appendChild(currentPriceText);
         currentPrice.appendChild(currentPriceBR);
@@ -424,6 +424,10 @@ var sticky = header.offsetTop;
 
 // Add the sticky class to the header when you reach its scroll position. Remove "sticky" when you leave the scroll position
 function myFunction() {
+    if (isMobile.any())
+    {
+      return;
+    }
   if (window.pageYOffset > sticky) {
     header.classList.add("sticky");
   } else {
