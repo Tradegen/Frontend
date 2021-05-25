@@ -66,8 +66,10 @@ router.get('/login/:userID', async function (req, res, next) {
         savedReferralCode: "",
         strategiesForSale: [],
         transactions: [],
-        tradingBots: [],
-        username: username
+        username: username,
+        votes: [],
+        voteAccuracy: 0,
+        totalYieldClaimed: 0
       };
 
       let tempDoc = await db.collection("users").doc(userID).set(data);

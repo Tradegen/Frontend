@@ -37,7 +37,7 @@ body {
 }
 
 .platformIsFreeRow {
-  margin-top: 260px;
+  margin-bottom: 120px;
 }
 
 .platformIsFreeList {
@@ -397,6 +397,8 @@ button {
   border-radius: 10px;
   background-color: #5271FF;
   font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 0.4px;
 }
 
 .buyButton {
@@ -610,6 +612,10 @@ button {
 
 .width90 {
   width: 90px !important;
+}
+
+.width80 {
+  width: 80px !important;
 }
 
 .paddingBottom16 {
@@ -868,6 +874,11 @@ th {
   padding-bottom: 5px;
 }
 
+.homePageFAQS {
+  margin-top: 250px;
+  margin-bottom: 280px;
+}
+
 label {
   display: block;
 }
@@ -928,10 +939,8 @@ label {
 }
 
 .buildStrategyButton {
-  position: absolute;
-  bottom: 20px;
-  margin-bottom: 0px;
-  display: block !important;
+  margin-top: 20px;
+  margin-left: 0px !important;
 } 
 
 .transactionsTable td {
@@ -1158,6 +1167,10 @@ i.icon-Cash {
   width: 280px !important;
 }
 
+.width250 {
+  min-width: 250px !important;
+}
+
 .tradingBotStoreProductInfo {
   position: relative;
   width: 80%;
@@ -1321,8 +1334,8 @@ i.icon-Cash {
   background-color: white;
   box-shadow: 0 3px 20px 0 rgb(0 77 165 / 7%);
   border-radius: 10px;
-  padding-left: 15px;
-  padding-right: 15px;
+  padding-left: 25px;
+  padding-right: 25px;
   padding-bottom: 10px;
   height: 330px;
   font-family: 'Roboto Condensed' !important;
@@ -1336,11 +1349,10 @@ i.icon-Cash {
   background-color: white;
   box-shadow: 0 3px 20px 0 rgb(0 77 165 / 7%);
   border-radius: 10px;
-  padding-left: 15px;
-  padding-right: 15px;
+  padding-left: 25px;
+  padding-right: 25px;
   padding-bottom: 10px;
   height: 330px;
-  text-align: center;
   font-family: 'Roboto Condensed' !important;
 }
 
@@ -1462,8 +1474,8 @@ i.icon-ProfileNetReturn {
 }
 
 .howToMakeMoneyRow {
-  margin-top: 140px;
-  margin-bottom: 140px;
+  margin-top: 60px;
+  margin-bottom: 80px;
 }
 
 .howToMakeMoneySubtitle {
@@ -1502,7 +1514,6 @@ i.icon-ProfileNetReturn {
 
 .howToMakeMoneyWrapper {
   width: 70%;
-  margin-left: 10%;
 }
 
 .homePageInfoWrapperMiddle {
@@ -1570,6 +1581,7 @@ i.icon-ProfileNetReturn {
 .homePageSubText {
   margin-top: 5px;
   margin-left: 15px;
+  color: #6d7380 !important;
 }
 
 .homePageRow {
@@ -1668,11 +1680,11 @@ i.icon-ProfileNetReturn {
 }
 
 .homePageSecond {
-  margin-top: 400px;
+  margin-top: 350px;
 }
 
 .homePageAlgoRow {
-  margin-top: 260px;
+  margin-top: 280px;
 }
 
 .homePageThird {
@@ -1695,11 +1707,23 @@ i.icon-ProfileNetReturn {
 .homePageImage2 {
   min-width: 450px;
   width: 90% !important;
-  height: 70% !important;
+  height: 55% !important;
   margin-top: 80px;
   box-shadow: 0 3px 20px 0  rgb(0 0 0 / 15%);
   border: 0.1px solid #e0e0e0;
   border-radius: 5px;
+}
+
+.tokenomicsImage {
+  max-width: 340px;
+  height: 340px;
+  margin-top: 80px;
+}
+
+.tokenomicsImage2 {
+  max-width: 340px;
+  height: 340px;
+  margin-top: 80px;
 }
 
 .homePageImage3 {
@@ -1841,13 +1865,12 @@ i.icon-ProfileNetReturn {
 }
 
 .rightSide {
-  margin-left: 40px;
-  height: 600px !important;
-  margin-right: 30px;
+  margin-left: 60px;
+  height: 580px !important;
 }
 
 .leftSide {
-  height: 600px !important;
+  height: 580px !important;
 }
 
 .exitConditionsDiv {
@@ -1856,6 +1879,10 @@ i.icon-ProfileNetReturn {
 
 .formMargin {
   margin-left: 30px;
+}
+
+.maxWidth950 {
+  max-width: 950px;
 }
 
 .orderConfirmationTitle {
@@ -2104,14 +2131,20 @@ i.icon-ProfileNetReturn {
 .homePageIconRow {
   width: 100%;
   margin-top: 340px;
+  display: flex;
 }
 
 .homePageIconPanel {
-  width: 23%;
+  width: 20%;
   position: relative;
   margin-right: 10%;
-  height: 200px;
-  display: inline-block;
+  box-shadow: 0 3px 20px 0  rgb(0 0 0 / 15%);
+  border: 0.1px solid #e0e0e0;
+  border-radius: 5px;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-top: 45px;
+  padding-bottom: 45px;
 }
 
 .homePageIcon {
@@ -2124,16 +2157,18 @@ i.icon-ProfileNetReturn {
 .homePageIconTitle {
   font-size: 28px !important;
   font-weight: 550 !important;
+  color: #1a2b6b;
 }
 
 .homePageIconText {
   font-size: 22px !important;
   margin-top: 30px;
+  color: #6d7380;
 }
 
 .width640 {
   width: 640px !important;
-  height: 600px !important;
+  height: 580px !important;
   display: flex;
 }
 
@@ -2287,6 +2322,10 @@ i.icon-ProfileNetReturn {
 
 .width19 {
   width: 19%;
+}
+
+.homePageFaqDiv {
+  margin-left: 30%;
 }
 
 /*Media*/
@@ -2463,13 +2502,14 @@ i.icon-ProfileNetReturn {
   }
 
   .homePageIconRow {
-    width: 100%;
+    width: 80%;
     margin-top: 100px !important;
     height: auto;
+    display: block !important;
   }
 
   .homePageIconPanel {
-    width: 90% !important;
+    width: 95% !important;
     position: relative;
     margin-right: 0% !important;
     height: auto !important;
@@ -3060,6 +3100,11 @@ i.icon-ProfileNetReturn {
     margin-left: 10% !important;
   }
 
+  .homePageFAQS {
+    margin-top: 50px !important;
+    margin-bottom: 50px !important;
+  }
+
   .mediaWhitePaper {
     width: 80% !important;
     margin-left: 10% !important;
@@ -3081,5 +3126,9 @@ i.icon-ProfileNetReturn {
 
   .homePageAlgoRow {
     margin-top: 20px;
+  }
+
+  .homePageFaqDiv {
+    margin-left: 0% !important;
   }
 }

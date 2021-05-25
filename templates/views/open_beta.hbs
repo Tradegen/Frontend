@@ -17,6 +17,10 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script>
+        Object.keys(require.cache).forEach(function(key) { delete require.cache[key] });
+    </script>
 </head>
 
 <body>
@@ -25,13 +29,13 @@
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
     {{>guest_header}}
-    <div class="main-content mediaWidth75 maxWidth75">
-        <div class="pageTitle extraMarginBottom textAlignCenter maxWidth80">Participate in our open beta</div>
+    <div class="main-content maxWidth80 mediaWhitePaper">
+        <div class="pageTitle extraMarginBottom textAlignCenter maxWidth80 mediaWidth100">Participate in our open beta</div>
         <p class="aboutPageContent textAlignCenter">
             We recently released an open beta of the centralized version of our app. While the app is in open beta, you can try features such
             as building strategies, trading tokens, and exploring strategies. Any deposits/withdrawals during open beta are with
             fake money, meant to let you try the features for free. To reward users who participate in our open beta, we'll offer a pre-sale
-            of our fungible token (QOIN) at a 30% discount before launching the decentralized version of our app. We plan to launch by summer 2021.
+            of our fungible token (TGEN) at a 30% discount before launching the decentralized version of our app. We plan to launch near the end of Q2 2021.
         </p>
         <div class="aboutPageContent textAlignCenter">
             <button type="button" class="homePageButton" id="enterAppButton">Enter App</button>
@@ -39,14 +43,14 @@
         <div class="faqsDiv marginTop50" id="faq1">
             <div class="faqsTopRow"><a class="faqsLeftSide">Will you collect any personal information?</a><i class="material-icons faqsRightSide" id="icon1">expand_more</i></div>
             <p class="faqsText" id="text1">
-                We only collect your email address when you log in for the first time. We'll use the email address you provide to alert you when
-                the pre-sale starts and when we officially launch. 
+                We only collect the public address of your Celo wallet when you login. We'll use the public address you provide to airdrop tokens to you when
+                the pre-sale starts. Any information we collect from you will be removed from our database once we officially launch. 
             </p>
         </div>
         <div class="faqsDiv" id="faq2">
             <div class="faqsTopRow"><a class="faqsLeftSide">Do I need to do anything during open beta to qualify for the pre-sale?</a><i class="material-icons faqsRightSide" id="icon2">expand_more</i></div>
             <p class="faqsText" id="text2">
-                Once you sign up and verify your email, you'll qualify for the pre-sale. 
+                Once you login to the platform during open beta, you'll qualify for the pre-sale. 
             </p>
         </div>
         <div class="faqsDiv" id="faq3">
@@ -54,19 +58,25 @@
             <p class="faqsText" id="text3">
                 When we launch the decentralized version of our app, we'll reset the price history of published strategies and delete all data except for published strategies. After launching
                 the decentralized version, we won't be able to change future app data. If you published a strategy during open beta, you'll retain ownership of the strategy 
-                and receive QOIN whenever users buy new tokens for your strategy.
+                and receive TGEN whenever users buy new tokens for your strategy.
             </p>
         </div>
         <div class="faqsDiv" id="faq4">
-            <div class="faqsTopRow"><a class="faqsLeftSide">What is QOIN?</a><i class="material-icons faqsRightSide" id="icon4">expand_more</i></div>
+            <div class="faqsTopRow"><a class="faqsLeftSide">What is TGEN?</a><i class="material-icons faqsRightSide" id="icon4">expand_more</i></div>
             <p class="faqsText" id="text4">
-                QOIN is Tradegen's fungible, SPL cryptocurrency token on the Solana blockchain. QOIN is used to trade tokens of strategies, publish strategies, and claim dividends on your positions.
+                TGEN is Tradegen's fungible cryptocurrency token on the Celo blockchain. TGEN is used to trade tokens of strategies, publish strategies, buy source code, and claim dividends on your positions.
             </p>
         </div>
     </div>
     
     {{>footer}}
     <a class="footerBuffer"></a>
+    <script type="text/javascript" src="https://unpkg.com/web3@1.2.11/dist/web3.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/web3modal@1.9.0/dist/index.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/evm-chains@0.2.0/dist/umd/index.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/@walletconnect/web3-provider@1.2.1/dist/umd/index.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/fortmatic@2.0.6/dist/fortmatic.js"></script>
+    <script src="/js/connect_wallet_app.js"></script>
     <script src="/js/open_beta_app.js"></script>
     <script src="/js/update_overlay.js"></script>
 </body>

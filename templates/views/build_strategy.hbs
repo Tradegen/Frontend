@@ -20,17 +20,19 @@
     </script>
     <link rel="stylesheet" href="/css/styles.css">
     <script src="/js/update_overlay.js"></script>
+    <script>
+        Object.keys(require.cache).forEach(function(key) { delete require.cache[key] });
+    </script>
 </head>
 
 <body class="appBackground">
     {{>user_header}}
     <div class="main-content mediaHeaderWeb">
 
-        <div class="pageTitle">Build Strategy</div>
         {{#if message}}
             <div><p id="sotong">{{message}}</p></div>
         {{/if}}
-        <div class="tableWrapper maxWidth displayProperty maxWidth700" id="tableWrapperBuildStrategy">
+        <div class="tableWrapper maxWidth displayProperty maxWidth950" id="tableWrapperBuildStrategy" style="margin-left: 6%">
             <form id="form1" name="form1" action="/build_strategy" role="form" method="post" class="width640 formMargin">
                 <input type="hidden" name="csrf" value="{{token}}">
                 <div class="width280 leftSide">
@@ -42,38 +44,87 @@
                         <label for="description"></label>
                         <textarea id="description" class="strategyExplorerText" name="description" rows="6" cols="30" maxlength="300" placeholder="Description of your strategy">{{description}}</textarea>
                     </p>
-                    <div class="displayProperty"> 
-                        <div>
+                    <p>Max Trade Duration:  
+                        <label for="maxTradeDuration"></label>
+                        <input type="number" min="1" max="100" class="strategyExplorerText" name="maxTradeDuration" id="maxTradeDuration" value="{{maxTradeDuration}}" placeholder="Maximum number of oracle rounds"/>
+                    </p>
+                    <p>Profit Target:  
+                        <label for="profitTarget"></label>
+                        <input type="number" min="1" max="100" class="strategyExplorerText" name="profitTarget" id="profitTarget" value="{{profitTarget}}" placeholder="% Profit Target"/>
+                    </p>
+                    <p>Stop Loss:  
+                        <label for="stopLoss"></label>
+                        <input type="number" min="1" max="100" class="strategyExplorerText" name="stopLoss" id="stopLoss" value="{{stopLoss}}" placeholder="% Stop Loss"/>
+                    </p>
+                    <div class="displayProperty">
+                         <div>
                             <label for="direction">Direction:</label>
                             <div class="selectWrapper">
-                                <select name="direction" class="selectBox" id="direction">
+                                <select name="direction" class="selectBoxFilter" id="direction">
                                     <option value="long">long</option>
                                     <option value="short">short</option>
                                 </select>
                             </div>
                         </div>
                         <div class="marginLeft40">
-                            <label for="timeframe">Time frame (mins):</label>
+                            <label for="underlyingAsset">Underlying Asset:</label>
                             <div class="selectWrapper">
-                                <select name="timeframe" class="selectBox" id="timeframe">
-                                    <option value="1">1</option>
-                                    <option value="5">5</option>
-                                    <option value="10">10</option>
-                                    <option value="15">15</option>
+                                <select name="underlyingAsset" class="selectBoxFilter" id="underlyingAsset">
+                                    <option value="ETH">ETH</option>
+                                    <option value="BTC">BTC</option>
+                                    <option value="LINNK">LINK</option>
+                                    <option value="SNX">SNX</option>
+                                    <option value="1INCH">1INCH</option>
+                                    <option value="DOT">DOT</option>
+                                    <option value="AAVE">AAVE</option>
+                                    <option value="BCH">BCH</option>
+                                    <option value="COMP">COMP</option>
+                                    <option value="DASH">DASH</option>
+                                    <option value="EOS">EOS</option>
+                                    <option value="ETC">ETC</option>
+                                    <option value="FIL">FIL</option>
+                                    <option value="HT">HT</option>
+                                    <option value="KNC">KNC</option>
+                                    <option value="LTC">LTC</option>
+                                    <option value="UNI">UNI</option>
+                                    <option value="XRP">XRP</option>
+                                    <option value="XTZ">XTZ</option>
+                                    <option value="ADA">ADA</option>
+                                    <option value="ADX">ADX</option>
+                                    <option value="AMP">AMP</option>
+                                    <option value="AMPL">AMPL</option>
+                                    <option value="BAND">BAND</option>
+                                    <option value="BNB">BNB</option>
+                                    <option value="BNT">BNT</option>
+                                    <option value="COVER">COVER</option>
+                                    <option value="FNX">FNX</option>
+                                    <option value="FXS">FXS</option>
+                                    <option value="HEGIC">HEGIC</option>
+                                    <option value="INJ">INJ</option>
+                                    <option value="IOST">IOST</option>
+                                    <option value="MATIC">MATIC</option>
+                                    <option value="ONT">ONT</option>
+                                    <option value="OXT">OXT</option>
+                                    <option value="RAMP">RAMP</option>
+                                    <option value="REN">REN</option>
+                                    <option value="SXP">SXP</option>
+                                    <option value="TOMO">TOMO</option>
+                                    <option value="TRU">TRU</option>
+                                    <option value="TRX">TRX</option>
+                                    <option value="WAVES">WAVES</option>
+                                    <option value="WING">WING</option>
+                                    <option value="XHV">XHV</option>
+                                    <option value="XMR">XMR</option>
+                                    <option value="YFI">YFI</option>
                                 </select>
                             </div>
                         </div>
                     </div>
-                    <div class="marginTop10"> 
-                        <label for="positionWeight">Position Weight: </label>
-                        <div class="selectWrapper">
-                            <select name="positionWeight" id="positionWeight" class="selectBox width140">
-                                <option value="equalWeights">Equal Weights</option>
-                                <option value="weightedByStrength">Weighted by Strength</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="buffer"></div>
+                    <p>
+                        <button type="submit" class="paymentModalYesButton buildStrategyButton" id="create" value="{{username}}">BUILD</button>
+                    </p>
+                </div>
+                <div id="rightSide" class="rightSide width320">
                     <div class="entryConditionsDiv">
                         <div class="myStrategiesTopBar">
                             <a class="extraWeight" id="entryConditionsTitle">Entry Conditions</a>
@@ -81,43 +132,8 @@
                         </div>
                         <table id="entryConditions" class="conditionsTable"></table>
                     </div>
-                    <p>
-                        <button type="submit" class="paymentModalYesButton buildStrategyButton" id="create" value="{{username}}">BUILD</button>
-                    </p>
                 </div>
-                <div id="rightSide" class="rightSide width280">
-                    <p>Max Allocation:  
-                        <label for="maxAllocation"></label>
-                        <input type="number" min="1" max="100" class="strategyExplorerText" name="maxAllocation" id="maxAllocation" value="{{maxAllocation}}" placeholder="Percentage of your portfolio"/>
-                    </p>
-                    <p>Max Concurrent Trades:  
-                        <label for="maxConcurrentTrades"></label>
-                        <input type="number" min="1" max="9" class="strategyExplorerText" name="maxConcurrentTrades" id="maxConcurrentTrades" value="{{maxConcurrentTrades}}"/>
-                    </p>
-                    <p>Start Time:  
-                        <label for="startTime"></label>
-                        <input type="number" min="0" max="389" class="strategyExplorerText" name="startTime" id="startTime" value="{{start}}" placeholder="Minutes after market opens"/>
-                    </p>
-                    <p>End Time:  
-                        <label for="endTime"></label>
-                        <input type="number" min="0" max="389" class="strategyExplorerText" name="endTime" id="endTime" value="{{end}}" placeholder="Minutes before market closes"/>
-                    </p>
-                    <div class="displayProperty marginBottom25 marginTop10"> 
-                        <div>
-                            <label for="watchlist">Watchlist: </label>
-                            <div class="selectWrapper">
-                                <select name="watchlist" class="selectBox width140" id="watchlist">
-                                    <option value="morningBreakouts">Morning Breakouts</option>
-                                    <option value="indexETFs">Index ETFs</option>
-                                    <option value="FAANG">FAANG stocks</option>
-                                    <option value="software">Software stocks</option>
-                                    <option value="travel">Travel stocks</option>
-                                    <option value="custom">Custom watchlist</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <input type="text" class="strategyExplorerText" name="symbols" id="symbols" maxlength="100" placeholder="List of symbols separated by commas" value="{{customStockList}}"/>
+                <div id="rightSide" class="rightSide width320">
                     <div class="exitConditionsDiv">
                         <div class="myStrategiesTopBar">
                             <a class="extraWeight" id="exitConditionsTitle">Exit Conditions</a>
@@ -149,6 +165,18 @@
                     <label for="description"></label>
                     <textarea id="description" class="strategyExplorerText" name="description" rows="6" cols="30" maxlength="300" placeholder="Description of your strategy">{{description}}</textarea>
                 </p>
+                <p>Max Trade Duration:  
+                    <label for="maxTradeDuration"></label>
+                    <input type="number" min="1" max="100" class="strategyExplorerText" name="maxTradeDuration" id="maxTradeDuration" value="{{maxTradeDuration}}" placeholder="Maximum number of oracle rounds"/>
+                </p>
+                <p>Profit Target:  
+                    <label for="profitTarget"></label>
+                    <input type="number" min="1" max="100" class="strategyExplorerText" name="profitTarget" id="profitTarget" value="{{profitTarget}}" placeholder="% Profit Target"/>
+                </p>
+                <p>Stop Loss:  
+                    <label for="stopLoss"></label>
+                    <input type="number" min="1" max="100" class="strategyExplorerText" name="stopLoss" id="stopLoss" value="{{stopLoss}}" placeholder="% Stop Loss"/>
+                </p>
                 <div class="displayProperty"> 
                     <div>
                         <label for="direction">Direction:</label>
@@ -160,58 +188,59 @@
                         </div>
                     </div>
                     <div class="marginLeft40">
-                        <label for="timeframe">Time frame (mins):</label>
+                        <label for="underlyingAsset">Underlying Asset:</label>
                         <div class="selectWrapper">
-                            <select name="timeframe" class="selectBox" id="timeframe">
-                                <option value="1">1</option>
-                                <option value="5">5</option>
-                                <option value="10">10</option>
-                                <option value="15">15</option>
+                            <select name="underlyingAsset" class="selectBoxFilter" id="underlyingAsset">
+                                <option value="ETH">ETH</option>
+                                <option value="BTC">BTC</option>
+                                <option value="LINNK">LINK</option>
+                                <option value="SNX">SNX</option>
+                                <option value="1INCH">1INCH</option>
+                                <option value="DOT">DOT</option>
+                                <option value="AAVE">AAVE</option>
+                                <option value="BCH">BCH</option>
+                                <option value="COMP">COMP</option>
+                                <option value="DASH">DASH</option>
+                                <option value="EOS">EOS</option>
+                                <option value="ETC">ETC</option>
+                                <option value="FIL">FIL</option>
+                                <option value="HT">HT</option>
+                                <option value="KNC">KNC</option>
+                                <option value="LTC">LTC</option>
+                                <option value="UNI">UNI</option>
+                                <option value="XRP">XRP</option>
+                                <option value="XTZ">XTZ</option>
+                                <option value="ADA">ADA</option>
+                                <option value="ADX">ADX</option>
+                                <option value="AMP">AMP</option>
+                                <option value="AMPL">AMPL</option>
+                                <option value="BAND">BAND</option>
+                                <option value="BNB">BNB</option>
+                                <option value="BNT">BNT</option>
+                                <option value="COVER">COVER</option>
+                                <option value="FNX">FNX</option>
+                                <option value="FXS">FXS</option>
+                                <option value="HEGIC">HEGIC</option>
+                                <option value="INJ">INJ</option>
+                                <option value="IOST">IOST</option>
+                                <option value="MATIC">MATIC</option>
+                                <option value="ONT">ONT</option>
+                                <option value="OXT">OXT</option>
+                                <option value="RAMP">RAMP</option>
+                                <option value="REN">REN</option>
+                                <option value="SXP">SXP</option>
+                                <option value="TOMO">TOMO</option>
+                                <option value="TRU">TRU</option>
+                                <option value="TRX">TRX</option>
+                                <option value="WAVES">WAVES</option>
+                                <option value="WING">WING</option>
+                                <option value="XHV">XHV</option>
+                                <option value="XMR">XMR</option>
+                                <option value="YFI">YFI</option>
                             </select>
                         </div>
                     </div>
                 </div>
-                <div class="marginTop10"> 
-                    <label for="positionWeight">Position Weight: </label>
-                    <div class="selectWrapper">
-                        <select name="positionWeight" id="positionWeight" class="selectBox width140">
-                            <option value="equalWeights">Equal Weights</option>
-                            <option value="weightedByStrength">Weighted by Strength</option>
-                        </select>
-                    </div>
-                </div>
-                <p>Max Allocation:  
-                    <label for="maxAllocation"></label>
-                    <input type="number" min="1" max="100" class="strategyExplorerText" name="maxAllocation" id="maxAllocation" value="{{maxAllocation}}" placeholder="Percentage of your portfolio"/>
-                </p>
-                <p>Max Concurrent Trades:  
-                    <label for="maxConcurrentTrades"></label>
-                    <input type="number" min="1" max="9" class="strategyExplorerText" name="maxConcurrentTrades" id="maxConcurrentTrades" value="{{maxConcurrentTrades}}"/>
-                </p>
-                <p>Start Time:  
-                    <label for="startTime"></label>
-                    <input type="number" min="0" max="389" class="strategyExplorerText" name="startTime" id="startTime" value="{{start}}" placeholder="Minutes after market opens"/>
-                </p>
-                <p>End Time:  
-                    <label for="endTime"></label>
-                    <input type="number" min="0" max="389" class="strategyExplorerText" name="endTime" id="endTime" value="{{end}}" placeholder="Minutes before market closes"/>
-                </p>
-                <div class="displayProperty marginBottom25 marginTop10"> 
-                    <div>
-                        <label for="watchlist">Watchlist: </label>
-                        <div class="selectWrapper">
-                            <select name="watchlist" class="selectBox width140" id="watchlist">
-                                <option value="morningBreakouts">Morning Breakouts</option>
-                                <option value="indexETFs">Index ETFs</option>
-                                <option value="FAANG">FAANG stocks</option>
-                                <option value="software">Software stocks</option>
-                                <option value="travel">Travel stocks</option>
-                                <option value="custom">Custom watchlist</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <input type="text" class="strategyExplorerText" name="symbols" id="symbols" maxlength="100" placeholder="List of symbols separated by commas" value="{{customStockList}}"/>
                 <div class="entryConditionsDiv">
                     <div class="myStrategiesTopBar">
                         <a class="extraWeight" id="entryConditionsTitle">Entry Conditions</a>
@@ -242,10 +271,11 @@
             <p class="paymentModalText" id="firstIndicatorDiv">First Indicator:  
                 <label for="firstIndicatorEntry"></label>
                 <select name="firstIndicatorEntry" id="firstIndicatorEntry">
-                    <option value="CurrentCandle" id="entry_FirstIndicator_CurrentCandle">Current candle</option>
-                    <option value="Gap" id="entry_FirstIndicator_Gap">Gap</option>
-                    <option value="PreviousNCandles" id="entry_FirstIndicator_PreviousNCandles">Previous N candles</option>
-                    <option value="Signal" id="entry_FirstIndicator_Signal">Signal</option>
+                    <option value="LatestPrice" id="entry_FirstIndicator_LatestPrice">Latest Price</option>
+                    <option value="EMA" id="entry_FirstIndicator_EMA">EMA</option>
+                    <option value="NthPriceUpdate" id="entry_FirstIndicator_NthPriceUpdate">Nth Price Update</option>
+                    <option value="PreviousNPriceUpdates" id="entry_FirstIndicator_PreviousNPriceUpdates">Previous N Price Updates</option>
+                    <option value="SMA" id="entry_FirstIndicator_SMA">SMA</option>
                 </select>
                 <p></p>
             </p>
@@ -260,7 +290,6 @@
                     <option value="ClosesAbove" id="entry_Comparator_ClosesAbove">Closes above</option>
                     <option value="ClosesBelow" id="entry_Comparator_ClosesBelow">Closes below</option>
                     <option value="FallsTo" id="entry_Comparator_FallsTo">Falls to</option>
-                    <option value="Has" id="entry_Comparator_Has">Has</option>
                     <option value="RisesTo" id="entry_Comparator_RisesTo">Rises to</option>
                 </select>
                 <p></p>
@@ -271,7 +300,6 @@
                     <option value="EMA" id="entry_SecondIndicator_EMA">EMA</option>
                     <option value="Interval" id="entry_SecondIndicator_Interval">Interval</option>
                     <option value="SMA" id="entry_SecondIndicator_SMA">SMA</option>
-                    <option value="VWAP" id="entry_SecondIndicator_VWAP">VWAP</option>
                 </select>
                 <p></p>
                 <input type="number" class="strategyExplorerText" name="entryConditionSecondIndicatorParameter" id="entryConditionSecondIndicatorParameter" min="0" max="390" step="1" value="" placeholder="EMA period"/><br>
@@ -291,8 +319,11 @@
             <p class="paymentModalText" id="firstIndicatorDiv2">First Indicator:  
                 <label for="firstIndicatorExit"></label>
                 <select name="firstIndicatorExit" id="firstIndicatorExit">
-                    <option value="CurrentCandle" id="exit_FirstIndicator_CurrentCandle">Current candle</option>
-                    <option value="PreviousNCandles" id="exit_FirstIndicator_PreviousNCandles">Previous N candles</option>
+                    <option value="LatestPrice" id="exit_FirstIndicator_LatestPrice">Latest Price</option>
+                    <option value="EMA" id="exit_FirstIndicator_EMA">EMA</option>
+                    <option value="NthPriceUpdate" id="exit_FirstIndicator_NthPriceUpdate">Nth Price Update</option>
+                    <option value="PreviousNPriceUpdates" id="exit_FirstIndicator_PreviousNPriceUpdates">Previous N Price Updates</option>
+                    <option value="SMA" id="exit_FirstIndicator_SMA">SMA</option>
                 </select>
                 <p></p>
             </p>
@@ -307,7 +338,6 @@
                     <option value="ClosesAbove" id="exit_Comparator_ClosesAbove">Closes above</option>
                     <option value="ClosesBelow" id="exit_Comparator_ClosesBelow">Closes below</option>
                     <option value="FallsTo" id="exit_Comparator_FallsTo">Falls to</option>
-                    <option value="Has" id="exit_Comparator_Has">Has</option>
                     <option value="RisesTo" id="entry_Comparator_RisesTo">Rises to</option>
                 </select>
                 <p></p>
@@ -318,7 +348,6 @@
                     <option value="EMA" id="exit_SecondIndicator_EMA">EMA</option>
                     <option value="Interval" id="exit_SecondIndicator_Interval">Interval</option>
                     <option value="SMA" id="exit_SecondIndicator_SMA">SMA</option>
-                    <option value="VWAP" id="exit_SecondIndicator_VWAP">VWAP</option>
                 </select>
                 <p></p>
                 <input type="number" class="strategyExplorerText" name="exitConditionSecondIndicatorParameter" id="exitConditionSecondIndicatorParameter" min="0" max="390" step="1" value="" placeholder="EMA period"/><br>
@@ -347,6 +376,12 @@
 
     <input type="hidden" id="status" value="{{status}}">
 
+    <script type="text/javascript" src="https://unpkg.com/web3@1.2.11/dist/web3.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/web3modal@1.9.0/dist/index.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/evm-chains@0.2.0/dist/umd/index.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/@walletconnect/web3-provider@1.2.1/dist/umd/index.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/fortmatic@2.0.6/dist/fortmatic.js"></script>
+    <script src="/js/connect_wallet_app.js"></script>
     <script src="/js/build_strategy_app.js"></script>
 </body>
 

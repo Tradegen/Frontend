@@ -22,39 +22,57 @@ document.addEventListener("DOMContentLoaded", async function() {
     document.getElementById("editUsernameModal").style.display = "none";
     document.getElementById("editUsernameModal").style.textAlign = "center";
 
-    document.getElementById("editSavedReferralCodeModal").style.display = "none";
-    document.getElementById("editSavedReferralCodeModal").style.textAlign = "center";
+    document.getElementById("stakeModal").style.display = "none";
+    document.getElementById("stakeModal").style.textAlign = "center";
 
-    document.getElementById("depositCreditModal").style.display = "none";
-    document.getElementById("depositCreditModal").style.textAlign = "center";
+    document.getElementById("unstakeModal").style.display = "none";
+    document.getElementById("unstakeModal").style.textAlign = "center";
 
-    document.getElementById("withdrawCreditModal").style.display = "none";
-    document.getElementById("withdrawCreditModal").style.textAlign = "center";
+    document.getElementById("depositModal").style.display = "none";
+    document.getElementById("depositModal").style.textAlign = "center";
+
+    document.getElementById("sellStrategyModal").style.display = "none";
+    document.getElementById("sellStrategyModal").style.textAlign = "center";
+
+    document.getElementById("deleteStrategyModal").style.display = "none";
+    document.getElementById("deleteStrategyModal").style.textAlign = "center";
+
+    document.getElementById("runBacktestModal").style.display = "none";
+    document.getElementById("runBacktestModal").style.textAlign = "center";
+
+    document.getElementById("successModalSell").style.display = "none";
+    document.getElementById("errorModalSell").style.display = "none";
+
+    document.getElementById("successModalDelete").style.display = "none";
+    document.getElementById("errorModalDelete").style.display = "none";
+
+    document.getElementById("successModalRunBacktest").style.display = "none";
+    document.getElementById("errorModalRunBacktest").style.display = "none";
 
     document.getElementById('editUsernameIcon').addEventListener('click', displayEditUsernameModal);
-    document.getElementById('editSavedReferralCodeIcon').addEventListener('click', displayEditSavedReferralCodeModal);
-    document.getElementById('depositButton').addEventListener('click', displayDepositCreditModal);
-    document.getElementById('withdrawButton').addEventListener('click', displayWithdrawCreditModal);
+    document.getElementById('stakeButton').addEventListener('click', displayStakeModal);
+    document.getElementById('unstakeButton').addEventListener('click', displayUnstakeModal);
+    document.getElementById('depositButton').addEventListener('click', displayDepositModal);
 
     document.getElementById("successModalUsername").style.display = "none";
     document.getElementById("successModalUsername").style.textAlign = "center";
     document.getElementById("errorModalUsername").style.display = "none";
     document.getElementById("errorModalUsername").style.textAlign = "center";
 
-    document.getElementById("successModalSavedReferralCode").style.display = "none";
-    document.getElementById("successModalSavedReferralCode").style.textAlign = "center";
-    document.getElementById("errorModalSavedReferralCode").style.display = "none";
-    document.getElementById("errorModalSavedReferralCode").style.textAlign = "center";
+    document.getElementById("successModalStake").style.display = "none";
+    document.getElementById("successModalStake").style.textAlign = "center";
+    document.getElementById("errorModalStake").style.display = "none";
+    document.getElementById("errorModalStake").style.textAlign = "center";
 
-    document.getElementById("successModalAddCredit").style.display = "none";
-    document.getElementById("successModalAddCredit").style.textAlign = "center";
-    document.getElementById("errorModalAddCredit").style.display = "none";
-    document.getElementById("errorModalAddCredit").style.textAlign = "center";
+    document.getElementById("successModalUnstake").style.display = "none";
+    document.getElementById("successModalUnstake").style.textAlign = "center";
+    document.getElementById("errorModalUnstake").style.display = "none";
+    document.getElementById("errorModalUnstake").style.textAlign = "center";
 
-    document.getElementById("successModalWithdrawCredit").style.display = "none";
-    document.getElementById("successModalWithdrawCredit").style.textAlign = "center";
-    document.getElementById("errorModalWithdrawCredit").style.display = "none";
-    document.getElementById("errorModalWithdrawCredit").style.textAlign = "center";
+    document.getElementById("successModalDeposit").style.display = "none";
+    document.getElementById("successModalDeposit").style.textAlign = "center";
+    document.getElementById("errorModalDeposit").style.display = "none";
+    document.getElementById("errorModalDeposit").style.textAlign = "center";
 
     if (document.getElementById('successButtonUsername'))
     {
@@ -69,36 +87,91 @@ document.addEventListener("DOMContentLoaded", async function() {
         document.getElementById('errorButtonUsername').addEventListener('click', hideErrorModalUsername);
     }
 
-    if (document.getElementById('successButtonSavedReferralCode'))
+    if (document.getElementById('successButtonStake'))
     {
-        document.getElementById('successButtonSavedReferralCode').addEventListener('click', hideSuccessModalSavedReferralCode);
+        document.getElementById('successButtonStake').addEventListener('click', hideSuccessModalStake);
     }
 
-    if (document.getElementById('errorButtonSavedReferralCode'))
+    if (document.getElementById('errorButtonStake'))
     {
-        document.getElementById('errorButtonSavedReferralCode').addEventListener('click', hideErrorModalSavedReferralCode);
+        document.getElementById('errorButtonStake').addEventListener('click', hideErrorModalStake);
     }
 
-    if (document.getElementById('successButtonAddCredit'))
+    if (document.getElementById('successButtonUnstake'))
     {
-        document.getElementById('successButtonAddCredit').addEventListener('click', hideSuccessModalAddCredit);
+        document.getElementById('successButtonUnstake').addEventListener('click', hideSuccessModalUnstake);
     }
 
-    if (document.getElementById('errorButtonAddCredit'))
+    if (document.getElementById('errorButtonUnstake'))
     {
-        document.getElementById('errorButtonAddCredit').addEventListener('click', hideErrorModalAddCredit);
-    }
-
-    if (document.getElementById('successButtonWithdrawCredit'))
-    {
-        document.getElementById('successButtonWithdrawCredit').addEventListener('click', hideSuccessModalWithdrawCredit);
-    }
-
-    if (document.getElementById('errorButtonWithdrawCredit'))
-    {
-        document.getElementById('errorButtonWithdrawCredit').addEventListener('click', hideErrorModalWithdrawCredit);
+        document.getElementById('errorButtonUnstake').addEventListener('click', hideErrorModalUnstake);
     }  
 
+    if (document.getElementById('successButtonDeposit'))
+    {
+        document.getElementById('successButtonDeposit').addEventListener('click', hideSuccessModalDeposit);
+    }
+
+    if (document.getElementById('errorButtonDeposit'))
+    {
+        document.getElementById('errorButtonDeposit').addEventListener('click', hideErrorModalDeposit);
+    } 
+
+    if (document.getElementById('successButtonSell'))
+    {
+        document.getElementById('successButtonSell')
+            .addEventListener('click', function(){
+                window.location.href = 'https://www.tradegen.io/profile';
+            });
+    }
+
+    if (document.getElementById('errorButtonSell'))
+    {
+        document.getElementById('errorButtonSell')
+            .addEventListener('click', hideErrorModalSell);
+    }
+
+    if (document.getElementById('successButtonDelete'))
+    {
+        document.getElementById('successButtonDelete')
+            .addEventListener('click', function(){
+                window.location.href = 'https://www.tradegen.io/profile';
+            });
+    }
+
+    if (document.getElementById('errorButtonDelete'))
+    {
+        document.getElementById('errorButtonDelete')
+            .addEventListener('click', hideErrorModalDelete);
+    }
+
+    if (document.getElementById('successButtonRunBacktest'))
+    {
+        document.getElementById('successButtonRunBacktest')
+            .addEventListener('click', function(){
+                window.location.href = 'https://www.tradegen.io/profile';
+            });
+    }
+
+    if (document.getElementById('errorButtonRunBacktest'))
+    {
+        document.getElementById('errorButtonRunBacktest')
+            .addEventListener('click', hideErrorModalRunBacktest);
+    }
+
+    if (document.getElementById('successButtonEditStrategy'))
+    {
+        document.getElementById('successButtonEditStrategy')
+            .addEventListener('click', function(){
+                window.location.href = 'https://www.tradegen.io/profile';
+            });
+    }
+
+    if (document.getElementById('errorButtonEditStrategy'))
+    {
+        document.getElementById('errorButtonEditStrategy')
+            .addEventListener('click', hideErrorModalEditStrategy);
+    }
 
     document.getElementById("successModalUsername").style.fontSize = "16px";
     document.getElementById("successTitleUsername").style.marginTop = "20px !important";
@@ -109,35 +182,74 @@ document.addEventListener("DOMContentLoaded", async function() {
     document.getElementById("errorModalUsername").style.fontWeight = "500";
     document.getElementById("errorTitleUsername").style.marginBottom = "0px !important";
 
-    document.getElementById("successModalSavedReferralCode").style.fontSize = "16px";
-    document.getElementById("successTitleSavedReferralCode").style.marginTop = "20px !important";
-    document.getElementById("successModalSavedReferralCode").style.fontWeight = "500";
-    document.getElementById("successTitleSavedReferralCode").style.marginBottom = "0px !important";
-    document.getElementById("errorModalSavedReferralCode").style.fontSize = "16px";
-    document.getElementById("errorTitleSavedReferralCode").style.marginTop = "20px !important";
-    document.getElementById("errorModalSavedReferralCode").style.fontWeight = "500";
-    document.getElementById("errorTitleSavedReferralCode").style.marginBottom = "0px !important";
+    document.getElementById("successModalStake").style.fontSize = "16px";
+    document.getElementById("successTitleStake").style.marginTop = "20px !important";
+    document.getElementById("successModalStake").style.fontWeight = "500";
+    document.getElementById("successTitleStake").style.marginBottom = "0px !important";
+    document.getElementById("errorModalStake").style.fontSize = "16px";
+    document.getElementById("errorTitleStake").style.marginTop = "20px !important";
+    document.getElementById("errorModalStake").style.fontWeight = "500";
+    document.getElementById("errorTitleStake").style.marginBottom = "0px !important";
 
-    document.getElementById("successModalAddCredit").style.fontSize = "16px";
-    document.getElementById("successTitleAddCredit").style.marginTop = "20px !important";
-    document.getElementById("successModalAddCredit").style.fontWeight = "500";
-    document.getElementById("successTitleAddCredit").style.marginBottom = "0px !important";
-    document.getElementById("errorModalAddCredit").style.fontSize = "16px";
-    document.getElementById("errorTitleAddCredit").style.marginTop = "20px !important";
-    document.getElementById("errorModalAddCredit").style.fontWeight = "500";
-    document.getElementById("errorTitleAddCredit").style.marginBottom = "0px !important";
+    document.getElementById("successModalUnstake").style.fontSize = "16px";
+    document.getElementById("successTitleUnstake").style.marginTop = "20px !important";
+    document.getElementById("successModalUnstake").style.fontWeight = "500";
+    document.getElementById("successTitleUnstake").style.marginBottom = "0px !important";
+    document.getElementById("errorModalUnstake").style.fontSize = "16px";
+    document.getElementById("errorTitleUnstake").style.marginTop = "20px !important";
+    document.getElementById("errorModalUnstake").style.fontWeight = "500";
+    document.getElementById("errorTitleUnstake").style.marginBottom = "0px !important";
 
-    document.getElementById("successModalWithdrawCredit").style.fontSize = "16px";
-    document.getElementById("successTitleWithdrawCredit").style.marginTop = "20px !important";
-    document.getElementById("successModalWithdrawCredit").style.fontWeight = "500";
-    document.getElementById("successTitleWithdrawCredit").style.marginBottom = "0px !important";
-    document.getElementById("errorModalWithdrawCredit").style.fontSize = "16px";
-    document.getElementById("errorTitleWithdrawCredit").style.marginTop = "20px !important";
-    document.getElementById("errorModalWithdrawCredit").style.fontWeight = "500";
-    document.getElementById("errorTitleWithdrawCredit").style.marginBottom = "0px !important";
+    document.getElementById("successModalDeposit").style.fontSize = "16px";
+    document.getElementById("successTitleDeposit").style.marginTop = "20px !important";
+    document.getElementById("successModalDeposit").style.fontWeight = "500";
+    document.getElementById("successTitleDeposit").style.marginBottom = "0px !important";
+    document.getElementById("errorModalDeposit").style.fontSize = "16px";
+    document.getElementById("errorTitleDeposit").style.marginTop = "20px !important";
+    document.getElementById("errorModalDeposit").style.fontWeight = "500";
+    document.getElementById("errorTitleDeposit").style.marginBottom = "0px !important";
 
-    document.getElementById("amount").innerText = "10.00 TGEN"; 
-    document.getElementById("amountDeposit").innerText = "10.00 TGEN"; 
+    document.getElementById("successModalSell").style.fontSize = "16px";
+    document.getElementById("successTitleSell").style.marginTop = "20px !important";
+    document.getElementById("successModalSell").style.fontWeight = "500";
+    document.getElementById("successTitleSell").style.marginBottom = "0px !important";
+    document.getElementById("errorModalSell").style.fontSize = "16px";
+    document.getElementById("errorTitleSell").style.marginTop = "20px !important";
+    document.getElementById("errorModalSell").style.fontWeight = "500";
+    document.getElementById("errorTitleSell").style.marginBottom = "0px !important";
+
+    document.getElementById("successModalDelete").style.fontSize = "16px";
+    document.getElementById("successTitleDelete").style.marginTop = "20px !important";
+    document.getElementById("successModalDelete").style.fontWeight = "500";
+    document.getElementById("successTitleDelete").style.marginBottom = "0px !important";
+    document.getElementById("errorModalDelete").style.fontSize = "16px";
+    document.getElementById("errorTitleDelete").style.marginTop = "20px !important";
+    document.getElementById("errorModalDelete").style.fontWeight = "500";
+    document.getElementById("errorTitleDelete").style.marginBottom = "0px !important";
+
+    document.getElementById("successModalRunBacktest").style.fontSize = "16px";
+    document.getElementById("successTitleRunBacktest").style.marginTop = "20px !important";
+    document.getElementById("successModalRunBacktest").style.fontWeight = "500";
+    document.getElementById("successTitleRunBacktest").style.marginBottom = "0px !important";
+    document.getElementById("errorModalRunBacktest").style.fontSize = "16px";
+    document.getElementById("errorTitleRunBacktest").style.marginTop = "20px !important";
+    document.getElementById("errorModalRunBacktest").style.fontWeight = "500";
+    document.getElementById("errorTitleRunBacktest").style.marginBottom = "0px !important";
+
+    document.getElementById("successModalEditStrategy").style.fontSize = "16px";
+    document.getElementById("successTitleEditStrategy").style.marginTop = "20px !important";
+    document.getElementById("successModalEditStrategy").style.fontWeight = "500";
+    document.getElementById("successTitleEditStrategy").style.marginBottom = "0px !important";
+    document.getElementById("errorModalEditStrategy").style.fontSize = "16px";
+    document.getElementById("errorTitleEditStrategy").style.marginTop = "20px !important";
+    document.getElementById("errorModalEditStrategy").style.fontWeight = "500";
+    document.getElementById("errorTitleEditStrategy").style.marginBottom = "0px !important";
+
+    document.getElementById("amountStake").innerText = "10.00 TGEN"; 
+    document.getElementById("amountUnstake").innerText = "10.00 TGEN"; 
+    document.getElementById("amountDeposit").innerText = "10.00 TGEN";
+
+    document.getElementById("confirmDeleteButton").style.backgroundColor = "#fe3957";
 
     buildTable();
 
@@ -145,26 +257,12 @@ document.addEventListener("DOMContentLoaded", async function() {
     document.getElementById("mainContent").style.display = "block";
 });
 
-document.getElementById("credits").addEventListener("keydown", function() {
-    if(event.key==='.')
-    {
-        event.preventDefault();
-    }
-})
+document.getElementById("stakeAmount").addEventListener("input", function() {
+    let value = document.getElementById("stakeAmount").value;
 
-document.getElementById("withdrawalAmount").addEventListener("keydown", function() {
-    if(event.key==='.')
+    if (value.length > 7)
     {
-        event.preventDefault();
-    }
-})
-
-document.getElementById("credits").addEventListener("input", function() {
-    let value = document.getElementById("credits").value;
-
-    if (value.length > 4)
-    {
-        value = value.slice(0, 4);
+        value = value.slice(0, 7);
     }
 
     if (value.length == 0)
@@ -172,18 +270,18 @@ document.getElementById("credits").addEventListener("input", function() {
         value = "";
     }
 
-    let creditValue = (value == "") ? 0 : parseInt(value);
+    let stakeValue = (value == "") ? 0 : parseFloat(value);
 
-    document.getElementById("credits").value = creditValue;  
-    document.getElementById("amountDeposit").innerText = creditValue.toFixed(2) + " TGEN";   
+    document.getElementById("stakeAmount").value = stakeValue;  
+    document.getElementById("amountStake").innerText = stakeValue.toFixed(2) + " TGEN";   
 });
 
-document.getElementById("withdrawalAmount").addEventListener("input", function() {
-    let value = document.getElementById("withdrawalAmount").value;
+document.getElementById("unstakeAmount").addEventListener("input", function() {
+    let value = document.getElementById("unstakeAmount").value;
 
-    if (value.length > 4)
+    if (value.length > 7)
     {
-        value = value.slice(0, 4);
+        value = value.slice(0, 7);
     }
 
     if (value.length == 0)
@@ -191,10 +289,29 @@ document.getElementById("withdrawalAmount").addEventListener("input", function()
         value = "";
     }
 
-    let creditValue = (value == "") ? 0 : parseInt(value);
+    let unstakeValue = (value == "") ? 0 : parseFloat(value);
 
-    document.getElementById("withdrawalAmount").value = creditValue; 
-    document.getElementById("amount").innerText = creditValue.toFixed(2) + " TGEN";   
+    document.getElementById("unstakeAmount").value = unstakeValue; 
+    document.getElementById("amountUnstake").innerText = unstakeValue.toFixed(2) + " TGEN";   
+});
+
+document.getElementById("depositAmount").addEventListener("input", function() {
+    let value = document.getElementById("depositAmount").value;
+
+    if (value.length > 7)
+    {
+        value = value.slice(0, 7);
+    }
+
+    if (value.length == 0)
+    {
+        value = "";
+    }
+
+    let depositValue = (value == "") ? 0 : parseFloat(value);
+
+    document.getElementById("depositAmount").value = depositValue; 
+    document.getElementById("amountDeposit").innerText = depositValue.toFixed(2) + " TGEN";   
 });
 
 function hideEditUsernameModal() 
@@ -262,72 +379,6 @@ function editUsername()
     hideEditUsernameModal();
 }
 
-function hideEditSavedReferralCodeModal() 
-{
-    document.getElementById('pageMask').style.display = "none";
-    $( "#editSavedReferralCodeModal" ).dialog('close');
-}
-
-function displayEditSavedReferralCodeModal() 
-{
-    let width = (isMobile.any()) ? Math.min(screen.width, 420) : 420;
-    document.getElementById('pageMask').style.display = "block";
-    $( "#editSavedReferralCodeModal" ).dialog({
-        height: 240,
-        width: width,
-        closeOnEscape: true,
-        dialogClass: "whiteBackground",
-        open: function(event, ui) {
-            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
-        }
-    });
-    $( "#editSavedReferralCodeModal" ).show();
-
-    document.getElementById('confirmEditButtonSavedReferralCode').addEventListener('click', editSavedReferralCode);
-    document.getElementById('cancelEditButtonSavedReferralCode').addEventListener('click', hideEditSavedReferralCodeModal);
-}
-
-function editSavedReferralCode()
-{
-    let newSavedReferralCode = document.getElementById('newSavedReferralCode').value;
-    let csrf = document.getElementById("sotong").value;
-
-    if (newSavedReferralCode.length != 12)
-    {
-        return;
-    }
-
-    let temp = JSON.stringify({
-        newSavedReferralCode: newSavedReferralCode,
-        csrf: csrf
-      });
-    const xhttpRep = new XMLHttpRequest();
-    xhttpRep.onload = async function(e) {
-        // Handling response from the API for GET reports:
-        const response = JSON.parse(xhttpRep.responseText);
-
-        if (response.response == "Success")
-        {
-            document.getElementById('newSavedReferralCode').value = newSavedReferralCode;
-            document.getElementById('savedReferralCode').innerText = " " + newSavedReferralCode;
-            displaySuccessModalSavedReferralCode();
-            return;
-        }
-        else
-        {
-            displayErrorModalSavedReferralCode(response.response);
-            return;
-        }
-    };
-
-    xhttpRep.open("POST", '/edit_saved_referral_code', true);
-    xhttpRep.withCredentials = true;
-    xhttpRep.setRequestHeader("Content-Type", "application/json");
-    xhttpRep.send(temp);
-
-    hideEditSavedReferralCodeModal();
-}
-
 document.getElementById("newUsername").addEventListener("input", function() {
     let value = document.getElementById("newUsername").value;
     let character = value.charAt(value.length - 1);
@@ -342,33 +393,6 @@ document.getElementById("newUsername").addEventListener("input", function() {
     }
 
     document.getElementById("newUsername").value = value;    
-});
-
-document.getElementById("newSavedReferralCode").addEventListener("input", function() {
-    let value = document.getElementById("newSavedReferralCode").value;
-    let character = value.charAt(value.length - 1);
-
-    const allowedCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let found = false;
-    for (var i = 0; i < 36; i+=1)
-    {
-        if (allowedCharacters.charAt(i) == character)
-        {
-            found = true;
-            break;
-        }
-    }
-
-    if (value.length > 12)
-    {
-        value = value.slice(0, 12);
-    }
-    else if (!found)
-    {
-        value = value.slice(0, value.length - 1);
-    }
-
-    document.getElementById("newSavedReferralCode").value = value;  
 });
 
 function hideSuccessModalUsername() 
@@ -395,7 +419,7 @@ function displaySuccessModalUsername()
             $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
             setTimeout(function () {
                 $("#successModalUsername").dialog("close");
-                window.location.href = 'http://localhost:3000/profile';
+                window.location.href = 'https://www.tradegen.io/profile';
             }, 2000);
             if (!isMobile.any())
             {
@@ -441,87 +465,17 @@ function displayErrorModalUsername(message)
     $( "#errorModalUsername" ).show()
 }
 
-function hideSuccessModalSavedReferralCode() 
-{
-    $( "#successModalSavedReferralCode" ).dialog('close');
-}
-
-function displaySuccessModalSavedReferralCode() 
-{
-    let position = { my: "right top", at: "right-100 top", of: window };
-    if (isMobile.any())
-    {
-        position = { my: "bottom", at: "bottom", of: window }
-    }
-    let width = (isMobile.any()) ? screen.width : 300;
-    var Y = window.pageYOffset;
-    $( "#successModalSavedReferralCode" ).dialog({
-        height: 55,
-        width: width,
-        closeOnEscape: true,
-        dialogClass: 'successModalContent',
-        position: position,
-        open: function(event, ui) {
-            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
-            setTimeout(function () {
-                $("#successModalSavedReferralCode").dialog("close");
-                window.location.href = 'http://localhost:3000/profile';
-            }, 2000);
-            if (!isMobile.any())
-            {
-                $(this).parent().css({'top': Y+100});
-            }
-        }
-    });
-    $( "#successModalSavedReferralCode" ).show()
-}
-
-function hideErrorModalSavedReferralCode() 
-{
-    $( "#errorModalSavedReferralCode" ).dialog('close');
-}
-
-function displayErrorModalSavedReferralCode(message) 
-{
-    document.getElementById("errorTextSavedReferralCode").innerText = message;
-    let position = { my: "right top", at: "right-100 top", of: window };
-    if (isMobile.any())
-    {
-        position = { my: "bottom", at: "bottom", of: window }
-    }
-    let width = (isMobile.any()) ? screen.width : 240;
-    var Y = window.pageYOffset;
-    $( "#errorModalSavedReferralCode" ).dialog({
-        height: 55,
-        width: width,
-        closeOnEscape: true,
-        dialogClass: 'errorModalContent',
-        position: position,
-        open: function(event, ui) {
-            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
-            setTimeout(function () {
-                $("#errorModalSavedReferralCode").dialog("close");
-            }, 2000);
-            if (!isMobile.any())
-            {
-                $(this).parent().css({'top': Y+100});
-            }
-        }
-    });
-    $( "#errorModalSavedReferralCode" ).show()
-}
-
-function hideDepositCreditModal() 
+function hideStakeModal() 
 {
     document.getElementById('pageMask').style.display = "none";
-    $( "#depositCreditModal" ).dialog('close');
+    $( "#stakeModal" ).dialog('close');
 }
 
-function displayDepositCreditModal() 
+function displayStakeModal() 
 {
     let width = (isMobile.any()) ? Math.min(screen.width, 480) : 480;
     document.getElementById('pageMask').style.display = "block";
-    $( "#depositCreditModal" ).dialog({
+    $( "#stakeModal" ).dialog({
         height: 220,
         width: width,
         dialogClass: "whiteBackground",
@@ -530,19 +484,19 @@ function displayDepositCreditModal()
             $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
         }
     });
-    $( "#depositCreditModal" ).show();
+    $( "#stakeModal" ).show();
 
-    document.getElementById('confirmDeposit').addEventListener('click', addCredits);
-    document.getElementById('cancelDeposit').addEventListener('click', hideDepositCreditModal);
+    document.getElementById('confirmStake').addEventListener('click', stake);
+    document.getElementById('cancelStake').addEventListener('click', hideStakeModal);
 }
 
-function addCredits()
+function stake()
 {
-    let amount = document.getElementById('credits').value;
+    let amount = document.getElementById('stakeAmount').value;
     let csrf = document.getElementById("sotong").value;
 
     let temp = JSON.stringify({
-        numberOfCredits: amount,
+        stakeAmount: amount,
         csrf: csrf
       });
     const xhttpRep = new XMLHttpRequest();
@@ -552,39 +506,39 @@ function addCredits()
 
         if (response.response == "Success")
         {
-            displaySuccessModalAddCredit();
+            displaySuccessModalStake();
             return;
         }
         else
         {
-            displayErrorModalAddCredit(response.response);
+            displayErrorModalStake(response.response);
             return;
         }
     };
 
-    xhttpRep.open("POST", '/add_credits', true);
+    xhttpRep.open("POST", '/stake', true);
     xhttpRep.withCredentials = true;
     xhttpRep.setRequestHeader("Content-Type", "application/json");
     xhttpRep.send(temp);
 
-    hideDepositCreditModal();
+    hideStakeModal();
 }
 
-function hideSuccessModalAddCredit() 
+function hideSuccessModalStake() 
 {
-    $( "#successModalAddCredit" ).dialog('close');
+    $( "#successModalStake" ).dialog('close');
 }
 
-function displaySuccessModalAddCredit() 
+function displaySuccessModalStake() 
 {
     let position = { my: "right top", at: "right-100 top", of: window };
     if (isMobile.any())
     {
         position = { my: "bottom", at: "bottom", of: window }
     }
-    let width = (isMobile.any()) ? screen.width : 240;
+    let width = (isMobile.any()) ? screen.width : 320;
     var Y = window.pageYOffset;
-    $( "#successModalAddCredit" ).dialog({
+    $( "#successModalStake" ).dialog({
         height: 55,
         width: width,
         closeOnEscape: true,
@@ -593,8 +547,8 @@ function displaySuccessModalAddCredit()
         open: function(event, ui) {
             $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
             setTimeout(function () {
-                $("#successModalAddCredit").dialog("close");
-                window.location.href = 'http://localhost:3000/profile';
+                $("#successModalStake").dialog("close");
+                window.location.href = 'https://www.tradegen.io/profile';
             }, 2000);
             if (!isMobile.any())
             {
@@ -602,17 +556,17 @@ function displaySuccessModalAddCredit()
             }
         }
     });
-    $( "#successModalAddCredit" ).show()
+    $( "#successModalStake" ).show()
 }
 
-function hideErrorModalAddCredit() 
+function hideErrorModalStake() 
 {
-    $( "#errorModalAddCredit" ).dialog('close');
+    $( "#errorModalStake" ).dialog('close');
 }
 
-function displayErrorModalAddCredit(message) 
+function displayErrorModalStake(message) 
 {
-    document.getElementById("errorTextAddCredit").innerText = message;
+    document.getElementById("errorTextStake").innerText = message;
     let position = { my: "right top", at: "right-100 top", of: window };
     if (isMobile.any())
     {
@@ -620,7 +574,7 @@ function displayErrorModalAddCredit(message)
     }
     let width = (isMobile.any()) ? screen.width : 280;
     var Y = window.pageYOffset;
-    $( "#errorModalAddCredit" ).dialog({
+    $( "#errorModalStake" ).dialog({
         height: 55,
         width: width,
         closeOnEscape: true,
@@ -629,7 +583,7 @@ function displayErrorModalAddCredit(message)
         open: function(event, ui) {
             $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
             setTimeout(function () {
-                $("#errorModalAddCredit").dialog("close");
+                $("#errorModalStake").dialog("close");
             }, 2000);
             if (!isMobile.any())
             {
@@ -637,20 +591,20 @@ function displayErrorModalAddCredit(message)
             }
         }
     });
-    $( "#errorModalAddCredit" ).show()
+    $( "#errorModalStake" ).show()
 }
 
-function hideWithdrawCreditModal() 
+function hideUnstakeModal() 
 {
     document.getElementById('pageMask').style.display = "none";
-    $( "#withdrawCreditModal" ).dialog('close');
+    $( "#unstakeModal" ).dialog('close');
 }
 
-function displayWithdrawCreditModal() 
+function displayUnstakeModal() 
 {
     let width = (isMobile.any()) ? Math.min(screen.width, 480) : 480;
     document.getElementById('pageMask').style.display = "block";
-    $( "#withdrawCreditModal" ).dialog({
+    $( "#unstakeModal" ).dialog({
         height: 220,
         width: width,
         dialogClass: "whiteBackground",
@@ -659,19 +613,19 @@ function displayWithdrawCreditModal()
             $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
         }
     });
-    $( "#withdrawCreditModal" ).show();
+    $( "#unstakeModal" ).show();
 
-    document.getElementById('confirmWithdrawal').addEventListener('click', withdrawCredit);
-    document.getElementById('cancelWithdrawal').addEventListener('click', hideWithdrawCreditModal);
+    document.getElementById('confirmUnstake').addEventListener('click', unstake);
+    document.getElementById('cancelUnstake').addEventListener('click', hideUnstakeModal);
 }
 
-function withdrawCredit()
+function unstake()
 {
-    let amount = document.getElementById('withdrawalAmount').value;
+    let amount = document.getElementById('unstakeAmount').value;
     let csrf = document.getElementById("sotong").value;
 
     let temp = JSON.stringify({
-        amountToWithdraw: amount,
+        unstakeAmount: amount,
         csrf: csrf
       });
 
@@ -682,38 +636,38 @@ function withdrawCredit()
 
         if (response.response == "Success")
         {
-            displaySuccessModalWithdrawCredit();
+            displaySuccessModalUnstake();
             return;
         }
         else
         {
-            displayErrorModalWithdrawCredit(response.response);
+            displayErrorModalUnstake(response.response);
         }
     };
 
-    xhttpRep.open("POST", '/withdraw_credits', true);
+    xhttpRep.open("POST", '/unstake', true);
     xhttpRep.withCredentials = true;
     xhttpRep.setRequestHeader("Content-Type", "application/json");
     xhttpRep.send(temp);
 
-    hideWithdrawCreditModal();
+    hideUnstakeModal();
 }
 
-function hideSuccessModalWithdrawCredit() 
+function hideSuccessModalUnstake() 
 {
-    $( "#successModalWithdrawCredit" ).dialog('close');
+    $( "#successModalUnstake" ).dialog('close');
 }
 
-function displaySuccessModalWithdrawCredit() 
+function displaySuccessModalUnstake() 
 {
     let position = { my: "right top", at: "right-100 top", of: window };
     if (isMobile.any())
     {
         position = { my: "bottom", at: "bottom", of: window }
     }
-    let width = (isMobile.any()) ? screen.width : 240;
+    let width = (isMobile.any()) ? screen.width : 320;
     var Y = window.pageYOffset;
-    $( "#successModalWithdrawCredit" ).dialog({
+    $( "#successModalUnstake" ).dialog({
         height: 55,
         width: width,
         closeOnEscape: true,
@@ -722,8 +676,8 @@ function displaySuccessModalWithdrawCredit()
         open: function(event, ui) {
             $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
             setTimeout(function () {
-                $("#successModalWithdrawCredit").dialog("close");
-                window.location.href = 'http://localhost:3000/profile';
+                $("#successModalUnstake").dialog("close");
+                window.location.href = 'https://www.tradegen.io/profile';
             }, 2000);
             if (!isMobile.any())
             {
@@ -731,25 +685,25 @@ function displaySuccessModalWithdrawCredit()
             }
         }
     });
-    $( "#successModalWithdrawCredit" ).show()
+    $( "#successModalUnstake" ).show()
 }
 
-function hideErrorModalWithdrawCredit() 
+function hideErrorModalUnstake() 
 {
-    $( "#errorModalWithdrawCredit" ).dialog('close');
+    $( "#errorModalUnstake" ).dialog('close');
 }
 
-function displayErrorModalWithdrawCredit(message) 
+function displayErrorModalUnstake(message) 
 {
-    document.getElementById("errorTextWithdrawCredit").innerText = message;
+    document.getElementById("errorTextUnstake").innerText = message;
     let position = { my: "right top", at: "right-100 top", of: window };
     if (isMobile.any())
     {
         position = { my: "bottom", at: "bottom", of: window }
     }
-    let width = (isMobile.any()) ? screen.width : 240;
+    let width = (isMobile.any()) ? screen.width : 280;
     var Y = window.pageYOffset;
-    $( "#errorModalWithdrawCredit" ).dialog({
+    $( "#errorModalUnstake" ).dialog({
         height: 55,
         width: width,
         closeOnEscape: true,
@@ -758,7 +712,7 @@ function displayErrorModalWithdrawCredit(message)
         open: function(event, ui) {
             $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
             setTimeout(function () {
-                $("#errorModalWithdrawCredit").dialog("close");
+                $("#errorModalUnstake").dialog("close");
             }, 2000);
             if (!isMobile.any())
             {
@@ -766,7 +720,136 @@ function displayErrorModalWithdrawCredit(message)
             }
         }
     });
-    $( "#errorModalWithdrawCredit" ).show()
+    $( "#errorModalUnstake" ).show()
+}
+
+function hideDepositModal() 
+{
+    document.getElementById('pageMask').style.display = "none";
+    $( "#depositModal" ).dialog('close');
+}
+
+function displayDepositModal() 
+{
+    let width = (isMobile.any()) ? Math.min(screen.width, 480) : 480;
+    document.getElementById('pageMask').style.display = "block";
+    $( "#depositModal" ).dialog({
+        height: 220,
+        width: width,
+        dialogClass: "whiteBackground",
+        closeOnEscape: true,
+        open: function(event, ui) {
+            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
+        }
+    });
+    $( "#depositModal" ).show();
+
+    document.getElementById('confirmDeposit').addEventListener('click', deposit);
+    document.getElementById('cancelDeposit').addEventListener('click', hideDepositModal);
+}
+
+function deposit()
+{
+    let amount = document.getElementById('depositAmount').value;
+    let csrf = document.getElementById("sotong").value;
+
+    let temp = JSON.stringify({
+        depositAmount: amount,
+        csrf: csrf
+      });
+
+    const xhttpRep = new XMLHttpRequest();
+    xhttpRep.onload = async function(e) {
+        // Handling response from the API for GET reports:
+        const response = JSON.parse(xhttpRep.responseText);
+
+        if (response.response == "Success")
+        {
+            displaySuccessModalDeposit();
+            return;
+        }
+        else
+        {
+            displayErrorModalDeposit(response.response);
+        }
+    };
+
+    xhttpRep.open("POST", '/deposit2', true);
+    xhttpRep.withCredentials = true;
+    xhttpRep.setRequestHeader("Content-Type", "application/json");
+    xhttpRep.send(temp);
+
+    hideDepositModal();
+}
+
+function hideSuccessModalDeposit() 
+{
+    $( "#successModalDeposit" ).dialog('close');
+}
+
+function displaySuccessModalDeposit() 
+{
+    let position = { my: "right top", at: "right-100 top", of: window };
+    if (isMobile.any())
+    {
+        position = { my: "bottom", at: "bottom", of: window }
+    }
+    let width = (isMobile.any()) ? screen.width : 320;
+    var Y = window.pageYOffset;
+    $( "#successModalDeposit" ).dialog({
+        height: 55,
+        width: width,
+        closeOnEscape: true,
+        dialogClass: 'successModalContent',
+        position: position,
+        open: function(event, ui) {
+            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
+            setTimeout(function () {
+                $("#successModalDeposit").dialog("close");
+                window.location.href = 'https://www.tradegen.io/profile';
+            }, 2000);
+            if (!isMobile.any())
+            {
+                $(this).parent().css({'top': Y+100});
+            }
+        }
+    });
+    $( "#successModalDeposit" ).show()
+}
+
+function hideErrorModalDeposit() 
+{
+    $( "#errorModalDeposit" ).dialog('close');
+}
+
+function displayErrorModalDeposit(message) 
+{
+    document.getElementById("errorTextDeposit").innerText = message;
+    let position = { my: "right top", at: "right-100 top", of: window };
+    if (isMobile.any())
+    {
+        position = { my: "bottom", at: "bottom", of: window }
+    }
+    let width = (isMobile.any()) ? screen.width : 240;
+    var Y = window.pageYOffset;
+    $( "#errorModalDeposit" ).dialog({
+        height: 55,
+        width: width,
+        closeOnEscape: true,
+        dialogClass: 'errorModalContent',
+        position: position,
+        open: function(event, ui) {
+            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
+            setTimeout(function () {
+                $("#errorModalDeposit").dialog("close");
+            }, 2000);
+            if (!isMobile.any())
+            {
+                $(this).parent().css({'top': Y+100});
+            }
+        }
+    });
+    $( "#errorModalDeposit" ).show()
 }
 
 // When the user scrolls the page, execute myFunction
@@ -790,17 +873,17 @@ function myFunction() {
 function buildTable()
 {
     let dataString = document.getElementById("dataString").value;
-    let tradingBots = JSON.parse(dataString).tradingBots;
+    let developedStrategies = JSON.parse(dataString).developedStrategies;
 
     const downColor = "#fe3957";
     const upColor = "#00cf92";
 
-    if (tradingBots.length == 0)
+    if (developedStrategies.length == 0)
     {
-        document.getElementById("tradingBotsDiv").style.display = "none";
+        document.getElementById("developedStrategiesDiv").style.display = "none";
     }
 
-    let table3 = document.getElementById("tradingBotsTable");
+    let table3 = document.getElementById("developedStrategiesTable");
     table3.setAttribute("class", "transactionsTable");
     while (table3.hasChildNodes())
     {
@@ -814,20 +897,24 @@ function buildTable()
     header_title13.setAttribute("class", "marketsTableRowName");
     header_row3.appendChild(header_title13);
     let header_title232 = document.createElement("th");
-    header_title232.innerText = "Total Return";
+    header_title232.innerText = "Developed On";
     header_title232.setAttribute("class", "marketsTableRowName");
     header_row3.appendChild(header_title232);
     let header_title233 = document.createElement("th");
-    header_title233.innerText = "Purchased For";
+    header_title233.innerText = "Today's Return";
     header_title233.setAttribute("class", "marketsTableRowName");
     header_row3.appendChild(header_title233);
+    let header_titleBuffer = document.createElement("th");
+    header_titleBuffer.innerText = "";
+    header_titleBuffer.setAttribute("class", "marketsTableRowName");
+    header_row3.appendChild(header_titleBuffer);
     let header_title23 = document.createElement("th");
-    header_title23.innerText = "Trades";
+    header_title23.innerText = "Total Return";
     header_title23.setAttribute("class", "marketsTableRowName");
     header_row3.appendChild(header_title23);
     let header_title73 = document.createElement("th");
     let header_title2322 = document.createElement("th");
-    header_title2322.innerText = "Today's Change";
+    header_title2322.innerText = "Status";
     header_title2322.setAttribute("class", "marketsTableRowName");
     header_row3.appendChild(header_title2322);
     header_title73.innerText = "Actions";
@@ -838,24 +925,67 @@ function buildTable()
     table_head3.appendChild(header_row3);
     table3.appendChild(table_head3);
 
-    for(let i = 0; i < tradingBots.length; i++)
+    for(let i = 0; i < developedStrategies.length; i++)
     {
         let row = document.createElement("tr");
 
         let strategyName = document.createElement("td");
         let strategyNameLink = document.createElement("a");
-        strategyNameLink.innerText = tradingBots[i].strategyName;
-        let strategyID = tradingBots[i].strategyID;
+        strategyNameLink.innerText = developedStrategies[i].strategyName;
+        let strategyID = developedStrategies[i].strategyID;
         strategyNameLink.addEventListener('click', function(){ window.location.href = '/strategy_info/' + strategyID; });
         strategyNameLink.addEventListener('mouseover', function(){ strategyNameLink.style.cursor = "pointer"; });
         strategyName.setAttribute("class", "marketsTableRowName");
         strategyName.appendChild(strategyNameLink);
         row.appendChild(strategyName);
+        let developedOn = document.createElement("td");
+        developedOn.innerText = developedStrategies[i].developedOn;
+        developedOn.setAttribute("class", "marketsTableRowName");
+        row.appendChild(developedOn);
+
+        let todayReturn = document.createElement("td");
+        let arrow3 = document.createElement("i");
+        let text3 = document.createElement("a");
+        arrow3.setAttribute("class", "material-icons");
+        let percent3 = developedStrategies[i].todayReturn * 100;
+        if (percent3 > 0)
+        {
+            todayReturn.style.color = upColor;
+            arrow3.innerText = "arrow_drop_up";
+            arrow3.style.color = upColor;
+        }
+        else if (percent3 == 0)
+        {
+            todayReturn.style.color = "#737373";
+            arrow3.innerText = "arrow_right";
+            arrow3.style.color = "#737373";
+        }
+        else
+        {
+            todayReturn.style.color = downColor;
+            arrow3.innerText = "arrow_drop_down";
+            arrow3.style.color = downColor;
+            percent3 *= -1;
+        }
+        text3.innerText = percent3.toFixed(2) + "%";
+        todayReturn.setAttribute("class", "marketsTableRowName");
+        todayReturn.style.display = "flex";
+        arrow3.style.paddingTop = "4px";
+        text3.style.paddingTop = "7px";
+        todayReturn.appendChild(arrow3);
+        todayReturn.appendChild(text3);
+        row.appendChild(todayReturn);
+
+        let buff = document.createElement("td");
+        buff.innerText = "";
+        buff.setAttribute("class", "marketsTableRowName");
+        row.appendChild(buff);
+
         let totalReturn = document.createElement("td");
         let arrow2 = document.createElement("i");
         let text2 = document.createElement("a");
         arrow2.setAttribute("class", "material-icons");
-        let percent2 = tradingBots[i].totalReturn;
+        let percent2 = developedStrategies[i].totalReturn;
         if (percent2 > 0)
         {
             totalReturn.style.color = upColor;
@@ -883,66 +1013,102 @@ function buildTable()
         totalReturn.appendChild(arrow2);
         totalReturn.appendChild(text2);
         row.appendChild(totalReturn);
-        let purchasedFor = document.createElement("td");
-        purchasedFor.innerText = tradingBots[i].salePrice + " TGEN";
-        purchasedFor.setAttribute("class", "marketsTableRowName");
-        row.appendChild(purchasedFor);
-        let numberOfTrades = document.createElement("td");
-        numberOfTrades.innerText = tradingBots[i].numberOfTrades;
-        numberOfTrades.setAttribute("class", "marketsTableRowName");
-        row.appendChild(numberOfTrades);
-        let todayChange = document.createElement("td");
-        let arrow3 = document.createElement("i");
-        let text3 = document.createElement("a");
-        arrow3.setAttribute("class", "material-icons");
-        let percent3 = tradingBots[i].todayChange * 100;
-        if (percent3 > 0)
+
+        let status = document.createElement("td");
+        status.innerText = developedStrategies[i].status;
+        status.setAttribute("class", "marketsTableRowName");
+        if (developedStrategies[i].status == "Live" || developedStrategies[i].status == "Backtest complete" || developedStrategies[i].status == "Approved")
         {
-            todayChange.style.color = upColor;
-            arrow3.innerText = "arrow_drop_up";
-            arrow3.style.color = upColor;
+            status.style.color = "#18c96e";
         }
-        else if (percent3 == 0)
+        else if (developedStrategies[i].status == "Pending approval" || developedStrategies[i].status == "Running backtest" || developedStrategies[i].status == "Submitted for review")
         {
-            todayChange.style.color = "#737373";
-            arrow3.innerText = "arrow_right";
-            arrow3.style.color = "#737373";
+            status.style.color = "#f2bd5c";
         }
-        else
+        else if (developedStrategies[i].status == "Backtest contains errors" || developedStrategies[i].status == "Not active")
         {
-            todayChange.style.color = downColor;
-            arrow3.innerText = "arrow_drop_down";
-            arrow3.style.color = downColor;
-            percent3 *= -1;
+            status.style.color = downColor;
         }
-        text3.innerText = percent3.toFixed(2) + "%";
-        todayChange.setAttribute("class", "marketsTableRowName");
-        todayChange.style.display = "flex";
-        arrow3.style.paddingTop = "4px";
-        text3.style.paddingTop = "7px";
-        todayChange.appendChild(arrow3);
-        todayChange.appendChild(text3);
-        row.appendChild(todayChange);
+        row.appendChild(status);
 
         let actions = document.createElement("td");
         actions.setAttribute("class", "marketsTableRowData");
         actions.style.textAlign = "center";
-        let docsButton = document.createElement("button");
-        docsButton.innerText = "Docs";
-        docsButton.setAttribute("class", "viewButton");
-        let historyButton = document.createElement("button");
-        historyButton.innerText = "History";
-        historyButton.setAttribute("class", "viewButton");
-        historyButton.style.width = "70px";
-        historyButton.addEventListener('click', function(){ window.location.href = '/history/' + strategyID; });
-        let downloadButton = document.createElement("button");
-        downloadButton.innerText = "Download";
-        downloadButton.setAttribute("class", "runBacktestButton");
-        downloadButton.style.fontWeight = "500";
+        let viewButton = document.createElement("i");
+        viewButton.innerText = "timeline";
+        viewButton.setAttribute("class", "material-icons actionIcon");
+        let ID = developedStrategies[i].strategyID;
+        viewButton.addEventListener('click', function(){ window.location.href = '/strategy_info/' + ID; });
+        let detailsButton = document.createElement("i");
+        detailsButton.innerText = "info";
+        detailsButton.setAttribute("class", "material-icons actionIcon");
+        detailsButton.style.color = "#9ea1a4";
+        detailsButton.addEventListener('click', function(){ populateStrategyDiv(developedStrategies[i].strategyID.toString()); });
+        let deleteButton = document.createElement("i");
+        deleteButton.innerText = "delete";
+        deleteButton.setAttribute("class", "material-icons actionIcon");
+        deleteButton.style.color = downColor;
+        deleteButton.addEventListener('click', function(){ displayDeleteStrategyModal(developedStrategies[i].strategyID.toString()); });
+        let sellButton = document.createElement("i");
+        sellButton.innerText = "sell";
+        sellButton.setAttribute("class", "material-icons actionIcon");
+        sellButton.style.color = upColor;
+        sellButton.addEventListener('click', function(){ displaySellStrategyModal(developedStrategies[i].strategyID.toString()); });
+        let runBacktestButton = document.createElement("i");
+        runBacktestButton.innerText = "build";
+        runBacktestButton.setAttribute("class", "material-icons actionIcon");
+        runBacktestButton.addEventListener('click', function(){ displayRunBacktestModal(developedStrategies[i].strategyID.toString()); });
+        let editStrategyButton = document.createElement("i");
+        editStrategyButton.innerText = "create";
+        editStrategyButton.setAttribute("class", "material-icons actionIcon");
+        editStrategyButton.addEventListener('click', function(){ populateEditStrategyModal(developedStrategies[i].strategyID.toString()); });
 
-        actions.appendChild(docsButton);
-        actions.appendChild(historyButton);
-        actions.appendChild(downloadButton);
+        if (developedStrategies[i].status == "Not active")
+        {
+            actions.appendChild(deleteButton);
+            actions.appendChild(detailsButton);
+            actions.appendChild(editStrategyButton);
+            actions.appendChild(runBacktestButton);
+        }
+        else if (developedStrategies[i].status == "Running backtest")
+        {
+            actions.appendChild(detailsButton);
+        }
+        else if (developedStrategies[i].status == "Backtest contains errors")
+        {
+            actions.appendChild(deleteButton);
+            actions.appendChild(detailsButton);
+            actions.appendChild(editStrategyButton);
+            actions.appendChild(runBacktestButton);
+        }
+        else if (developedStrategies[i].status == "Backtest complete")
+        {
+            actions.appendChild(deleteButton);
+            actions.appendChild(viewButton);
+            actions.appendChild(detailsButton);
+            actions.appendChild(editStrategyButton);
+            actions.appendChild(sellButton);
+        }
+        else if (developedStrategies[i].status == "Pending approval")
+        {
+            actions.appendChild(viewButton);
+            actions.appendChild(detailsButton);
+        }
+        else if (developedStrategies[i].status == "Live")
+        {
+            actions.appendChild(viewButton);
+            actions.appendChild(detailsButton);
+        }
+        else if (developedStrategies[i].status == "Submitted for review")
+        {
+            actions.appendChild(viewButton);
+            actions.appendChild(detailsButton);
+        }
+        else if (developedStrategies[i].status == "Approved")
+        {
+            actions.appendChild(viewButton);
+            actions.appendChild(detailsButton);
+        }
 
         row.appendChild(actions);
         table_body3.appendChild(row);
@@ -950,3 +1116,1556 @@ function buildTable()
 
     table3.appendChild(table_body3);
 }
+
+function populateStrategyDiv(id)
+{
+    // Making a GET request for the reports associated with the specific user:
+    const xhttpRep = new XMLHttpRequest();
+    xhttpRep.onload = async function(e) {
+        // Handling response from the API for GET reports:
+        const response = JSON.parse(xhttpRep.responseText);
+        const strategyData = response;
+
+        let symbolOutput = "";
+
+        for (var i = 0; i < Math.min(strategyData.symbols.length, 6); i+=1)
+            {
+                symbolOutput += strategyData.symbols[i];
+
+                if (i < Math.min(strategyData.symbols.length, 6) - 1)
+                {
+                    symbolOutput += ", ";
+                }
+            }
+
+            if (strategyData.symbols.length > 6)
+            {
+                symbolOutput += "...";
+            }
+
+        let watchlistName = "";
+
+        if (strategyData.watchlist == "indexETFs")
+        {
+            watchlistName = "Index ETFs";
+        }
+        else if (strategyData.watchlist == "FAANG")
+        {
+            watchlistName = "FAANG stocks";
+        }
+        else if (strategyData.watchlist == "software")
+        {
+            watchlistName = "Software stocks";
+        }
+        else if (strategyData.watchlist == "travel")
+        {
+            watchlistName = "Travel stocks";
+        }
+        else if (strategyData.watchlist == "morningBreakouts")
+        {
+            watchlistName = "Morning breakouts";
+        }
+        else if (strategyData.watchlist == "custom")
+        {
+            watchlistName = "Custom stock list";
+        }
+
+        //initialise strategy data div with first strategy
+        let name = document.getElementById("strategyDataName");
+        name.innerText = strategyData.strategyName;
+        let description = document.getElementById("strategyDataDescription");
+        description.innerText = strategyData.description;
+        let watchlist = document.getElementById("strategyDataWatchlist");
+        watchlist.innerText = watchlistName;
+        let symbol = document.getElementById("strategyDataSymbols");
+        symbol.innerText = symbolOutput;
+        let maxAllocation = document.getElementById("strategyDataMaxAllocation");
+        maxAllocation.innerText = strategyData.maxAllocation.toString() + "%";
+        let maxConcurrentTrades = document.getElementById("strategyDataMaxConcurrentTrades");
+        maxConcurrentTrades.innerText = strategyData.maxConcurrentTrades;
+        let positionWeight = document.getElementById("strategyDataPositionWeight");
+        positionWeight.innerText = strategyData.distribution;
+        let timeframe = document.getElementById("strategyDataTimeframe");
+        timeframe.innerText =  strategyData.timeframe + " mins";
+        let start = document.getElementById("strategyDataStart");
+        start.innerText = strategyData.startTime + " minutes after market open.";
+        let end = document.getElementById("strategyDataEnd");
+        end.innerText = strategyData.endTime + " minutes before market close.";
+        let direction = document.getElementById("strategyDataDirection");
+        direction.innerText = strategyData.direction;
+
+        let entryConditionList = document.getElementById("entryConditionList");
+        let exitConditionList = document.getElementById("exitConditionList");
+        
+        while (entryConditionList.hasChildNodes())
+        {
+            entryConditionList.removeChild(entryConditionList.firstChild);
+        }
+        while (exitConditionList.hasChildNodes())
+        {
+            exitConditionList.removeChild(exitConditionList.firstChild);
+        }
+
+        for (var k = 0; k < strategyData.entryConditions.length; k+=1)
+        {
+            let firstIndicator = strategyData.entryConditions[k].firstIndicator;
+            let firstIndicatorParameter = strategyData.entryConditions[k].firstIndicatorParams;
+            let secondIndicator = strategyData.entryConditions[k].secondIndicator;
+            let secondIndicatorParameter = strategyData.entryConditions[k].secondIndicatorParams;
+            let comparator = strategyData.entryConditions[k].comparator;
+
+            let modifiedName = "";
+
+            if (firstIndicator == "CurrentCandle")
+            {
+                modifiedName = "Current candle ";
+            }
+            else if (firstIndicator == "EMA")
+            {
+                modifiedName = "EMA" + firstIndicatorParameter.toString() + " ";
+            }
+            else if (firstIndicator == "Gap")
+            {
+                modifiedName = "Gap ";
+            }
+            else if (firstIndicator == "NthCandle")
+            {
+                let suffix = "th";
+                if ((firstIndicatorParameter % 10) == 1 && firstIndicatorParameter != 11)
+                {
+                    suffix = "st";
+                }
+                else if ((firstIndicatorParameter % 10) == 2 && firstIndicatorParameter != 12)
+                {
+                    suffix = "nd";
+                }
+                else if ((firstIndicatorParameter % 10) == 3 && firstIndicatorParameter != 13)
+                {
+                    suffix = "rd";
+                }
+                modifiedName = firstIndicatorParameter.toString() + suffix + " candle ";
+            }
+            else if (firstIndicator == "PreviousNCandles")
+            {
+                modifiedName = "Previous " + firstIndicatorParameter.toString() + " candles ";
+            }
+            else if (firstIndicator == "Signal")
+            {
+                modifiedName = "Signal ";
+            }
+            else if (firstIndicator == "SMA")
+            {
+                modifiedName = "SMA" + firstIndicatorParameter.toString() + " ";
+            }
+
+            //check comparator
+            if (comparator == "BouncesHigherOff")
+            {
+                modifiedName += "bounces higher off ";
+            }
+            else if (comparator == "BouncesLowerOff")
+            {
+                modifiedName += "bounces lower off ";
+            }
+            else if (comparator == "BreaksAbove")
+            {
+                modifiedName += "breaks above ";
+            }
+            else if (comparator == "BreaksBelow")
+            {
+                modifiedName += "breaks below ";
+            }
+            else if (comparator == "Closes")
+            {
+                if (firstIndicator == "PreviousNCandles")
+                {
+                    modifiedName += " close ";
+                }
+                else
+                {
+                    modifiedName += " closes ";
+                }
+            }
+            else if (comparator == "ClosesAbove")
+            {
+                if (firstIndicator == "PreviousNCandles")
+                {
+                    modifiedName += " close above ";
+                }
+                else
+                {
+                    modifiedName += " closes above ";
+                }
+            }
+            else if (comparator == "ClosesBelow")
+            {
+                if (firstIndicator == "PreviousNCandles")
+                {
+                    modifiedName += " close below ";
+                }
+                else
+                {
+                    modifiedName += " closes below ";
+                };
+            }
+            else if (comparator == "FallsTo")
+            {
+                modifiedName += "falls to ";
+            }
+            else if (comparator == "Has")
+            {
+                if (firstIndicator == "PreviousNCandles")
+                {
+                    modifiedName += " have ";
+                }
+                else
+                {
+                    modifiedName += " has ";
+                }
+            }
+            else if (comparator == "RisesTo")
+            {
+                modifiedName += "rises to ";
+            }
+            else if (comparator == "UpByAtLeast")
+            {
+                modifiedName += "up by at least ";
+            }
+            else if (comparator == "UpByAtMost")
+            {
+                modifiedName += "up by at most ";
+            }
+            else if (comparator == "DownByAtLeast")
+            {
+                modifiedName += "down by at least ";
+            }
+            else if (comparator == "DownByAtMost")
+            {
+                modifiedName += "down by at most ";
+            }
+            else if (comparator == "GivenInFirst")
+            {
+                modifiedName += "given in first ";
+            }
+            else if (comparator == "FallByAtLeast")
+            {
+                modifiedName += " fall by at least ";
+            }
+            else if (comparator == "FallByAtMost")
+            {
+                modifiedName += " fall by at most ";
+            }
+            else if (comparator == "RiseByAtLeast")
+            {
+                modifiedName += " rise by at least ";
+            }
+            else if (comparator == "RiseByAtMost")
+            {
+                modifiedName += " rise by at most ";
+            }
+            else if (comparator == "CrossesAbove")
+            {
+                modifiedName += " crosses above ";
+            }
+            else if (comparator == "CrossesBelow")
+            {
+                modifiedName += " crosses below ";
+            }
+
+            //check second indicator
+            if (secondIndicator == "AtLeastNTimesRange")
+            {
+                modifiedName += "at least " + secondIndicatorParameter.toString() + " times range";
+            }
+            else if (secondIndicator == "AtLeastNTimesVolume")
+            {
+                modifiedName += "at least " + secondIndicatorParameter.toString() + " times volume";
+            }
+            else if (secondIndicator == "AtMostNTimesRange")
+            {
+                modifiedName += "at most " + secondIndicatorParameter.toString() + " times range";
+            }
+            else if (secondIndicator == "AtMostNTimesVolume")
+            {
+                modifiedName += "at most " + secondIndicatorParameter.toString() + " times volume";
+            }
+            else if (secondIndicator == "Down")
+            {
+                modifiedName += "down";
+            }
+            else if (secondIndicator == "EMA")
+            {
+                modifiedName += "EMA" + secondIndicatorParameter.toString();
+            }
+            else if (secondIndicator == "HigherRange")
+            {
+                modifiedName += "higher range";
+            }
+            else if (secondIndicator == "HigherVolume")
+            {
+                modifiedName += "higher volume";
+            }
+            else if (secondIndicator == "HighOfEntryBar")
+            {
+                modifiedName += "high of entry bar";
+            }
+            else if (secondIndicator == "HighOfFirstNMinutes")
+            {
+                modifiedName += "high of first " + secondIndicatorParameter.toString() + " minutes";
+            }
+            else if (secondIndicator == "HighOfLastNMinutes")
+            {
+                modifiedName += "high of last " + secondIndicatorParameter.toString() + " minutes";
+            }
+            else if (secondIndicator == "Interval")
+            {
+                modifiedName += "$" + secondIndicatorParameter.toString() + " interval";
+            }
+            else if (secondIndicator == "LongBottomTail")
+            {
+                modifiedName += "long bottom tail";
+            }
+            else if (secondIndicator == "LongTopTail")
+            {
+                modifiedName += "long top tail";
+            }
+            else if (secondIndicator == "LowerRange")
+            {
+                modifiedName += "lower range";
+            }
+            else if (secondIndicator == "LowerVolume")
+            {
+                modifiedName += "lower volume";
+            }
+            else if (secondIndicator == "LowOfEntryBar")
+            {
+                modifiedName += "low of entry bar";
+            }
+            else if (secondIndicator == "LowOfFirstNMinutes")
+            {
+                modifiedName += "low of first " + secondIndicatorParameter.toString() + " minutes";
+            }
+            else if (secondIndicator == "LowOfLastNMinutes")
+            {
+                modifiedName += "low of last " + secondIndicatorParameter.toString() + " minutes";
+            }
+            else if (secondIndicator == "PreviousCandleHigh")
+            {
+                modifiedName += "previous candle high";
+            }
+            else if (secondIndicator == "PreviousCandleLow")
+            {
+                modifiedName += "previous candle low";
+            }
+            else if (secondIndicator == "SMA")
+            {
+                modifiedName += "SMA" + secondIndicatorParameter.toString();
+            }
+            else if (secondIndicator == "Up")
+            {
+                modifiedName += "Up";
+            }
+            else if (secondIndicator == "VWAP")
+            {
+                modifiedName += "VWAP" + secondIndicatorParameter.toString();
+            }
+            else if (secondIndicator == "NMinutes")
+            {
+                modifiedName += secondIndicatorParameter.toString() + " minutes";
+            }
+            else if (secondIndicator == "NPercent")
+            {
+                modifiedName += secondIndicatorParameter.toString() + "%";
+            }
+            
+
+            let listElement = document.createElement("li");
+            listElement.innerText = modifiedName;
+            entryConditionList.appendChild(listElement);
+        }
+
+        for (var k = 0; k < strategyData.exitConditions.length; k+=1)
+        {
+            let firstIndicator = strategyData.exitConditions[k].firstIndicator;
+            let firstIndicatorParameter = strategyData.exitConditions[k].firstIndicatorParams;
+            let secondIndicator = strategyData.exitConditions[k].secondIndicator;
+            let secondIndicatorParameter = strategyData.exitConditions[k].secondIndicatorParams;
+            let comparator = strategyData.exitConditions[k].comparator;
+
+            let modifiedName = "";
+
+            if (firstIndicator == "CurrentCandle")
+            {
+                modifiedName = "Current candle ";
+            }
+            else if (firstIndicator == "EMA")
+            {
+                modifiedName = "EMA" + firstIndicatorParameter.toString() + " ";
+            }
+            else if (firstIndicator == "Gap")
+            {
+                modifiedName = "Gap ";
+            }
+            else if (firstIndicator == "NthCandle")
+            {
+                let suffix = "th";
+                if ((firstIndicatorParameter % 10) == 1 && firstIndicatorParameter != 11)
+                {
+                    suffix = "st";
+                }
+                else if ((firstIndicatorParameter % 10) == 2 && firstIndicatorParameter != 12)
+                {
+                    suffix = "nd";
+                }
+                else if ((firstIndicatorParameter % 10) == 3 && firstIndicatorParameter != 13)
+                {
+                    suffix = "rd";
+                }
+                modifiedName = firstIndicatorParameter.toString() + suffix + " candle ";
+            }
+            else if (firstIndicator == "PreviousNCandles")
+            {
+                modifiedName = "Previous " + firstIndicatorParameter.toString() + " candles ";
+            }
+            else if (firstIndicator == "Signal")
+            {
+                modifiedName = "Signal ";
+            }
+            else if (firstIndicator == "SMA")
+            {
+                modifiedName = "SMA" + firstIndicatorParameter.toString() + " ";
+            }
+
+            //check comparator
+            if (comparator == "BouncesHigherOff")
+            {
+                modifiedName += "bounces higher off ";
+            }
+            else if (comparator == "BouncesLowerOff")
+            {
+                modifiedName += "bounces lower off ";
+            }
+            else if (comparator == "BreaksAbove")
+            {
+                modifiedName += "breaks above ";
+            }
+            else if (comparator == "BreaksBelow")
+            {
+                modifiedName += "breaks below ";
+            }
+            else if (comparator == "Closes")
+            {
+                if (firstIndicator == "PreviousNCandles")
+                {
+                    modifiedName += " close ";
+                }
+                else
+                {
+                    modifiedName += " closes ";
+                }
+            }
+            else if (comparator == "ClosesAbove")
+            {
+                if (firstIndicator == "PreviousNCandles")
+                {
+                    modifiedName += " close above ";
+                }
+                else
+                {
+                    modifiedName += " closes above ";
+                }
+            }
+            else if (comparator == "ClosesBelow")
+            {
+                if (firstIndicator == "PreviousNCandles")
+                {
+                    modifiedName += " close below ";
+                }
+                else
+                {
+                    modifiedName += " closes below ";
+                };
+            }
+            else if (comparator == "FallsTo")
+            {
+                modifiedName += "falls to ";
+            }
+            else if (comparator == "Has")
+            {
+                if (firstIndicator == "PreviousNCandles")
+                {
+                    modifiedName += " have ";
+                }
+                else
+                {
+                    modifiedName += " has ";
+                }
+            }
+            else if (comparator == "RisesTo")
+            {
+                modifiedName += "rises to ";
+            }
+            else if (comparator == "UpByAtLeast")
+            {
+                modifiedName += "up by at least ";
+            }
+            else if (comparator == "UpByAtMost")
+            {
+                modifiedName += "up by at most ";
+            }
+            else if (comparator == "DownByAtLeast")
+            {
+                modifiedName += "down by at least ";
+            }
+            else if (comparator == "DownByAtMost")
+            {
+                modifiedName += "down by at most ";
+            }
+            else if (comparator == "GivenInFirst")
+            {
+                modifiedName += "given in first ";
+            }
+            else if (comparator == "FallByAtLeast")
+            {
+                modifiedName += " fall by at least ";
+            }
+            else if (comparator == "FallByAtMost")
+            {
+                modifiedName += " fall by at most ";
+            }
+            else if (comparator == "RiseByAtLeast")
+            {
+                modifiedName += " rise by at least ";
+            }
+            else if (comparator == "RiseByAtMost")
+            {
+                modifiedName += " rise by at most ";
+            }
+            else if (comparator == "CrossesAbove")
+            {
+                modifiedName += " crosses above ";
+            }
+            else if (comparator == "CrossesBelow")
+            {
+                modifiedName += " crosses below ";
+            }
+
+            //check second indicator
+            if (secondIndicator == "AtLeastNTimesRange")
+            {
+                modifiedName += "at least " + secondIndicatorParameter.toString() + " times range";
+            }
+            else if (secondIndicator == "AtLeastNTimesVolume")
+            {
+                modifiedName += "at least " + secondIndicatorParameter.toString() + " times volume";
+            }
+            else if (secondIndicator == "AtMostNTimesRange")
+            {
+                modifiedName += "at most " + secondIndicatorParameter.toString() + " times range";
+            }
+            else if (secondIndicator == "AtMostNTimesVolume")
+            {
+                modifiedName += "at most " + secondIndicatorParameter.toString() + " times volume";
+            }
+            else if (secondIndicator == "Down")
+            {
+                modifiedName += "down";
+            }
+            else if (secondIndicator == "EMA")
+            {
+                modifiedName += "EMA" + secondIndicatorParameter.toString();
+            }
+            else if (secondIndicator == "HigherRange")
+            {
+                modifiedName += "higher range";
+            }
+            else if (secondIndicator == "HigherVolume")
+            {
+                modifiedName += "higher volume";
+            }
+            else if (secondIndicator == "HighOfEntryBar")
+            {
+                modifiedName += "high of entry bar";
+            }
+            else if (secondIndicator == "HighOfFirstNMinutes")
+            {
+                modifiedName += "high of first " + secondIndicatorParameter.toString() + " minutes";
+            }
+            else if (secondIndicator == "HighOfLastNMinutes")
+            {
+                modifiedName += "high of last " + secondIndicatorParameter.toString() + " minutes";
+            }
+            else if (secondIndicator == "Interval")
+            {
+                modifiedName += "$" + secondIndicatorParameter.toString() + " interval";
+            }
+            else if (secondIndicator == "LongBottomTail")
+            {
+                modifiedName += "long bottom tail";
+            }
+            else if (secondIndicator == "LongTopTail")
+            {
+                modifiedName += "long top tail";
+            }
+            else if (secondIndicator == "LowerRange")
+            {
+                modifiedName += "lower range";
+            }
+            else if (secondIndicator == "LowerVolume")
+            {
+                modifiedName += "lower volume";
+            }
+            else if (secondIndicator == "LowOfEntryBar")
+            {
+                modifiedName += "low of entry bar";
+            }
+            else if (secondIndicator == "LowOfFirstNMinutes")
+            {
+                modifiedName += "low of first " + secondIndicatorParameter.toString() + " minutes";
+            }
+            else if (secondIndicator == "LowOfLastNMinutes")
+            {
+                modifiedName += "low of last " + secondIndicatorParameter.toString() + " minutes";
+            }
+            else if (secondIndicator == "PreviousCandleHigh")
+            {
+                modifiedName += "previous candle high";
+            }
+            else if (secondIndicator == "PreviousCandleLow")
+            {
+                modifiedName += "previous candle low";
+            }
+            else if (secondIndicator == "ProfitTarget")
+            {
+                modifiedName = secondIndicatorParameter.toString() + "% profit target";
+            }
+            else if (secondIndicator == "SMA")
+            {
+                modifiedName += "SMA" + secondIndicatorParameter.toString();
+            }
+            else if (secondIndicator == "StopLoss")
+            {
+                modifiedName = secondIndicatorParameter.toString() + "% stop loss";
+            }
+            else if (secondIndicator == "Up")
+            {
+                modifiedName += "Up";
+            }
+            else if (secondIndicator == "VWAP")
+            {
+                modifiedName += "VWAP" + secondIndicatorParameter.toString();
+            }
+            else if (secondIndicator == "NMinutes")
+            {
+                modifiedName += secondIndicatorParameter.toString() + " minutes";
+            }
+            else if (secondIndicator == "NPercent")
+            {
+                modifiedName += secondIndicatorParameter.toString() + "%";
+            }
+
+            let listElement = document.createElement("li");
+            listElement.innerText = modifiedName;
+            exitConditionList.appendChild(listElement);
+        }
+
+        displayStrategyDetailsModal();
+    };
+
+    xhttpRep.open("GET", '/get_strategy_details/' + encodeURIComponent(id), false);
+    xhttpRep.send();
+}
+
+function displayStrategyDetailsModal() 
+{
+    let width = (isMobile.any()) ? Math.min(screen.width, 450) : 450;
+    let height = (isMobile.any()) ? 750 : 650;
+    document.getElementById('pageMask').style.display = "block";
+    $( "#strategyDetailsModal" ).dialog({
+        height: height,
+        width: width,
+        dialogClass: "whiteBackground",
+        closeOnEscape: true,
+        open: function(event, ui) {
+            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
+        }
+    });
+    $( "#strategyDetailsModal" ).show();
+
+    document.getElementById('closeStrategyDetailsModal').addEventListener('click', hideStrategyDetailsModal);
+}
+
+function hideStrategyDetailsModal() 
+{
+    document.getElementById('pageMask').style.display = "none";
+    $( "#strategyDetailsModal" ).dialog('close');
+}
+
+function hideSellStrategyModal() 
+{
+    document.getElementById('pageMask').style.display = "none";
+    $( "#sellStrategyModal" ).dialog('close');
+}
+
+function displaySellStrategyModal(id) 
+{
+    let width = (isMobile.any()) ? Math.min(screen.width, 520) : 520;
+    document.getElementById('pageMask').style.display = "block";
+    $( "#sellStrategyModal" ).dialog({
+        height: 400,
+        width: width,
+        dialogClass: "whiteBackground",
+        closeOnEscape: true,
+        open: function(event, ui) {
+            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
+        }
+    });
+    $( "#sellStrategyModal" ).show();
+
+    document.getElementById('confirmSellButton').addEventListener('click', function(){ sellStrategy(id); });
+    document.getElementById('cancelSellButton').addEventListener('click', hideSellStrategyModal);
+}
+
+function sellStrategy(id)
+{
+    let symbol = parseFloat(document.getElementById('strategySymbol').value);
+    let csrf = document.getElementById("sotong").value;
+    let temp = JSON.stringify({
+        strategyID: id,
+        symbol: symbol,
+        csrf: csrf
+      });
+    const xhttpRep = new XMLHttpRequest();
+    xhttpRep.onload = async function(e) {
+        // Handling response from the API for GET reports:
+        const response = JSON.parse(xhttpRep.responseText);
+
+        if (response.response == "Success")
+        {
+            displaySuccessModalSell();
+            return;
+        }
+        else
+        {
+            displayErrorModalSell(response.response);
+            return;
+        }
+    };
+
+    xhttpRep.open("POST", '/sell_strategy', true);
+    xhttpRep.withCredentials = true;
+    xhttpRep.setRequestHeader("Content-Type", "application/json");
+    xhttpRep.send(temp);
+
+    hideSellStrategyModal();
+}
+
+function displayDeleteStrategyModal(id) 
+{
+    let width = (isMobile.any()) ? Math.min(screen.width, 420) : 420;
+    document.getElementById('pageMask').style.display = "block";
+    $( "#deleteStrategyModal" ).dialog({
+        height: 210,
+        width: width,
+        dialogClass: "whiteBackground",
+        closeOnEscape: true,
+        open: function(event, ui) {
+            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
+        }
+    });
+    $( "#deleteStrategyModal" ).show()
+
+    document.getElementById('confirmDeleteButton').addEventListener('click', function(){ deleteStrategy(id); });
+    document.getElementById('cancelDeleteButton').addEventListener('click', hideDeleteStrategyModal);
+}
+
+function hideDeleteStrategyModal() 
+{
+    document.getElementById('pageMask').style.display = "none";
+    $( "#deleteStrategyModal" ).dialog('close');
+}
+
+function deleteStrategy(id)
+{
+    let csrf = document.getElementById("sotong").value;
+    let temp = JSON.stringify({
+        csrf: csrf,
+        strategyID: id
+    });
+    const xhttpRep = new XMLHttpRequest();
+    xhttpRep.onload = async function(e) {
+        // Handling response from the API for GET reports:
+        const response = JSON.parse(xhttpRep.responseText);
+
+        if (response.response == "Success")
+        {
+            displaySuccessModalDelete();
+            
+            return;
+        }
+        else
+        {
+            displayErrorModalDelete(response.response);
+            return;
+        }
+    };
+
+    xhttpRep.open("POST", '/delete_strategy', true);
+    xhttpRep.withCredentials = true;
+    xhttpRep.setRequestHeader("Content-Type", "application/json");
+    xhttpRep.send(temp);
+
+    hideDeleteStrategyModal();
+}
+
+document.getElementById("strategySymbol").addEventListener("input", function() {
+    let value = document.getElementById("strategySymbol").value;
+
+    if (value.length > 5)
+    {
+        value = value.slice(0, value.length - 1);
+    }
+
+    if (value.length == 0)
+    {
+        value = "";
+    }
+
+    document.getElementById("strategySymbol").value = value;    
+});
+
+function hideSuccessModalSell() 
+{
+    $( "#successModalSell" ).dialog('close');
+}
+
+function displaySuccessModalSell() 
+{
+    let position = { my: "right top", at: "right-100 top", of: window };
+    if (isMobile.any())
+    {
+        position = { my: "bottom", at: "bottom", of: window }
+    }
+    let width = (isMobile.any()) ? screen.width : 230;
+    var Y = window.pageYOffset;
+    $( "#successModalSell" ).dialog({
+        height: 55,
+        width: width,
+        closeOnEscape: true,
+        dialogClass: 'successModalContent',
+        position: position,
+        open: function(event, ui) {
+            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
+            setTimeout(function () {
+                $("#successModalSell").dialog("close");
+                window.location.href = 'https://www.tradegen.io/profile';
+            }, 2000);
+            if (!isMobile.any())
+            {
+                $(this).parent().css({'top': Y+100});
+            }
+        }
+    });
+    $( "#successModalSell" ).show()
+}
+
+function hideErrorModalSell() 
+{
+    $( "#errorModalSell" ).dialog('close');
+}
+
+function displayErrorModalSell(message) 
+{
+    document.getElementById("errorText").innerText = message;
+    let position = { my: "right top", at: "right-100 top", of: window };
+    if (isMobile.any())
+    {
+        position = { my: "bottom", at: "bottom", of: window }
+    }
+    let width = (isMobile.any()) ? screen.width : 260;
+    var Y = window.pageYOffset;
+    $( "#errorModalSell" ).dialog({
+        height: 55,
+        width: width,
+        closeOnEscape: true,
+        dialogClass: 'errorModalContent',
+        position: position,
+        open: function(event, ui) {
+            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
+            setTimeout(function () {
+                $("#errorModalSell").dialog("close");
+            }, 2000);
+            if (!isMobile.any())
+            {
+                $(this).parent().css({'top': Y+100});
+            }
+        }
+    });
+    $( "#errorModalSell" ).show()
+}
+
+function hideSuccessModalDelete() 
+{
+    $( "#successModalDelete" ).dialog('close');
+}
+
+function displaySuccessModalDelete() 
+{
+    let position = { my: "right top", at: "right-100 top", of: window };
+    if (isMobile.any())
+    {
+        position = { my: "bottom", at: "bottom", of: window }
+    }
+    let width = (isMobile.any()) ? screen.width : 220;
+    var Y = window.pageYOffset;
+    $( "#successModalDelete" ).dialog({
+        height: 55,
+        width: width,
+        closeOnEscape: true,
+        dialogClass: 'successModalContent',
+        position: position,
+        open: function(event, ui) {
+            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
+            setTimeout(function () {
+                $("#successModalDelete").dialog("close");
+                window.location.href = 'https://www.tradegen.io/profile';
+            }, 2000);
+            if (!isMobile.any())
+            {
+                $(this).parent().css({'top': Y+100});
+            }
+        }
+    });
+    $( "#successModalDelete" ).show()
+}
+
+function hideErrorModalDelete() 
+{
+    $( "#errorModalDelete" ).dialog('close');
+}
+
+function displayErrorModalDelete(message) 
+{
+    document.getElementById("errorText").innerText = message;
+    let position = { my: "right top", at: "right-100 top", of: window };
+    if (isMobile.any())
+    {
+        position = { my: "bottom", at: "bottom", of: window }
+    }
+    let width = (isMobile.any()) ? screen.width : 260;
+    var Y = window.pageYOffset;
+    $( "#errorModalDelete" ).dialog({
+        height: 55,
+        width: width,
+        closeOnEscape: true,
+        dialogClass: 'errorModalContent',
+        position: position,
+        open: function(event, ui) {
+            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
+            setTimeout(function () {
+                $("#errorModalDelete").dialog("close");
+            }, 2000);
+            if (!isMobile.any())
+            {
+                $(this).parent().css({'top': Y+100});
+            }
+        }
+    });
+    $( "#errorModalDelete" ).show()
+}
+
+function displayRunBacktestModal(id) 
+{
+    let width = (isMobile.any()) ? Math.min(screen.width, 420) : 420;
+    document.getElementById('pageMask').style.display = "block";
+    $( "#runBacktestModal" ).dialog({
+        height: 210,
+        width: width,
+        dialogClass: 'whiteBackground',
+        closeOnEscape: true,
+        open: function(event, ui) {
+            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
+        }
+    });
+    $( "#runBacktestModal" ).show()
+
+    document.getElementById('confirmRunBacktestButton').addEventListener('click', function(){ runBacktest(id); });
+    document.getElementById('cancelRunBacktestButton').addEventListener('click', hideRunBacktestModal);
+}
+
+function hideRunBacktestModal() 
+{
+    document.getElementById('pageMask').style.display = "none";
+    $( "#runBacktestModal" ).dialog('close');
+}
+
+function runBacktest(id)
+{
+    let csrf = document.getElementById("sotong").value;
+    let temp = JSON.stringify({
+        csrf: csrf,
+        strategyID: id
+    });
+    const xhttpRep = new XMLHttpRequest();
+    xhttpRep.onload = async function(e) {
+        // Handling response from the API for GET reports:
+        const response = JSON.parse(xhttpRep.responseText);
+
+        if (response.response == "Success")
+        {
+            displaySuccessModalRunBacktest();
+            
+            return;
+        }
+        else
+        {
+            displayErrorModalRunBacktest(response.response);
+            return;
+        }
+    };
+
+    xhttpRep.open("POST", '/start_backtest', true);
+    xhttpRep.withCredentials = true;
+    xhttpRep.setRequestHeader("Content-Type", "application/json");
+    xhttpRep.send(temp);
+
+    hideRunBacktestModal();
+}
+
+function hideSuccessModalRunBacktest() 
+{
+    $( "#successModalRunBacktest" ).dialog('close');
+}
+
+function displaySuccessModalRunBacktest() 
+{
+    let position = { my: "right top", at: "right-100 top", of: window };
+    if (isMobile.any())
+    {
+        position = { my: "bottom", at: "bottom", of: window }
+    }
+    let width = (isMobile.any()) ? screen.width : 240;
+    var Y = window.pageYOffset;
+    $( "#successModalRunBacktest" ).dialog({
+        height: 55,
+        width: width,
+        closeOnEscape: true,
+        dialogClass: 'successModalContent',
+        position: position,
+        open: function(event, ui) {
+            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
+            setTimeout(function () {
+                $("#successModalRunBacktest").dialog("close");
+                window.location.href = 'https://www.tradegen.io/profile';
+            }, 2000);
+            if (!isMobile.any())
+            {
+                $(this).parent().css({'top': Y+100});
+            }
+        }
+    });
+    $( "#successModalRunBacktest" ).show()
+}
+
+function hideErrorModalRunBacktest() 
+{
+    $( "#errorModalRunBacktest" ).dialog('close');
+}
+
+function displayErrorModalRunBacktest(message) 
+{
+    document.getElementById("errorText").innerText = message;
+    let position = { my: "right top", at: "right-100 top", of: window };
+    if (isMobile.any())
+    {
+        position = { my: "bottom", at: "bottom", of: window }
+    }
+    let width = (isMobile.any()) ? screen.width : 260;
+    var Y = window.pageYOffset;
+    $( "#errorModalRunBacktest" ).dialog({
+        height: 55,
+        width: width,
+        closeOnEscape: true,
+        dialogClass: 'errorModalContent',
+        position: position,
+        open: function(event, ui) {
+            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
+            setTimeout(function () {
+                $("#errorModalRunBacktest").dialog("close");
+            }, 2000);
+            if (!isMobile.any())
+            {
+                $(this).parent().css({'top': Y+100});
+            }
+        }
+    });
+    $( "#errorModalRunBacktest" ).show()
+}
+
+function displayEditStrategyModal(id) 
+{
+    let width = (isMobile.any()) ? Math.min(screen.width, 560) : 560;
+    let height = (isMobile.any()) ? 720 : 620;
+    document.getElementById('pageMask').style.display = "block";
+    $( "#editStrategyModal" ).dialog({
+        height: height,
+        width: width,
+        closeOnEscape: true,
+        dialogClass: 'whiteBackground',
+        open: function(event, ui) {
+            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
+        }
+    });
+    $( "#editStrategyModal" ).show()
+
+    document.getElementById('confirmEditStrategyButton').addEventListener('click', function(){ editStrategy(id); });
+    document.getElementById('cancelEditStrategyButton').addEventListener('click', hideEditStrategyModal);
+}
+
+function hideEditStrategyModal() 
+{
+    document.getElementById("symbolsEdit").style.display = "none";
+    document.getElementById("watchlistEdit").selectedIndex = "0";
+    document.getElementById('pageMask').style.display = "none";
+    $( "#editStrategyModal" ).dialog('close');
+}
+
+function editStrategy(id)
+{
+    let csrf = document.getElementById("sotong").value;
+    let name = document.getElementById("strategyNameEdit").value;
+    let description = document.getElementById("descriptionEdit").value;
+    let watchlist = document.getElementById("watchlistEdit").value;
+    let symbols = document.getElementById("symbolsEdit").value;
+    let timeframe = document.getElementById("timeframeEdit").value;
+    let maxAllocation = document.getElementById("maxAllocationEdit").value;
+    let maxConcurrentTrades = document.getElementById("maxConcurrentTradesEdit").value;
+    let positionWeight = document.getElementById("positionWeightEdit").value;
+    let startTime = document.getElementById("startTimeEdit").value;
+    let endTime = document.getElementById("endTimeEdit").value;
+    let direction = document.getElementById("directionEdit").value;
+
+    let temp = JSON.stringify({
+        csrf: csrf,
+        strategyID: id,
+        strategyName: name,
+        description: description,
+        watchlist: watchlist,
+        symbols: symbols,
+        timeframe: timeframe,
+        maxAllocation: maxAllocation,
+        maxConcurrentTrades,
+        positionWeight: positionWeight,
+        startTime: startTime,
+        endTime: endTime,
+        direction: direction
+    });
+
+    const xhttpRep = new XMLHttpRequest();
+    xhttpRep.onload = async function(e) {
+        // Handling response from the API for GET reports:
+        const response = JSON.parse(xhttpRep.responseText);
+
+        if (response.response == "Success")
+        {
+            displaySuccessModalEditStrategy();
+            return;
+        }
+        else
+        {
+            displayErrorModalEditStrategy(response.response);
+            return;
+        }
+    };
+
+    xhttpRep.open("POST", '/edit_strategy', true);
+    xhttpRep.withCredentials = true;
+    xhttpRep.setRequestHeader("Content-Type", "application/json");
+    xhttpRep.send(temp);
+
+    hideEditStrategyModal();
+}
+
+function hideSuccessModalEditStrategy() 
+{
+    $( "#successModalEditStrategy" ).dialog('close');
+}
+
+function displaySuccessModalEditStrategy() 
+{
+    let position = { my: "right top", at: "right-100 top", of: window };
+    if (isMobile.any())
+    {
+        position = { my: "bottom", at: "bottom", of: window }
+    }
+    let width = (isMobile.any()) ? screen.width : 260;
+    var Y = window.pageYOffset;
+    $( "#successModalEditStrategy" ).dialog({
+        height: 55,
+        width: width,
+        closeOnEscape: true,
+        dialogClass: 'successModalContent',
+        position: position,
+        open: function(event, ui) {
+            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
+            setTimeout(function () {
+                $("#successModalEditStrategy").dialog("close");
+                window.location.href = 'https://www.tradegen.io/profile';
+            }, 2000);
+            if (!isMobile.any())
+            {
+                $(this).parent().css({'top': Y+100});
+            }
+        }
+    });
+    $( "#successModalEditStrategy" ).show()
+}
+
+function hideErrorModalEditStrategy() 
+{
+    $( "#errorModalEditStrategy" ).dialog('close');
+}
+
+function displayErrorModalEditStrategy(message) 
+{
+    document.getElementById("errorText").innerText = message;
+    let position = { my: "right top", at: "right-100 top", of: window };
+    if (isMobile.any())
+    {
+        position = { my: "bottom", at: "bottom", of: window }
+    }
+    let width = (isMobile.any()) ? screen.width : 300;
+    var Y = window.pageYOffset;
+    $( "#errorModalEditStrategy" ).dialog({
+        height: 55,
+        width: width,
+        closeOnEscape: true,
+        dialogClass: 'errorModalContent',
+        position: position,
+        open: function(event, ui) {
+            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
+            setTimeout(function () {
+                $("#errorModalEditStrategy").dialog("close");
+            }, 2000);
+            if (!isMobile.any())
+            {
+                $(this).parent().css({'top': Y+100});
+            }
+        }
+    });
+    $( "#errorModalEditStrategy" ).show()
+}
+
+document.getElementById("watchlistEdit").addEventListener('change', (event) => {
+    const selectedValue = event.target.value;
+    
+    if (selectedValue == "custom")
+    {
+        document.getElementById("symbolsEdit").style.display = "block";
+    }
+    else
+    {
+        document.getElementById("symbolsEdit").style.display = "none";
+    }
+});
+
+function populateEditStrategyModal(id)
+{
+    // Making a GET request for the reports associated with the specific user:
+    const xhttpRep = new XMLHttpRequest();
+    xhttpRep.onload = async function(e) {
+        // Handling response from the API for GET reports:
+        const response = JSON.parse(xhttpRep.responseText);
+        const strategyData = response;
+
+        let symbolOutput = "";
+
+        for (var i = 0; i < strategyData.symbols.length; i+=1)
+        {
+            symbolOutput += strategyData.symbols[i];
+
+            if (i < strategyData.symbols.length - 1)
+            {
+                symbolOutput += ",";
+            }
+        }
+
+        let index = "0";
+
+        if (strategyData.watchlist == "morningBreakouts")
+        {
+            index = "0";
+        }
+        else if (strategyData.watchlist == "indexETFs")
+        {
+            index = "1";
+        }
+        else if (strategyData.watchlist == "FAANG")
+        {
+            index = "2";
+        }
+        else if (strategyData.watchlist == "software")
+        {
+            index = "3";
+        }
+        else if (strategyData.watchlist == "travel")
+        {
+            index = "4";
+        }
+        else if (strategyData.watchlist == "custom")
+        {
+            index = "5";
+            document.getElementById("symbolsEdit").style.display = "block";
+        }
+
+        let directionIndex = "0";
+        if (strategyData.direction == "long")
+        {
+            directionIndex = "0";
+        }
+        else
+        {
+            directionIndex = "1";
+        }
+
+        let positionWeightIndex = "0";
+        if (strategyData.distribution == "Equal weights")
+        {
+            positionWeightIndex = "0";
+        }
+        else
+        {
+            positionWeightIndex = "1";
+        }
+
+        let timeframeIndex = "0";
+        if (strategyData.timeframe == 1)
+        {
+            timeframeIndex = "0";
+        }
+        else if (strategyData.timeframe == 5)
+        {
+            timeframeIndex = "1";
+        }
+        else if (strategyData.timeframe == 10)
+        {
+            timeframeIndex = "2";
+        }
+        else
+        {
+            timeframeIndex = "3";
+        }
+
+        //initialise strategy data div with first strategy
+        let name = document.getElementById("strategyNameEdit");
+        name.value = strategyData.strategyName;
+        let description = document.getElementById("descriptionEdit");
+        description.value = strategyData.description;
+        let symbol = document.getElementById("symbolsEdit");
+        symbol.value = symbolOutput;
+        let maxAllocation = document.getElementById("maxAllocationEdit");
+        maxAllocation.value = strategyData.maxAllocation
+        let maxConcurrentTrades = document.getElementById("maxConcurrentTradesEdit");
+        maxConcurrentTrades.value = strategyData.maxConcurrentTrades;
+        let start = document.getElementById("startTimeEdit");
+        start.value = strategyData.startTime;
+        let end = document.getElementById("endTimeEdit");
+        end.value = strategyData.endTime;
+        let watchlist = document.getElementById("watchlistEdit");
+        watchlist.selectedIndex = index;
+        let direction = document.getElementById("directionEdit");
+        direction.selectedIndex = directionIndex;
+        let positionWeight = document.getElementById("positionWeightEdit");
+        positionWeight.selectedIndex = positionWeightIndex;
+        let timeframe = document.getElementById("timeframeEdit");
+        timeframe.selectedIndex = timeframeIndex;
+
+        displayEditStrategyModal(id);
+    };
+
+    xhttpRep.open("GET", '/get_strategy_details/' + encodeURIComponent(id), false);
+    xhttpRep.send();
+}
+
+document.getElementById("strategyNameEdit").addEventListener("input", function() {
+    let value = document.getElementById("strategyNameEdit").value;
+    let character = value.charAt(value.length - 1);
+
+    if (value.length > 30)
+    {
+        value = value.slice(0, 30);
+    }
+    else if (character == '<' || character == '>' || character == '{' || character == '}' || character == ';' || character == '|' || character == '&' || character == '*' || character == '^' || character == '~' || character == '[' || character == ']')
+    {
+        value = value.slice(0, value.length - 1);
+    }
+
+    document.getElementById("strategyNameEdit").value = value;    
+});
+
+document.getElementById("descriptionEdit").addEventListener("input", function() {
+    let value = document.getElementById("descriptionEdit").value;
+    let character = value.charAt(value.length - 1);
+
+    if (character == '<' || character == '>' || character == '{' || character == '}' || character == ';' || character == '|' || character == '&' || character == '*' || character == '^' || character == '~' || character == '[' || character == ']')
+    {
+        value = value.slice(0, value.length - 1);
+    }
+
+    document.getElementById("descriptionEdit").value = value;    
+});
+
+document.getElementById("symbolsEdit").addEventListener("input", function() {
+    let value = document.getElementById("symbolsEdit").value;
+    let character = value.charAt(value.length - 1);
+
+    const allowedCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ,';
+    let found = false;
+    for (var i = 0; i < 27; i+=1)
+    {
+        if (allowedCharacters.charAt(i) == character)
+        {
+            found = true;
+            break;
+        }
+    }
+
+    if (value.length > 100)
+    {
+        value = value.slice(0, 100);
+    }
+    else if (!found)
+    {
+        value = value.slice(0, value.length - 1);
+    }
+    
+    if (value.length == 1 && character == ',')
+    {
+        value = value.slice(0, 0);
+    }
+    else if (value.length > 1 && character == ',' && value.charAt(value.length - 2) == ',')
+    {
+        value = value.slice(0, value.length - 1);
+    }
+
+    document.getElementById("symbolsEdit").value = value;  
+});
+
+document.getElementById("maxAllocationEdit").addEventListener("keydown", function() {
+    if(event.key==='.')
+    {
+        event.preventDefault();
+    }
+});
+
+document.getElementById("maxConcurrentTradesEdit").addEventListener("keydown", function() {
+    if(event.key==='.')
+    {
+        event.preventDefault();
+    }
+});
+
+document.getElementById("startTimeEdit").addEventListener("keydown", function() {
+    if(event.key==='.')
+    {
+        event.preventDefault();
+    }
+});
+
+document.getElementById("endTimeEdit").addEventListener("keydown", function() {
+    if(event.key==='.')
+    {
+        event.preventDefault();
+    }
+});
+
+document.getElementById("maxAllocationEdit").addEventListener("input", function() {
+    let value = document.getElementById("maxAllocationEdit").value;
+
+    if (value.length > 2)
+    {
+        value = value.slice(0, 3);
+
+        if (value != "100")
+        {
+            value = value.slice(0, 2);
+        }
+    }
+
+    if (value.length == 0)
+    {
+        value = "";
+    }
+
+    let allocationValue = (value == "") ? 0 : parseInt(value);
+
+    document.getElementById("maxAllocationEdit").value = allocationValue;    
+});
+
+document.getElementById("maxConcurrentTradesEdit").addEventListener("input", function() {
+    let value = document.getElementById("maxConcurrentTradesEdit").value;
+
+    if (value.length > 1)
+    {
+        value = value.slice(0, 1);
+    }
+
+    if (value.length == 0)
+    {
+        value = "";
+    }
+
+    let newValue = (value == "") ? 0 : parseInt(value);
+
+    document.getElementById("maxConcurrentTradesEdit").value = (value == "") ? value : newValue;    
+});
+
+document.getElementById("startTimeEdit").addEventListener("input", function() {
+    let value = document.getElementById("startTimeEdit").value;
+
+    if (value.length > 3)
+    {
+        value = value.slice(0, 3);
+    }
+    else if (value.length == 3)
+    {
+        if (parseInt(value) > 389)
+        {
+            value = value.slice(0, 2);
+        }
+    }
+
+    if (value.length == 0)
+    {
+        value = "";
+    }
+
+    let newValue = (value == "") ? 0 : parseInt(value);
+
+    document.getElementById("startTimeEdit").value = newValue;    
+});
+
+document.getElementById("endTimeEdit").addEventListener("input", function() {
+    let value = document.getElementById("endTimeEdit").value;
+
+    if (value.length > 3)
+    {
+        value = value.slice(0, 3);
+    }
+    else if (value.length == 3)
+    {
+        if (parseInt(value) > 389)
+        {
+            value = value.slice(0, 2);
+        }
+    }
+
+    if (value.length == 0)
+    {
+        value = "";
+    }
+
+    let newValue = (value == "") ? 0 : parseInt(value);
+
+    document.getElementById("endTimeEdit").value = newValue;    
+});

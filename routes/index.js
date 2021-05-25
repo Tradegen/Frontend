@@ -397,33 +397,20 @@ router.get('/settings', function (req, res, next) {
       return res.status(500).send("Error");
     }
 
-    let verifiedEmail = "";
-    if (response.verifiedEmail == true)
-    {
-      verifiedEmail = "True";
-    }
-    else
-    {
-      verifiedEmail = "False";
-    }
-
     let dataObject = {
-      tradingBots: response.tradingBots
+      developedStrategies: response.developedStrategies
     }
     let dataString = JSON.stringify(dataObject);
 
     res.render('settings', { 
       loginStatus: loggedIn,
       username: username.substring(0, 8) + "...",
-      email: response.email,
-      phoneNumber: response.phoneNumber,
       netWorth: response.netWorth.toFixed(4),
-      referralCode: response.referralCode,
-      savedReferralCode: response.savedReferralCode,
-      verifiedEmail: verifiedEmail,
       credits: credits,
       token: req.session.csrf,
-      dataString: dataString
+      dataString: dataString,
+      user: response.username,
+      stakedBalance: response.stakedBalance
     });
   }
   xhttpRep.open("POST", 'https://us-central1-stocks2-301304.cloudfunctions.net/getSettingsData', true);
@@ -599,19 +586,22 @@ router.get('/market_stats', function (req, res, next) {
     const response = JSON.parse(xhttpRep.responseText);
 
     let developedStrategies = response.developedStrategies;
-    let marketCap = response.marketCap;
+    let totalValueLocked = response.totalValueLocked;
     let numberOfStrategies = response.numberOfStrategies;
     let numberOfTrades = response.numberOfTrades;
     let positions = response.positions;
     let volume = response.volume;
     let users = response.users;
-    let marketCapChange = response.marketCapChange;
+    let totalValueLockedChange = response.totalValueLockedChange;
     let volumeChange = response.volumeChange;
+    let totalYieldGenerated = response.totalYieldGenerated;
+    let TGENprice = response.TGENprice;
+    let circulatingSupply = response.circulatingSupply;
     
     let backgroundColor1 = "#16c784";
     let plus1 = "";
 
-    if (marketCapChange >= 0)
+    if (totalValueLockedChange >= 0)
     {
       plus1 = '+';
       backgroundColor1 = "#16c784";
@@ -639,22 +629,31 @@ router.get('/market_stats', function (req, res, next) {
     }
     let dataString2 = JSON.stringify(dataObject2);
 
+    if (!volumeChange)
+    {
+      volumeChange = -100;
+    }
+
     res.render('market_stats', { 
       loginStatus: loggedIn,
       username: username.substring(0, 8) + "...",
       dataString2: dataString2,
       credits: credits,
-      marketCap: marketCap.toFixed(4),
+      totalValueLocked: totalValueLocked.toFixed(4),
       volume: volume,
       numberOfStrategies: numberOfStrategies,
       numberOfTrades: numberOfTrades,
       positions: positions,
       users: users,
-      marketCapChange: plus1 + marketCapChange.toFixed(2) + "%",
+      totalValueLockedChange: plus1 + totalValueLockedChange.toFixed(2) + "%",
       volumeChange: plus2 + volumeChange.toFixed(2) + "%",
       developedStrategies: developedStrategies,
       backgroundColor1: backgroundColor1,
-      backgroundColor2: backgroundColor2
+      backgroundColor2: backgroundColor2,
+      circulatingSupply: circulatingSupply,
+      TGENprice: TGENprice,
+      totalYieldGenerated: totalYieldGenerated.toFixed(4),
+      marketCap: (TGENprice * circulatingSupply).toFixed(2)
     });
   }
   xhttpRep.open("POST", 'https://us-central1-stocks2-301304.cloudfunctions.net/getMarketStats', true);
@@ -706,14 +705,16 @@ router.get('/token_info/:id', function (req, res, next) {
     }
 
     let strategyName = response.strategyName;
-    let sharePrice = response.currentMarketValue;
-    let sharesPurchased = response.sharesPurchased;
+    let tokenPrice = response.tokenPrice;
+    let circulatingSupply = response.sharesPurchased;
     let deployedOn = response.deployedOn;
-    let marketCap = response.marketCap;
     let volume = response.volume;
-    let priceChange = response.priceChange;
+    let poolChange = response.poolChange;
     let strategySymbol = response.symbol;
     let up = response.up;
+    let currentPoolSize = response.currentPoolSize;
+    let maxPoolSize = response.maxPoolSize;
+    let yieldGenerated = response.yieldGenerated;
     
     let backgroundColor = "#16c784";
 
@@ -735,17 +736,19 @@ router.get('/token_info/:id', function (req, res, next) {
       loginStatus: loggedIn,
       username: username.substring(0, 8) + "...",
       strategyName: strategyName,
-      sharePrice: sharePrice.toFixed(4) + " TGEN",
-      sharesPurchased: sharesPurchased,
+      tokenPrice: tokenPrice.toFixed(4) + " TGEN",
       dataString2: dataString2,
       credits: credits,
       deployedOn: deployedOn,
-      marketCap: marketCap.toFixed(4),
-      volume: volume,
-      priceChange: priceChange,
+      volume: volume.toFixed(2),
+      poolChange: poolChange,
       symbol: strategySymbol,
       backgroundColor: backgroundColor,
-      strategyID: strategyID
+      strategyID: strategyID,
+      currentPoolSize: currentPoolSize,
+      maxPoolSize: maxPoolSize,
+      circulatingSupply: circulatingSupply,
+      yieldGenerated: yieldGenerated
     });
   }
   xhttpRep.open("POST", 'https://us-west2-stocks2-301304.cloudfunctions.net/getTokenInfo', true);
@@ -806,6 +809,7 @@ router.get('/strategy_info/:id', function (req, res, next) {
     let developedBy = response.developedBy;
     let sharesPurchased = response.sharesPurchased;
     let status = response.status;
+    let underlyingAsset = response.underlyingAsset;
 
     let accuracy = response.accuracy;
     let maxDrawdown = response.maxDrawdown;
@@ -833,7 +837,7 @@ router.get('/strategy_info/:id', function (req, res, next) {
       username: username.substring(0, 8) + "...",
       strategyName: strategyName,
       sharePrice: sharePrice.toFixed(4) + " TGEN",
-      tradeFrequency: tradeFrequency.toFixed(2) + "/day",
+      tradeFrequency: (tradeFrequency * 30).toFixed(2) + "/month",
       sharpeRatio: sharpeRatio.toFixed(3),
       assetsTraded: assetsTraded,
       description: description,
@@ -852,7 +856,8 @@ router.get('/strategy_info/:id', function (req, res, next) {
       dataString2: dataString2,
       credits: credits,
       address: address,
-      strategyID: strategyID
+      strategyID: strategyID,
+      underlyingAsset: underlyingAsset
     });
   }
   xhttpRep.open("POST", 'https://us-central1-stocks2-301304.cloudfunctions.net/getStrategyInfo', true);
@@ -1058,8 +1063,8 @@ router.get('/buy_position/:id', function (req, res, next) {
   xhttpRep.send(temp2);
 });
 
-//Buy New Tokens Page
-router.get('/buy_new_tokens/:id', function (req, res, next) {
+//Manage Pool Page
+router.get('/manage_pool/:id', function (req, res, next) {
   var loggedIn = (typeof req.session.user !== "undefined") ? true : false;
   var username = loggedIn ? req.session.user : "";
   let token = req.session.csrf;
@@ -1112,10 +1117,17 @@ router.get('/buy_new_tokens/:id', function (req, res, next) {
     }
 
     let strategyName = response.strategyName;
-    let currentMarketValue = parseFloat(response.currentMarketValue.toFixed(4));
+    let currentMarketValue = response.currentMarketValue.toFixed(4);
     let savedReferralCode = response.savedReferralCode;
     let description = response.description;
     let symbol = response.symbol;
+    let currentPoolSize = response.currentPoolSize.toFixed(2);
+    let maxPoolSize = response.maxPoolSize.toFixed(2);
+    let circulatingSupply = response.circulatingSupply.toFixed(4);
+    let amountInvested = response.amountInvested.toFixed(4);
+    let numberOfLPTokens = response.numberOfLPTokens.toFixed(4);
+    let availableToInvest = Math.min(req.session.credits, (response.maxPoolSize - response.currentPoolSize)).toFixed(4);
+    let availableYield = response.availableYield.toFixed(4);
 
     res.render('buy_new_shares', { 
       strategyName: strategyName,
@@ -1127,7 +1139,14 @@ router.get('/buy_new_tokens/:id', function (req, res, next) {
       description: description,
       token: token,
       credits: credits,
-      symbol: symbol
+      symbol: symbol,
+      currentPoolSize: currentPoolSize,
+      maxPoolSize: maxPoolSize,
+      circulatingSupply: circulatingSupply,
+      amountInvested: amountInvested,
+      numberOfLPTokens: numberOfLPTokens,
+      availableToInvest: availableToInvest,
+      availableYield: availableYield
     });
   }
   xhttpRep.open("POST", 'https://us-central1-stocks2-301304.cloudfunctions.net/getBuyNewSharesData', true);
@@ -1366,8 +1385,8 @@ async (req, res) => {
   xhttp.send(qs.stringify(req.body));
 });
 
-// Buy new shares using account balance
-router.post('/buy_new_shares_with_account_balance', function (req, res, next) {
+// Deposit funds into a strategy pool
+router.post('/deposit', function (req, res, next) {
   var loggedIn = (typeof req.session.user !== "undefined") ? true : false;
   var username = loggedIn ? req.session.user : "";
 
@@ -1378,7 +1397,7 @@ router.post('/buy_new_shares_with_account_balance', function (req, res, next) {
 
   let userID = username;
   let strategyID = req.body.strategyID;
-  let numberOfShares = req.body.numberOfShares;
+  let amountToDeposit = req.body.amountToDeposit;
   let csrf = req.body.csrf;
 
   if (typeof strategyID !== "string")
@@ -1386,7 +1405,7 @@ router.post('/buy_new_shares_with_account_balance', function (req, res, next) {
     return res.status(500).send("No strategy ID");
   }
 
-  if (typeof numberOfShares !== "number")
+  if (typeof amountToDeposit !== "number")
   {
     return res.status(500).send("Error");
   }
@@ -1412,17 +1431,10 @@ router.post('/buy_new_shares_with_account_balance', function (req, res, next) {
     }
   }
 
-  //check if numberOfShares is a number
-  if ((+numberOfShares === +numberOfShares) && (typeof numberOfShares !== "undefined"))
+  //check if amountToDeposit is a number
+  if ((+amountToDeposit === +amountToDeposit) && (typeof amountToDeposit !== "undefined"))
   {
-    numberOfShares = parseInt(numberOfShares);
-
-    if (numberOfShares < 1 || numberOfShares > 1000)
-    {
-      return res.status(200).json({
-        response: "Error",
-      });
-    }
+    amountToDeposit = parseFloat(amountToDeposit);
   }
   else
   {
@@ -1441,8 +1453,176 @@ router.post('/buy_new_shares_with_account_balance', function (req, res, next) {
   let temp2 = JSON.stringify({
     strategyID: strategyID,
     userID: userID,
-    numberOfShares: numberOfShares,
-    token: req.session.token
+    amountToInvest: amountToDeposit,
+  });
+  
+  const xhttp = new XMLHttpRequest();
+  xhttp.onload = function(e) {
+    let response = xhttp.responseText;
+
+    console.log(xhttp.responseText);
+
+    if (response.charAt(0) == "0")
+    {
+      let temp = parseFloat(response);
+      req.session.credits = parseFloat(temp);
+      response = "Success";
+    }
+
+    return res.status(200).json({
+      response: response,
+    });
+  }
+  xhttp.open("POST", 'https://us-central1-stocks2-301304.cloudfunctions.net/buyNewSharesWithAccountBalance', true);
+  xhttp.withCredentials = true;
+  xhttp.setRequestHeader("Content-Type", "application/json");
+  xhttp.send(temp2);
+});
+
+// Withdraw funds from a strategy pool
+router.post('/withdraw', function (req, res, next) {
+  var loggedIn = (typeof req.session.user !== "undefined") ? true : false;
+  var username = loggedIn ? req.session.user : "";
+
+  if (!loggedIn)
+  {
+    return res.redirect("/open_beta");
+  }
+
+  let userID = username;
+  let strategyID = req.body.strategyID;
+  let amountToWithdraw = req.body.amountToWithdraw;
+  let csrf = req.body.csrf;
+
+  if (typeof strategyID !== "string")
+  {
+    return res.status(500).send("No strategy ID");
+  }
+
+  if (typeof amountToWithdraw !== "number")
+  {
+    return res.status(500).send("Error");
+  }
+
+  const allowedCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz';
+  let found = false;
+  for (var i = 0; i < strategyID.length; i+=1)
+  {
+    let character = strategyID.charAt(i);
+    for (var j = 0; j < allowedCharacters.length; j+=1)
+    {
+        if (allowedCharacters.charAt(j) == character)
+        {
+            found = true;
+            break;
+        }
+    }
+    if (found == false)
+    {
+      return res.status(200).json({
+        response: "Error",
+      });
+    }
+  }
+
+  //check if amountToWithdraw is a number
+  if ((+amountToWithdraw === +amountToWithdraw) && (typeof amountToWithdraw !== "undefined"))
+  {
+    amountToWithdraw = parseFloat(amountToWithdraw);
+  }
+  else
+  {
+    return res.status(200).json({
+      response: "Error",
+    });
+  }
+
+  if (csrf != req.session.csrf)
+  {
+    return res.status(200).json({
+      response: "Error",
+    });
+  }
+
+  let temp2 = JSON.stringify({
+    strategyID: strategyID,
+    userID: userID,
+    amountToWithdraw: amountToWithdraw,
+  });
+  
+  const xhttp = new XMLHttpRequest();
+  xhttp.onload = function(e) {
+    let response = xhttp.responseText;
+
+    console.log(xhttp.responseText);
+
+    if (response.charAt(0) == "0")
+    {
+      let temp = parseFloat(response);
+      req.session.credits = parseFloat(temp);
+      response = "Success";
+    }
+
+    return res.status(200).json({
+      response: response,
+    });
+  }
+  xhttp.open("POST", 'https://us-central1-stocks2-301304.cloudfunctions.net/withdrawFunds', true);
+  xhttp.withCredentials = true;
+  xhttp.setRequestHeader("Content-Type", "application/json");
+  xhttp.send(temp2);
+});
+
+// Claim yield from a strategy pool
+router.post('/claim', function (req, res, next) {
+  var loggedIn = (typeof req.session.user !== "undefined") ? true : false;
+  var username = loggedIn ? req.session.user : "";
+
+  if (!loggedIn)
+  {
+    return res.redirect("/open_beta");
+  }
+
+  let userID = username;
+  let strategyID = req.body.strategyID;
+  let csrf = req.body.csrf;
+
+  if (typeof strategyID !== "string")
+  {
+    return res.status(500).send("No strategy ID");
+  }
+
+  const allowedCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz';
+  let found = false;
+  for (var i = 0; i < strategyID.length; i+=1)
+  {
+    let character = strategyID.charAt(i);
+    for (var j = 0; j < allowedCharacters.length; j+=1)
+    {
+        if (allowedCharacters.charAt(j) == character)
+        {
+            found = true;
+            break;
+        }
+    }
+    if (found == false)
+    {
+      return res.status(200).json({
+        response: "Error",
+      });
+    }
+  }
+
+  if (csrf != req.session.csrf)
+  {
+    return res.status(200).json({
+      response: "Error",
+    });
+  }
+
+  let temp2 = JSON.stringify({
+    strategyID: strategyID,
+    userID: userID,
   });
   
   const xhttp = new XMLHttpRequest();
@@ -1460,7 +1640,7 @@ router.post('/buy_new_shares_with_account_balance', function (req, res, next) {
       response: response,
     });
   }
-  xhttp.open("POST", 'https://us-central1-stocks2-301304.cloudfunctions.net/buyNewSharesWithAccountBalance', true);
+  xhttp.open("POST", 'https://us-central1-stocks2-301304.cloudfunctions.net/claimYield', true);
   xhttp.withCredentials = true;
   xhttp.setRequestHeader("Content-Type", "application/json");
   xhttp.send(temp2);
@@ -2178,7 +2358,7 @@ router.post('/start_backtest', function (req, res, next) {
   });
   
   const xhttp = new XMLHttpRequest();
-  xhttp.open("POST", 'http://localhost:6000/backtest/run_backtest', true);
+  xhttp.open("POST", 'https://backtest-dot-stocks2-301304.uc.r.appspot.com/backtest/run_backtest', true);
   xhttp.withCredentials = true;
   xhttp.setRequestHeader("Content-Type", "application/json");
   xhttp.send(temp2);
@@ -2662,8 +2842,8 @@ router.post('/build_strategy',
   xhttp.send(temp2);
 });
 
-// Add credits
-router.post('/add_credits', function (req, res, next) {
+// Stake
+router.post('/stake', function (req, res, next) {
   var loggedIn = (typeof req.session.user !== "undefined") ? true : false;
   var username = loggedIn ? req.session.user : "";
 
@@ -2672,7 +2852,7 @@ router.post('/add_credits', function (req, res, next) {
     return res.redirect("/open_beta");
   }
 
-  let numberOfCredits = req.body.numberOfCredits;
+  let stakeAmount = req.body.stakeAmount;
   let csrf = req.body.csrf;
 
   if (csrf != req.session.csrf)
@@ -2683,7 +2863,87 @@ router.post('/add_credits', function (req, res, next) {
   }
 
   let temp2 = JSON.stringify({
-    numberOfCredits: numberOfCredits,
+    stakeAmount: stakeAmount,
+    userID: username,
+    token: req.session.token
+  });
+  
+  const xhttp = new XMLHttpRequest();
+  xhttp.onload = function(e) {
+    const response = xhttp.responseText;
+
+    return res.status(200).json({
+      response: response,
+    });
+  }
+  xhttp.open("POST", 'https://us-central1-stocks2-301304.cloudfunctions.net/sstake', true);
+  xhttp.withCredentials = true;
+  xhttp.setRequestHeader("Content-Type", "application/json");
+  xhttp.send(temp2);
+});
+
+// Unstake
+router.post('/unstake', function (req, res, next) {
+  var loggedIn = (typeof req.session.user !== "undefined") ? true : false;
+  var username = loggedIn ? req.session.user : "";
+
+  if (!loggedIn)
+  {
+    return res.redirect("/open_beta");
+  }
+
+  let unstakeAmount = req.body.unstakeAmount;
+  let csrf = req.body.csrf;
+
+  if (csrf != req.session.csrf)
+  {
+    return res.status(200).json({
+      response: "Error",
+    });
+  }
+
+  let temp2 = JSON.stringify({
+    unstakeAmount: unstakeAmount,
+    userID: username,
+    token: req.session.token
+  });
+  
+  const xhttp = new XMLHttpRequest();
+  xhttp.onload = function(e) {
+    const response = xhttp.responseText;
+
+    return res.status(200).json({
+      response: response,
+    });
+  }
+  xhttp.open("POST", 'https://us-central1-stocks2-301304.cloudfunctions.net/unstake', true);
+  xhttp.withCredentials = true;
+  xhttp.setRequestHeader("Content-Type", "application/json");
+  xhttp.send(temp2);
+});
+
+// Deposit
+router.post('/deposit2', function (req, res, next) {
+  var loggedIn = (typeof req.session.user !== "undefined") ? true : false;
+  var username = loggedIn ? req.session.user : "";
+
+  if (!loggedIn)
+  {
+    return res.redirect("/open_beta");
+  }
+
+  let depositAmount = req.body.depositAmount;
+  let csrf = req.body.csrf;
+
+  if (csrf != req.session.csrf)
+  {
+    return res.status(200).json({
+      response: "Error",
+    });
+  }
+
+  let temp2 = JSON.stringify({
+    depositAmount: depositAmount,
     userID: username,
     token: req.session.token
   });
@@ -2695,7 +2955,7 @@ router.post('/add_credits', function (req, res, next) {
     if (response == "Success")
     {
       console.log("added credits to session");
-      req.session.credits = req.session.credits + parseFloat(numberOfCredits);
+      req.session.credits = req.session.credits + parseFloat(depositAmount);
     }
 
     return res.status(200).json({
@@ -2703,52 +2963,6 @@ router.post('/add_credits', function (req, res, next) {
     });
   }
   xhttp.open("POST", 'https://us-central1-stocks2-301304.cloudfunctions.net/addCredits', true);
-  xhttp.withCredentials = true;
-  xhttp.setRequestHeader("Content-Type", "application/json");
-  xhttp.send(temp2);
-});
-
-// Withdraw credits
-router.post('/withdraw_credits', function (req, res, next) {
-  var loggedIn = (typeof req.session.user !== "undefined") ? true : false;
-  var username = loggedIn ? req.session.user : "";
-
-  if (!loggedIn)
-  {
-    return res.redirect("/open_beta");
-  }
-
-  let amountToWithdraw = req.body.amountToWithdraw;
-  let csrf = req.body.csrf;
-
-  if (csrf != req.session.csrf)
-  {
-    return res.status(200).json({
-      response: "Error",
-    });
-  }
-
-  let temp2 = JSON.stringify({
-    amountToWithdraw: amountToWithdraw,
-    userID: username,
-    token: req.session.token
-  });
-  
-  const xhttp = new XMLHttpRequest();
-  xhttp.onload = function(e) {
-    const response = xhttp.responseText;
-
-    if (response == "Success")
-    {
-      console.log("withdrew credits from session");
-      req.session.credits = req.session.credits - parseFloat(amountToWithdraw);
-    }
-
-    return res.status(200).json({
-      response: response,
-    });
-  }
-  xhttp.open("POST", 'https://us-central1-stocks2-301304.cloudfunctions.net/withdrawCredits', true);
   xhttp.withCredentials = true;
   xhttp.setRequestHeader("Content-Type", "application/json");
   xhttp.send(temp2);

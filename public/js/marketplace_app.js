@@ -75,31 +75,6 @@ document.addEventListener("DOMContentLoaded", async function() {
         document.getElementById("increasePage").style.cursor = "pointer";
     })
 
-    document.getElementById("marketplaceType").addEventListener('change', (event) => {
-        const selectedValue = event.target.value;
-        
-        if (selectedValue == "any")
-        {
-            filterResults(0);
-        }
-        else if (selectedValue == "class1")
-        {
-            filterResults(1);
-        }
-        else if (selectedValue == "class2")
-        {
-            filterResults(2);
-        }
-        else if (selectedValue == "class3")
-        {
-            filterResults(3);
-        }
-        else if (selectedValue == "class4")
-        {
-            filterResults(4);
-        }
-    });
-
     getData();
 });
 
@@ -121,6 +96,10 @@ function buildTable()
     header_title1.innerText = "Strategy Name";
     header_title1.setAttribute("class", "marketsTableRowName");
     header_row.appendChild(header_title1);
+    let header_title11 = document.createElement("th");
+    header_title11.innerText = "Seller";
+    header_title11.setAttribute("class", "marketsTableRowName");
+    header_row.appendChild(header_title11);
     let header_title2 = document.createElement("th");
     let left2 = document.createElement("a");
     left2.innerText = "Tokens";
@@ -135,10 +114,6 @@ function buildTable()
     header_title2.appendChild(left2);
     header_title2.appendChild(right2);
     header_row.appendChild(header_title2);
-    let header_title222 = document.createElement("th");
-    header_title222.innerText = "Class";
-    header_title222.setAttribute("class", "marketsTableRowName");
-    header_row.appendChild(header_title222);
     let header_title3 = document.createElement("th");
     let left3 = document.createElement("a");
     left3.innerText = "Market Price";
@@ -169,7 +144,7 @@ function buildTable()
     header_row.appendChild(header_title4);
     let header_title5 = document.createElement("th");
     let left5 = document.createElement("a");
-    left5.innerText = "% vs New Token Price";
+    left5.innerText = "% vs Market Price";
     header_title5.setAttribute("class", "marketsTableRowName");
     let right5 = document.createElement("i");
     right5.innerText = right5InnerText;
@@ -215,14 +190,19 @@ function buildTable()
         strategyName.appendChild(strategyNameLink);
         strategyName.appendChild(strategyNameRight);
         row.appendChild(strategyName);
+        let seller = document.createElement("td");
+        let sellerLink = document.createElement("a");
+        sellerLink.innerText = FILTERED_LISTINGS[i].seller;
+        let sellerAddress = FILTERED_LISTINGS[i].sellerAddress;
+        sellerLink.addEventListener('click', function(){ window.location.href = '/profile/' + sellerAddress; });
+        sellerLink.addEventListener('mouseover', function(){ sellerLink.style.cursor = "pointer"; });
+        seller.setAttribute("class", "marketsTableRowName");
+        seller.appendChild(sellerLink);
+        row.appendChild(seller);
         let numberOfShares = document.createElement("td");
         numberOfShares.innerText = FILTERED_LISTINGS[i].numberOfShares;
         numberOfShares.setAttribute("class", "marketsTableRowName");
         row.appendChild(numberOfShares);
-        let shareClass = document.createElement("td");
-        shareClass.innerText = FILTERED_LISTINGS[i].shareClass;
-        shareClass.setAttribute("class", "marketsTableRowName");
-        row.appendChild(shareClass);
         let marketPrice = document.createElement("td");
         marketPrice.innerText = FILTERED_LISTINGS[i].sharePrice.toFixed(4) + " TGEN";
         marketPrice.setAttribute("class", "marketsTableRowName");
@@ -269,8 +249,7 @@ function buildTable()
         let viewButton = document.createElement("button");
         viewButton.innerText = "View";
         viewButton.setAttribute("class", "viewButton");
-        let address = FILTERED_LISTINGS[i].address;
-        viewButton.addEventListener('click', function(){ window.location.href = '/position_info/' + address; });
+        viewButton.addEventListener('click', function(){ window.location.href = '/strategy_info/' + strategyID; });
         let buyButton = document.createElement("button");
         buyButton.innerText = "Buy";
         buyButton.setAttribute("class", "buyButton");
@@ -339,6 +318,22 @@ function buildPanels()
         let bottomRow = document.createElement("div");
         bottomRow.setAttribute("class", "tradingBotStoreProductBottomRow");
         bottomRow.style.borderWidth = "0px";
+        let seller = document.createElement("div");
+        seller.setAttribute("class", "tradingBotStoreProductAccuracy block");
+        let sellerText = document.createElement("a");
+        sellerText.setAttribute("class", "tradingBotStoreProductTopText");
+        sellerText.innerText = "Seller";
+        let sellerBR = document.createElement("br");
+        let sellerData = document.createElement("a");
+        sellerData.setAttribute("class", "tradingBotStoreProductBottomText");
+        sellerData.innerText = LISTINGS[i].seller;
+        sellerData.style.fontWeight = "500";
+        let sellerAddress = LISTINGS[i].sellerAddress;
+        sellerData.addEventListener('click', function(){ window.location.href = '/profile/' + sellerAddress; });
+        sellerData.addEventListener('mouseover', function(){ sellerData.style.cursor = "pointer"; });
+        seller.appendChild(sellerText);
+        seller.appendChild(sellerBR);
+        seller.appendChild(sellerData);
         let size = document.createElement("div");
         size.setAttribute("class", "tradingBotStoreProductAccuracy block");
         let sizeText = document.createElement("a");
@@ -352,19 +347,6 @@ function buildPanels()
         size.appendChild(sizeText);
         size.appendChild(sizeBR);
         size.appendChild(sizeData);
-        let shareClass = document.createElement("div");
-        shareClass.setAttribute("class", "tradingBotStoreProductFrequency block");
-        let shareClassText = document.createElement("a");
-        shareClassText.setAttribute("class", "tradingBotStoreProductTopText");
-        shareClassText.innerText = "Class";
-        let shareClassBR = document.createElement("br");
-        let shareClassData = document.createElement("a");
-        shareClassData.setAttribute("class", "tradingBotStoreProductBottomText");
-        shareClassData.innerText = LISTINGS[i].shareClass;
-        shareClassData.style.fontWeight = "500";
-        shareClass.appendChild(shareClassText);
-        shareClass.appendChild(shareClassBR);
-        shareClass.appendChild(shareClassData);
         let currentPrice = document.createElement("div");
         currentPrice.setAttribute("class", "tradingBotStoreProductFrequency block");
         let currentPriceText = document.createElement("a");
@@ -396,7 +378,7 @@ function buildPanels()
         change.setAttribute("class", "tradingBotStoreProductFrequency block");
         let changeText = document.createElement("a");
         changeText.setAttribute("class", "tradingBotStoreProductTopText");
-        changeText.innerText = "% vs New Token Price";
+        changeText.innerText = "% vs Market Price";
         let changeBR = document.createElement("br");
         let changeData = document.createElement("div");
         changeData.setAttribute("class", "tradingBotStoreProductBottomText");
@@ -424,7 +406,7 @@ function buildPanels()
         viewButton.innerText = "View";
         viewButton.setAttribute("class", "viewButton");
         let address = LISTINGS[i].address;
-        viewButton.addEventListener('click', function(){ window.location.href = '/position_info/' + address; });
+        viewButton.addEventListener('click', function(){ window.location.href = '/strategy_info/' + address; });
 
         let buyButton = document.createElement("button");
         buyButton.innerText = "Buy";
@@ -441,8 +423,8 @@ function buildPanels()
             buttons.appendChild(buyButton);
         }
 
+        bottomRow.append(seller);
         bottomRow.appendChild(size);
-        bottomRow.appendChild(shareClass);
         bottomRow.appendChild(currentPrice);
         bottomRow.appendChild(advertisedPrice);
         bottomRow.appendChild(change);
@@ -575,35 +557,4 @@ function customSort(ID)
     }
 
     buildTable();
-}
-
-function filterResults(marketplaceType)
-{
-    let newResults = [];
-
-    for (var i = 0; i < LISTINGS.length; i++)
-    {
-        if (marketplaceType == 0 || LISTINGS[i].shareClass == marketplaceType)
-        {
-            newResults.push(LISTINGS[i]);
-        }
-    }
-
-    FILTERED_LISTINGS = newResults;
-    LENGTH = newResults.length;
-    MAX_PAGES = Math.max(Math.ceil(LENGTH / SIZE), 1);
-
-    right2InnerText = "arrow_drop_down";
-    right3InnerText = "arrow_drop_down";
-    right4InnerText = "arrow_drop_down";
-    right5InnerText = "arrow_drop_down";
-
-    if (isMobile.any())
-    {
-        buildPanels();
-    }
-    else
-    {
-        buildTable();
-    }
 }

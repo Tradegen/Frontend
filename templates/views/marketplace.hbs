@@ -11,49 +11,28 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto">
     <script src="/js/update_overlay.js"></script>
+    <script>
+        Object.keys(require.cache).forEach(function(key) { delete require.cache[key] });
+    </script>
 </head>
 
 <body class="appBackground">
     {{>user_header}}
     <div id="loadingPage" class="loadingPage">Loading marketplace data...</div>
     <div class="main-content initiallyHidden" id="mainContent">
-        <div class="maxWidth largeMarginBottom mediaHeaderWeb" id="web">
-            <div class="pageTitle footerFloatLeft">Marketplace</div>
-            <div class="footerFloatRight">
-                <div class="filterLeft2">Filter by class:</div>
-                <div class="filterRight2">
-                    <div class="selectWrapper">
-                        <select name="marketplaceFilterBy" class="selectBoxFilter" id="marketplaceType">
-                            <option value="any">Any</option>
-                            <option value="class1">Class 1</option>
-                            <option value="class2">Class 2</option>
-                            <option value="class3">Class 3</option>
-                            <option value="class4">Class 4</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
+        <div class="largeMarginBottom mediaHeaderWeb" id="web">
+            <div class="pageTitle footerFloatLeft marginLeftMinus10">Marketplace</div>
         </div>
         <div class="mediaHeaderMobile">
             <div class="pageTitle">Marketplace</div>
-            <div>Filter by class:</div>
-            <div class="selectWrapper">
-                <select name="marketplaceFilterBy" class="selectBoxFilter" id="marketplaceType">
-                    <option value="any">Any</option>
-                    <option value="class1">Class 1</option>
-                    <option value="class2">Class 2</option>
-                    <option value="class3">Class 3</option>
-                    <option value="class4">Class 4</option>
-                </select>
-            </div>
         </div>
-        <div class="tableWrapper maxWidth" id="table">
+        <div class="tableWrapper" id="table">
             <div class="mediaTableWrap">
                 <table id="marketplaceTable" class="transactionsTable"></table>
             </div>
         </div>
         <div id="panels"></div>
-        <div class="maxWidth textAlignRight pageNumber mediaDisplayFlex">
+        <div class="textAlignRight pageNumber mediaDisplayFlex">
             <i class="material-icons icon-AccountCircle" id="decreasePage">chevron_left</i>
             <a id="pageNumber"></a>
             <i class="material-icons icon-AccountCircle pageRight" id="increasePage">chevron_right</i>
@@ -62,6 +41,12 @@
     <div class="main-content initiallyHidden" id="boh"></div>
     <input type="hidden" id="sotong" value="{{username}}"/>
 
+    <script type="text/javascript" src="https://unpkg.com/web3@1.2.11/dist/web3.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/web3modal@1.9.0/dist/index.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/evm-chains@0.2.0/dist/umd/index.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/@walletconnect/web3-provider@1.2.1/dist/umd/index.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/fortmatic@2.0.6/dist/fortmatic.js"></script>
+    <script src="/js/connect_wallet_app.js"></script>
     <script src="/js/marketplace_app.js"></script>
 </body>
 

@@ -27,6 +27,9 @@
         crossorigin="anonymous">
     </script>
     <script src="/js/update_overlay.js"></script>
+    <script>
+        Object.keys(require.cache).forEach(function(key) { delete require.cache[key] });
+    </script>
 </head>
 
 <body class="appBackground">
@@ -34,7 +37,7 @@
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T73ZF84"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
-    {{>guest_header}}
+    {{>user_header}}
     <div class="main-content">
         <div class="pageTitle">Checkout</div>
 
@@ -43,22 +46,26 @@
               <p class="buyPageSubtitle">
                   Your Purchase
               </p>
-              <p><a class="extraWeight">Strategy: </a> {{strategyName}}</p>
+              <p><a class="extraWeight">Strategy: </a> <span id="strategyNameLink">{{strategyName}}</span></p>
+              <p><a class="extraWeight">Developer: </a> <span id="developerLink">{{developer}}</span></p>
               <p><a class="extraWeight">Developed On: </a> {{developedOn}}</p>
               <p><a class="extraWeight">Description: </a> {{description}}</p>
               <p><a class="extraWeight">Alpha: </a> {{alpha}}</p>
-              <p><a class="extraWeight">Brokerage Firm: </a>TD Ameritrade</p>
+              <p><a class="extraWeight">Total Return: </a> <span style="color:{{color}}">{{totalReturn}}%</span></p>
               <p></p>
           </div>
         </div>
 
         <div class="mediaWidth100">
           <div class="payment" id="payment">
-              <p class="buyPageSubtitle">
+              <p class="buyPageSubtitle largeMarginBottom">
                   Payment
               </p>
-              <p id="salePrice" class="fontSize20"><a class="extraWeight">Price: </a> ${{salePrice}}</p>
-              <div id="paypal-button-container" class="checkoutContainer"></div>
+              <div class="largeMarginBottom">
+                <p id="salePrice" class="fontSize20"><a class="extraWeight">Price: </a> {{salePrice}} TGEN</p>
+                <p class="fontSize20"><a class="extraWeight">Brokerage Firm: </a>TD Ameritrade</p>
+              </div>
+              <button type="button" id="payWithBalance" class="payWithBalanceButton">PURCHASE</button>
               <p></p>
           </div>
         </div>
@@ -66,36 +73,40 @@
         <input type="hidden" id="sotong" value="{{strategyID}}"/>
         <input type="hidden" id="sianjitpua" value="{{salePrice}}"/>
         <input type="hidden" id="tualiapnee" value="{{token}}">
+        <input type="hidden" id="address" value="{{address}}">
+    </div>
+
+    <div id="payWithAccountBalanceModal" style="display:none">
+        <div class="paymentModalTitle">Buy Now</div>
+        <div id="cost" class="paymentModalPrice">{{salePrice}} TGEN</div>
+        <p class="paymentModalText">Are you sure you want to submit your payment?</p>
+        <button type="button" id="confirmPayment" class="paymentModalYesButton">YES</button>
+        <button type="button" id="cancelPayment" class="paymentModalCancelButton">CANCEL</button>
+    </div>
+
+    <div id="successModal" style="display:none">
+        <div class="messageModal" id="successTitle">
+            <i class="material-icons marginRight15px messageModalIcon" id="successButton">check_circle_outline</i>
+            <div class="messageModalText">Payment complete</div>
+        </div>
     </div>
 
     <div id="errorModal" style="display:none">
-      <div class="buffer"></div>
-      <a class="modalTitle" id="errorTitle">Transaction Error</a>
-      <i class="material-icons" id="errorButton">close</i>
+        <div class="messageModal" id="errorTitle">
+            <i class="material-icons marginRight15px messageModalIcon" id="errorButton">error_outline</i>
+            <div class="messageModalText" id="errorText">Error</div>
+        </div>
     </div>
 
+    <script type="text/javascript" src="https://unpkg.com/web3@1.2.11/dist/web3.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/web3modal@1.9.0/dist/index.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/evm-chains@0.2.0/dist/umd/index.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/@walletconnect/web3-provider@1.2.1/dist/umd/index.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/fortmatic@2.0.6/dist/fortmatic.js"></script>
+    <script src="/js/connect_wallet_app.js"></script>
     <script src="/js/checkout_app.js"></script>
-    <script src="https://www.paypal.com/sdk/js?client-id=AVUF3wcvQ2dlZSchBKCdhNuLxpJKp4b9xmDx6qEJiFEYoajFAW_3D-2kh8dKRiWjhJAOIqTWDp79qsPB">
-    </script>
-    <script>
-      paypal.Buttons({
-        createOrder: function(data, actions) {
-            var price = document.getElementById("sianjitpua").value;
-          return actions.order.create({
-            purchase_units: [{
-              amount: {
-                value: price
-              }
-            }]
-          });
-        },
-        onApprove: function(data, actions) {
-          return actions.order.capture().then(function(details) {
-            checkout(details.payer.email_address);
-          });
-        }
-      }).render('#paypal-button-container'); // Display payment options on your web page
-    </script>
 </body>
+
+<div id="pageMask" class="initiallyHidden"></div>
 
 </html>

@@ -20,52 +20,65 @@
     </script>
     <link rel="stylesheet" href="/css/styles.css">
     <script src="/js/update_overlay.js"></script>
+    <script>
+        Object.keys(require.cache).forEach(function(key) { delete require.cache[key] });
+    </script>
 </head>
 
 <body class="appBackground">
     {{>user_header}}
     <div id="loadingPage" class="loadingPage">Loading settings data...</div>
     <div class="main-content initiallyHidden mediaWidth75" id="mainContent">
-        <div class="pageTitle extraMarginBottom">Settings</div>
-        <div class="pageTitle wordWrap" id="email">{{email}}</div>
-        <div class="settingsText">
-            <a class="extraWeight">Net worth:</a> <a id="netWorth">{{netWorth}} QOIN</a>
-        </div>
-        <div class="settingsText">
-            <a class="extraWeight">Balance: </a><a id="balance">{{credits}}</a>
-        </div>
-        <div class="settingsText">
-           <a class="extraWeight">My referral code:</a> <a id="referralCode">{{referralCode}}</a>
-        </div>
-        <div class="settingsText">
-            <a class="extraWeight">Username: </a><a id="username">{{username}}</a>
-            <i class="material-icons icon-Settings" id="editUsernameIcon">create</i>
-        </div>
-        <div class="settingsText extraMarginBottom">
-            <a class="extraWeight">Saved referral code: </a><a id="savedReferralCode">{{savedReferralCode}}</a>
-            <i class="material-icons icon-Settings" id="editSavedReferralCodeIcon">create</i>
-        </div>
-        <div class="maxWidth helvetica initiallyHidden" id="verifyEmail">
-            <p class="lineHeight20">
-                Please verify your email before depositing QOIN.
-            </p>
-        </div>
-        <div class="creditsDivWrapper">
-            <div class="creditsDivLeft">
-                <div class="pageSubtitle extraMarginBottom">Deposit QOIN</div>
-                <p class="helvetica">Amount to deposit:  
-                    <label for="credits"></label>
-                    <input type="number" min="1" max="9999" value="10" class="settingsInput extraMarginBottom" name="credits" id="credits"/>
-                </p>
-                <button type="button" class="paymentModalYesButton largeMarginBottom marginLeft0" id="depositButton">Deposit</button>
+        <div class="pageTitle extraMarginBottom marginLeftMinus10">Settings</div>
+        <div class="pageTitle wordWrap marginLeftMinus10" id="settingsAddress">{{username}}</div>
+        <div class="displayProperty marginLeftMinus10">
+            <div>
+                <div class="settingsText">
+                    <a class="extraWeight">Net Worth:</a> <a id="netWorth">{{netWorth}} TGEN</a>
+                </div>
+                <div class="settingsText">
+                    <a class="extraWeight">Balance: </a><a id="balance">{{credits}} TGEN</a>
+                </div>
+                <div class="settingsText">
+                    <a class="extraWeight">Staked Balance: </a><a id="stakedBalance">{{stakedBalance}} TGEN</a>
+                </div>
+                <div class="settingsText">
+                    <a class="extraWeight">Username: </a><a id="username">{{user}}</a>
+                    <i class="material-icons icon-Settings" id="editUsernameIcon">create</i>
+                </div>
             </div>
-            <div class="creditsDivRight">
-                <div class="pageSubtitle extraMarginBottom">Withdraw QOIN</div>
-                <p class="helvetica">Amount to withdraw:  
-                    <label for="withdrawalAmount"></label>
-                    <input type="number" min="1" max="9999" value="10" class="settingsInput extraMarginBottom" name="withdrawalAmount" id="withdrawalAmount"/>
-                </p>
-                <button type="button" class="paymentModalYesButton largeMarginBottom marginLeft0" id="withdrawButton">Withdraw</button>
+            <div class="creditsDivWrapper">
+                <div class="creditsDivLeft">
+                    <div class="pageSubtitle extraMarginBottom">Stake TGEN</div>
+                    <p class="helvetica">Amount to stake:  
+                        <label for="stake"></label>
+                        <input type="number" min="1" max="9999" value="10" class="settingsInput extraMarginBottom" name="stakeAmount" id="stakeAmount"/>
+                    </p>
+                    <button type="button" class="paymentModalYesButton largeMarginBottom marginLeft0" id="stakeButton">Stake</button>
+                </div>
+                <div class="creditsDivLeft">
+                    <div class="pageSubtitle extraMarginBottom">Unstake TGEN</div>
+                    <p class="helvetica">Amount to unstake:  
+                        <label for="unstakeAmount"></label>
+                        <input type="number" min="1" max="9999" value="10" class="settingsInput extraMarginBottom" name="unstakeAmount" id="unstakeAmount"/>
+                    </p>
+                    <button type="button" class="paymentModalYesButton largeMarginBottom marginLeft0" id="unstakeButton">Unstake</button>
+                </div>
+                <div class="creditsDivRight">
+                    <div class="pageSubtitle extraMarginBottom">TGEN Faucet</div>
+                    <p class="helvetica">Amount to deposit:  
+                        <label for="depositAmount"></label>
+                        <input type="number" min="1" max="9999" value="10" class="settingsInput extraMarginBottom" name="depositAmount" id="depositAmount"/>
+                    </p>
+                    <button type="button" class="paymentModalYesButton largeMarginBottom marginLeft0" id="depositButton">Deposit</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="tableWrapper" id="developedStrategiesDiv">
+            <div class="profileTableTitle helvetica">My Strategies</div>
+            <div class="mediaTableWrap">
+                <table id="developedStrategiesTable" class="transactionsTable"></table>
             </div>
         </div>
     </div>
@@ -80,30 +93,28 @@
         <button type="button" id="cancelEditButtonUsername" class="paymentModalCancelButton">CANCEL</button>
     </div>
 
-    <div id="editSavedReferralCodeModal" style="display:none">
-        <div class="modalTitle">Edit Saved Referral Code</div>
-        <p>
-            <a class="paymentModalText">Saved referral code: </a>
-            <input type="text" class="settingsInput extraMarginBottom" name="newSavedReferralCode" id="newSavedReferralCode"/>
-        </p>
-        <button type="button" id="confirmEditButtonSavedReferralCode" class="paymentModalYesButton">SAVE</button>
-        <button type="button" id="cancelEditButtonSavedReferralCode" class="paymentModalCancelButton">CANCEL</button>
+    <div id="stakeModal"style="display:none">
+        <div class="paymentModalTitle">Confirm Stake</div>
+        <div id="amountStake" class="paymentModalPrice"></div>
+        <p class="paymentModalText ">Are you sure you want to stake TGEN?</p>
+        <button type="button" id="confirmStake" class="paymentModalYesButton">YES</button>
+        <button type="button" id="cancelStake" class="paymentModalCancelButton">CANCEL</button>
     </div>
 
-    <div id="depositCreditModal"style="display:none">
+    <div id="unstakeModal"style="display:none">
+        <div class="paymentModalTitle">Confirm Unstake</div>
+        <div id="amountUnstake" class="paymentModalPrice"></div>
+        <p class="paymentModalText ">Are you sure you want to unstake TGEN?</p>
+        <button type="button" id="confirmUnstake" class="paymentModalYesButton">YES</button>
+        <button type="button" id="cancelUnstake" class="paymentModalCancelButton">CANCEL</button>
+    </div>
+
+    <div id="depositModal"style="display:none">
         <div class="paymentModalTitle">Confirm Deposit</div>
         <div id="amountDeposit" class="paymentModalPrice"></div>
-        <p class="paymentModalText ">Would you like to proceed with the deposit?</p>
+        <p class="paymentModalText ">Are you sure you want to deposit TGEN?</p>
         <button type="button" id="confirmDeposit" class="paymentModalYesButton">YES</button>
         <button type="button" id="cancelDeposit" class="paymentModalCancelButton">CANCEL</button>
-    </div>
-
-    <div id="withdrawCreditModal"style="display:none">
-        <div class="paymentModalTitle">Confirm Withdrawal</div>
-        <div id="amount" class="paymentModalPrice"></div>
-        <p class="paymentModalText ">Would you like to proceed with the withdrawal?</p>
-        <button type="button" id="confirmWithdrawal" class="paymentModalYesButton">YES</button>
-        <button type="button" id="cancelWithdrawal" class="paymentModalCancelButton">CANCEL</button>
     </div>
 
     <div id="successModalUsername" style="display:none">
@@ -120,52 +131,238 @@
         </div>
     </div>
 
-    <div id="successModalSavedReferralCode" style="display:none">
-        <div class="messageModal" id="successTitleSavedReferralCode">
-            <i class="material-icons marginRight15px messageModalIcon" id="successButtonSavedReferralCode">check_circle_outline</i>
-            <div class="messageModalText">Updated saved referral code</div>
+    <div id="successModalStake" style="display:none">
+        <div class="messageModal" id="successTitleStake">
+            <i class="material-icons marginRight15px messageModalIcon" id="successButtonStake">check_circle_outline</i>
+            <div class="messageModalText">Successfully staked TGEN</div>
         </div>
     </div>
 
-    <div id="errorModalSavedReferralCode" style="display:none">
-        <div class="messageModal" id="errorTitleSavedReferralCode">
-            <i class="material-icons marginRight15px messageModalIcon" id="errorButtonSavedReferralCode">error_outline</i>
-            <div class="messageModalText" id="errorTextSavedReferralCode">Error</div>
+   <div id="errorModalStake" style="display:none">
+        <div class="messageModal" id="errorTitleStake">
+            <i class="material-icons marginRight15px messageModalIcon" id="errorButtonStake">error_outline</i>
+            <div class="messageModalText" id="errorTextStake">Error</div>
         </div>
     </div>
 
-    <div id="successModalAddCredit" style="display:none">
-        <div class="messageModal" id="successTitleAddCredit">
-            <i class="material-icons marginRight15px messageModalIcon" id="successButtonAddCredit">check_circle_outline</i>
-            <div class="messageModalText">Payment complete</div>
+    <div id="successModalUnstake" style="display:none">
+        <div class="messageModal" id="successTitleUnstake">
+            <i class="material-icons marginRight15px messageModalIcon" id="successButtonUnstake">check_circle_outline</i>
+            <div class="messageModalText">Successfully unstaked TGEN</div>
         </div>
     </div>
 
-   <div id="errorModalAddCredit" style="display:none">
-        <div class="messageModal" id="errorTitleAddCredit">
-            <i class="material-icons marginRight15px messageModalIcon" id="errorButtonAddCredit">error_outline</i>
-            <div class="messageModalText" id="errorTextAddCredit">Error</div>
+    <div id="errorModalUnstake" style="display:none">
+        <div class="messageModal" id="errorTitleUnstake">
+            <i class="material-icons marginRight15px messageModalIcon" id="errorButtonUnstake">error_outline</i>
+            <div class="messageModalText" id="errorTextUnstake">Error</div>
         </div>
     </div>
 
-    <div id="successModalWithdrawCredit" style="display:none">
-        <div class="messageModal" id="successTitleWithdrawCredit">
-            <i class="material-icons marginRight15px messageModalIcon" id="successButtonWithdrawCredit">check_circle_outline</i>
-            <div class="messageModalText">Withdrawal complete</div>
+    <div id="successModalDeposit" style="display:none">
+        <div class="messageModal" id="successTitleDeposit">
+            <i class="material-icons marginRight15px messageModalIcon" id="successButtonDeposit">check_circle_outline</i>
+            <div class="messageModalText">Successfully deposited TGEN</div>
         </div>
     </div>
 
-    <div id="errorModalWithdrawCredit" style="display:none">
-        <div class="messageModal" id="errorTitleWithdrawCredit">
-            <i class="material-icons marginRight15px messageModalIcon" id="errorButtonWithdrawCredit">error_outline</i>
-            <div class="messageModalText" id="errorTextWithdrawCredit">Error</div>
+    <div id="errorModalDeposit" style="display:none">
+        <div class="messageModal" id="errorTitleDeposit">
+            <i class="material-icons marginRight15px messageModalIcon" id="errorButtonDeposit">error_outline</i>
+            <div class="messageModalText" id="errorTextDeposit">Error</div>
+        </div>
+    </div>
+
+    <div id="strategyDetailsModal" style="display:none" class="overflowScroll paddingLeft20">
+        <div class="buffer"></div>
+        <div class="modalCloseDiv">
+            <a id="closeStrategyDetailsModal" class="modalCloseButton"><i class="material-icons">close</i></a>
+        </div>
+        <div class="modalTitle" id="strategyDetailsTitle">Strategy Details</div>
+        <div class="paymentModalText">
+            <div><a class="extraWeight">Name: </a><a id="strategyDataName"></a></div><br>
+            <div><a class="extraWeight">Description: </a><a id="strategyDataDescription"></a></div><br>
+            <div><a class="extraWeight">Watchlist: </a><a id="strategyDataWatchlist"></a></div><br>
+            <div><a class="extraWeight">Symbols: </a><a  id="strategyDataSymbols"></a></div><br>
+            <div><a class="extraWeight">Max Allocation: </a><a id="strategyDataMaxAllocation"></a></div><br>
+            <div><a class="extraWeight">Max Concurrent Trades: </a><a id="strategyDataMaxConcurrentTrades"></a></div><br>
+            <div><a class="extraWeight">Position Weight: </a><a id="strategyDataPositionWeight"></a></div><br>
+            <div><a class="extraWeight">Timeframe: </a><a id="strategyDataTimeframe"></a></div><br>
+            <div><a class="extraWeight">Start Time: </a><a id="strategyDataStart"></a></div><br>
+            <div><a class="extraWeight">End Time: </a><a id="strategyDataEnd"></a></div><br>
+            <div><a class="extraWeight">Direction: </a><a id="strategyDataDirection"></a></div><br>
+            <div id="strategyDataEntryCondition"><a class="extraWeight">Entry Conditions:</a></div>
+            <ul id="entryConditionList"></ul>
+            <div id="strategyDataExitCondition"><a class="extraWeight">Exit Conditions:</a></div>
+            <ul id="exitConditionList"></ul>
+        </div>
+    </div>
+
+    <div id="sellStrategyModal" style="display:none" class="sellStrategyDiv">
+        <div class="modalTitle">Sell Strategy</div>
+        <p>
+            <a class="paymentModalText">Symbol: </a>
+            <input type="text"value="" class="settingsInput extraMarginBottom" name="strategySymbol" id="strategySymbol"/>
+        </p>
+        <p class="paymentModalText">
+            Submitting your strategy will get it compared against other submissions for the day. If your strategy has the top performance for the day, it'll get listed on the platform for users to trade.
+            You'll receive a 2% royalty whenever a user buys new tokens in your strategy. Please note that we charge a submission fee of 1 TGEN for each strategy.
+        </p><br>
+        <button type="button" id="confirmSellButton" class="paymentModalYesButton">SUBMIT</button>
+        <button type="button" id="cancelSellButton" class="paymentModalCancelButton">CANCEL</button>
+    </div>
+
+    <div id="deleteStrategyModal" style="display:none">
+        <div class="modalTitle">Delete Strategy</div>
+        <p class="paymentModalText extraMarginBottom">
+            Are you sure you want to delete this strategy?
+        </p>
+        <button type="button" id="confirmDeleteButton" class="paymentModalYesButton">DELETE</button>
+        <button type="button" id="cancelDeleteButton" class="paymentModalCancelButton">CANCEL</button>
+    </div>
+
+    <div id="runBacktestModal" style="display:none">
+        <div class="modalTitle">Run Backtest</div>
+        <p id="runBacktestText" class="pageSubtitle"></p>
+        <p class="paymentModalText extraMarginBottom">Would you like to run a backtest on this strategy?</p>
+        <button type="button" id="confirmRunBacktestButton" class="paymentModalYesButton">YES</button>
+        <button type="button" id="cancelRunBacktestButton" class="paymentModalCancelButton">CANCEL</button>
+    </div>
+
+     <div id="editStrategyModal" style="display:none" class="sellStrategyDiv">
+        <div class="modalTitle">Edit Strategy</div>
+        <div class="paymentModalText">
+            <p> 
+                <a class="extraWeight">Name: </a>
+                <input type="text" class="strategyExplorerText" name="strategyNameEdit" id="strategyNameEdit" maxlength="30" value="{{strategyNameEdit}}"/>
+            </p>
+            <p>
+                <a class="extraWeight">Description: </a><br>
+                <textarea id="descriptionEdit" class="strategyExplorerText" name="descriptionEdit" rows="6" cols="30" maxlength="300" placeholder="Description of your strategy">{{descriptionEdit}}</textarea>
+            </p>
+            <p>
+                <a class="extraWeight">Watchlist: </a>
+                <select name="watchlistEdit" id="watchlistEdit">
+                    <option value="morningBreakouts">Morning Breakouts</option>
+                    <option value="indexETFs">Index ETFs</option>
+                    <option value="FAANG">FAANG stocks</option>
+                    <option value="software">Software stocks</option>
+                    <option value="travel">Travel stocks</option>
+                    <option value="custom">Custom watchlist</option>
+                </select>
+            </p>
+            <input type="text" class="strategyExplorerText" name="symbolsEdit" id="symbolsEdit" maxlength="100" placeholder="List of symbols separated by commas" value="{{customStockListEdit}}"/>
+            <p>
+                <a class="extraWeight">Time frame (mins): </a>
+                <select name="timeframeEdit" id="timeframeEdit">
+                    <option value="1">1</option>
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                </select>
+            </p>
+            <p>
+                <a class="extraWeight">Max allocation: </a>
+                <input type="number" min="1" max="100" class="strategyExplorerText" name="maxAllocationEdit" id="maxAllocationEdit" value="{{maxAllocationEdit}}" placeholder="Percentage of your portfolio"/>
+            </p>
+            <p>
+                <a class="extraWeight">Position weight: </a>
+                <select name="positionWeightEdit" id="positionWeightEdit">
+                    <option value="equalWeights">Equal weights</option>
+                    <option value="weightedByStrength">Weighted by strength</option>
+                </select>
+            </p>
+            <p>
+                <a class="extraWeight">Max concurrent trades: </a>
+                <input type="number" min="1" max="9" class="strategyExplorerText" name="maxConcurrentTradesEdit" id="maxConcurrentTradesEdit" value="{{maxConcurrentTradesEdit}}"/>
+            </p>
+            <p> 
+                <a class="extraWeight">Start time: </a>
+                <input type="number" min="0" max="389" class="strategyExplorerText" name="startTimeEdit" id="startTimeEdit" value="{{startEdit}}" placeholder="Minutes after market opens"/>
+            </p>
+            <p>
+                <a class="extraWeight">End time: </a>
+                <input type="number" min="0" max="389" class="strategyExplorerText" name="endTimeEdit" id="endTimeEdit" value="{{endEdit}}" placeholder="Minutes before market closes"/>
+            </p>
+            <p>
+                <a class="extraWeight">Direction: </a>
+                <select name="directionEdit" id="directionEdit">
+                    <option value="long">long</option>
+                    <option value="short">short</option>
+                </select>
+            </p>
+        </div>
+        <div class="extraMarginBottom"></div>
+        <button type="button" id="confirmEditStrategyButton" class="paymentModalYesButton">SAVE</button>
+        <button type="button" id="cancelEditStrategyButton" class="paymentModalCancelButton extraMarginBottom">CANCEL</button>
+    </div>
+
+    <div id="successModalSell" class="height55" style="display:none">
+        <div class="messageModal" id="successTitleSell">
+            <i class="material-icons marginRight15px messageModalIcon" id="successButtonSell">check_circle_outline</i>
+            <div class="messageModalText">Submitted strategy</div>
+        </div>
+    </div>
+
+    <div id="errorModalSell" class="height55" style="display:none">
+        <div class="messageModal" id="errorTitleSell">
+            <i class="material-icons marginRight15px messageModalIcon" id="errorButtonSell">error_outline</i>
+            <div class="messageModalText" id="errorTextSell">Error</div>
+        </div>
+    </div>
+
+    <div id="successModalDelete" class="height55" style="display:none">
+        <div class="messageModal" id="successTitleDelete">
+            <i class="material-icons marginRight15px messageModalIcon" id="successButtonDelete">check_circle_outline</i>
+            <div class="messageModalText">Deleted strategy</div>
+        </div>
+    </div>
+
+    <div id="errorModalDelete" class="height55" style="display:none">
+        <div class="messageModal" id="errorTitleDelete">
+            <i class="material-icons marginRight15px messageModalIcon" id="errorButtonDelete">error_outline</i>
+            <div class="messageModalText" id="errorTextDelete">Error</div>
+        </div>
+    </div>
+
+    <div id="successModalRunBacktest" class="height55" style="display:none">
+        <div class="messageModal" id="successTitleRunBacktest">
+            <i class="material-icons marginRight15px messageModalIcon" id="successButtonRunBacktest">check_circle_outline</i>
+            <div class="messageModalText">Running backtest</div>
+        </div>
+    </div>
+
+    <div id="errorModalRunBacktest" class="height55" style="display:none">
+        <div class="messageModal" id="errorTitleRunBacktest">
+            <i class="material-icons marginRight15px messageModalIcon" id="errorButtonRunBacktest">error_outline</i>
+            <div class="messageModalText" id="errorTextRunBacktest">Error</div>
+        </div>
+    </div>
+
+    <div id="successModalEditStrategy" class="height55"  style="display:none">
+        <div class="messageModal" id="successTitleEditStrategy">
+            <i class="material-icons marginRight15px messageModalIcon" id="successButtonEditStrategy">check_circle_outline</i>
+            <div class="messageModalText">Updated strategy</div>
+        </div>
+    </div>
+
+    <div id="errorModalEditStrategy" class="height55"  style="display:none">
+        <div class="messageModal" id="errorTitleEditStrategy">
+            <i class="material-icons marginRight15px messageModalIcon" id="errorButtonEditStrategy">error_outline</i>
+            <div class="messageModalText" id="errorTextEditStrategy">Error</div>
         </div>
     </div>
 
     <input type="hidden" id="sotong" value="{{token}}">
-    <input type="hidden" id="ayam" value="{{verifiedEmail}}">
+    <input type="hidden" id="dataString" value="{{dataString}}">
  
+    <script type="text/javascript" src="https://unpkg.com/web3@1.2.11/dist/web3.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/web3modal@1.9.0/dist/index.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/evm-chains@0.2.0/dist/umd/index.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/@walletconnect/web3-provider@1.2.1/dist/umd/index.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/fortmatic@2.0.6/dist/fortmatic.js"></script>
     <script src="/js/settings_app.js"></script>
+    <script src="/js/connect_wallet_app.js"></script>
 </body>
 
 <div id="pageMask" class="initiallyHidden"></div>

@@ -20,27 +20,32 @@
     </script>
     <link rel="stylesheet" href="/css/styles.css">
     <script src="/js/update_overlay.js"></script>
+    <script>
+        Object.keys(require.cache).forEach(function(key) { delete require.cache[key] });
+    </script>
 </head>
 
 <body class="appBackground">
     {{>user_header}}
     <div class="main-content">
-        <div class="pageTitle">Buy New Tokens</div>
+        <div class="pageTitle">Manage Pool</div>
 
         <div class="mediaWidth100">
             <div class="yourPurchase">
                 <p class="buyPageSubtitle">
-                    Your Purchase
+                    Pool Info
                 </p>
                 <div class="buffer"></div>
-                <div><a class="extraWeight">Strategy:</a> <a href="/strategy_info/{{strategyID}}" style="text-decoration: none; color: inherit">{{strategyName}}</a></div>
-                <p><a class="extraWeight">Symbol:</a> {{symbol}}</p>
-                <p><a class="extraWeight">Description:</a> {{description}}</p>
-                <div id="marketPrice"><a class="extraWeight">Market price:</a> {{currentMarketValue}} QOIN / token</div>
-                <p>
-                    <a class="extraWeight">Tokens: </a>
-                    <input type="number" min="1" max="1000" value="1" class="settingsInput" name="shares" id="shares"/>
-                </p>
+                <div class="displayProperty">
+                    <div><a class="extraWeight">Strategy: </a><a href="/strategy_info/{{strategyID}}" style="text-decoration: none; color: #333333">{{strategyName}}</a></div>
+                    <span id="strategyNameSymbol" style="margin-left: 15px"><a href="/token_info/{{strategyID}}" style="text-decoration: none; color: rgb(128,138,157);">{{symbol}}</a></span>
+                </div>
+                <p id="circulatingSupply"><a class="extraWeight">Circulating Supply:</a> {{circulatingSupply}} <span id="strategyNameSymbol" style="margin-left: 10px"><a href="/token_info/{{strategyID}}" style="text-decoration: none; color: rgb(128,138,157);">{{symbol}}</a></span></p>
+                <p id="marketPrice"><a class="extraWeight">LP Token Price:</a> {{currentMarketValue}} TGEN</p>
+                <p id="currentPoolSize"><a class="extraWeight">Current Pool Size:</a> {{currentPoolSize}} TGEN</p>
+                <p id="maxPoolSize"><a class="extraWeight">Max Pool Size:</a> {{maxPoolSize}} TGEN</p>
+                <p id="amountInvested"><a class="extraWeight">Amount Invested:</a> {{amountInvested}} TGEN</p>
+                <p id="availableToInvest"><a class="extraWeight">Available to Invest:</a> {{availableToInvest}} TGEN</p>
                 <p></p>
             </div>
         </div>
@@ -48,44 +53,109 @@
         <div class="mediaWidth100">
             <div class="payment" id="payment">
                 <p class="buyPageSubtitle">
-                    Payment
+                    Manage Pool
                 </p><br>
-                <p class="fontSize20"><a class="extraWeight">Total: </a><a id="totalPrice"></a></p>
-                <p><a id="sharesBought" class="fontSize20">1 / 1000 tokens</a></p><br>
-                <button type="button" id="payWithBalance" class="payWithBalanceButton">PURCHASE</button>
+                <div class="displayProperty">
+                    <span style="margin-top: 10px"><a class="extraWeight">Deposit: </a></span>
+                    <input type="number" value="0" class="settingsInput" name="deposit" id="deposit" style="margin-left: 30px"/>
+                    <span style="margin-top: 10px; margin-left: 15px"><a> TGEN</a></span>
+                    <span id="depositButton" style="margin-left: 30px; margin-top: 10px; color: #5271FF">Deposit</span>
+                </div>
+                <div class="displayProperty" style="margin-top: 30px">
+                    <span style="margin-top: 10px"><a class="extraWeight">Withdraw: </a></span>
+                    <input type="number" value="0" class="settingsInput" name="withdraw" id="withdraw" style="margin-left: 30px"/>
+                    <span style="margin-top: 10px; margin-left: 15px"><a> TGEN</a></span>
+                    <span id="withdrawButton" style="margin-left: 30px; margin-top: 10px; color: #5271FF">Withdraw</span>
+                </div>
+                <div class="displayProperty" style="margin-top: 30px">
+                    <span style="margin-top: 10px"><a class="extraWeight">Available Yield: </a> <a id="availableYield">{{availableYield}}</a> TGEN</span>
+                    <span id="claimButton" style="margin-left: 30px; margin-top: 10px; color: #5271FF">Claim</span>
+                </div>
+                <div class="displayProperty" style="margin-top: 15px">
+                    <span style="margin-top: 10px"><a class="extraWeight">Fee: </a> <a id="fee">0.0000</a> TGEN</span>
+                </div>
                 <p></p>
             </div>
         </div>
         
+        <input type="hidden" id="atas" value="{{token}}">
         <input type="hidden" id="sotong" value="{{strategyID}}"/>
         <input type="hidden" id="lanjiao" value="{{userID}}"/>
         <input type="hidden" id="sianjitpua" value="{{currentMarketValue}}"/>
     </div>
 
-    <div id="payWithAccountBalanceModal" style="display:none">
-        <div class="paymentModalTitle">Buy Now</div>
-        <div id="cost" class="paymentModalPrice"></div>
-        <p class="paymentModalText">Are you sure you want to submit your payment?</p>
-        <button type="button" id="confirmPayment" class="paymentModalYesButton">YES</button>
-        <button type="button" id="cancelPayment" class="paymentModalCancelButton">CANCEL</button>
+    <div id="depositModal" style="display:none">
+        <div class="paymentModalTitle">Deposit</div>
+        <div id="amountDeposit" class="paymentModalPrice">0 TGEN</div>
+        <p class="paymentModalText">Are you sure you want to deposit funds?</p>
+        <button type="button" id="confirmDeposit" class="paymentModalYesButton">Yes</button>
+        <button type="button" id="cancelDeposit" class="paymentModalCancelButton">Cancel</button>
     </div>
 
-    <div id="successModal" style="display:none">
-        <div class="messageModal" id="successTitle">
-            <i class="material-icons marginRight15px messageModalIcon" id="successButton">check_circle_outline</i>
-            <div class="messageModalText">Payment complete</div>
+    <div id="successModalDeposit" style="display:none">
+        <div class="messageModal" id="successTitleDeposit">
+            <i class="material-icons marginRight15px messageModalIcon" id="successButtonDeposit">check_circle_outline</i>
+            <div class="messageModalText">Successfully deposited funds</div>
         </div>
     </div>
 
-    <div id="errorModal" style="display:none">
-        <div class="messageModal" id="errorTitle">
-            <i class="material-icons marginRight15px messageModalIcon" id="errorButton">error_outline</i>
-            <div class="messageModalText" id="errorText">Error</div>
+    <div id="errorModalDeposit" style="display:none">
+        <div class="messageModal" id="errorTitleDeposit">
+            <i class="material-icons marginRight15px messageModalIcon" id="errorButtonDeposit">error_outline</i>
+            <div class="messageModalText" id="errorTextDeposit">Error</div>
         </div>
     </div>
 
-    <input type="hidden" id="atas" value="{{token}}">
+    <div id="withdrawModal" style="display:none">
+        <div class="paymentModalTitle">Withdraw</div>
+        <div id="amountWithdraw" class="paymentModalPrice">0 TGEN</div>
+        <p class="paymentModalText">Are you sure you want to withdraw funds?</p>
+        <button type="button" id="confirmWithdraw" class="paymentModalYesButton">Yes</button>
+        <button type="button" id="cancelWithdraw" class="paymentModalCancelButton">Cancel</button>
+    </div>
 
+    <div id="successModalWithdraw" style="display:none">
+        <div class="messageModal" id="successTitleWithdraw">
+            <i class="material-icons marginRight15px messageModalIcon" id="successButtonWithdraw">check_circle_outline</i>
+            <div class="messageModalText">Successfully withdrew funds</div>
+        </div>
+    </div>
+
+    <div id="errorModalWithdraw" style="display:none">
+        <div class="messageModal" id="errorTitleWithdraw">
+            <i class="material-icons marginRight15px messageModalIcon" id="errorButtonWithdraw">error_outline</i>
+            <div class="messageModalText" id="errorTextWithdraw">Error</div>
+        </div>
+    </div>
+
+    <div id="claimModal" style="display:none">
+        <div class="paymentModalTitle">Claim</div>
+        <div id="amountClaim" class="paymentModalPrice">{{availableYield}} TGEN</div>
+        <p class="paymentModalText" id="claimText">Are you sure you want to claim yield?</p>
+        <button type="button" id="confirmClaim" class="paymentModalYesButton">Yes</button>
+        <button type="button" id="cancelClaim" class="paymentModalCancelButton">Cancel</button>
+    </div>
+
+    <div id="successModalClaim" style="display:none">
+        <div class="messageModal" id="successTitleClaim">
+            <i class="material-icons marginRight15px messageModalIcon" id="successButtonClaim">check_circle_outline</i>
+            <div class="messageModalText" id="successTextClaim">Successfully claimed yield</div>
+        </div>
+    </div>
+
+    <div id="errorModalClaim" style="display:none">
+        <div class="messageModal" id="errorTitleClaim">
+            <i class="material-icons marginRight15px messageModalIcon" id="errorButtonClaim">error_outline</i>
+            <div class="messageModalText" id="errorTextClaim">Error</div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="https://unpkg.com/web3@1.2.11/dist/web3.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/web3modal@1.9.0/dist/index.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/evm-chains@0.2.0/dist/umd/index.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/@walletconnect/web3-provider@1.2.1/dist/umd/index.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/fortmatic@2.0.6/dist/fortmatic.js"></script>
+    <script src="/js/connect_wallet_app.js"></script>
     <script src="/js/buy_new_shares_app.js"></script>
 </body>
 

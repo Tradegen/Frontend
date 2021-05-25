@@ -111,11 +111,8 @@ function drawChart() {
 
     var dateFormat = new google.visualization.DateFormat({pattern: "MMM d, yyyy"});
 
-    let maxValue = -1.0;
-    let minValue = 99999999.0;
-
     let output = [];
-    output.push(['Date', 'Strategy']);
+    output.push(['Date', 'Net Return']);
 
     for (var i = 0; i < backtestData.strategyHistory.length; i+=1)
     {
@@ -129,9 +126,7 @@ function drawChart() {
             v: date,  
             f: dateFormat.formatValue(date)
         }
-        output.push([options, backtestData.strategyHistory[i]]);
-        maxValue = Math.max(maxValue, backtestData.strategyHistory[i]);
-        minValue = Math.min(minValue, backtestData.strategyHistory[i]);
+        output.push([options, (backtestData.strategyHistory[i] / 1000) - 100]);
     }
 
     var data = GOOGLE.visualization.arrayToDataTable(output);
@@ -160,7 +155,7 @@ function drawChart() {
             }
         },
         vAxis: {
-            title: "Account Value",
+            title: "Net Return (%)",
             titleTextStyle: {
                 fontSize: 16,
                 italic: false
@@ -182,10 +177,7 @@ function drawChart4() {
     var dateFormat = new google.visualization.DateFormat({pattern: "MMM d, yyyy"});
 
     let output = [];
-    output.push(['Date', 'Price']);
-
-    let maxValue = 0.0;
-    let minValue = 99999.0;
+    output.push(['Date', 'Net Return']);
 
     for (var i = 0; i < history.length; i+=1)
     {
@@ -199,9 +191,7 @@ function drawChart4() {
             v: date,  
             f: dateFormat.formatValue(date)
         }
-        output.push([options, history[i]]);
-        maxValue = Math.max(maxValue, history[i]);
-        minValue = Math.min(minValue, history[i]);
+        output.push([options, (history[i] / 1000) - 100]);
     }
 
     var data4 = GOOGLE.visualization.arrayToDataTable(output);
@@ -221,9 +211,7 @@ function drawChart4() {
         },
         tooltip: {},
         vAxis: {
-            minValue: Math.max(0.000, minValue - 10000),
-            maxValue: maxValue + 10000,
-            title: "Account Value",
+            title: "Net Return (%)",
             titleTextStyle: {
                 fontSize: 16,
                 italic: false

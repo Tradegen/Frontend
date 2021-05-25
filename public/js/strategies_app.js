@@ -92,6 +92,10 @@ function buildTable()
     header_title2.innerText = "Developed On";
     header_title2.setAttribute("class", "marketsTableRowName");
     header_row.appendChild(header_title2);
+    let header_title21 = document.createElement("th");
+    header_title21.innerText = "Developed By";
+    header_title21.setAttribute("class", "marketsTableRowName");
+    header_row.appendChild(header_title21);
     let header_title3 = document.createElement("th");
     let left3 = document.createElement("a");
     left3.innerText = "Circulating Supply";
@@ -108,27 +112,31 @@ function buildTable()
     header_row.appendChild(header_title3);
     let header_title4 = document.createElement("th");
     let left4 = document.createElement("a");
-    left4.innerText = "Token Price";
+    left4.innerText = "Current Pool Size";
     header_title4.setAttribute("class", "marketsTableRowName");
     let right4 = document.createElement("i");
     right4.innerText = right4InnerText;
     right4.setAttribute("class", "material-icons");
-    right4.setAttribute("id", "tokenPriceSort");
-    right4.addEventListener('click', function(){ customSort("tokenPriceSort") });
+    right4.setAttribute("id", "currentPoolSizeSort");
+    right4.addEventListener('click', function(){ customSort("currentPoolSizeSort") });
     right4.addEventListener('mouseover', function(){ right4.style.cursor = "pointer"; });
     right4.style.fontSize = "16px";
     header_title4.appendChild(left4);
     header_title4.appendChild(right4);
     header_row.appendChild(header_title4);
+    let header_title41 = document.createElement("th");
+    header_title41.innerText = "Max Pool Size";
+    header_title41.setAttribute("class", "marketsTableRowName");
+    header_row.appendChild(header_title41);
     let header_title5 = document.createElement("th");
     let left5 = document.createElement("a");
-    left5.innerText = "Change";
+    left5.innerText = "Total Return";
     header_title5.setAttribute("class", "marketsTableRowName");
     let right5 = document.createElement("i");
     right5.innerText = right5InnerText;
     right5.setAttribute("class", "material-icons");
-    right5.setAttribute("id", "changeSort");
-    right5.addEventListener('click', function(){ customSort("changeSort") });
+    right5.setAttribute("id", "totalReturnSort");
+    right5.addEventListener('click', function(){ customSort("totalReturnSort") });
     right5.addEventListener('mouseover', function(){ right5.style.cursor = "pointer"; });
     right5.style.fontSize = "16px";
     header_title5.appendChild(left5);
@@ -145,12 +153,14 @@ function buildTable()
     let start = (LENGTH - 1) - ((PAGE - 1) * SIZE);
     let end = Math.max(-1, start - SIZE);
 
+    let loginStatus = document.getElementById("status").value;
+
     for (let i = start; i > end; i--)
     {
+        let percent = FILTERED_STRATEGIES[i].totalReturn;
+
         let row = document.createElement("tr");
         row.setAttribute("class", "tableRowHover");
-
-        let percent = ((100.0 * (FILTERED_STRATEGIES[i].sharePrice - 1)) / 1);
 
         let strategyName = document.createElement("td");
         let strategyNameLeft = document.createElement("a");
@@ -172,47 +182,70 @@ function buildTable()
         developedOn.innerText = FILTERED_STRATEGIES[i].inceptionDate;
         developedOn.setAttribute("class", "marketsTableRowName");
         row.appendChild(developedOn);
+        let developedBy = document.createElement("td");
+        developedBy.innerText = FILTERED_STRATEGIES[i].developerUsername;
+        let developerAddress = FILTERED_STRATEGIES[i].developerAddress;
+        if (loginStatus == "true")
+        {
+            developedBy.addEventListener('click', function(){ window.location.href = '/profile/' + developerAddress; });
+            developedBy.addEventListener('mouseover', function(){ developedBy.style.cursor = "pointer"; });
+        }
+        developedBy.setAttribute("class", "marketsTableRowName");
+        row.appendChild(developedBy);
         let sharesBought = document.createElement("td");
-        sharesBought.innerText = FILTERED_STRATEGIES[i].sharesBought;
+        let sharesBoughtLeft = document.createElement("a");
+        sharesBoughtLeft.innerText = FILTERED_STRATEGIES[i].sharesBought.toFixed(2);
         sharesBought.setAttribute("class", "marketsTableCirculatingSupply");
-        sharesBought.style.fontWeight = "500";
+        let sharesBoughtRight = document.createElement("a");
+        sharesBoughtRight.innerText = FILTERED_STRATEGIES[i].symbol;
+        sharesBoughtRight.style.color = "rgb(128,138,157)";
+        sharesBoughtRight.style.paddingLeft = "10px";
+        sharesBoughtRight.addEventListener('click', function(){ window.location.href = '/token_info/' + strategyID; });
+        sharesBoughtRight.addEventListener('mouseover', function(){ sharesBoughtRight.style.cursor = "pointer"; });
+        sharesBought.appendChild(sharesBoughtLeft);
+        sharesBought.appendChild(sharesBoughtRight);
         row.appendChild(sharesBought);
-        let currentPrice = document.createElement("td");
-        currentPrice.innerText = FILTERED_STRATEGIES[i].sharePrice.toFixed(4) + " TGEN";
-        currentPrice.setAttribute("class", "marketsTableRowName");
-        currentPrice.style.fontWeight = "500";
-        row.appendChild(currentPrice);
-        let change = document.createElement("td");
+        let currentPoolSize = document.createElement("td");
+        currentPoolSize.innerText = FILTERED_STRATEGIES[i].currentPoolSize.toFixed(2) + " TGEN";
+        currentPoolSize.setAttribute("class", "marketsTableRowName");
+        currentPoolSize.style.fontWeight = "500";
+        row.appendChild(currentPoolSize);
+        let maxPoolSize = document.createElement("td");
+        maxPoolSize.innerText = FILTERED_STRATEGIES[i].maxPoolSize.toFixed(2) + " TGEN";
+        maxPoolSize.setAttribute("class", "marketsTableRowName");
+        maxPoolSize.style.fontWeight = "500";
+        row.appendChild(maxPoolSize);
+        let totalReturn = document.createElement("td");
         let arrow = document.createElement("i");
         let text= document.createElement("a");
         arrow.setAttribute("class", "material-icons");
         if (percent > 0)
         {
-            change.style.color = upColor;
+            totalReturn.style.color = upColor;
             arrow.innerText = "arrow_drop_up";
             arrow.style.color = upColor;
         }
         else if (percent == 0)
         {
-            change.style.color = "#737373";
+            totalReturn.style.color = "#737373";
             arrow.innerText = "arrow_right";
             arrow.style.color = "#737373";
         }
         else
         {
-            change.style.color = downColor;
+            totalReturn.style.color = downColor;
             arrow.innerText = "arrow_drop_down";
             arrow.style.color = downColor;
             percent *= -1;
         }
         text.innerText = percent.toFixed(2) + "%";
-        change.setAttribute("class", "marketsTableRowName");
-        change.style.display = "flex";
+        totalReturn.setAttribute("class", "marketsTableRowName");
+        totalReturn.style.display = "flex";
         arrow.style.paddingTop = "4px";
         text.style.paddingTop = "7px";
-        change.appendChild(arrow);
-        change.appendChild(text);
-        row.appendChild(change);
+        totalReturn.appendChild(arrow);
+        totalReturn.appendChild(text);
+        row.appendChild(totalReturn);
 
         let actions = document.createElement("td");
         actions.setAttribute("class", "marketsTableRowData");
@@ -223,12 +256,10 @@ function buildTable()
         let ID = FILTERED_STRATEGIES[i].strategyID;
         viewButton.addEventListener('click', function(){ window.location.href = '/strategy_info/' + ID; });
 
-        let loginStatus = document.getElementById("status").value;
-
         let buyButton = document.createElement("button");
-        buyButton.innerText = "Buy";
+        buyButton.innerText = "Trade";
         buyButton.setAttribute("class", "buyButton");
-        buyButton.addEventListener('click', function(){ window.location.href = '/buy_new_tokens/' + ID; });
+        buyButton.addEventListener('click', function(){ window.location.href = '/manage_pool/' + ID; });
         actions.appendChild(viewButton);
 
         if (loginStatus == "true")
@@ -353,7 +384,7 @@ function buildPanels()
         let buyButton = document.createElement("button");
         buyButton.innerText = "Buy";
         buyButton.setAttribute("class", "buyButton");
-        buyButton.addEventListener('click', function(){ window.location.href = '/buy_new_tokens/' + ID; });
+        buyButton.addEventListener('click', function(){ window.location.href = '/manage_pool/' + ID; });
 
         let buttons = document.createElement("div");
         buttons.setAttribute("class", "tradingBotStoreProductButton");
@@ -439,16 +470,16 @@ function customSort(ID)
 {
     if (document.getElementById(ID).innerText == "arrow_drop_down")
     {
-        if (ID == "changeSort")
+        if (ID == "totalReturnSort")
         {
             right5InnerText = "arrow_drop_up";
-            FILTERED_STRATEGIES.sort((a, b) => a.percent - b.percent);
+            FILTERED_STRATEGIES.sort((a, b) => a.totalReturn - b.totalReturn);
         }
 
-        if (ID == "tokenPriceSort")
+        if (ID == "currentPoolSizeSort")
         {
             right4InnerText = "arrow_drop_up";
-            FILTERED_STRATEGIES.sort((a, b) => a.sharePrice - b.sharePrice);
+            FILTERED_STRATEGIES.sort((a, b) => a.currentPoolSize - b.currentPoolSize);
         }
 
         if (ID == "circulatingSupplySort")
@@ -459,16 +490,16 @@ function customSort(ID)
     }
     else
     {
-        if (ID == "changeSort")
+        if (ID == "totalReturnSort")
         {
             right5InnerText = "arrow_drop_down";
-            FILTERED_STRATEGIES.sort((a, b) => b.percent - a.percent);
+            FILTERED_STRATEGIES.sort((a, b) => b.totalReturn - a.totalReturn);
         }
 
-        if (ID == "tokenPriceSort")
+        if (ID == "currentPoolSizeSort")
         {
             right4InnerText = "arrow_drop_down";
-            FILTERED_STRATEGIES.sort((a, b) => b.sharePrice - a.sharePrice);
+            FILTERED_STRATEGIES.sort((a, b) => b.currentPoolSize - a.currentPoolSize);
         }
 
         if (ID == "circulatingSupplySort")

@@ -19,107 +19,216 @@ var isMobile = {
 };
 
 document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById("payWithAccountBalanceModal").style.display = "none";
-    document.getElementById("payWithAccountBalanceModal").style.textAlign = "center";
-    document.getElementById("successModal").style.display = "none";
-    document.getElementById("errorModal").style.display = "none";
+    document.getElementById("depositModal").style.display = "none";
+    document.getElementById("depositModal").style.textAlign = "center";
+    document.getElementById("successModalDeposit").style.display = "none";
+    document.getElementById("errorModalDeposit").style.display = "none";
 
-    if (document.getElementById('payWithBalance'))
+    document.getElementById("withdrawModal").style.display = "none";
+    document.getElementById("withdrawModal").style.textAlign = "center";
+    document.getElementById("successModalWithdraw").style.display = "none";
+    document.getElementById("errorModalWithdraw").style.display = "none";
+
+    document.getElementById("claimModal").style.display = "none";
+    document.getElementById("claimModal").style.textAlign = "center";
+    document.getElementById("successModalClaim").style.display = "none";
+    document.getElementById("errorModalClaim").style.display = "none";
+
+    if (document.getElementById('depositButton'))
     {
-        document.getElementById('payWithBalance')
+        document.getElementById('depositButton')
             .addEventListener('click', function()
             {
-                if (document.getElementById("shares").value != "")
+                if (document.getElementById("deposit").value != "")
                 {
-                    displayModal();
+                    displayDepositModal();
                 }
+            });
+        document.getElementById('depositButton')
+            .addEventListener('mouseover', function()
+            {
+                document.getElementById('depositButton').style.cursor = "pointer";
             });
     }
 
-    if (document.getElementById('cancelPayment'))
+    if (document.getElementById('withdrawButton'))
     {
-        document.getElementById('cancelPayment')
-            .addEventListener('click', hideModal);
-    }
-
-    if (document.getElementById('successButton'))
-    {
-        document.getElementById('successButton')
-        .addEventListener('click', function(){
-            window.location.href = 'http://localhost:3000/positions';
+        document.getElementById('withdrawButton')
+            .addEventListener('click', function()
+            {
+                if (document.getElementById("withdraw").value != "")
+                {
+                    displayWithdrawModal();
+                }
+            });
+        document.getElementById('withdrawButton')
+        .addEventListener('mouseover', function()
+        {
+            document.getElementById('withdrawButton').style.cursor = "pointer";
         });
     }
 
-    if (document.getElementById('errorButton'))
+    if (document.getElementById('claimButton'))
     {
-        document.getElementById('errorButton')
-            .addEventListener('click', hideErrorModal);
+        document.getElementById('claimButton')
+            .addEventListener('click', function()
+            {
+                if (document.getElementById("availableYield").innerText != "0")
+                {
+                    displayClaimModal();
+                }
+            });
+        document.getElementById('claimButton')
+        .addEventListener('mouseover', function()
+        {
+            document.getElementById('claimButton').style.cursor = "pointer";
+        });
     }
 
-    document.getElementById('confirmPayment').addEventListener('click', payWithAccountBalance);
-    
-    let marketPrice = document.getElementById("sianjitpua").value;
+    if (document.getElementById('cancelDeposit'))
+    {
+        document.getElementById('cancelDeposit')
+            .addEventListener('click', hideDepositModal);
+    }
 
-    document.getElementById("cost").innerText = parseFloat(marketPrice).toFixed(4) + " TGEN";
-    document.getElementById("totalPrice").innerText = " " + parseFloat(marketPrice).toFixed(4) + " TGEN";
+    if (document.getElementById('cancelWithdraw'))
+    {
+        document.getElementById('cancelWithdraw')
+            .addEventListener('click', hideWithdrawModal);
+    }
 
-    document.getElementById("successModal").style.fontSize = "16px";
-    document.getElementById("successTitle").style.marginTop = "20px !important";
-    document.getElementById("successModal").style.fontWeight = "500";
-    document.getElementById("successTitle").style.marginBottom = "0px !important";
-    document.getElementById("errorModal").style.fontSize = "16px";
-    document.getElementById("errorTitle").style.marginTop = "20px !important";
-    document.getElementById("errorModal").style.fontWeight = "500";
-    document.getElementById("errorTitle").style.marginBottom = "0px !important";
+    if (document.getElementById('cancelClaim'))
+    {
+        document.getElementById('cancelClaim')
+            .addEventListener('click', hideClaimModal);
+    }
+
+    if (document.getElementById('successButtonDeposit'))
+    {
+        document.getElementById('successButtonDeposit')
+        .addEventListener('click', function(){
+            window.location.href = 'https://www.tradegen.io/positions';
+        });
+    }
+
+    if (document.getElementById('successButtonWithdraw'))
+    {
+        document.getElementById('successButtonWithdraw')
+        .addEventListener('click', function(){
+            window.location.href = 'https://www.tradegen.io/positions';
+        });
+    }
+
+    if (document.getElementById('successButtonClaim'))
+    {
+        document.getElementById('successButtonClaim')
+        .addEventListener('click', function(){
+            window.location.href = 'https://www.tradegen.io/profile';
+        });
+    }
+
+    if (document.getElementById('errorButtonDeposit'))
+    {
+        document.getElementById('errorButtonDeposit')
+            .addEventListener('click', hideErrorModalDeposit);
+    }
+
+    if (document.getElementById('errorButtonWithdraw'))
+    {
+        document.getElementById('errorButtonWithdraw')
+            .addEventListener('click', hideErrorModalWithdraw);
+    }
+
+    if (document.getElementById('errorButtonClaim'))
+    {
+        document.getElementById('errorButtonClaim')
+            .addEventListener('click', hideErrorModalClaim);
+    }
+
+    document.getElementById('confirmDeposit').addEventListener('click', deposit);
+    document.getElementById('confirmWithdraw').addEventListener('click', withdraw);
+    document.getElementById('confirmClaim').addEventListener('click', claim);
+
+    document.getElementById("successModalDeposit").style.fontSize = "16px";
+    document.getElementById("successTitleDeposit").style.marginTop = "20px !important";
+    document.getElementById("successModalDeposit").style.fontWeight = "500";
+    document.getElementById("successTitleDeposit").style.marginBottom = "0px !important";
+    document.getElementById("errorModalDeposit").style.fontSize = "16px";
+    document.getElementById("errorTitleDeposit").style.marginTop = "20px !important";
+    document.getElementById("errorModalDeposit").style.fontWeight = "500";
+    document.getElementById("errorTitleDeposit").style.marginBottom = "0px !important";
+
+    document.getElementById("successModalWithdraw").style.fontSize = "16px";
+    document.getElementById("successTitleWithdraw").style.marginTop = "20px !important";
+    document.getElementById("successModalWithdraw").style.fontWeight = "500";
+    document.getElementById("successTitleWithdraw").style.marginBottom = "0px !important";
+    document.getElementById("errorModalWithdraw").style.fontSize = "16px";
+    document.getElementById("errorTitleWithdraw").style.marginTop = "20px !important";
+    document.getElementById("errorModalWithdraw").style.fontWeight = "500";
+    document.getElementById("errorTitleWithdraw").style.marginBottom = "0px !important";
+
+    document.getElementById("successModalClaim").style.fontSize = "16px";
+    document.getElementById("successTitleClaim").style.marginTop = "20px !important";
+    document.getElementById("successModalClaim").style.fontWeight = "500";
+    document.getElementById("successTitleClaim").style.marginBottom = "0px !important";
+    document.getElementById("errorModalClaim").style.fontSize = "16px";
+    document.getElementById("errorTitleClaim").style.marginTop = "20px !important";
+    document.getElementById("errorModalClaim").style.fontWeight = "500";
+    document.getElementById("errorTitleClaim").style.marginBottom = "0px !important";
 });
 
-document.getElementById("shares").addEventListener("keydown", function() {
-    if(event.key==='.')
-    {
-        event.preventDefault();
-    }
-})
-
-document.getElementById("shares").addEventListener("input", function() {
-    let value = document.getElementById("shares").value;
-    let marketPrice = document.getElementById("sianjitpua").value;
-
-    if (value.length > 3)
-    {
-        value = value.slice(0, 4);
-
-        if (value != "1000")
-        {
-            value = value.slice(0, 3);
-        }
-    }
+document.getElementById("deposit").addEventListener("input", function() {
+    let value = document.getElementById("deposit").value;
 
     if (value.length == 0)
     {
         value = "";
     }
 
-    let sharesBoughtValue = (value == "") ? 0 : parseInt(value);
-    let total = (parseFloat(marketPrice) * sharesBoughtValue).toFixed(2);
-
-    document.getElementById("shares").value = (value == "") ? value : sharesBoughtValue;    
-    document.getElementById("sharesBought").innerText = sharesBoughtValue + " / 1000 tokens";  
-    document.getElementById("totalPrice").innerText = " " + total + " TGEN";  
-    document.getElementById("cost").innerText = " " + total + " TGEN";  
+    let depositValue = (value == "") ? 0 : parseFloat(value);
+    let fee = (0.003 * depositValue).toFixed(4);
+ 
+    document.getElementById("amountDeposit").innerText = " " + depositValue + " TGEN";  
+    document.getElementById("fee").innerText = fee; 
 });
 
-function hideModal() 
+document.getElementById("withdraw").addEventListener("input", function() {
+    let value = document.getElementById("withdraw").value;
+
+    if (value.length == 0)
+    {
+        value = "";
+    }
+
+    let withdrawValue = (value == "") ? 0 : parseFloat(value);
+ 
+    document.getElementById("amountWithdraw").innerText = " " + withdrawValue + " TGEN";  
+});
+
+function hideDepositModal() 
 {
     document.getElementById('pageMask').style.display = "none";
-    $( "#payWithAccountBalanceModal" ).dialog('close');
+    $( "#depositModal" ).dialog('close');
 }
 
-function displayModal() 
+function hideWithdrawModal() 
+{
+    document.getElementById('pageMask').style.display = "none";
+    $( "#withdrawModal" ).dialog('close');
+}
+
+function hideClaimModal() 
+{
+    document.getElementById('pageMask').style.display = "none";
+    $( "#claimModal" ).dialog('close');
+}
+
+function displayDepositModal() 
 {
     let width = (isMobile.any()) ? Math.min(screen.width, 480) : 480;
 
     document.getElementById('pageMask').style.display = "block";
-    $( "#payWithAccountBalanceModal" ).dialog({
+    $( "#depositModal" ).dialog({
         height: 220,
         width: width,
         dialogClass: 'whiteBackground',
@@ -128,20 +237,54 @@ function displayModal()
             $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
         }
     });
-    $( "#payWithAccountBalanceModal" ).show()
+    $( "#depositModal" ).show()
 }
 
-function payWithAccountBalance()
+function displayWithdrawModal() 
 {
-    let shares = parseInt(document.getElementById("shares").value);
+    let width = (isMobile.any()) ? Math.min(screen.width, 480) : 480;
+
+    document.getElementById('pageMask').style.display = "block";
+    $( "#withdrawModal" ).dialog({
+        height: 220,
+        width: width,
+        dialogClass: 'whiteBackground',
+        closeOnEscape: true,
+        open: function(event, ui) {
+            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
+        }
+    });
+    $( "#withdrawModal" ).show()
+}
+
+function displayClaimModal() 
+{
+    let width = (isMobile.any()) ? Math.min(screen.width, 480) : 480;
+
+    document.getElementById('pageMask').style.display = "block";
+    $( "#claimModal" ).dialog({
+        height: 220,
+        width: width,
+        dialogClass: 'whiteBackground',
+        closeOnEscape: true,
+        open: function(event, ui) {
+            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
+        }
+    });
+    $( "#claimModal" ).show()
+}
+
+function deposit()
+{
+    let amountToDeposit = parseFloat(document.getElementById("deposit").value);
     let strategyID = document.getElementById("sotong").value;
     let csrf = document.getElementById("atas").value;
     
     let temp = JSON.stringify({
         strategyID: strategyID,
-        numberOfShares: shares,
+        amountToDeposit: amountToDeposit,
         csrf: csrf
-      });
+    });
     const xhttpRep = new XMLHttpRequest();
     xhttpRep.onload = async function(e) {
         // Handling response from the API for GET reports:
@@ -149,38 +292,116 @@ function payWithAccountBalance()
 
         if (response.response == "Success")
         {
-            displaySuccessModal();
+            displaySuccessModalDeposit();
             return;
         }
         else
         {
-            displayErrorModal(response.response);
+            displayErrorModalDeposit(response.response);
             return;
         }
     };
-    xhttpRep.open("POST", '/buy_new_shares_with_account_balance', true);
+    xhttpRep.open("POST", '/deposit', true);
     xhttpRep.withCredentials = true;
     xhttpRep.setRequestHeader("Content-Type", "application/json");
     xhttpRep.send(temp);
 
-    hideModal();
+    hideDepositModal();
 }
 
-function hideSuccessModal() 
+function withdraw()
 {
-    $( "#successModal" ).dialog('close');
+    let amountToWithdraw = parseFloat(document.getElementById("withdraw").value);
+    let strategyID = document.getElementById("sotong").value;
+    let csrf = document.getElementById("atas").value;
+    
+    let temp = JSON.stringify({
+        strategyID: strategyID,
+        amountToWithdraw: amountToWithdraw,
+        csrf: csrf
+    });
+    const xhttpRep = new XMLHttpRequest();
+    xhttpRep.onload = async function(e) {
+        // Handling response from the API for GET reports:
+        const response = JSON.parse(xhttpRep.responseText);
+
+        if (response.response == "Success")
+        {
+            displaySuccessModalWithdraw();
+            return;
+        }
+        else
+        {
+            displayErrorModalWithdraw(response.response);
+            return;
+        }
+    };
+    xhttpRep.open("POST", '/withdraw', true);
+    xhttpRep.withCredentials = true;
+    xhttpRep.setRequestHeader("Content-Type", "application/json");
+    xhttpRep.send(temp);
+
+    hideWithdrawModal();
 }
 
-function displaySuccessModal() 
+function claim()
+{
+    let strategyID = document.getElementById("sotong").value;
+    let csrf = document.getElementById("atas").value;
+    
+    let temp = JSON.stringify({
+        strategyID: strategyID,
+        csrf: csrf
+    });
+    const xhttpRep = new XMLHttpRequest();
+    xhttpRep.onload = async function(e) {
+        // Handling response from the API for GET reports:
+        const response = JSON.parse(xhttpRep.responseText);
+
+        if (response.response == "Success")
+        {
+            displaySuccessModalClaim();
+            return;
+        }
+        else
+        {
+            displayErrorModalClaim(response.response);
+            return;
+        }
+    };
+    xhttpRep.open("POST", '/claim', true);
+    xhttpRep.withCredentials = true;
+    xhttpRep.setRequestHeader("Content-Type", "application/json");
+    xhttpRep.send(temp);
+
+    hideClaimModal();
+}
+
+function hideSuccessModalDeposit() 
+{
+    $( "#successModalDeposit" ).dialog('close');
+}
+
+function hideSuccessModalWithdraw() 
+{
+    $( "#successModalWithdraw" ).dialog('close');
+}
+
+function hideSuccessModalClaim() 
+{
+    $( "#successModalClaim" ).dialog('close');
+}
+
+function displaySuccessModalDeposit() 
 {
     let position = { my: "right top", at: "right-100 top", of: window };
     if (isMobile.any())
     {
         position = { my: "bottom", at: "bottom", of: window }
     }
-    let width = (isMobile.any()) ? screen.width : 240;
+    let width = (isMobile.any()) ? screen.width : 320;
     var Y = window.pageYOffset;
-    $( "#successModal" ).dialog({
+    $( "#successModalDeposit" ).dialog({
         height: 55,
         width: width,
         closeOnEscape: true,
@@ -189,8 +410,8 @@ function displaySuccessModal()
         open: function(event, ui) {
             $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
             setTimeout(function () {
-                $("#successModal").dialog("close");
-                window.location.href = 'http://localhost:3000/positions';
+                $("#successModalDeposit").dialog("close");
+                window.location.href = 'https://www.tradegen.io/positions';
             }, 2000);
             if (!isMobile.any())
             {
@@ -198,17 +419,87 @@ function displaySuccessModal()
             }
         }
     });
-    $( "#successModal" ).show()
+    $( "#successModalDeposit" ).show()
 }
 
-function hideErrorModal() 
+function displaySuccessModalWithdraw() 
 {
-    $( "#errorModal" ).dialog('close');
+    let position = { my: "right top", at: "right-100 top", of: window };
+    if (isMobile.any())
+    {
+        position = { my: "bottom", at: "bottom", of: window }
+    }
+    let width = (isMobile.any()) ? screen.width : 320;
+    var Y = window.pageYOffset;
+    $( "#successModalWithdraw" ).dialog({
+        height: 55,
+        width: width,
+        closeOnEscape: true,
+        dialogClass: 'successModalContent',
+        position: position,
+        open: function(event, ui) {
+            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
+            setTimeout(function () {
+                $("#successModalWithdraw").dialog("close");
+                window.location.href = 'https://www.tradegen.io/positions';
+            }, 2000);
+            if (!isMobile.any())
+            {
+                $(this).parent().css({'top': Y+100});
+            }
+        }
+    });
+    $( "#successModalWithdraw" ).show()
 }
 
-function displayErrorModal(message) 
+function displaySuccessModalClaim() 
 {
-    document.getElementById("errorText").innerText = message;
+    let position = { my: "right top", at: "right-100 top", of: window };
+    if (isMobile.any())
+    {
+        position = { my: "bottom", at: "bottom", of: window }
+    }
+    let width = (isMobile.any()) ? screen.width : 320;
+    var Y = window.pageYOffset;
+    $( "#successModalClaim" ).dialog({
+        height: 55,
+        width: width,
+        closeOnEscape: true,
+        dialogClass: 'successModalContent',
+        position: position,
+        open: function(event, ui) {
+            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
+            setTimeout(function () {
+                $("#successModalClaim").dialog("close");
+                window.location.href = 'https://www.tradegen.io/profile';
+            }, 2000);
+            if (!isMobile.any())
+            {
+                $(this).parent().css({'top': Y+100});
+            }
+        }
+    });
+    $( "#successModalClaim" ).show()
+}
+
+function hideErrorModalDeposit() 
+{
+    $( "#errorModalDeposit" ).dialog('close');
+}
+
+function hideErrorModalWithdraw() 
+{
+    $( "#errorModalWithdraw" ).dialog('close');
+}
+
+function hideErrorModalClaim() 
+{
+    $( "#errorModalClaim" ).dialog('close');
+}
+
+function displayErrorModalDeposit(message) 
+{
+    document.getElementById("errorTextDeposit").innerText = message;
     let position = { my: "right top", at: "right-100 top", of: window };
     if (isMobile.any())
     {
@@ -216,7 +507,7 @@ function displayErrorModal(message)
     }
     let width = (isMobile.any()) ? screen.width : 240;
     var Y = window.pageYOffset;
-    $( "#errorModal" ).dialog({
+    $( "#errorModalDeposit" ).dialog({
         height: 55,
         width: width,
         closeOnEscape: true,
@@ -225,7 +516,7 @@ function displayErrorModal(message)
         open: function(event, ui) {
             $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
             setTimeout(function () {
-                $("#errorModal").dialog("close");
+                $("#errorModalDeposit").dialog("close");
             }, 2000);
             if (!isMobile.any())
             {
@@ -233,7 +524,67 @@ function displayErrorModal(message)
             }
         }
     });
-    $( "#errorModal" ).show()
+    $( "#errorModalDeposit" ).show()
+}
+
+function displayErrorModalWithdraw(message) 
+{
+    document.getElementById("errorTextWithdraw").innerText = message;
+    let position = { my: "right top", at: "right-100 top", of: window };
+    if (isMobile.any())
+    {
+        position = { my: "bottom", at: "bottom", of: window }
+    }
+    let width = (isMobile.any()) ? screen.width : 240;
+    var Y = window.pageYOffset;
+    $( "#errorModalWithdraw" ).dialog({
+        height: 55,
+        width: width,
+        closeOnEscape: true,
+        dialogClass: 'errorModalContent',
+        position: position,
+        open: function(event, ui) {
+            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
+            setTimeout(function () {
+                $("#errorModalWithdraw").dialog("close");
+            }, 2000);
+            if (!isMobile.any())
+            {
+                $(this).parent().css({'top': Y+100});
+            }
+        }
+    });
+    $( "#errorModalWithdraw" ).show()
+}
+
+function displayErrorModalClaim(message) 
+{
+    document.getElementById("errorTextClaim").innerText = message;
+    let position = { my: "right top", at: "right-100 top", of: window };
+    if (isMobile.any())
+    {
+        position = { my: "bottom", at: "bottom", of: window }
+    }
+    let width = (isMobile.any()) ? screen.width : 240;
+    var Y = window.pageYOffset;
+    $( "#errorModalClaim" ).dialog({
+        height: 55,
+        width: width,
+        closeOnEscape: true,
+        dialogClass: 'errorModalContent',
+        position: position,
+        open: function(event, ui) {
+            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
+            setTimeout(function () {
+                $("#errorModalClaim").dialog("close");
+            }, 2000);
+            if (!isMobile.any())
+            {
+                $(this).parent().css({'top': Y+100});
+            }
+        }
+    });
+    $( "#errorModalClaim" ).show()
 }
 
 // When the user scrolls the page, execute myFunction

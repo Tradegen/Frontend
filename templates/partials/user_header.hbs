@@ -1,37 +1,49 @@
 <header id="myHeader" class="height50">
     <div class="mediaHeaderWeb">
         <div class="navbar marginLeft2 height50">
-            <a href="/"><img src="/img/favicon.png" class="appNavbarIcon"></a> 
-            <div class="dropdown width160">
+            <a href="/"><img src="/img/favicon.png" class="appNavbarIcon" style="width: 50px !important;"></a> 
+            <div class="dropdown width140">
                 <a class="store marginLeft40 userHeaderNavbarLink" href="/build_strategy">Develop</a>
             </div> 
-            <div class="dropdown width140">
+            <div class="dropdown width120">
                 <a class="store userHeaderNavbarLink" href="/strategies">Strategies</a>
             </div> 
-            <div class="dropdown width140">
+            <div class="dropdown width130">
                 <a class="store userHeaderNavbarLink" href="/marketplace">Marketplace</a>
+            </div>
+            <div class="dropdown width80">
+                <a class="store userHeaderNavbarLink" href="/market_stats">Stats</a>
+            </div> 
+            <div class="dropdown">
+                <a class="store userHeaderNavbarLink" >Vote</a>
             </div> 
         
             <div class="headerRightSide">
-                <a><img src="/img/token.JPG" class="appNavbarIcon"></a> 
+                <a><img src="/img/token.jpg" class="appNavbarTradegenToken"></a> 
                 <div class="dropdown">
                     <a class="store userHeaderNavbarLink credits noHover">{{credits}}</a>
+                </div>
+
+                <a><img src="/img/celo_token.JPG" class="appNavbarCeloToken"></a> 
+                <div class="dropdown">
+                    <a class="store userHeaderNavbarLink credits noHover" id="otherBalance">0.0000</a>
+                </div>
+
+                <a><img src="/img/celoDollar.png" class="appNavbarCeloDollarToken"></a> 
+                <div class="dropdown">
+                    <a class="store userHeaderNavbarLink credits noHover" id="otherBalance">0.0000</a>
                 </div>
                 
                 <div class="dropdown paddingBottom8 width220" id="dropdown">
                     <button class="dropbtn width220 paddingBottom8">
                         <i class="material-icons icon-AccountCircle">account_circle</i>
-                        My Account 
+                        <span id="headerWalletAddress">{{username}}</span> 
                         <i class="material-icons icon-AccountCircle">arrow_drop_down</i>
                     </button>
                     <div class="dropdown-content width220">
                         <a href="/profile">
                             <i class="material-icons icon-AccountCircle">perm_identity</i>
                             Profile
-                        </a>
-                        <a href="/notifications">
-                            <i class="material-icons icon-AccountCircle">notifications</i>
-                            Notifications
                         </a>
                         <a href="/transactions">
                             <i class="material-icons icon-AccountCircle">local_atm</i>
@@ -45,9 +57,9 @@
                             <i class="material-icons icon-AccountCircle">settings</i>
                             Settings
                         </a>
-                        <a href="/logout">
+                        <a id="logout">
                             <i class="material-icons icon-AccountCircle">power_settings_new</i>
-                            Logout
+                            Disconnect
                         </a>
                     </div>
                 </div>
@@ -73,11 +85,14 @@
                         <a href="/marketplace">
                             Marketplace
                         </a>
+                        <a href="/market_stats">
+                            Stats
+                        </a>
+                        <a href="/market_stats">
+                            Vote
+                        </a>
                         <a href="/profile">
                             Profile
-                        </a>
-                        <a href="/notifications">
-                            Notifications
                         </a>
                         <a href="/transactions">
                             Transactions
@@ -88,8 +103,8 @@
                         <a href="/settings">
                             Settings
                         </a>
-                        <a href="/logout">
-                            Logout
+                        <a id="logout">
+                            Disconnect
                         </a>
                     </div>
                 </div>

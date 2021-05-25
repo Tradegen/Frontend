@@ -10,7 +10,11 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="/js/update_overlay.js"></script>
+    <script>
+        Object.keys(require.cache).forEach(function(key) { delete require.cache[key] });
+    </script>
 </head>
 
 <body class="appBackground">
@@ -30,7 +34,10 @@
                     </div>
                 </div>
             </div>
-            <button type="button" class="productButton marginRight0 marginTop50 initiallyHidden" id="tokenInfoButtonWeb">View token info</button>
+            <div class="displayProperty" style="float: right">
+                <button type="button" class="productButton marginRight0 marginTop50 initiallyHidden" id="tokenInfoButtonWeb">View token info</button>
+                <button type="button" class="productButton marginRight0 marginTop50 marginLeft30 intiallyHidden" id="transactionsButtonWeb">View transactions</button>
+            </div>
         </div>
         <div class="maxWidth80 initiallyHidden" id="strategyInfoMobile">
             <div class="pageTitle alignCenter">{{strategyName}}</div>
@@ -40,6 +47,7 @@
             </div>
             <div class="strategyInfoBottom">
                 <button type="button" class="productButton marginRight0 mediaMarginTop30" id="tokenInfoButtonMobile">View token info</button>
+                <button type="button" class="productButton marginRight0 mediaMarginTop30 marginLeft30" id="transactionsButtonMobile">View transactions</button>
             </div>
         </div>
 
@@ -57,8 +65,8 @@
                     <a class="tradingBotStoreProductBottomText">{{sharpeRatio}}</a>
                 </div>
                 <div class="tradingBotStoreProductFrequency block">
-                    <a class="tradingBotStoreProductTopText">Assets Traded</a><br>
-                    <a class="tradingBotStoreProductBottomText">{{assetsTraded}}</a>
+                    <a class="tradingBotStoreProductTopText">Underlying Asset</a><br>
+                    <a class="tradingBotStoreProductBottomText">{{underlyingAsset}}</a>
                 </div>
                 <div class="tradingBotStoreProductFrequency block mediaMarginBottom20">
                     <a class="tradingBotStoreProductTopText">Alpha</a><br>
@@ -113,6 +121,12 @@
     <input type="hidden" name="sotong" id="sotong" value="{{dataString}}">
     <input type="hidden" name="sianjitpua" id="sianjitpua" value="{{strategyID}}">
     
+    <script type="text/javascript" src="https://unpkg.com/web3@1.2.11/dist/web3.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/web3modal@1.9.0/dist/index.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/evm-chains@0.2.0/dist/umd/index.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/@walletconnect/web3-provider@1.2.1/dist/umd/index.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/fortmatic@2.0.6/dist/fortmatic.js"></script>
+    <script src="/js/connect_wallet_app.js"></script>
     <script src="/js/strategy_info_app.js"></script>
     <script src="https://www.gstatic.com/charts/loader.js"></script>
     <script>

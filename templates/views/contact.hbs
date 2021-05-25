@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script
         src="https://code.jquery.com/jquery-3.1.1.js"
         crossorigin="anonymous">
@@ -24,27 +25,33 @@
 <body>
     <script src="/js/update_overlay.js"></script>
     {{>guest_header}}
-    <div class="main-content mediaWidth75">
+    <div>
 
-        <div class="pageTitle">Contact Customer Service</div>
+        <div class="pageTitle textAlignCenter">Contact Us</div>
 
-        <form class="contact helvetica" action="/contact" method="post" role="form">
-            {{#if message}}
-                <div><p id="errorMessage">{{message}}</p></div>
-            {{/if}}
-            <input type="hidden" name="csrf" value="{{token}}">
-            <label for="firstName" class="formFieldTitle">First Name:</label>
-            <input type="text" maxlength="25" class="contactFormInput" id="firstName" name="firstName" value="{{previousFirstName}}"><br><br>
-            <label for="lastName" class="formFieldTitle">Last Name:</label>
-            <input type="text" maxlength="25" class="contactFormInput" id="lastName" name="lastName" value="{{previousLastName}}"><br><br>
-            <label for="email" class="formFieldTitle">Your Email Address:</label>
-            <input type="text" maxlength="35" class="contactFormInput" id="email" name="email" value="{{previousEmail}}"><br><br>
-            <label for="subject" class="formFieldTitle">Subject:</label>
-            <input type="text" maxlength="40" class="contactFormInput" id="subject" name="subject" value="{{previousSubject}}"><br><br>
-            <label for="message" class="formFieldTitle">Message:</label>
-            <textarea id="message" class="contactText" name="message" rows="10" cols="50" maxlength="500" placeholder="How can we help you?">{{previousMessage}}</textarea><br><br>
-            <button type="submit" class="paymentModalYesButton">SEND</button>
-        </form>
+        <div class="textAlignCenter extraMarginBottom mediaWidth90" style="font-size: 20px;">Want to get in touch? We'd love to hear from you. Please fill out the form below or email us at info@tradgen.io</div>
+
+        <div class="homePageRow">
+            <div class="contactWrapper" style="padding: 20px">
+                <form class="contact helvetica" action="/contact" method="post" role="form">
+                    {{#if message}}
+                        <div><p id="errorMessage">{{message}}</p></div>
+                    {{/if}}
+                    <input type="hidden" name="csrf" value="{{token}}">
+                    <label for="firstName" class="formFieldTitleContact">First Name:</label>
+                    <input type="text" maxlength="25" class="contactFormInput" id="firstName" name="firstName" value="{{previousFirstName}}"><br><br>
+                    <label for="lastName" class="formFieldTitleContact">Last Name:</label>
+                    <input type="text" maxlength="25" class="contactFormInput" id="lastName" name="lastName" value="{{previousLastName}}"><br><br>
+                    <label for="email" class="formFieldTitleContact">Your Email Address:</label>
+                    <input type="text" maxlength="35" class="contactFormInput" id="email" name="email" value="{{previousEmail}}"><br><br>
+                    <label for="subject" class="formFieldTitleContact">Subject:</label>
+                    <input type="text" maxlength="40" class="contactFormInput" id="subject" name="subject" value="{{previousSubject}}"><br><br>
+                    <label for="message" class="formFieldTitleContact">Message:</label>
+                    <textarea id="message" class="contactText" name="message" rows="10" cols="50" maxlength="500" placeholder="Enter message">{{previousMessage}}</textarea><br><br>
+                    <button type="submit" class="paymentModalYesButton">Submit</button>
+                </form>
+            </div>
+        </div>
     </div>
 
     <div id="successModal" class="height55" style="display:none">

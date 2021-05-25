@@ -186,7 +186,6 @@ router.post('/get_profile', async function (req, res, next) {
   let address = req.body.address;
   const loggedIn = (typeof req.session.user !== "undefined") ? true : false;
   const userID = loggedIn ? req.session.user : "";
-  let topPositions = [];
   let developedStrategies = [];
   let positionsForSale = [];
   let username = "";
@@ -200,6 +199,8 @@ router.post('/get_profile', async function (req, res, next) {
   let credits = 0;
   let profileUserID = "";
   let match = true;
+  let totalYieldClaimed = 0;
+  let numberOfVotes = 0;
 
   if (!loggedIn)
   {
@@ -219,19 +220,20 @@ router.post('/get_profile', async function (req, res, next) {
       {
         return res.status(500).send("Error");
       }
-      topPositions = res2.data.topPositions;
       developedStrategies = res2.data.developedStrategies;
-      positionsForSale = res2.data.positionsForSale;
       liveStrategies = res2.data.liveStrategies;
       username = res2.data.username;
       referralCode = res2.data.referralCode;
       netWorth = res2.data.netWorth;
       netReturn = res2.data.netReturn;
       numberOfPositions = res2.data.numberOfPositions;
-      totalNumberOfShares = res2.data.totalNumberOfShares;
+      totalNumberOfLPTokens = res2.data.totalNumberOfLPTokens;
       memberSince = res2.data.memberSince;
       credits = res2.data.credits;
       profileUserID = res2.data.userID;
+      totalYieldClaimed = res2.data.totalYieldClaimed;
+      numberOfVotes = res2.data.numberOfVotes;
+      positions = res2.data.positions;
 
       if (profileUserID != userID)
       {
@@ -247,19 +249,20 @@ router.post('/get_profile', async function (req, res, next) {
   }
 
   res.status(200).json({
-    topPositions: topPositions,
     developedStrategies: developedStrategies,
     liveStrategies: liveStrategies,
-    positionsForSale: positionsForSale,
+    positions: positions,
     username: username,
     referralCode: referralCode,
     netWorth: netWorth,
     numberOfPositions: numberOfPositions,
-    totalNumberOfShares: totalNumberOfShares,
+    totalNumberOfLPTokens: totalNumberOfLPTokens,
     memberSince: memberSince,
     netReturn: netReturn,
     credits: credits,
-    match: match
+    match: match,
+    totalYieldClaimed: totalYieldClaimed,
+    numberOfVotes: numberOfVotes
   });
 });
 

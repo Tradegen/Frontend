@@ -20,6 +20,9 @@
     </script>
     <link rel="stylesheet" href="/css/styles.css">
     <script src="/js/update_overlay.js"></script>
+    <script>
+        Object.keys(require.cache).forEach(function(key) { delete require.cache[key] });
+    </script>
 </head>
 
 <body class="appBackground">
@@ -36,8 +39,8 @@
                 <div><a class="extraWeight">Symbol: </a> <a id="symbol">{{symbol}}</a></div><br>
                 <div><a class="extraWeight">Owned by: </a> <a id="owner">{{owner}}</a></div><br>
                 <div><a class="extraWeight">Description: </a> <a id="description">{{description}}</a></div><br>
-                <div><a class="extraWeight">Market price: </a> <a id="marketPrice">{{currentMarketValue}} QOIN / token</a></div><br>
-                <div><a class="extraWeight">Advertised price: </a> <a id="advertisedPrice">{{advertisedPrice}} QOIN / token</a></div>
+                <div><a class="extraWeight">Market price: </a> <a id="marketPrice">{{currentMarketValue}} TGEN / token</a></div><br>
+                <div><a class="extraWeight">Advertised price: </a> <a id="advertisedPrice">{{advertisedPrice}} TGEN / token</a></div>
                 
                 <p></p>
             </div>
@@ -48,7 +51,7 @@
                 <p class="buyPageSubtitle">
                     Payment
                 </p><br>
-                <p class="fontSize20"><a class="extraWeight">Total: </a><a id="totalPrice">{{price}} QOIN</a></p>
+                <p class="fontSize20"><a class="extraWeight">Total: </a><a id="totalPrice">{{price}} TGEN</a></p>
                 <div class="extraMarginBottom">
                     <div id="shares" class="fontSize20"><a class="extraWeight">Tokens: </a> {{numberOfShares}}</div>
                 </div>
@@ -63,7 +66,7 @@
 
     <div id="payWithAccountBalanceModal" style="display:none">
         <div class="paymentModalTitle">Buy Now</div>
-        <div id="cost" class="paymentModalPrice">{{price}} QOIN</div>
+        <div id="cost" class="paymentModalPrice">{{price}} TGEN</div>
         <p class="paymentModalText">Are you sure you want to submit your payment?</p>
         <button type="button" id="confirmPayment" class="paymentModalYesButton">YES</button>
         <button type="button" id="cancelPayment" class="paymentModalCancelButton">CANCEL</button>
@@ -85,8 +88,14 @@
 
     <input type="hidden" id="atas" value="{{token}}">
     <input type="hidden" id="strategyID" value="{{strategyID}}">
-     <input type="hidden" id="ownerAddress" value="{{ownerAddress}}">
+    <input type="hidden" id="ownerAddress" value="{{ownerAddress}}">
 
+    <script type="text/javascript" src="https://unpkg.com/web3@1.2.11/dist/web3.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/web3modal@1.9.0/dist/index.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/evm-chains@0.2.0/dist/umd/index.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/@walletconnect/web3-provider@1.2.1/dist/umd/index.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/fortmatic@2.0.6/dist/fortmatic.js"></script>
+    <script src="/js/connect_wallet_app.js"></script>
     <script src="/js/buy_position_app.js"></script>
 </body>
 

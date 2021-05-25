@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
@@ -25,172 +26,111 @@
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
     {{>guest_header}}
-    <div class="main-content maxWidth80">
-        <div class="aboutPageTitle marginLeft15Percent largeMarginBottom">Frequently Asked Questions</div>
+    <div class="mediaWhitePaper main-content maxWidth80">
+        <div class="pageTitle largeMarginBottom textAlignCenter maxWidth80 mediaWidth100">Frequently Asked Questions</div>
         <div class="faqsDiv marginTop50" id="faq1">
-            <div class="faqsTopRow"><a class="faqsLeftSide">What's the purpose of buying tokenized strategies?</a><i class="material-icons faqsRightSide" id="icon1">expand_more</i></div>
+            <div class="faqsTopRow"><a class="faqsLeftSide">What's the purpose of investing in tokenized strategies?</a><i class="material-icons faqsRightSide" id="icon1">expand_more</i></div>
             <p class="faqsText" id="text1">
-                Buying tokens of a strategy lets you invest in the strategy without having to place trades on the stock market. It'll give you a chance to grow your investment, collect weekly dividends, and indirectly invest in the platform's growth. 
+                Investing in tokenized strategies lets you effectively algo trade without having to code or make trades on traditional markets.
+                This saves you the time and money of finding a consistently profitable strategy and helps eliminate mistakes associated with emotional trading.
+                Since the data and trading bots for each strategy is stored on-chain, the data/code is tamper-proof and publicly verifiable. 
             </p>
         </div>
         <div class="faqsDiv" id="faq2">
-            <div class="faqsTopRow"><a class="faqsLeftSide">Why should I submit a strategy?</a><i class="material-icons faqsRightSide" id="icon2">expand_more</i></div>
+            <div class="faqsTopRow"><a class="faqsLeftSide">Why should I sell a strategy?</a><i class="material-icons faqsRightSide" id="icon2">expand_more</i></div>
             <p class="faqsText" id="text2">
-                If your strategy is approved, the source code will be listed in our store and users will be able to buy tokens of your strategy.
-                You'll receive 90% of the sales of your source code and get a 2% royalty whenever users buy new tokens of your strategy.
+                Selling your strategy lets you receive a 0.3% royalty whenever users invest in your strategy. 
             </p>
         </div>
         <div class="faqsDiv" id="faq3">
             <div class="faqsTopRow"><a class="faqsLeftSide">Are there any fees we should be aware of on our positions, once purchased?</a><i class="material-icons faqsRightSide" id="icon3">expand_more</i></div>
             <p class="faqsText" id="text3">
-                We don't collect any maintenance fees on your positions. However, we currently charge a 3% transaction fee when you sell the position on our marketplace.
+                We don't collect any maintenance fees on your positions. We only charge a 0.3% transaction fee on strategy deposits and marketplace transactions, and the fee goes to the strategy developer.
             </p>
         </div>
         <div class="faqsDiv" id="faq4">
             <div class="faqsTopRow"><a class="faqsLeftSide">How can I make money with Tradegen?</a><i class="material-icons faqsRightSide" id="icon4">expand_more</i></div>
             <p class="faqsText" id="text4">
-                There are several ways to make money with Tradegen, most of which are passive. The main way to make money is to buy tokens and sell them for a profit in the marketplace. While you're holding tokens, you'll receive weekly dividends.
-                If you build a successful strategy on our platform, you could sell it on our store and collect most of the sales. You'll also receive a royalty whenever users buy new tokens of your strategy.
+                There are several ways to make money with Tradegen, most of which are passive. The main way to make money is to invest in strategies and collect yield based on their performance. You could also earn TGEN passively by providing liquidity on Ubeswap.
+                If you build a strategy and it gets approved, you'll receive a royalty whenever users invest in your strategy. 
             </p>
         </div>
         <div class="faqsDiv" id="faq5">
             <div class="faqsTopRow"><a class="faqsLeftSide">Is there a minimum investment?</a><i class="material-icons faqsRightSide" id="icon5">expand_more</i></div>
             <p class="faqsText" id="text5">
-                There's no minimum investment to use our platform or to buy tokens of strategies.
+                There's no minimum investment to access the platform or invest in strategies.
             </p>
         </div>
         <div class="faqsDiv" id="faq6">
             <div class="faqsTopRow"><a class="faqsLeftSide">Do I need coding skills to build a strategy?</a><i class="material-icons faqsRightSide" id="icon6">expand_more</i></div>
             <p class="faqsText" id="text6">
-               You don't need prior coding experience to build a strategy on our platform.
+               You don't need prior coding experience to build a strategy on the platform.
             </p>
         </div>
         <div class="faqsDiv" id="faq7">
             <div class="faqsTopRow"><a class="faqsLeftSide">What drives up the price of tokens, and can they fall in value over time?</a><i class="material-icons faqsRightSide" id="icon7">expand_more</i></div>
             <p class="faqsText" id="text7">
-                Token prices are determined by demand from users, the strategy's performance, and dividends paid out.
+                The token price when you invest in a strategy is (strategy's max pool size) / 1000000. Token prices in the marketplace are determined by demand from users based on scarcity, whether the strategy is currently in a trade, and how they expect the strategy to perform in the near future. 
+                If a strategy's max pool size is reached, tokens for that strategy may fetch a higher price. Since users can't deposit or withdraw from the strategy while the strategy is in a trade, the token price for that strategy may vary based on the expected trade outcome.
+                For instance, if users expect the trade to yield 5% profit, they may bid the token price 5% higher. 
             </p>
         </div>
         <div class="faqsDiv" id="faq8">
             <div class="faqsTopRow"><a class="faqsLeftSide">Why do my backtests sometimes show 0 trades?</a><i class="material-icons faqsRightSide" id="icon8">expand_more</i></div>
             <p class="faqsText" id="text8">
                 If the backtest shows 0 trades, it usually means the entry rules were too strict or there was a contradiction in the strategy
-                (such as requiring the entry bar to have higher and lower volume). We don't currently check for contradictions before a user builds a strategy,
-                but plan to launch that feature within the next few months.
+                (such as requiring the current price to be both higher and lower). We don't currently check for contradictions before a user builds a strategy,
+                but plan to launch that feature in the near future.
             </p>
         </div>
         <div class="faqsDiv" id="faq9">
             <div class="faqsTopRow"><a class="faqsLeftSide">What happens to my strategy if it gets approved?</a><i class="material-icons faqsRightSide" id="icon9">expand_more</i></div>
             <p class="faqsText" id="text9">
-                If your strategy gets approved, we'll list it on our store and create tokens for users to buy.
-                You'll receive 90% of all sales from the store and 2% of funds invested through new tokens of your strategy.
+                If your strategy gets approved, the last user who voted for your strategy triggers a smart contract transaction that publishes your hashed strategy data to the Celo blockchain
+                and creates fungible tokens for your strategy. You'll receive a 0.3% royalty whenever users invest in your strategy.
             </p>
         </div>
         <div class="faqsDiv" id="faq10">
-            <div class="faqsTopRow"><a class="faqsLeftSide">Is it better to buy lots of small positions? Or a few large positions?</a><i class="material-icons faqsRightSide" id="icon10">expand_more</i></div>
+            <div class="faqsTopRow"><a class="faqsLeftSide">What securities can the strategies trade?</a><i class="material-icons faqsRightSide" id="icon10">expand_more</i></div>
             <p class="faqsText" id="text10">
-                It depends. Smaller positions might be easier to sell in the marketplace but it may also be a hassle to buy and maintain lots of positions. 
-                Buying larger positions makes it easier to make large investments but you may have a harder time selling them.
+                Currently the strategies can only trade crypto that have a Chainlink price feed. Although this limits the number of securities strategies can trade, it's crucial for providing a decentralized tamper-proof solution for on-chain trading bots.
+                We expect more available price feeds as the crypto ecosystem develops.
             </p>
         </div>
         <div class="faqsDiv" id="faq11">
-            <div class="faqsTopRow"><a class="faqsLeftSide">How can I cancel my position for sale in the marketplace?</a><i class="material-icons faqsRightSide" id="icon11">expand_more</i></div>
+            <div class="faqsTopRow"><a class="faqsLeftSide">If my strategy was rejected, can I resubmit it?</a><i class="material-icons faqsRightSide" id="icon11">expand_more</i></div>
             <p class="faqsText" id="text11">
-                You can cancel a marketplace listing from your Profile page by clicking the 'cancel' button in the 'Positions for Sale' table.
-            </p>
-        </div>
-        <div class="faqsDiv" id="faq12">
-            <div class="faqsTopRow"><a class="faqsLeftSide">What securities can the strategies trade?</a><i class="material-icons faqsRightSide" id="icon12">expand_more</i></div>
-            <p class="faqsText" id="text12">
-                Currently the strategies can only trade US stocks and ETFs. We hope to expand into cryptocurrencies and foreign stocks in the near future.
-            </p>
-        </div>
-        <div class="faqsDiv" id="faq13">
-            <div class="faqsTopRow"><a class="faqsLeftSide">Are the strategies strictly intra-day?</a><i class="material-icons faqsRightSide" id="icon13">expand_more</i></div>
-            <p class="faqsText" id="text13">
-                We currently only allow intra-day trades. The strategies are designed to exit any positions at the end of the day.
-            </p>
-        </div>
-        <div class="faqsDiv" id="faq14">
-            <div class="faqsTopRow"><a class="faqsLeftSide">How long does it take to get my strategy approved?</a><i class="material-icons faqsRightSide" id="icon14">expand_more</i></div>
-            <p class="faqsText" id="text14">
-                The top 10 performing strategies submitted each day are reviewed manually the next morning. Top submissions are compared against published strategies and checked for overfitting. We'll test the source code on live market data over the next 3 days and work with the developer to determine the sale price.
-            </p>
-        </div>
-        <div class="faqsDiv" id="faq15">
-            <div class="faqsTopRow"><a class="faqsLeftSide">What do you look for when deciding whether to approve a strategy?</a><i class="material-icons faqsRightSide" id="icon15">expand_more</i></div>
-            <p class="faqsText" id="text15">
-                We mainly approve strategies based on Alpha and uniqueness. First we check if the strategy is unique to the other submissions that day. Then we compare the Alpha of the strategy to that of other submissions to make sure it's outperforming the market without taking excessive risk.
-            </p>
-        </div>
-        <div class="faqsDiv" id="faq16">
-            <div class="faqsTopRow"><a class="faqsLeftSide">If the market is closed today, why is the token price changing?</a><i class="material-icons faqsRightSide" id="icon16">expand_more</i></div>
-            <p class="faqsText" id="text16">
-                Token prices are affected by transactions on the Tradegen platform and dividends paid out, in addition to the strategy's performance.
-            </p>
-        </div>
-        <div class="faqsDiv" id="faq17">
-            <div class="faqsTopRow"><a class="faqsLeftSide">If my strategy was rejected, can I resubmit it?</a><i class="material-icons faqsRightSide" id="icon17">expand_more</i></div>
-            <p class="faqsText" id="text17">
                 You can submit a strategy as many times as you like, until it gets approved (though we encourage you to make changes before resubmitting it).
             </p>
         </div>
-        <div class="faqsDiv" id="faq18">
-            <div class="faqsTopRow"><a class="faqsLeftSide">Should I buy new tokens or buy a position from the marketplace?</a><i class="material-icons faqsRightSide" id="icon18">expand_more</i></div>
-            <p class="faqsText" id="text18">
-                Both have their pros and cons. Buying new tokens ensures that you'll get the position size you want for the strategy you want to buy.
-                Buying from the marketplace lets you buy tokens at a discount but you won't be able to change the position size and the strategy you want might not be listed.
-                There's also a 3% transaction fee for buying from the marketplace.
+        <div class="faqsDiv" id="faq12">
+            <div class="faqsTopRow"><a class="faqsLeftSide">How frequently are yields paid out?</a><i class="material-icons faqsRightSide" id="icon12">expand_more</i></div>
+            <p class="faqsText" id="text12">
+               Yields are claimable whenever the strategy you invested in exits a trade. The yields can only be claimed while a strategy is in-between trades.
             </p>
         </div>
-        <div class="faqsDiv" id="faq19">
-            <div class="faqsTopRow"><a class="faqsLeftSide">How frequently are dividends paid out?</a><i class="material-icons faqsRightSide" id="icon19">expand_more</i></div>
-            <p class="faqsText" id="text19">
-               Dividends are paid out every weekend. The amount paid out depends on the current market value of your positions.
+        <div class="faqsDiv" id="faq13">
+            <div class="faqsTopRow"><a class="faqsLeftSide">Once my strategy is listed, can I delete it or make any changes?</a><i class="material-icons faqsRightSide" id="icon13">expand_more</i></div>
+            <p class="faqsText" id="text13">
+               If your strategy is published on the platform, you can't delete it or make changes to it (for now). When we transition to a decentralized autonomous organization (DAO), we'll let users vote on updates to existing strategies. 
             </p>
         </div>
-        <div class="faqsDiv" id="faq20">
-            <div class="faqsTopRow"><a class="faqsLeftSide">Why do you collect a submission fee?</a><i class="material-icons faqsRightSide" id="icon20">expand_more</i></div>
-            <p class="faqsText" id="text2">
-                Collecting a submission fee helps make sure we receive serious submissions (no randomly made strategies) and prevents users from spamming us with submissions.
-                We run an algorithm to check the legitimacy of a strategy before reviewing the strategy manually. It can be time consuming (or unfeasible) to review (potentially) thousands
-                of submissions, so we want to make sure only legitimate strategies are submitted.
+        <div class="faqsDiv" id="faq14">
+            <div class="faqsTopRow"><a class="faqsLeftSide">Can we add our own rules to the strategy builder?</a><i class="material-icons faqsRightSide" id="icon14">expand_more</i></div>
+            <p class="faqsText" id="text14">
+               We don't offer custom entry/exit rules because our code generation algorithm depends on pre-made rules on our platform. It also improves the security of our platform, since it prevents users from submitting malicious code. If there's a rule you'd like us to add, feel free to reach out and we may add it to our next update!
             </p>
         </div>
-        <div class="faqsDiv" id="faq21">
-            <div class="faqsTopRow"><a class="faqsLeftSide">Is the submission fee paid upfront or only if the strategy is approved?</a><i class="material-icons faqsRightSide" id="icon21">expand_more</i></div>
-            <p class="faqsText" id="text21">
-               The 1 QOIN submission fee is paid upfront through your QOIN balance. We won't charge additional fees if your strategy is approved.
+        <div class="faqsDiv" id="faq15">
+            <div class="faqsTopRow"><a class="faqsLeftSide">What is Alpha? How is it calculated?</a><i class="material-icons faqsRightSide" id="icon15">expand_more</i></div>
+            <p class="faqsText" id="text15">
+               Alpha measures a strategy's performance relative to the market by comparing average monthly returns, standard deviation of returns, and trade frequency.
             </p>
         </div>
-        <div class="faqsDiv" id="faq22">
-            <div class="faqsTopRow"><a class="faqsLeftSide">Once my strategy is listed, can I delete it or make any changes?</a><i class="material-icons faqsRightSide" id="icon22">expand_more</i></div>
-            <p class="faqsText" id="text22">
-               If your strategy is listed for sale, you won't be able to make changes to it. 
-            </p>
-        </div>
-        <div class="faqsDiv" id="faq23">
-            <div class="faqsTopRow"><a class="faqsLeftSide">Can we add our own rules to the strategy builder?</a><i class="material-icons faqsRightSide" id="icon23">expand_more</i></div>
-            <p class="faqsText" id="text23">
-               We don't offer custom entry/exit rules because our code generation algorithm depends on pre-made rules on our platform. It also improves the security of our platform, since it prevents users from submitting malicious code. If there's a rule you'd like us to add, feel free to reach out and we'll add it to our next update!
-            </p>
-        </div>
-        <div class="faqsDiv" id="faq24">
-            <div class="faqsTopRow"><a class="faqsLeftSide">Do the strategies make actual trades with the money invested in them?</a><i class="material-icons faqsRightSide" id="icon24">expand_more</i></div>
-            <p class="faqsText" id="text24">
-               The strategies don't place actual trades on the stock exchange. Instead, they use market data to simulate trades that would be made if the strategies were to be linked to a brokerage firm.  
-            </p>
-        </div>
-        <div class="faqsDiv" id="faq25">
-            <div class="faqsTopRow"><a class="faqsLeftSide">What is Alpha? How is it calculated?</a><i class="material-icons faqsRightSide" id="icon25">expand_more</i></div>
-            <p class="faqsText" id="text25">
-               Alpha measures a strategy's performance relative to the S&amp;P500 by comparing average monthly returns, standard deviation of returns, and trade frequency.
-            </p>
-        </div>
-        <div class="faqsDiv" id="faq26">
-            <div class="faqsTopRow"><a class="faqsLeftSide">How long does it take to run a backtest?</a><i class="material-icons faqsRightSide" id="icon26">expand_more</i></div>
-            <p class="faqsText" id="text26">
-               Backtests usually take between 15 seconds and 2 minutes to run, depending on how many symbols and entry/exit rules you have.
+        <div class="faqsDiv" id="faq16">
+            <div class="faqsTopRow"><a class="faqsLeftSide">How long does it take to run a backtest?</a><i class="material-icons faqsRightSide" id="icon16">expand_more</i></div>
+            <p class="faqsText" id="text16">
+               Backtests usually take between 15 seconds and 2 minutes to run depending on how many entry/exit rules you have.
             </p>
         </div>
     </div>

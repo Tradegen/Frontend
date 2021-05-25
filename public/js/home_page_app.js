@@ -29,98 +29,31 @@ window.addEventListener('DOMContentLoaded', function() {
     }
     
     document.getElementById("getStarted").addEventListener("click", function() {
-        window.location.href = 'http://localhost:3000/open_beta';
+        window.location.href = 'https://www.tradegen.io/open_beta';
     })
 
     document.getElementById("getStarted2").addEventListener("click", function() {
-        window.location.href = 'http://localhost:3000/open_beta';
+        window.location.href = 'https://www.tradegen.io/open_beta';
     })
 
     document.getElementById("learnMore").addEventListener("click", function() {
-      window.location.href = 'http://localhost:3000/about';
+      window.location.href = 'https://www.tradegen.io/about';
     })
 
     document.getElementById("viewStrategies").addEventListener("click", function() {
-      window.location.href = 'http://localhost:3000/strategies';
+      window.location.href = 'https://www.tradegen.io/strategies';
     })
 
     INDEX = 0;
 
-    document.getElementById("1").addEventListener("click", function() {
-      INDEX = 0;
-
-      if (isMobile.any())
-      {
-        document.getElementById("marketplaceImageMobile").src = IMAGES_MOBILE[0];
-      }
-      else
-      {
-        document.getElementById("marketplaceImageWeb").src = IMAGES_WEB[0];
-      }
-
-      document.getElementById("1").style.color = "#3e85f7";
-      document.getElementById("4").style.color = "rgba(161, 194, 250, 0.16)";
-      document.getElementById("2").style.color = "rgba(161, 194, 250, 0.16)";
-      document.getElementById("3").style.color = "rgba(161, 194, 250, 0.16)";
-    });
-
-    document.getElementById("2").addEventListener("click", function() {
-      INDEX = 1;
-
-      if (isMobile.any())
-      {
-        document.getElementById("marketplaceImageMobile").src = IMAGES_MOBILE[1];
-      }
-      else
-      {
-        document.getElementById("marketplaceImageWeb").src = IMAGES_WEB[1];
-      }
-
-      document.getElementById("2").style.color = "#3e85f7";
-      document.getElementById("1").style.color = "rgba(161, 194, 250, 0.16)";
-      document.getElementById("4").style.color = "rgba(161, 194, 250, 0.16)";
-      document.getElementById("3").style.color = "rgba(161, 194, 250, 0.16)";
-    });
-
-    document.getElementById("3").addEventListener("click", function() {
-      INDEX = 2;
-
-      if (isMobile.any())
-      {
-        document.getElementById("marketplaceImageMobile").src = IMAGES_MOBILE[2];
-      }
-      else
-      {
-        document.getElementById("marketplaceImageWeb").src = IMAGES_WEB[2];
-      }
-
-      document.getElementById("3").style.color = "#3e85f7";
-      document.getElementById("1").style.color = "rgba(161, 194, 250, 0.16)";
-      document.getElementById("2").style.color = "rgba(161, 194, 250, 0.16)";
-      document.getElementById("4").style.color = "rgba(161, 194, 250, 0.16)";
-    });
-
-    document.getElementById("4").addEventListener("click", function() {
-      INDEX = 3;
-
-      if (isMobile.any())
-      {
-        document.getElementById("marketplaceImageMobile").src = IMAGES_MOBILE[3];
-      }
-      else
-      {
-        document.getElementById("marketplaceImageWeb").src = IMAGES_WEB[3];
-      }
-
-      document.getElementById("4").style.color = "#3e85f7";
-      document.getElementById("1").style.color = "rgba(161, 194, 250, 0.16)";
-      document.getElementById("2").style.color = "rgba(161, 194, 250, 0.16)";
-      document.getElementById("3").style.color = "rgba(161, 194, 250, 0.16)";
-    })
-
-    //slideshow();
-
-    //setInterval(slideshow, 2000);
+    for (var i = 2; i < 7; i+=1)
+    {
+        let ID = "faq" + i.toString();
+        let index = i.toString();
+        document.getElementById(ID).addEventListener("click", function() {
+            handleClick(index);
+        })
+    }
 });
 
 // When the user scrolls the page, execute myFunction
@@ -145,45 +78,24 @@ function myFunction() {
   }
 }
 
-function slideshow()
+function handleClick(index)
 {
-  if (INDEX == 0)
-  {
-    document.getElementById("1").style.color = "#3e85f7";
-    document.getElementById("2").style.color = "rgba(161, 194, 250, 0.16)";
-    document.getElementById("3").style.color = "rgba(161, 194, 250, 0.16)";
-    document.getElementById("4").style.color = "rgba(161, 194, 250, 0.16)";
-  }
-  else if (INDEX == 1)
-  {
-    document.getElementById("2").style.color = "#3e85f7";
-    document.getElementById("1").style.color = "rgba(161, 194, 250, 0.16)";
-    document.getElementById("3").style.color = "rgba(161, 194, 250, 0.16)";
-    document.getElementById("4").style.color = "rgba(161, 194, 250, 0.16)";
-  }
-  else if (INDEX == 2)
-  {
-    document.getElementById("3").style.color = "#3e85f7";
-    document.getElementById("1").style.color = "rgba(161, 194, 250, 0.16)";
-    document.getElementById("2").style.color = "rgba(161, 194, 250, 0.16)";
-    document.getElementById("4").style.color = "rgba(161, 194, 250, 0.16)";
-  }
-  else if (INDEX == 3)
-  {
-    document.getElementById("4").style.color = "#3e85f7";
-    document.getElementById("1").style.color = "rgba(161, 194, 250, 0.16)";
-    document.getElementById("2").style.color = "rgba(161, 194, 250, 0.16)";
-    document.getElementById("3").style.color = "rgba(161, 194, 250, 0.16)";
-  }
+    let faq = document.getElementById("faq" + index);
+    let icon = document.getElementById("icon" + index);
+    let text = document.getElementById("text" + index);
 
-  if (!isMobile.any())
-  {
-    document.getElementById("marketplaceImageWeb").src = IMAGES_WEB[INDEX];
-  }
-  else
-  {
-    document.getElementById("marketplaceImageMobile").src = IMAGES_MOBILE[INDEX];
-  }
-
-  INDEX = (INDEX + 1) % 4;
+    if (text.style.display != "block")
+    {
+        text.style.display = "block";
+        icon.innerText = "expand_less";
+        icon.style.color = "#3a78f2";
+        faq.style.borderColor = "#007cff";
+    }
+    else
+    {
+        text.style.display = "none";
+        icon.innerText = "expand_more";
+        icon.style.color = "hsla(0, 0%, 53%, 0.40)";
+        faq.style.borderColor = "#e2e0eb";
+    }
 }

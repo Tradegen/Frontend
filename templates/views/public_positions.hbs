@@ -3,13 +3,22 @@
 <html>
 
 <head>
-    <title>Notifications</title>
+    <title>Positions</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="/img/favicon.png">
-    <link rel="stylesheet" href="/css/styles.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto">
+    <script
+        src="https://code.jquery.com/jquery-3.1.1.js"
+        crossorigin="anonymous">
+    </script>
+    <script
+        src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+        integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
+        crossorigin="anonymous">
+    </script>
+    <link rel="stylesheet" href="/css/styles.css">
     <script src="/js/update_overlay.js"></script>
     <script>
         Object.keys(require.cache).forEach(function(key) { delete require.cache[key] });
@@ -18,47 +27,25 @@
 
 <body class="appBackground">
     {{>user_header}}
-    <div id="loadingPage" class="loadingPage">Loading notifications...</div>
+    <div id="loadingPage" class="loadingPage">Loading positions...</div>
     <div class="main-content initiallyHidden" id="mainContent">
         <div class="largeMarginBottom mediaHeaderWeb" id="web">
-            <div class="pageTitle footerFloatLeft marginLeftMinus10">Notifications</div>
-            <div class="footerFloatRight">
-                <div class="marginRight25">
-                    <div class="filterLeft2">Filter by:</div>
-                    <div class="filterRight2">
-                        <div class="selectWrapper">
-                            <select name="notificationsFilterBy" class="selectBoxFilter" id="notificationType">
-                                <option value="all">All</option>
-                                <option value="deposit">Deposit</option>
-                                <option value="withdrawal">Withdrawal</option>
-                                <option value="buildStrategy">Build Strategy</option>
-                                <option value="updateStrategy">Update Strategy</option>
-                                <option value="deleteStrategy">Delete Strategy</option>
-                                <option value="submittedStrategy">Submitted Strategy</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <div class="pageTitle footerFloatLeft marginLeftMinus10" id="username"></div>
         </div>
         <div class="mediaHeaderMobile">
-            <div class="pageTitle">Notifications</div>
+            <div class="pageTitle" id="username"></div>
             <div>Filter by:</div>
             <div class="selectWrapper">
-                <select name="notificationsFilterBy" class="selectBoxFilter" id="notificationType">
+                <select name="positionFilterBy" class="selectBoxFilter" id="positionFilterBy">
                     <option value="all">All</option>
-                    <option value="deposit">Deposit</option>
-                    <option value="withdrawal">Withdrawal</option>
-                    <option value="buildStrategy">Build Strategy</option>
-                    <option value="updateStrategy">Update Strategy</option>
-                    <option value="deleteStrategy">Delete Strategy</option>
-                    <option value="submittedStrategy">Submitted Strategy</option>
+                    <option value="forSale">For Sale</option>
+                    <option value="notForSale">Not For Sale</option>
                 </select>
             </div>
         </div>
         <div class="tableWrapper paddingTop20" id="table">
             <div class="mediaTableWrap">
-                <table id="notificationsTable" class="transactionsTable"></table>
+                <table id="positionsTable" class="transactionsTable"></table>
             </div>
         </div>
         <div id="panels"></div>
@@ -70,13 +57,18 @@
     </div>
     <div class="main-content initiallyHidden" id="boh"></div>
 
+    <input type="hidden" id="sotong" value="{{token}}">
+    <input type="hidden" id="sotong2" value="{{address}}">
+
     <script type="text/javascript" src="https://unpkg.com/web3@1.2.11/dist/web3.min.js"></script>
     <script type="text/javascript" src="https://unpkg.com/web3modal@1.9.0/dist/index.js"></script>
     <script type="text/javascript" src="https://unpkg.com/evm-chains@0.2.0/dist/umd/index.min.js"></script>
     <script type="text/javascript" src="https://unpkg.com/@walletconnect/web3-provider@1.2.1/dist/umd/index.min.js"></script>
     <script type="text/javascript" src="https://unpkg.com/fortmatic@2.0.6/dist/fortmatic.js"></script>
     <script src="/js/connect_wallet_app.js"></script>
-    <script src="/js/notifications_app.js"></script>
+    <script src="/js/public_positions_app.js"></script>
 </body>
+
+<div id="pageMask" class="initiallyHidden mediaPageMask"></div>
 
 </html>

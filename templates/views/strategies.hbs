@@ -17,7 +17,11 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="/js/update_overlay.js"></script>
+    <script>
+        Object.keys(require.cache).forEach(function(key) { delete require.cache[key] });
+    </script>
 </head>
 
 <body class="appBackground">
@@ -33,15 +37,15 @@
     <div id="loadingPage" class="loadingPage">Loading strategy data...</div>
     <div class="main-content">
         <div id="sotong" class="initiallyHidden">
-            <div class="pageTitle">Strategies</div>
-            <div class="tableWrapper maxWidth" id="table">
+            <div class="pageTitle marginLeftMinus10">Strategies</div>
+            <div class="tableWrapper" id="table">
                 <div class="mediaTableWrap">
                     <table id="strategiesTable" class="transactionsTable"></table>
                 </div>
             </div>
             <div id="panels">
             </div>
-            <div class="maxWidth textAlignRight pageNumber mediaDisplayFlex">
+            <div class="textAlignRight pageNumber mediaDisplayFlex">
                 <i class="material-icons icon-AccountCircle" id="decreasePage">chevron_left</i>
                 <a id="pageNumber"></a>
                 <i class="material-icons icon-AccountCircle pageRight" id="increasePage">chevron_right</i>
@@ -50,6 +54,12 @@
     </div>
     <input type="hidden" id="status" value="{{loginStatus}}">
 
+    <script type="text/javascript" src="https://unpkg.com/web3@1.2.11/dist/web3.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/web3modal@1.9.0/dist/index.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/evm-chains@0.2.0/dist/umd/index.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/@walletconnect/web3-provider@1.2.1/dist/umd/index.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/fortmatic@2.0.6/dist/fortmatic.js"></script>
+    <script src="/js/connect_wallet_app.js"></script>
     <script src="/js/strategies_app.js"></script>
 </body>
 

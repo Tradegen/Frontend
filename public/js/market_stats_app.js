@@ -51,7 +51,7 @@ function drawChart2() {
     var dateFormat = new google.visualization.DateFormat({pattern: "MMM d, yyyy"});
 
     let output = [];
-    output.push(['Date', 'Market Cap']);
+    output.push(['Date', 'Total Value Locked']);
 
     for (var i = 0; i < history.length; i+=1)
     {
@@ -61,7 +61,7 @@ function drawChart2() {
             v: date,  
             f: dateFormat.formatValue(date)
         }
-        output.push([options, history[i].marketCap]);
+        output.push([options, history[i].totalValueLocked]);
     }
 
     var data2 = GOOGLE.visualization.arrayToDataTable(output);
@@ -90,7 +90,7 @@ function drawChart2() {
             }
         },
         vAxis: {
-            title: "Market Cap",
+            title: "Total Value Locked (TGEN)",
             titleTextStyle: {
                 fontSize: 16,
                 italic: false
@@ -111,7 +111,7 @@ function drawChart3() {
     var dateFormat = new google.visualization.DateFormat({pattern: "MMM d, yyyy"});
 
     let output = [];
-    output.push(['Date', 'Market Cap']);
+    output.push(['Date', 'Total Value Locked']);
 
     for (var i = 0; i < history.length; i+=1)
     {
@@ -121,7 +121,7 @@ function drawChart3() {
             v: date,  
             f: dateFormat.formatValue(date)
         }
-        output.push([options, history[i].marketCap]);
+        output.push([options, history[i].totalValueLocked]);
     }
 
     var data3 = GOOGLE.visualization.arrayToDataTable(output);
@@ -152,7 +152,7 @@ function drawChart3() {
             }
         },
         vAxis: {
-            title: "Market Cap",
+            title: "Total Value Locked (TGEN)",
             titleTextStyle: {
                 fontSize: 16,
                 italic: false

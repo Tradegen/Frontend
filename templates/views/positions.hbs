@@ -20,45 +20,25 @@
     </script>
     <link rel="stylesheet" href="/css/styles.css">
     <script src="/js/update_overlay.js"></script>
+    <script>
+        Object.keys(require.cache).forEach(function(key) { delete require.cache[key] });
+    </script>
 </head>
 
 <body class="appBackground">
     {{>user_header}}
     <div id="loadingPage" class="loadingPage">Loading positions...</div>
     <div class="main-content initiallyHidden" id="mainContent">
-        <div class="maxWidth80 largeMarginBottom mediaHeaderWeb" id="web">
-            <div class="pageTitle footerFloatLeft">Positions</div>
-            <div class="footerFloatRight">
-                <div class="filterLeft2">Filter by:</div>
-                <div class="filterRight2">
-                    <div class="selectWrapper">
-                        <select name="positionFilterBy" class="selectBoxFilter" id="positionFilterBy">
-                            <option value="all">All</option>
-                            <option value="forSale">For Sale</option>
-                            <option value="notForSale">Not For Sale</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
+        <div class="largeMarginBottom mediaHeaderWeb" id="web">
+            <div class="pageTitle footerFloatLeft marginLeftMinus10">Positions</div>
         </div>
-        <div class="mediaHeaderMobile">
-            <div class="pageTitle">Positions</div>
-            <div>Filter by:</div>
-            <div class="selectWrapper">
-                <select name="positionFilterBy" class="selectBoxFilter" id="positionFilterBy">
-                    <option value="all">All</option>
-                    <option value="forSale">For Sale</option>
-                    <option value="notForSale">Not For Sale</option>
-                </select>
-            </div>
-        </div>
-        <div class="tableWrapper maxWidth paddingTop20" id="table">
+        <div class="tableWrapper paddingTop20" id="table">
             <div class="mediaTableWrap">
                 <table id="positionsTable" class="transactionsTable"></table>
             </div>
         </div>
         <div id="panels"></div>
-        <div class="maxWidth textAlignRight pageNumber mediaDisplayFlex">
+        <div class="textAlignRight pageNumber mediaDisplayFlex">
             <i class="material-icons icon-AccountCircle" id="decreasePage">chevron_left</i>
             <a id="pageNumber"></a>
             <i class="material-icons icon-AccountCircle pageRight" id="increasePage">chevron_right</i>
@@ -66,36 +46,14 @@
     </div>
     <div class="main-content initiallyHidden" id="boh"></div>
 
-    <div id="sellPositionModal" style="display:none">
-        <div class="modalTitle">Sell Position</div>
-        <p>
-            <a class="paymentModalText">Sale price: </a>
-            <input type="number" min="0" max="9999" value="" class="settingsInput extraMarginBottom" name="price" id="price"/>
-            <a class="paymentModalText">QOIN per token</a>
-        </p>
-        <p class="paymentModalText">
-            Your position will be listed in the marketplace. We'll charge a 3% transaction fee when your position sells to help keep the platform running. 
-        </p><br>
-        <button type="button" id="confirm" class="paymentModalYesButton">SELL</button>
-        <button type="button" id="cancel" class="paymentModalCancelButton">CANCEL</button>
-    </div>
-
-    <div id="successModal" style="display:none">
-        <div class="messageModal" id="successTitle">
-            <i class="material-icons marginRight15px messageModalIcon" id="successButton">check_circle_outline</i>
-            <div class="messageModalText">Listed position</div>
-        </div>
-    </div>
-
-    <div id="errorModal" style="display:none">
-        <div class="messageModal" id="errorTitle">
-            <i class="material-icons marginRight15px messageModalIcon" id="errorButton">error_outline</i>
-            <div class="messageModalText" id="errorText">Error</div>
-        </div>
-    </div>
-
     <input type="hidden" id="sotong" value="{{token}}">
 
+    <script type="text/javascript" src="https://unpkg.com/web3@1.2.11/dist/web3.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/web3modal@1.9.0/dist/index.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/evm-chains@0.2.0/dist/umd/index.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/@walletconnect/web3-provider@1.2.1/dist/umd/index.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/fortmatic@2.0.6/dist/fortmatic.js"></script>
+    <script src="/js/connect_wallet_app.js"></script>
     <script src="/js/positions_app.js"></script>
 </body>
 

@@ -17,6 +17,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
@@ -28,31 +29,101 @@
     <div class="main-content mediaWidth75 maxWidth75">
         <div class="pageTitle">Tokens on Tradegen</div>
         <p class="aboutPageContent">
-            Tradegen will provide three types of tokens:
+            Tradegen will provide two types of tokens:
         </p>
         <ul class="aboutPageContent">
             <li class="maxWidth80">
-                <a class="extraWeight">Internal currency “QOIN”: </a>An SPL token on the Solana network.
-                QOIN can be exchanged for SOL on an exchange supporting SPL tokens.
-                QOIN is used for trading tokenized strategies on the Tradegen platform.
+                <a class="extraWeight">Internal currency “TGEN”: </a>An fungible token on the Celo blockchain.
+                TGEN can be exchanged for CELO on Ubeswap (Celo's version of Uniswap) when the platform officially launches.
+                TGEN is used for investing in tokenized strategies, paying transaction fees, and voting for new strategies.
             </li>
             <li class="maxWidth80">
-                <a class="extraWeight">Customized positions: </a>A Non-Fungible Token (NFT) on the Solana network that represents a customized position and all user-created content associated with the position.
-                These tokens can be sold on the Tradegen marketplace in exchange for QOIN. 
-            </li>
-            <li class="maxWidth80">
-                <a class="extraWeight">Strategy tokens: </a>SPL tokens on the Solana network that can only be traded on the Tradegen platform.
-                These tokens fluctuate in value based on the associated strategy’s performance and demand from users. 
+                <a class="extraWeight">Strategy LP tokens: </a>fungible tokens on the Celo blockchain that users receive when they invest in a strategy.
+                These tokens generate yield whenever the associated strategy exits a trade, based on how the strategy performs, and can be traded on Tradegen marketplace.
+                They can be burned whenever users want to withdraw their investment in a strategy. 
             </li>
         </ul>
-        <p class="aboutPageContent marginTop50">
-            Initially 1,000,000,000 QOIN have been minted, with an initial exchange rate of 0.1 SOL per QOIN. The token is distributed as follows:
-        </p>
-        <div class="homePageInfoWrapperLeft">
-            <img src="/img/token_allocation.JPG" class="homePageImage2 mediaMarginTop30">
+
+        <div class="homePageRow howToMakeMoneyRow mediaWidth100Percent">
+            <div class="howToMakeMoneyWrapper">
+                <div class="textAlignCenter2">How to Earn TGEN</div>
+                <div class="howToMakeMoneyInfoRow">
+                    <div class="howToMakeMoneyLeft mediaWidth100Percent">
+                        <i class="material-icons howToMakeMoneyIcon">timeline</i>
+                        <div class="howToMakeMoneySubtitle">Investing in Strategies</div>
+                    </div>
+                    <div class="howToMakeMoneyRight">
+                        <a>Strategies produce yield in TGEN whenever they make a trade.</a>
+                    </div>
+                </div>
+                <div class="howToMakeMoneyInfoRow">
+                    <div class="howToMakeMoneyLeft mediaWidth100Percent">
+                        <i class="material-icons howToMakeMoneyIcon">swap_horiz</i>
+                        <div class="howToMakeMoneySubtitle">Selling Strategy Tokens</div>
+                    </div>
+                    <div class="howToMakeMoneyRight">
+                        <a>Each strategy has fungible tokens you can sell on the Tradegen marketplace.</a>
+                    </div>
+                </div>
+                <div class="howToMakeMoneyInfoRow">
+                    <div class="howToMakeMoneyLeft mediaWidth100Percent">
+                        <i class="material-icons howToMakeMoneyIcon">sell</i>
+                        <div class="howToMakeMoneySubtitle">Publishing Strategies</div>
+                    </div>
+                    <div class="howToMakeMoneyRight">
+                        <a>When you publish a strategy on the platform, you'll collect a 0.3% royalty whenever users invest in your strategy.</a>
+                    </div>
+                </div>
+                <div class="howToMakeMoneyInfoRow">
+                    <div class="howToMakeMoneyLeft mediaWidth100Percent">
+                        <i class="material-icons howToMakeMoneyIcon">supervisor_account</i>
+                        <div class="howToMakeMoneySubtitle">Voting</div>
+                    </div>
+                    <div class="howToMakeMoneyRight">
+                        <a>You'll receive TGEN whenever you vote on new strategies.</a>
+                    </div>
+                </div>
+                <div class="howToMakeMoneyInfoRow">
+                    <div class="howToMakeMoneyLeft mediaWidth100Percent">
+                        <i class="material-icons howToMakeMoneyIcon">payments</i>
+                        <div class="howToMakeMoneySubtitle">Providing Liquidity</div>
+                    </div>
+                    <div class="howToMakeMoneyRight">
+                        <a>When the platform officially launches, you could provide liquidity on Ubeswap and collect TGEN.</a>
+                    </div>
+                </div>
+                <div class="howToMakeMoneyInfoRow">
+                    <div class="howToMakeMoneyLeft mediaWidth100Percent">
+                        <i class="material-icons howToMakeMoneyIcon">laptop_chromebook</i>
+                        <div class="howToMakeMoneySubtitle">Participate in open beta</div>
+                    </div>
+                    <div class="howToMakeMoneyRight">
+                        <a>When you try out our platform in open beta, you'll be eligible for a pre-sale of our tokens at 30% discount before we launch
+                            the decentralized version of our app.
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="homePageInfoWrapperLeft marginTop50">
-            <img src="/img/use_of_proceeds.JPG" class="homePageImage2 mediaMarginTop30">
+
+        <p class="aboutPageContent marginTop50">
+            Initially 1,000,000,000 TGEN have been minted, with an initial exchange rate of 0.1 CELO per TGEN. The token is distributed as follows:
+        </p>
+        <div class="displayProperty mediaHeaderWeb">
+            <div class="homePageInfoWrapperLeft" style="width: 30%">
+                <img src="/img/token_allocation.JPG" class="tokenomicsImage mediaMarginTop30">
+            </div>
+            <div class="homePageInfoWrapperLeft" style="width: 30%">
+                <img src="/img/use_of_proceeds.JPG" class="tokenomicsImage2 mediaMarginTop30">
+            </div>
+        </div>
+        <div class="mediaHeaderMobile" style="margin-left: -10%">
+            <div style="width: 30%">
+                <img src="/img/token_allocation.JPG" class="tokenomicsImage mediaMarginTop30">
+            </div>
+            <div style="width: 30%">
+                <img src="/img/use_of_proceeds.JPG" class="tokenomicsImage2 mediaMarginTop30">
+            </div>
         </div>
         
     </div>

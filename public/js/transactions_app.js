@@ -86,41 +86,21 @@ document.addEventListener("DOMContentLoaded", async function() {
         {
             filterResults("Withdrawal");
         }
-        else if (selectedValue == "purchase")
-        {
-            filterResults("Purchase");
-        }
-        else if (selectedValue == "sale")
-        {
-            filterResults("Sale");
-        }
-        else if (selectedValue == "dividend")
-        {
-            filterResults("Dividend");
-        }
-        else if (selectedValue == "referralIncome")
-        {
-            filterResults("Referral Income");
-        }
         else if (selectedValue == "royalty")
         {
             filterResults("Royalty");
         }
-        else if (selectedValue == "strategySale")
+        else if (selectedValue == "stake")
         {
-            filterResults("Strategy Sale");
+            filterResults("Stake");
         }
-        else if (selectedValue == "listingFee")
+        else if (selectedValue == "unstake")
         {
-            filterResults("Listing fee");
+            filterResults("Unstake");
         }
-        else if (selectedValue == "transactionFee")
+        else if (selectedValue == "faucet")
         {
-            filterResults("Transaction fee");
-        }
-        else if (selectedValue == "tradingBot")
-        {
-            filterResults("Trading Bot");
+            filterResults("Faucet");
         }
     });
 
@@ -160,7 +140,7 @@ function buildTable()
     table_head.appendChild(header_row);
     table.appendChild(table_head);
 
-    const plusTypes = ["Deposit", "Dividend", "Referral Income", "Royalty", "Strategy Sale", "Sale"];
+    const plusTypes = ["Deposit", "Royalty", "Faucet", "Stake"];
 
     let start = (LENGTH - 1) - ((PAGE - 1) * SIZE);
     let end = Math.max(-1, start - SIZE);
@@ -181,6 +161,8 @@ function buildTable()
 
         let plus = (found == true) ? '+' : '-';
 
+        let dateString = new Date(FILTERED_RESULTS[i].timestamp).toLocaleDateString();
+
         let description = document.createElement("td");
         description.innerText = FILTERED_RESULTS[i].description;
         description.setAttribute("class", "marketsTableRowName");
@@ -190,7 +172,7 @@ function buildTable()
         type.setAttribute("class", "marketsTableRowName");
         row.appendChild(type);
         let date = document.createElement("td");
-        date.innerText = FILTERED_RESULTS[i].date;
+        date.innerText = dateString;
         date.setAttribute("class", "marketsTableRowName");
         row.appendChild(date);
         let amount = document.createElement("td");
@@ -231,7 +213,7 @@ function buildPanels()
     const downColor = "#fe3957";
     const upColor = "#00cf92";
 
-    const plusTypes = ["Deposit", "Dividend", "Referral Income", "Royalty", "Strategy Sale", "Sale"];
+    const plusTypes = ["Deposit", "Royalty", "Faucet", "Stake"];
 
     let mainDiv = document.getElementById("panels");
     while (mainDiv.hasChildNodes())
@@ -353,7 +335,7 @@ function buildPanels()
     else
     {
         document.getElementById("boh").style.display = "block";
-        document.getElementById("boh").innerText = "No marketplace listings...yet!";
+        document.getElementById("boh").innerText = "No transactions...yet!";
     }
 }
 

@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     {
         document.getElementById('successButton')
         .addEventListener('click', function(){
-            window.location.href = 'http://localhost:3000/profile';
+            window.location.href = 'https://www.tradegen.io/profile';
         });
     }
 
@@ -82,7 +82,6 @@ document.addEventListener("DOMContentLoaded", async function() {
     document.getElementById("entryButtons").style.textAlign = "center";
     document.getElementById("exitButtons").style.textAlign = "center";
 
-    document.getElementById("symbols").style.display = "none";
     document.getElementById("addEntryConditionModal").style.display = "none";
     document.getElementById("addExitConditionModal").style.display = "none";
 
@@ -112,18 +111,6 @@ document.addEventListener("DOMContentLoaded", async function() {
     document.getElementById("addEntryConditionModalButton").addEventListener('click', addEntryCondition);
     document.getElementById("addExitConditionModalButton").addEventListener('click', addExitCondition);
 
-    document.getElementById("watchlist").addEventListener('change', (event) => {
-        const selectedValue = event.target.value;
-        
-        if (selectedValue == "custom")
-        {
-            document.getElementById("symbols").style.display = "block";
-        }
-        else
-        {
-            document.getElementById("symbols").style.display = "none";
-        }
-    });
 
     let initialListOfEntryConditions = document.getElementById("list_of_entry_conditions").value.split(";");
     let initialListOfExitConditions = document.getElementById("list_of_exit_conditions").value.split(";");
@@ -219,8 +206,7 @@ function addEntryCondition()
         selectedValue += "," + entryConditionSecondIndicatorParameter;
     }
 
-    const allowedValues = ["AtLeastNTimesRange", "AtLeastNTimesVolume", "AtMostNTimesRange", "AtMostNTimesVolume", "UpByAtLeast", "UpByAtMost",
-                            "DownByAtLeast", "DownByAtMost", "FallByAtLeast", "FallByAtMost", "RiseByAtLeast", "RiseByAtMost", "NPercent"];
+    const allowedValues = ["FallByAtLeast", "FallByAtMost", "RiseByAtLeast", "RiseByAtMost", "NPercent"];
     if (ENTRY_CONDITIONS.length > 5)
     {
         document.getElementById("entryConditionModalErrorMessage").style.display = "block";
@@ -237,12 +223,12 @@ function addEntryCondition()
         document.getElementById("entryConditionModalErrorMessage").innerText = "Please enter an integer.";
         document.getElementById("exitConditionModalErrorMessage").innerText = "";
     }
-    else if (!allowedValues.includes(secondIndicator) && (parseInt(entryConditionSecondIndicatorParameter) < 0 || parseInt(entryConditionSecondIndicatorParameter) > 389))
+    else if (!allowedValues.includes(secondIndicator) && (parseInt(entryConditionSecondIndicatorParameter) < 0 || parseInt(entryConditionSecondIndicatorParameter) > 100))
     {
         document.getElementById("entryConditionModalErrorMessage").style.display = "block";
         document.getElementById("exitConditionModalErrorMessage").style.display = "none";
 
-        document.getElementById("entryConditionModalErrorMessage").innerText = "Please enter a number between 0 and 389.";
+        document.getElementById("entryConditionModalErrorMessage").innerText = "Please enter a number between 0 and 100.";
         document.getElementById("exitConditionModalErrorMessage").innerText = "";
     }
     else if (entryConditionSecondIndicatorParameter == "" && document.getElementById("entryConditionSecondIndicatorParameter").style.display == "block")
@@ -293,19 +279,15 @@ function updateEntryConditionTable()
 
         let modifiedName = "";
 
-        if (firstIndicator == "CurrentCandle")
+        if (firstIndicator == "LatestPrice")
         {
-            modifiedName = "Current candle ";
+            modifiedName = "Latest price ";
         }
         else if (firstIndicator == "EMA")
         {
             modifiedName = "EMA" + firstIndicatorParameter.toString() + " ";
         }
-        else if (firstIndicator == "Gap")
-        {
-            modifiedName = "Gap ";
-        }
-        else if (firstIndicator == "NthCandle")
+        else if (firstIndicator == "NthPriceUpdate")
         {
             let suffix = "th";
             if ((firstIndicatorParameter % 10) == 1 && firstIndicatorParameter != 11)
@@ -320,15 +302,11 @@ function updateEntryConditionTable()
             {
                 suffix = "rd";
             }
-            modifiedName = firstIndicatorParameter.toString() + suffix + " candle ";
+            modifiedName = firstIndicatorParameter.toString() + suffix + " price update ";
         }
-        else if (firstIndicator == "PreviousNCandles")
+        else if (firstIndicator == "PreviousNPriceUpdates")
         {
-            modifiedName = "Previous " + firstIndicatorParameter.toString() + " candles ";
-        }
-        else if (firstIndicator == "Signal")
-        {
-            modifiedName = "Signal ";
+            modifiedName = "Previous " + firstIndicatorParameter.toString() + " price updates ";
         }
         else if (firstIndicator == "SMA")
         {
@@ -354,7 +332,7 @@ function updateEntryConditionTable()
         }
         else if (comparator == "Closes")
         {
-            if (firstIndicator == "PreviousNCandles")
+            if (firstIndicator == "PreviousNPriceUpdates")
             {
                 modifiedName += " close ";
             }
@@ -365,7 +343,7 @@ function updateEntryConditionTable()
         }
         else if (comparator == "ClosesAbove")
         {
-            if (firstIndicator == "PreviousNCandles")
+            if (firstIndicator == "PreviousNPriceUpdates")
             {
                 modifiedName += " close above ";
             }
@@ -389,40 +367,9 @@ function updateEntryConditionTable()
         {
             modifiedName += "falls to ";
         }
-        else if (comparator == "Has")
-        {
-            if (firstIndicator == "PreviousNCandles")
-            {
-                modifiedName += " have ";
-            }
-            else
-            {
-                modifiedName += " has ";
-            }
-        }
         else if (comparator == "RisesTo")
         {
             modifiedName += "rises to ";
-        }
-        else if (comparator == "UpByAtLeast")
-        {
-            modifiedName += "up by at least ";
-        }
-        else if (comparator == "UpByAtMost")
-        {
-            modifiedName += "up by at most ";
-        }
-        else if (comparator == "DownByAtLeast")
-        {
-            modifiedName += "down by at least ";
-        }
-        else if (comparator == "DownByAtMost")
-        {
-            modifiedName += "down by at most ";
-        }
-        else if (comparator == "GivenInFirst")
-        {
-            modifiedName += "given in first ";
         }
         else if (comparator == "FallByAtLeast")
         {
@@ -450,23 +397,7 @@ function updateEntryConditionTable()
         }
 
         //check second indicator
-        if (secondIndicator == "AtLeastNTimesRange")
-        {
-            modifiedName += "at least " + secondIndicatorParameter.toString() + " times range";
-        }
-        else if (secondIndicator == "AtLeastNTimesVolume")
-        {
-            modifiedName += "at least " + secondIndicatorParameter.toString() + " times volume";
-        }
-        else if (secondIndicator == "AtMostNTimesRange")
-        {
-            modifiedName += "at most " + secondIndicatorParameter.toString() + " times range";
-        }
-        else if (secondIndicator == "AtMostNTimesVolume")
-        {
-            modifiedName += "at most " + secondIndicatorParameter.toString() + " times volume";
-        }
-        else if (secondIndicator == "Down")
+        if (secondIndicator == "Down")
         {
             modifiedName += "down";
         }
@@ -482,81 +413,37 @@ function updateEntryConditionTable()
         {
             modifiedName += "higher volume";
         }
-        else if (secondIndicator == "HighOfEntryBar")
+        else if (secondIndicator == "HighOfFirstNPriceUpdates")
         {
-            modifiedName += "high of entry bar";
+            modifiedName += "high of first " + secondIndicatorParameter.toString() + " price updates";
         }
-        else if (secondIndicator == "HighOfFirstNMinutes")
+        else if (secondIndicator == "HighOfLastNPriceUpdates")
         {
-            modifiedName += "high of first " + secondIndicatorParameter.toString() + " minutes";
-        }
-        else if (secondIndicator == "HighOfLastNMinutes")
-        {
-            modifiedName += "high of last " + secondIndicatorParameter.toString() + " minutes";
+            modifiedName += "high of last " + secondIndicatorParameter.toString() + " price updates";
         }
         else if (secondIndicator == "Interval")
         {
             modifiedName += "$" + secondIndicatorParameter.toString() + " interval";
         }
-        else if (secondIndicator == "LongBottomTail")
+        else if (secondIndicator == "LowOfFirstNPriceUpdates")
         {
-            modifiedName += "long bottom tail";
+            modifiedName += "low of first " + secondIndicatorParameter.toString() + " price updates";
         }
-        else if (secondIndicator == "LongTopTail")
+        else if (secondIndicator == "LowOfLastNPriceUpdates")
         {
-            modifiedName += "long top tail";
-        }
-        else if (secondIndicator == "LowerRange")
-        {
-            modifiedName += "lower range";
-        }
-        else if (secondIndicator == "LowerVolume")
-        {
-            modifiedName += "lower volume";
-        }
-        else if (secondIndicator == "LowOfEntryBar")
-        {
-            modifiedName += "low of entry bar";
-        }
-        else if (secondIndicator == "LowOfFirstNMinutes")
-        {
-            modifiedName += "low of first " + secondIndicatorParameter.toString() + " minutes";
-        }
-        else if (secondIndicator == "LowOfLastNMinutes")
-        {
-            modifiedName += "low of last " + secondIndicatorParameter.toString() + " minutes";
-        }
-        else if (secondIndicator == "PreviousCandleHigh")
-        {
-            modifiedName += "previous candle high";
-        }
-        else if (secondIndicator == "PreviousCandleLow")
-        {
-            modifiedName += "previous candle low";
-        }
-        else if (secondIndicator == "ProfitTarget")
-        {
-            modifiedName = secondIndicatorParameter.toString() + "% profit target";
+            modifiedName += "low of last " + secondIndicatorParameter.toString() + " price updates";
         }
         else if (secondIndicator == "SMA")
         {
             modifiedName += "SMA" + secondIndicatorParameter.toString();
         }
-        else if (secondIndicator == "StopLoss")
-        {
-            modifiedName = secondIndicatorParameter.toString() + "% stop loss";
-        }
         else if (secondIndicator == "Up")
         {
             modifiedName += "Up";
         }
-        else if (secondIndicator == "VWAP")
+        else if (secondIndicator == "NPriceUpdates")
         {
-            modifiedName += "VWAP" + secondIndicatorParameter.toString();
-        }
-        else if (secondIndicator == "NMinutes")
-        {
-            modifiedName += secondIndicatorParameter.toString() + " minutes";
+            modifiedName += secondIndicatorParameter.toString() + " price updates";
         }
         else if (secondIndicator == "NPercent")
         {
@@ -630,8 +517,7 @@ function addExitCondition()
         selectedValue += "," + exitConditionSecondIndicatorParameter;
     }
 
-    const allowedValues = ["AtLeastNTimesRange", "AtLeastNTimesVolume", "AtMostNTimesRange", "AtMostNTimesVolume", "NPercent",
-                            "DownByAtLeast", "DownByAtMost", "FallByAtLeast", "FallByAtMost", "RiseByAtLeast", "RiseByAtMost", "ProfitTarget", "StopLoss"];
+    const allowedValues = ["NPercent", "FallByAtLeast", "FallByAtMost", "RiseByAtLeast", "RiseByAtMost"];
     if (EXIT_CONDITIONS.length > 5)
     {
         document.getElementById("entryConditionModalErrorMessage").style.display = "block";
@@ -648,12 +534,12 @@ function addExitCondition()
         document.getElementById("entryConditionModalErrorMessage").innerText = "Please enter an integer";
         document.getElementById("exitConditionModalErrorMessage").innerText = "";
     }
-    else if (!allowedValues.includes(secondIndicator) && (parseInt(exitConditionSecondIndicatorParameter) < 0 || parseInt(exitConditionSecondIndicatorParameter) > 389))
+    else if (!allowedValues.includes(secondIndicator) && (parseInt(exitConditionSecondIndicatorParameter) < 0 || parseInt(exitConditionSecondIndicatorParameter) > 100))
     {
         document.getElementById("entryConditionModalErrorMessage").style.display = "block";
         document.getElementById("exitConditionModalErrorMessage").style.display = "none";
 
-        document.getElementById("entryConditionModalErrorMessage").innerText = "Please enter a number between 0 and 389.";
+        document.getElementById("entryConditionModalErrorMessage").innerText = "Please enter a number between 0 and 100.";
         document.getElementById("exitConditionModalErrorMessage").innerText = "";
     }
     else if (exitConditionSecondIndicatorParameter == "" && document.getElementById("exitConditionSecondIndicatorParameter").style.display == "block")
@@ -704,19 +590,15 @@ function updateExitConditionTable()
 
         let modifiedName = "";
 
-        if (firstIndicator == "CurrentCandle")
+        if (firstIndicator == "LatestPrice")
         {
-            modifiedName = "Current candle ";
+            modifiedName = "Latest price ";
         }
         else if (firstIndicator == "EMA")
         {
             modifiedName = "EMA" + firstIndicatorParameter.toString() + " ";
         }
-        else if (firstIndicator == "Gap")
-        {
-            modifiedName = "Gap ";
-        }
-        else if (firstIndicator == "NthCandle")
+        else if (firstIndicator == "NthPriceUpdate")
         {
             let suffix = "th";
             if ((firstIndicatorParameter % 10) == 1 && firstIndicatorParameter != 11)
@@ -731,15 +613,11 @@ function updateExitConditionTable()
             {
                 suffix = "rd";
             }
-            modifiedName = firstIndicatorParameter.toString() + suffix + " candle ";
+            modifiedName = firstIndicatorParameter.toString() + suffix + " price update ";
         }
-        else if (firstIndicator == "PreviousNCandles")
+        else if (firstIndicator == "PreviousNPriceUpdates")
         {
-            modifiedName = "Previous " + firstIndicatorParameter.toString() + " candles ";
-        }
-        else if (firstIndicator == "Signal")
-        {
-            modifiedName = "Signal ";
+            modifiedName = "Previous " + firstIndicatorParameter.toString() + " price updates ";
         }
         else if (firstIndicator == "SMA")
         {
@@ -765,7 +643,7 @@ function updateExitConditionTable()
         }
         else if (comparator == "Closes")
         {
-            if (firstIndicator == "PreviousNCandles")
+            if (firstIndicator == "PreviousNPriceUpdates")
             {
                 modifiedName += " close ";
             }
@@ -776,7 +654,7 @@ function updateExitConditionTable()
         }
         else if (comparator == "ClosesAbove")
         {
-            if (firstIndicator == "PreviousNCandles")
+            if (firstIndicator == "PreviousNPriceUpdates")
             {
                 modifiedName += " close above ";
             }
@@ -787,7 +665,7 @@ function updateExitConditionTable()
         }
         else if (comparator == "ClosesBelow")
         {
-            if (firstIndicator == "PreviousNCandles")
+            if (firstIndicator == "PreviousNPriceUpdates")
             {
                 modifiedName += " close below ";
             }
@@ -800,40 +678,9 @@ function updateExitConditionTable()
         {
             modifiedName += "falls to ";
         }
-        else if (comparator == "Has")
-        {
-            if (firstIndicator == "PreviousNCandles")
-            {
-                modifiedName += " have ";
-            }
-            else
-            {
-                modifiedName += " has ";
-            }
-        }
         else if (comparator == "RisesTo")
         {
             modifiedName += "rises to ";
-        }
-        else if (comparator == "UpByAtLeast")
-        {
-            modifiedName += "up by at least ";
-        }
-        else if (comparator == "UpByAtMost")
-        {
-            modifiedName += "up by at most ";
-        }
-        else if (comparator == "DownByAtLeast")
-        {
-            modifiedName += "down by at least ";
-        }
-        else if (comparator == "DownByAtMost")
-        {
-            modifiedName += "down by at most ";
-        }
-        else if (comparator == "GivenInFirst")
-        {
-            modifiedName += "given in first ";
         }
         else if (comparator == "FallByAtLeast")
         {
@@ -861,23 +708,7 @@ function updateExitConditionTable()
         }
 
         //check second indicator
-        if (secondIndicator == "AtLeastNTimesRange")
-        {
-            modifiedName += "at least " + secondIndicatorParameter.toString() + " times range";
-        }
-        else if (secondIndicator == "AtLeastNTimesVolume")
-        {
-            modifiedName += "at least " + secondIndicatorParameter.toString() + " times volume";
-        }
-        else if (secondIndicator == "AtMostNTimesRange")
-        {
-            modifiedName += "at most " + secondIndicatorParameter.toString() + " times range";
-        }
-        else if (secondIndicator == "AtMostNTimesVolume")
-        {
-            modifiedName += "at most " + secondIndicatorParameter.toString() + " times volume";
-        }
-        else if (secondIndicator == "Down")
+        if (secondIndicator == "Down")
         {
             modifiedName += "down";
         }
@@ -885,65 +716,25 @@ function updateExitConditionTable()
         {
             modifiedName += "EMA" + secondIndicatorParameter.toString();
         }
-        else if (secondIndicator == "HigherRange")
+        else if (secondIndicator == "HighOfFirstNPriceUpdates")
         {
-            modifiedName += "higher range";
+            modifiedName += "high of first " + secondIndicatorParameter.toString() + " price updates";
         }
-        else if (secondIndicator == "HigherVolume")
+        else if (secondIndicator == "HighOfLastNPriceUpdates")
         {
-            modifiedName += "higher volume";
-        }
-        else if (secondIndicator == "HighOfEntryBar")
-        {
-            modifiedName += "high of entry bar";
-        }
-        else if (secondIndicator == "HighOfFirstNMinutes")
-        {
-            modifiedName += "high of first " + secondIndicatorParameter.toString() + " minutes";
-        }
-        else if (secondIndicator == "HighOfLastNMinutes")
-        {
-            modifiedName += "high of last " + secondIndicatorParameter.toString() + " minutes";
+            modifiedName += "high of last " + secondIndicatorParameter.toString() + " price updates";
         }
         else if (secondIndicator == "Interval")
         {
             modifiedName += "$" + secondIndicatorParameter.toString() + " interval";
         }
-        else if (secondIndicator == "LongBottomTail")
+        else if (secondIndicator == "LowOfFirstNPriceUpdates")
         {
-            modifiedName += "long bottom tail";
+            modifiedName += "low of first " + secondIndicatorParameter.toString() + " price updates";
         }
-        else if (secondIndicator == "LongTopTail")
+        else if (secondIndicator == "LowOfLastNPriceUpdates")
         {
-            modifiedName += "long top tail";
-        }
-        else if (secondIndicator == "LowerRange")
-        {
-            modifiedName += "lower range";
-        }
-        else if (secondIndicator == "LowerVolume")
-        {
-            modifiedName += "lower volume";
-        }
-        else if (secondIndicator == "LowOfEntryBar")
-        {
-            modifiedName += "low of entry bar";
-        }
-        else if (secondIndicator == "LowOfFirstNMinutes")
-        {
-            modifiedName += "low of first " + secondIndicatorParameter.toString() + " minutes";
-        }
-        else if (secondIndicator == "LowOfLastNMinutes")
-        {
-            modifiedName += "low of last " + secondIndicatorParameter.toString() + " minutes";
-        }
-        else if (secondIndicator == "PreviousCandleHigh")
-        {
-            modifiedName += "previous candle high";
-        }
-        else if (secondIndicator == "PreviousCandleLow")
-        {
-            modifiedName += "previous candle low";
+            modifiedName += "low of last " + secondIndicatorParameter.toString() + " price updates";
         }
         else if (secondIndicator == "SMA")
         {
@@ -953,25 +744,13 @@ function updateExitConditionTable()
         {
             modifiedName += "Up";
         }
-        else if (secondIndicator == "VWAP")
+        else if (secondIndicator == "NPriceUpdates")
         {
-            modifiedName += "VWAP" + secondIndicatorParameter.toString();
-        }
-        else if (secondIndicator == "NMinutes")
-        {
-            modifiedName += secondIndicatorParameter.toString() + " minutes";
+            modifiedName += secondIndicatorParameter.toString() + " price updates";
         }
         else if (secondIndicator == "NPercent")
         {
             modifiedName += secondIndicatorParameter.toString() + "%";
-        }
-        else if (secondIndicator == "ProfitTarget")
-        {
-            modifiedName = secondIndicatorParameter.toString() + "% Profit target";
-        }
-        else if (secondIndicator == "StopLoss")
-        {
-            modifiedName = secondIndicatorParameter.toString() + "% Stop loss";
         }
 
         let row = document.createElement("tr");
@@ -1033,9 +812,9 @@ document.getElementById("firstIndicatorEntry").addEventListener('change', functi
     let options = [];
     let options2 = [];
 
-    if (selectedValue == "CurrentCandle")
+    if (selectedValue == "LatestPrice")
     {
-        options = makeComparatorsEntryCurrentCandle();
+        options = makeComparatorsEntryLatestPrice();
         options2 = makeOptionsEntryBouncesHigherOff();
 
         document.getElementById("entryConditionSecondIndicatorParameter").style.display = "block";
@@ -1071,23 +850,9 @@ document.getElementById("firstIndicatorEntry").addEventListener('change', functi
         firstIndicatorInput.style.marginTop = "15px";
         firstIndicatorDiv.appendChild(firstIndicatorInput);
     }
-    else if (selectedValue == "Gap")
+    else if (selectedValue == "NthPriceUpdate")
     {
-        options = makeComparatorsEntryGap();
-        options2 = makeOptionsEntryGap();
-
-        document.getElementById("entryConditionSecondIndicatorParameter").style.display = "block";
-        document.getElementById("entryConditionSecondIndicatorParameter").value = "";
-        document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "Percent gap";
-
-        if (document.getElementById("entryConditionFirstIndicatorParameter"))
-        {
-            document.getElementById("entryConditionFirstIndicatorParameter").remove();
-        }
-    }
-    else if (selectedValue == "NthCandle")
-    {
-        options = makeComparatorsEntryCurrentCandle();
+        options = makeComparatorsEntryPriceUpdate();
         options2 = makeOptionsEntryBouncesHigherOff();
 
         document.getElementById("entryConditionSecondIndicatorParameter").style.display = "block";
@@ -1105,13 +870,13 @@ document.getElementById("firstIndicatorEntry").addEventListener('change', functi
         firstIndicatorInput.setAttribute("class", "strategyExplorerText");
         firstIndicatorInput.setAttribute("name", "entryConditionFirstIndicatorParameter");
         firstIndicatorInput.setAttribute("id", "entryConditionFirstIndicatorParameter");
-        firstIndicatorInput.setAttribute("placeholder", "Number of candles");
+        firstIndicatorInput.setAttribute("placeholder", "Number of price updates");
         firstIndicatorInput.style.marginTop = "15px";
         firstIndicatorDiv.appendChild(firstIndicatorInput);
     }
-    else if (selectedValue == "PreviousNCandles")
+    else if (selectedValue == "PreviousNPriceUpdates")
     {
-        options = makeComparatorsEntryPreviousNCandles();
+        options = makeComparatorsEntryPreviousNPriceUpdates();
         options2 = makeOptionsEntryCloses();
 
         document.getElementById("entryConditionSecondIndicatorParameter").style.display = "none";
@@ -1129,23 +894,9 @@ document.getElementById("firstIndicatorEntry").addEventListener('change', functi
         firstIndicatorInput.setAttribute("class", "strategyExplorerText");
         firstIndicatorInput.setAttribute("name", "entryConditionFirstIndicatorParameter");
         firstIndicatorInput.setAttribute("id", "entryConditionFirstIndicatorParameter");
-        firstIndicatorInput.setAttribute("placeholder", "Number of candles");
+        firstIndicatorInput.setAttribute("placeholder", "Number of price updates");
         firstIndicatorInput.style.marginTop = "15px";
         firstIndicatorDiv.appendChild(firstIndicatorInput);
-    }
-    else if (selectedValue == "Signal")
-    {
-        options = makeComparatorsEntrySignal();
-        options2 = makeOptionsEntrySignal();
-
-        document.getElementById("entryConditionSecondIndicatorParameter").style.display = "block";
-        document.getElementById("entryConditionSecondIndicatorParameter").value = "";
-        document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "Number of minutes";
-
-        if (document.getElementById("entryConditionFirstIndicatorParameter"))
-        {
-            document.getElementById("entryConditionFirstIndicatorParameter").remove();
-        }
     }
     else if (selectedValue == "SMA")
     {
@@ -1190,47 +941,7 @@ document.getElementById("secondIndicatorEntry").addEventListener('change', funct
     document.getElementById("entryConditionModalErrorMessage").innerText = "";
     document.getElementById("exitConditionModalErrorMessage").innerText = "";
     
-    if (selectedValue == "AtLeastNTimesRange")
-    {
-        document.getElementById("entryConditionSecondIndicatorParameter").style.display = "block";
-
-        document.getElementById("entryConditionSecondIndicatorParameter").value = "";
-
-        document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "";
-
-        document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "Multiplier";
-    }
-    else if (selectedValue == "AtLeastNTimesVolume")
-    {
-        document.getElementById("entryConditionSecondIndicatorParameter").style.display = "block";
-
-        document.getElementById("entryConditionSecondIndicatorParameter").value = "";
-
-        document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "";
-
-        document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "Multiplier";
-    }
-    else if (selectedValue == "AtMostNTimesRange")
-    {
-        document.getElementById("entryConditionSecondIndicatorParameter").style.display = "block";
-
-        document.getElementById("entryConditionSecondIndicatorParameter").value = "";
-
-        document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "";
-
-        document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "Multiplier";
-    }
-    else if (selectedValue == "AtMostNTimesVolume")
-    {
-        document.getElementById("entryConditionSecondIndicatorParameter").style.display = "block";
-
-        document.getElementById("entryConditionSecondIndicatorParameter").value = "";
-
-        document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "";
-
-        document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "Multiplier";
-    }
-    else if (selectedValue == "EMA")
+    if (selectedValue == "EMA")
     {
         document.getElementById("entryConditionSecondIndicatorParameter").style.display = "block";
 
@@ -1240,7 +951,7 @@ document.getElementById("secondIndicatorEntry").addEventListener('change', funct
 
         document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "EMA period";
     }
-    else if (selectedValue == "HighOfFirstNMinutes")
+    else if (selectedValue == "HighOfFirstNPriceUpdates")
     {
         document.getElementById("entryConditionSecondIndicatorParameter").style.display = "block";
 
@@ -1248,9 +959,9 @@ document.getElementById("secondIndicatorEntry").addEventListener('change', funct
 
         document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "";
 
-        document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "Number of minutes";
+        document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "Number of price updates";
     }
-    else if (selectedValue == "HighOfLastNMinutes")
+    else if (selectedValue == "HighOfLastNPriceUpdates")
     {
         document.getElementById("entryConditionSecondIndicatorParameter").style.display = "block";
 
@@ -1258,7 +969,7 @@ document.getElementById("secondIndicatorEntry").addEventListener('change', funct
 
         document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "";
 
-        document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "Number of minutes";
+        document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "Number of price updates";
     }
     else if (selectedValue == "Interval")
     {
@@ -1270,7 +981,7 @@ document.getElementById("secondIndicatorEntry").addEventListener('change', funct
 
         document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "Price interval";
     }
-    else if (selectedValue == "LowOfFirstNMinutes")
+    else if (selectedValue == "LowOfFirstNPriceUpdates")
     {
         document.getElementById("entryConditionSecondIndicatorParameter").style.display = "block";
 
@@ -1278,9 +989,9 @@ document.getElementById("secondIndicatorEntry").addEventListener('change', funct
 
         document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "";
 
-        document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "Number of minutes";
+        document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "Number of price updates";
     }
-    else if (selectedValue == "LowOfLastNMinutes")
+    else if (selectedValue == "LowOfLastNPriceUpdates")
     {
         document.getElementById("entryConditionSecondIndicatorParameter").style.display = "block";
 
@@ -1288,7 +999,7 @@ document.getElementById("secondIndicatorEntry").addEventListener('change', funct
 
         document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "";
 
-        document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "Number of minutes";
+        document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "Number of price updates";
     }
     else if (selectedValue == "SMA")
     {
@@ -1299,56 +1010,6 @@ document.getElementById("secondIndicatorEntry").addEventListener('change', funct
         document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "";
 
         document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "SMA period";
-    }
-    else if (selectedValue == "VWAP")
-    {
-        document.getElementById("entryConditionSecondIndicatorParameter").style.display = "block";
-
-        document.getElementById("entryConditionSecondIndicatorParameter").value = "";
-
-        document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "";
-
-        document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "VWAP period";
-    }
-    else if (selectedValue == "UpByAtLeast")
-    {
-        document.getElementById("entryConditionSecondIndicatorParameter").style.display = "block";
-
-        document.getElementById("entryConditionSecondIndicatorParameter").value = "";
-
-        document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "";
-
-        document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "Percent gap";
-    }
-    else if (selectedValue == "UpByAtMost")
-    {
-        document.getElementById("entryConditionSecondIndicatorParameter").style.display = "block";
-
-        document.getElementById("entryConditionSecondIndicatorParameter").value = "";
-
-        document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "";
-
-        document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "Percent gap";
-    }
-    else if (selectedValue == "DownByAtLeast")
-    {
-        document.getElementById("entryConditionSecondIndicatorParameter").style.display = "block";
-
-        document.getElementById("entryConditionSecondIndicatorParameter").value = "";
-
-        document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "";
-
-        document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "Percent gap";
-    }
-    else if (selectedValue == "DownByAtMost")
-    {
-        document.getElementById("entryConditionSecondIndicatorParameter").style.display = "block";
-
-        document.getElementById("entryConditionSecondIndicatorParameter").value = "";
-
-        document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "";
-
-        document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "Percent gap";
     }
     else if (selectedValue == "FallByAtLeast")
     {
@@ -1419,9 +1080,9 @@ document.getElementById("firstIndicatorExit").addEventListener('change', functio
     let options = [];
     let options2 = [];
 
-    if (selectedValue == "CurrentCandle")
+    if (selectedValue == "LatestPrice")
     {
-        options = makeComparatorsExitCurrentCandle();
+        options = makeComparatorsExitLatestPrice();
         options2 = makeOptionsExitBouncesHigherOff();
 
         document.getElementById("exitConditionSecondIndicatorParameter").style.display = "block";
@@ -1457,9 +1118,9 @@ document.getElementById("firstIndicatorExit").addEventListener('change', functio
         firstIndicatorInput.style.marginTop = "15px";
         firstIndicatorDiv.appendChild(firstIndicatorInput);
     }
-    else if (selectedValue == "NthCandle")
+    else if (selectedValue == "NthPriceUpdate")
     {
-        options = makeComparatorsExitCurrentCandle();
+        options = makeComparatorsExitLatestPrice();
         options2 = makeOptionsExitBouncesHigherOff();
 
         document.getElementById("exitConditionSecondIndicatorParameter").style.display = "block";
@@ -1477,13 +1138,13 @@ document.getElementById("firstIndicatorExit").addEventListener('change', functio
         firstIndicatorInput.setAttribute("class", "strategyExplorerText");
         firstIndicatorInput.setAttribute("name", "exitConditionFirstIndicatorParameter");
         firstIndicatorInput.setAttribute("id", "exitConditionFirstIndicatorParameter");
-        firstIndicatorInput.setAttribute("placeholder", "Number of candles");
+        firstIndicatorInput.setAttribute("placeholder", "Number of price updates");
         firstIndicatorInput.style.marginTop = "15px";
         firstIndicatorDiv.appendChild(firstIndicatorInput);
     }
-    else if (selectedValue == "PreviousNCandles")
+    else if (selectedValue == "PreviousNPriceUpdates")
     {
-        options = makeComparatorsExitPreviousNCandles();
+        options = makeComparatorsExitPreviousNPriceUpdates();
         options2 = makeOptionsExitCloses();
 
         document.getElementById("exitConditionSecondIndicatorParameter").style.display = "none";
@@ -1501,7 +1162,7 @@ document.getElementById("firstIndicatorExit").addEventListener('change', functio
         firstIndicatorInput.setAttribute("class", "strategyExplorerText");
         firstIndicatorInput.setAttribute("name", "exitConditionFirstIndicatorParameter");
         firstIndicatorInput.setAttribute("id", "exitConditionFirstIndicatorParameter");
-        firstIndicatorInput.setAttribute("placeholder", "Number of candles");
+        firstIndicatorInput.setAttribute("placeholder", "Number of price updates");
         firstIndicatorInput.style.marginTop = "15px";
         firstIndicatorDiv.appendChild(firstIndicatorInput);
     }
@@ -1548,47 +1209,7 @@ document.getElementById("secondIndicatorExit").addEventListener('change', functi
     document.getElementById("entryConditionModalErrorMessage").innerText = "";
     document.getElementById("exitConditionModalErrorMessage").innerText = "";
     
-    if (selectedValue == "AtLeastNTimesRange")
-    {
-        document.getElementById("exitConditionSecondIndicatorParameter").style.display = "block";
-
-        document.getElementById("exitConditionSecondIndicatorParameter").value = "";
-
-        document.getElementById("exitConditionSecondIndicatorParameter").placeholder = "";
-
-        document.getElementById("exitConditionSecondIndicatorParameter").placeholder = "Multiplier";
-    }
-    else if (selectedValue == "AtLeastNTimesVolume")
-    {
-        document.getElementById("exitConditionSecondIndicatorParameter").style.display = "block";
-
-        document.getElementById("exitConditionSecondIndicatorParameter").value = "";
-
-        document.getElementById("exitConditionSecondIndicatorParameter").placeholder = "";
-
-        document.getElementById("exitConditionSecondIndicatorParameter").placeholder = "Multiplier";
-    }
-    else if (selectedValue == "AtMostNTimesRange")
-    {
-        document.getElementById("exitConditionSecondIndicatorParameter").style.display = "block";
-
-        document.getElementById("exitConditionSecondIndicatorParameter").value = "";
-
-        document.getElementById("exitConditionSecondIndicatorParameter").placeholder = "";
-
-        document.getElementById("exitConditionSecondIndicatorParameter").placeholder = "Multiplier";
-    }
-    else if (selectedValue == "AtMostNTimesVolume")
-    {
-        document.getElementById("exitConditionSecondIndicatorParameter").style.display = "block";
-
-        document.getElementById("exitConditionSecondIndicatorParameter").value = "";
-
-        document.getElementById("exitConditionSecondIndicatorParameter").placeholder = "";
-
-        document.getElementById("exitConditionSecondIndicatorParameter").placeholder = "Multiplier";
-    }
-    else if (selectedValue == "EMA")
+    if (selectedValue == "EMA")
     {
         document.getElementById("exitConditionSecondIndicatorParameter").style.display = "block";
 
@@ -1598,7 +1219,7 @@ document.getElementById("secondIndicatorExit").addEventListener('change', functi
 
         document.getElementById("exitConditionSecondIndicatorParameter").placeholder = "EMA period";
     }
-    else if (selectedValue == "HighOfFirstNMinutes")
+    else if (selectedValue == "HighOfFirstNPriceUpdates")
     {
         document.getElementById("exitConditionSecondIndicatorParameter").style.display = "block";
 
@@ -1606,9 +1227,9 @@ document.getElementById("secondIndicatorExit").addEventListener('change', functi
 
         document.getElementById("exitConditionSecondIndicatorParameter").placeholder = "";
 
-        document.getElementById("exitConditionSecondIndicatorParameter").placeholder = "Number of minutes";
+        document.getElementById("exitConditionSecondIndicatorParameter").placeholder = "Number of price updates";
     }
-    else if (selectedValue == "HighOfLastNMinutes")
+    else if (selectedValue == "HighOfLastNPriceUpdates")
     {
         document.getElementById("exitConditionSecondIndicatorParameter").style.display = "block";
 
@@ -1616,7 +1237,7 @@ document.getElementById("secondIndicatorExit").addEventListener('change', functi
 
         document.getElementById("exitConditionSecondIndicatorParameter").placeholder = "";
 
-        document.getElementById("exitConditionSecondIndicatorParameter").placeholder = "Number of minutes";
+        document.getElementById("exitConditionSecondIndicatorParameter").placeholder = "Number of price updates";
     }
     else if (selectedValue == "Interval")
     {
@@ -1628,7 +1249,7 @@ document.getElementById("secondIndicatorExit").addEventListener('change', functi
 
         document.getElementById("exitConditionSecondIndicatorParameter").placeholder = "Price interval";
     }
-    else if (selectedValue == "LowOfFirstNMinutes")
+    else if (selectedValue == "LowOfFirstNPriceUpdates")
     {
         document.getElementById("exitConditionSecondIndicatorParameter").style.display = "block";
 
@@ -1636,9 +1257,9 @@ document.getElementById("secondIndicatorExit").addEventListener('change', functi
 
         document.getElementById("exitConditionSecondIndicatorParameter").placeholder = "";
 
-        document.getElementById("exitConditionSecondIndicatorParameter").placeholder = "Number of minutes";
+        document.getElementById("exitConditionSecondIndicatorParameter").placeholder = "Number of price updates";
     }
-    else if (selectedValue == "LowOfLastNMinutes")
+    else if (selectedValue == "LowOfLastNPriceUpdates")
     {
         document.getElementById("exitConditionSecondIndicatorParameter").style.display = "block";
 
@@ -1646,17 +1267,7 @@ document.getElementById("secondIndicatorExit").addEventListener('change', functi
 
         document.getElementById("exitConditionSecondIndicatorParameter").placeholder = "";
 
-        document.getElementById("exitConditionSecondIndicatorParameter").placeholder = "Number of minutes";
-    }
-    else if (selectedValue == "ProfitTarget")
-    {
-        document.getElementById("exitConditionSecondIndicatorParameter").style.display = "block";
-
-        document.getElementById("exitConditionSecondIndicatorParameter").value = "";
-
-        document.getElementById("exitConditionSecondIndicatorParameter").placeholder = "";
-
-        document.getElementById("exitConditionSecondIndicatorParameter").placeholder = "% profit target";
+        document.getElementById("exitConditionSecondIndicatorParameter").placeholder = "Number of price updates";
     }
     else if (selectedValue == "SMA")
     {
@@ -1667,26 +1278,6 @@ document.getElementById("secondIndicatorExit").addEventListener('change', functi
         document.getElementById("exitConditionSecondIndicatorParameter").placeholder = "";
 
         document.getElementById("exitConditionSecondIndicatorParameter").placeholder = "SMA period";
-    }
-    else if (selectedValue == "StopLoss")
-    {
-        document.getElementById("exitConditionSecondIndicatorParameter").style.display = "block";
-
-        document.getElementById("exitConditionSecondIndicatorParameter").value = "";
-
-        document.getElementById("exitConditionSecondIndicatorParameter").placeholder = "";
-
-        document.getElementById("exitConditionSecondIndicatorParameter").placeholder = "% stop loss";
-    }
-    else if (selectedValue == "VWAP")
-    {
-        document.getElementById("exitConditionSecondIndicatorParameter").style.display = "block";
-
-        document.getElementById("exitConditionSecondIndicatorParameter").value = "";
-
-        document.getElementById("exitConditionSecondIndicatorParameter").placeholder = "";
-
-        document.getElementById("exitConditionSecondIndicatorParameter").placeholder = "VWAP period";
     }
     else if (selectedValue == "FallByAtLeast")
     {
@@ -1741,7 +1332,7 @@ document.getElementById("secondIndicatorExit").addEventListener('change', functi
 document.getElementById("entryConditionSecondIndicatorParameter").addEventListener("input", function() {
     let value = document.getElementById("entryConditionSecondIndicatorParameter").value;
 
-    if (parseFloat(value) > 389)
+    if (parseFloat(value) > 100)
     {
         value = value.slice(0, value.length - 1);
     }
@@ -1757,7 +1348,7 @@ document.getElementById("entryConditionSecondIndicatorParameter").addEventListen
 document.getElementById("exitConditionSecondIndicatorParameter").addEventListener("input", function() {
     let value = document.getElementById("exitConditionSecondIndicatorParameter").value;
 
-    if (parseFloat(value) > 389)
+    if (parseFloat(value) > 100)
     {
         value = value.slice(0, value.length - 1);
     }
@@ -1798,72 +1389,8 @@ document.getElementById("description").addEventListener("input", function() {
     document.getElementById("description").value = value;    
 });
 
-document.getElementById("symbols").addEventListener("input", function() {
-    let value = document.getElementById("symbols").value;
-    let character = value.charAt(value.length - 1);
-
-    const allowedCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ,';
-    let found = false;
-    for (var i = 0; i < 27; i+=1)
-    {
-        if (allowedCharacters.charAt(i) == character)
-        {
-            found = true;
-            break;
-        }
-    }
-
-    if (value.length > 100)
-    {
-        value = value.slice(0, 100);
-    }
-    else if (!found)
-    {
-        value = value.slice(0, value.length - 1);
-    }
-    
-    if (value.length == 1 && character == ',')
-    {
-        value = value.slice(0, 0);
-    }
-    else if (value.length > 1 && character == ',' && value.charAt(value.length - 2) == ',')
-    {
-        value = value.slice(0, value.length - 1);
-    }
-
-    document.getElementById("symbols").value = value;  
-});
-
-document.getElementById("maxAllocation").addEventListener("keydown", function() {
-    if(event.key==='.')
-    {
-        event.preventDefault();
-    }
-});
-
-document.getElementById("maxConcurrentTrades").addEventListener("keydown", function() {
-    if(event.key==='.')
-    {
-        event.preventDefault();
-    }
-});
-
-document.getElementById("startTime").addEventListener("keydown", function() {
-    if(event.key==='.')
-    {
-        event.preventDefault();
-    }
-});
-
-document.getElementById("endTime").addEventListener("keydown", function() {
-    if(event.key==='.')
-    {
-        event.preventDefault();
-    }
-});
-
-document.getElementById("maxAllocation").addEventListener("input", function() {
-    let value = document.getElementById("maxAllocation").value;
+document.getElementById("maxTradeDuration").addEventListener("input", function() {
+    let value = document.getElementById("maxTradeDuration").value;
 
     if (value.length > 2)
     {
@@ -1880,39 +1407,19 @@ document.getElementById("maxAllocation").addEventListener("input", function() {
         value = "";
     }
 
-    let allocationValue = (value == "") ? 0 : parseInt(value);
+    let durationValue = (value == "") ? 0 : parseInt(value);
 
-    document.getElementById("maxAllocation").value = allocationValue;    
+    document.getElementById("maxTradeDuration").value = durationValue;    
 });
 
-document.getElementById("maxConcurrentTrades").addEventListener("input", function() {
-    let value = document.getElementById("maxConcurrentTrades").value;
+document.getElementById("profitTarget").addEventListener("input", function() {
+    let value = document.getElementById("maxTradeDuration").value;
 
-    if (value.length > 1)
-    {
-        value = value.slice(0, 1);
-    }
-
-    if (value.length == 0)
-    {
-        value = "";
-    }
-
-    let newValue = (value == "") ? 0 : parseInt(value);
-
-    document.getElementById("maxConcurrentTrades").value = (value == "") ? value : newValue;    
-});
-
-document.getElementById("startTime").addEventListener("input", function() {
-    let value = document.getElementById("startTime").value;
-
-    if (value.length > 3)
+    if (value.length > 2)
     {
         value = value.slice(0, 3);
-    }
-    else if (value.length == 3)
-    {
-        if (parseInt(value) > 389)
+
+        if (value != "100")
         {
             value = value.slice(0, 2);
         }
@@ -1923,21 +1430,19 @@ document.getElementById("startTime").addEventListener("input", function() {
         value = "";
     }
 
-    let newValue = (value == "") ? 0 : parseInt(value);
+    let durationValue = (value == "") ? 0 : parseInt(value);
 
-    document.getElementById("startTime").value = newValue;    
+    document.getElementById("profitTarget").value = durationValue;    
 });
 
-document.getElementById("endTime").addEventListener("input", function() {
-    let value = document.getElementById("endTime").value;
+document.getElementById("stopLoss").addEventListener("input", function() {
+    let value = document.getElementById("stopLoss").value;
 
-    if (value.length > 3)
+    if (value.length > 2)
     {
         value = value.slice(0, 3);
-    }
-    else if (value.length == 3)
-    {
-        if (parseInt(value) > 389)
+
+        if (value != "100")
         {
             value = value.slice(0, 2);
         }
@@ -1948,9 +1453,9 @@ document.getElementById("endTime").addEventListener("input", function() {
         value = "";
     }
 
-    let newValue = (value == "") ? 0 : parseInt(value);
+    let durationValue = (value == "") ? 0 : parseInt(value);
 
-    document.getElementById("endTime").value = newValue;    
+    document.getElementById("stopLoss").value = durationValue;    
 });
 
 function hideEntryConditionModal() 
@@ -1990,7 +1495,7 @@ function displaySuccessModal()
             $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
             setTimeout(function () {
                 $("#successModal").dialog("close");
-                window.location.href = 'http://localhost:3000/profile';
+                window.location.href = 'https://www.tradegen.io/profile';
             }, 2000);
             if (!isMobile.any())
             {
@@ -2106,14 +1611,6 @@ document.getElementById("comparatorEntry").addEventListener('change', function()
         document.getElementById("entryConditionSecondIndicatorParameter").value = "";
         document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "EMA period";
     }
-    else if (selectedValue == "Has")
-    {
-        options = makeOptionsEntryHas();
-
-        document.getElementById("entryConditionSecondIndicatorParameter").style.display = "block";
-        document.getElementById("entryConditionSecondIndicatorParameter").value = "";
-        document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "Multiplier";
-    }
     else if (selectedValue == "BouncesHigherOff")
     {
         options = makeOptionsEntryBouncesHigherOff();
@@ -2145,46 +1642,6 @@ document.getElementById("comparatorEntry").addEventListener('change', function()
         document.getElementById("entryConditionSecondIndicatorParameter").style.display = "block";
         document.getElementById("entryConditionSecondIndicatorParameter").value = "";
         document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "EMA period";
-    }
-    else if (selectedValue == "DownByAtLeast")
-    {
-        options = makeOptionsEntryGap();
-
-        document.getElementById("entryConditionSecondIndicatorParameter").style.display = "block";
-        document.getElementById("entryConditionSecondIndicatorParameter").value = "";
-        document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "Percent gap";
-    }
-    else if (selectedValue == "DownByAtMost")
-    {
-        options = makeOptionsEntryGap();
-
-        document.getElementById("entryConditionSecondIndicatorParameter").style.display = "block";
-        document.getElementById("entryConditionSecondIndicatorParameter").value = "";
-        document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "Percent gap";
-    }
-    else if (selectedValue == "UpByAtLeast")
-    {
-        options = makeOptionsEntryGap();
-
-        document.getElementById("entryConditionSecondIndicatorParameter").style.display = "block";
-        document.getElementById("entryConditionSecondIndicatorParameter").value = "";
-        document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "Percent gap";
-    }
-    else if (selectedValue == "UpByAtMost")
-    {
-        options = makeOptionsEntryGap();
-
-        document.getElementById("entryConditionSecondIndicatorParameter").style.display = "block";
-        document.getElementById("entryConditionSecondIndicatorParameter").value = "";
-        document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "Percent gap";
-    }
-    else if (selectedValue == "GivenInFirst")
-    {
-        options = makeOptionsEntrySignal();
-
-        document.getElementById("entryConditionSecondIndicatorParameter").style.display = "block";
-        document.getElementById("entryConditionSecondIndicatorParameter").value = "";
-        document.getElementById("entryConditionSecondIndicatorParameter").placeholder = "Number of minutes";
     }
     else if (selectedValue == "FallByAtLeast")
     {
@@ -2271,15 +1728,15 @@ function makeOptionsEntryBreaksAbove()
     options.push(option1);
 
     let option2 = document.createElement("option");
-    option2.value = "HighOfFirstNMinutes";
-    option2.id = "entry_SecondIndicator_HighOfFirstNMinutes";
-    option2.innerText = "High of first N minutes";
+    option2.value = "HighOfFirstNPriceUpdates";
+    option2.id = "entry_SecondIndicator_HighOfFirstNPriceUpdates";
+    option2.innerText = "High of first N price updates";
     options.push(option2);
 
     let option3 = document.createElement("option");
-    option3.value = "HighOfLastNMinutes";
-    option3.id = "entry_SecondIndicator_HighOfLastNMinutes";
-    option3.innerText = "High of last N minutes";
+    option3.value = "HighOfLastNPriceUpdates";
+    option3.id = "entry_SecondIndicator_HighOfLastNPriceUpdates";
+    option3.innerText = "High of last N price updates";
     options.push(option3);
 
     let option4 = document.createElement("option");
@@ -2289,22 +1746,10 @@ function makeOptionsEntryBreaksAbove()
     options.push(option4);
 
     let option5 = document.createElement("option");
-    option5.value = "PreviousCandleHigh";
-    option5.id = "entry_SecondIndicator_PreviousCandleHigh";
-    option5.innerText = "Previous candle high";
+    option5.value = "SMA";
+    option5.id = "entry_SecondIndicator_SMA";
+    option5.innerText = "SMA";
     options.push(option5);
-
-    let option6 = document.createElement("option");
-    option6.value = "SMA";
-    option6.id = "entry_SecondIndicator_SMA";
-    option6.innerText = "SMA";
-    options.push(option6);
-
-    let option7 = document.createElement("option");
-    option7.value = "VWAP";
-    option7.id = "entry_SecondIndicator_VWAP";
-    option7.innerText = "VWAP";
-    options.push(option7);
 
     return options;
 }
@@ -2327,33 +1772,21 @@ function makeOptionsEntryBreaksBelow()
 
     let option3 = document.createElement("option");
     option3.value = "LowOfFirstNMinutes";
-    option3.id = "entry_SecondIndicator_LowOfFirstNMinutes";
-    option3.innerText = "Low of first N minutes";
+    option3.id = "entry_SecondIndicator_LowOfFirstNPriceUpdates";
+    option3.innerText = "Low of first N price updates";
     options.push(option3);
 
     let option4 = document.createElement("option");
     option4.value = "LowOfLastNMinutes";
-    option4.id = "entry_SecondIndicator_LowOfLastNMinutes";
-    option4.innerText = "Low of last N minutes";
+    option4.id = "entry_SecondIndicator_LowOfLastNPriceUpdates";
+    option4.innerText = "Low of last N price updates";
     options.push(option4);
 
     let option5 = document.createElement("option");
-    option5.value = "PreviousCandleLow";
-    option5.id = "entry_SecondIndicator_PreviousCandleLow";
-    option5.innerText = "Previous candle low";
+    option5.value = "SMA";
+    option5.id = "entry_SecondIndicator_SMA";
+    option5.innerText = "SMA";
     options.push(option5);
-
-    let option6 = document.createElement("option");
-    option6.value = "SMA";
-    option6.id = "entry_SecondIndicator_SMA";
-    option6.innerText = "SMA";
-    options.push(option6);
-
-    let option7 = document.createElement("option");
-    option7.value = "VWAP";
-    option7.id = "entry_SecondIndicator_VWAP";
-    option7.innerText = "VWAP";
-    options.push(option7);
 
     return options;
 }
@@ -2370,33 +1803,21 @@ function makeOptionsEntryClosesAbove()
 
     let option2 = document.createElement("option");
     option2.value = "HighOfFirstNMinutes";
-    option2.id = "entry_SecondIndicator_HighOfFirstNMinutes";
-    option2.innerText = "High of first N minutes";
+    option2.id = "entry_SecondIndicator_HighOfFirstNPriceUpdates";
+    option2.innerText = "High of first N price updates";
     options.push(option2);
 
     let option3 = document.createElement("option");
-    option3.value = "HighOfLastNMinutes";
-    option3.id = "entry_SecondIndicator_HighOfLastNMinutes";
-    option3.innerText = "High of last N minutes";
+    option3.value = "HighOfLastNPriceUpdates";
+    option3.id = "entry_SecondIndicator_HighOfLastNPriceUpdates";
+    option3.innerText = "High of last N price updates";
     options.push(option3);
 
     let option4 = document.createElement("option");
-    option4.value = "PreviousCandleHigh";
-    option4.id = "entry_SecondIndicator_PreviousCandleHigh";
-    option4.innerText = "Previous candle high";
+    option4.value = "SMA";
+    option4.id = "entry_SecondIndicator_SMA";
+    option4.innerText = "SMA";
     options.push(option4);
-
-    let option5 = document.createElement("option");
-    option5.value = "SMA";
-    option5.id = "entry_SecondIndicator_SMA";
-    option5.innerText = "SMA";
-    options.push(option5);
-
-    let option6 = document.createElement("option");
-    option6.value = "VWAP";
-    option6.id = "entry_SecondIndicator_VWAP";
-    option6.innerText = "VWAP";
-    options.push(option6);
 
     return options;
 }
@@ -2413,100 +1834,21 @@ function makeOptionsEntryClosesBelow()
 
     let option2 = document.createElement("option");
     option2.value = "LowOfFirstNMinutes";
-    option2.id = "entry_SecondIndicator_LowOfFirstNMinutes";
-    option2.innerText = "Low of first N minutes";
+    option2.id = "entry_SecondIndicator_LowOfFirstNPriceUpdates";
+    option2.innerText = "Low of first N price updates";
     options.push(option2);
 
     let option3 = document.createElement("option");
     option3.value = "LowOfLastNMinutes";
-    option3.id = "entry_SecondIndicator_LowOfLastNMinutes";
-    option3.innerText = "Low of last N minutes";
+    option3.id = "entry_SecondIndicator_LowOfLastNPriceUpdates";
+    option3.innerText = "Low of last N price updates";
     options.push(option3);
 
     let option4 = document.createElement("option");
-    option4.value = "PreviousCandleLow";
-    option4.id = "entry_SecondIndicator_PreviousCandleLow";
-    option4.innerText = "Previous candle low";
+    option4.value = "SMA";
+    option4.id = "entry_SecondIndicator_SMA";
+    option4.innerText = "SMA";
     options.push(option4);
-
-    let option5 = document.createElement("option");
-    option5.value = "SMA";
-    option5.id = "entry_SecondIndicator_SMA";
-    option5.innerText = "SMA";
-    options.push(option5);
-
-    let option6 = document.createElement("option");
-    option6.value = "VWAP";
-    option6.id = "entry_SecondIndicator_VWAP";
-    option6.innerText = "VWAP";
-    options.push(option6);
-
-    return options;
-}
-
-function makeOptionsEntryHas()
-{
-    let options = [];
-
-    let option1 = document.createElement("option");
-    option1.value = "AtLeastNTimesRange";
-    option1.id = "entry_SecondIndicator_AtLeastNTimesRange";
-    option1.innerText = "At least N times range";
-    options.push(option1);
-
-    let option2 = document.createElement("option");
-    option2.value = "AtLeastNTimesVolume";
-    option2.id = "entry_SecondIndicator_AtLeastNTimesVolume";
-    option2.innerText = "At least N times volume";
-    options.push(option2);
-
-    let option3 = document.createElement("option");
-    option3.value = "AtMostNTimesRange";
-    option3.id = "entry_SecondIndicator_AtMostNTimesRange";
-    option3.innerText = "At most N times range";
-    options.push(option3);
-
-    let option4 = document.createElement("option");
-    option4.value = "AtMostNTimesVolume";
-    option4.id = "entry_SecondIndicator_AtMostNTimesVolume";
-    option4.innerText = "At most N times volume";
-    options.push(option4);
-
-    let option5 = document.createElement("option");
-    option5.value = "HigherRange";
-    option5.id = "entry_SecondIndicator_HigherRange";
-    option5.innerText = "Higher range";
-    options.push(option5);
-
-    let option6 = document.createElement("option");
-    option6.value = "HigherVolume";
-    option6.id = "entry_SecondIndicator_HigherVolume";
-    option6.innerText = "Higher volume";
-    options.push(option6);
-
-    let option7 = document.createElement("option");
-    option7.value = "LongBottomTail";
-    option7.id = "entry_SecondIndicator_LongBottomTail";
-    option7.innerText = "Long bottom tail";
-    options.push(option7);
-
-    let option8 = document.createElement("option");
-    option8.value = "LongTopTail";
-    option8.id = "entry_SecondIndicator_LongTopTail";
-    option8.innerText = "Long top tail";
-    options.push(option8);
-
-    let option9 = document.createElement("option");
-    option9.value = "LowerRange";
-    option9.id = "entry_SecondIndicator_LowerRange";
-    option9.innerText = "Lower range";
-    options.push(option9);
-
-    let option10 = document.createElement("option");
-    option10.value = "LowerVolume";
-    option10.id = "entry_SecondIndicator_LowerVolume";
-    option10.innerText = "Lower volume";
-    options.push(option10);
 
     return options;
 }
@@ -2533,12 +1875,6 @@ function makeOptionsEntryBouncesHigherOff()
     option3.innerText = "SMA";
     options.push(option3);
 
-    let option4 = document.createElement("option");
-    option4.value = "VWAP";
-    option4.id = "entry_SecondIndicator_VWAP";
-    option4.innerText = "VWAP";
-    options.push(option4);
-
     return options;
 }
 
@@ -2563,12 +1899,6 @@ function makeOptionsEntryBouncesLowerOff()
     option3.id = "entry_SecondIndicator_SMA";
     option3.innerText = "SMA";
     options.push(option3);
-
-    let option4 = document.createElement("option");
-    option4.value = "VWAP";
-    option4.id = "entry_SecondIndicator_VWAP";
-    option4.innerText = "VWAP";
-    options.push(option4);
 
     return options;
 }
@@ -2595,12 +1925,6 @@ function makeOptionsEntryFallsTo()
     option3.innerText = "SMA";
     options.push(option3);
 
-    let option4 = document.createElement("option");
-    option4.value = "VWAP";
-    option4.id = "entry_SecondIndicator_VWAP";
-    option4.innerText = "VWAP";
-    options.push(option4);
-
     return options;
 }
 
@@ -2626,42 +1950,10 @@ function makeOptionsEntryRisesTo()
     option3.innerText = "SMA";
     options.push(option3);
 
-    let option4 = document.createElement("option");
-    option4.value = "VWAP";
-    option4.id = "entry_SecondIndicator_VWAP";
-    option4.innerText = "VWAP";
-    options.push(option4);
-
     return options;
 }
 
-function makeOptionsEntryGap()
-{
-    let options = [];
-
-    let option1 = document.createElement("option");
-    option1.value = "NPercent";
-    option1.id = "entry_SecondIndicator_NPercent";
-    option1.innerText = "N percent";
-    options.push(option1);
-
-    return options;
-}
-
-function makeOptionsEntrySignal()
-{
-    let options = [];
-
-    let option1 = document.createElement("option");
-    option1.value = "NMinutes";
-    option1.id = "entry_SecondIndicator_NMinutes";
-    option1.innerText = "N minutes";
-    options.push(option1);
-
-    return options;
-}
-
-function makeOptionsEntryPreviousNCandles()
+function makeOptionsEntryPreviousNPriceUpdates()
 {
     let options = [];
 
@@ -2763,14 +2055,6 @@ document.getElementById("comparatorExit").addEventListener('change', function() 
         document.getElementById("exitConditionSecondIndicatorParameter").style.display = "block";
         document.getElementById("exitConditionSecondIndicatorParameter").value = "";
         document.getElementById("exitConditionSecondIndicatorParameter").placeholder = "EMA period";
-    }
-    else if (selectedValue == "Has")
-    {
-        options = makeOptionsExitHas();
-
-        document.getElementById("exitConditionSecondIndicatorParameter").style.display = "block";
-        document.getElementById("exitConditionSecondIndicatorParameter").value = "";
-        document.getElementById("exitConditionSecondIndicatorParameter").placeholder = "Multiplier";
     }
     else if (selectedValue == "BouncesHigherOff")
     {
@@ -2889,52 +2173,28 @@ function makeOptionsExitBreaksAbove()
     options.push(option1);
 
     let option2 = document.createElement("option");
-    option2.value = "HighOfEntryBar";
-    option2.id = "exit_SecondIndicator_HighOfEntryBar";
-    option2.innerText = "High of entry bar";
+    option2.value = "HighOfFirstNPriceUpdates";
+    option2.id = "exit_SecondIndicator_HighOfFirstNPriceUpdates";
+    option2.innerText = "High of first N price updates";
     options.push(option2);
 
     let option3 = document.createElement("option");
-    option3.value = "HighOfFirstNMinutes";
-    option3.id = "exit_SecondIndicator_HighOfFirstNMinutes";
-    option3.innerText = "High of first N minutes";
+    option3.value = "HighOfLastNPriceUpdates";
+    option3.id = "exit_SecondIndicator_HighOfLastNPriceUpdates";
+    option3.innerText = "High of last N price updates";
     options.push(option3);
 
     let option4 = document.createElement("option");
-    option4.value = "HighOfLastNMinutes";
-    option4.id = "exit_SecondIndicator_HighOfLastNMinutes";
-    option4.innerText = "High of last N minutes";
+    option4.value = "Interval";
+    option4.id = "exit_SecondIndicator_Interval";
+    option4.innerText = "Interval";
     options.push(option4);
 
     let option5 = document.createElement("option");
-    option5.value = "Interval";
-    option5.id = "exit_SecondIndicator_Interval";
-    option5.innerText = "Interval";
+    option5.value = "SMA";
+    option5.id = "exit_SecondIndicator_SMA";
+    option5.innerText = "SMA";
     options.push(option5);
-
-    let option6 = document.createElement("option");
-    option6.value = "PreviousCandleHigh";
-    option6.id = "exit_SecondIndicator_PreviousCandleHigh";
-    option6.innerText = "Previous candle high";
-    options.push(option6);
-
-    let option7 = document.createElement("option");
-    option7.value = "ProfitTarget";
-    option7.id = "exit_SecondIndicator_ProfitTarget";
-    option7.innerText = "Profit target";
-    options.push(option7);
-
-    let option8 = document.createElement("option");
-    option8.value = "SMA";
-    option8.id = "exit_SecondIndicator_SMA";
-    option8.innerText = "SMA";
-    options.push(option8);
-
-    let option9 = document.createElement("option");
-    option9.value = "VWAP";
-    option9.id = "exit_SecondIndicator_VWAP";
-    option9.innerText = "VWAP";
-    options.push(option9);
 
     return options;
 }
@@ -2956,46 +2216,22 @@ function makeOptionsExitBreaksBelow()
     options.push(option2);
 
     let option3 = document.createElement("option");
-    option3.value = "LowOfEntryBar";
-    option3.id = "exit_SecondIndicator_LowOfEntryBar";
-    option3.innerText = "Low of entry bar";
+    option3.value = "LowOfFirstNPriceUpdates";
+    option3.id = "exit_SecondIndicator_LowOfFirstNPriceUpdates";
+    option3.innerText = "Low of first N price updates";
     options.push(option3);
 
     let option4 = document.createElement("option");
-    option4.value = "LowOfFirstNMinutes";
-    option4.id = "exit_SecondIndicator_LowOfFirstNMinutes";
-    option4.innerText = "Low of first N minutes";
+    option4.value = "LowOfLastNPriceUpdates";
+    option4.id = "exit_SecondIndicator_LowOfLastNPriceUpdates";
+    option4.innerText = "Low of last N price updates";
     options.push(option4);
 
     let option5 = document.createElement("option");
-    option5.value = "LowOfLastNMinutes";
-    option5.id = "exit_SecondIndicator_LowOfLastNMinutes";
-    option5.innerText = "Low of last N minutes";
+    option5.value = "SMA";
+    option5.id = "exit_SecondIndicator_SMA";
+    option5.innerText = "SMA";
     options.push(option5);
-
-    let option6 = document.createElement("option");
-    option6.value = "PreviousCandleLow";
-    option6.id = "exit_SecondIndicator_PreviousCandleLow";
-    option6.innerText = "Previous candle low";
-    options.push(option6);
-
-    let option7 = document.createElement("option");
-    option7.value = "SMA";
-    option7.id = "exit_SecondIndicator_SMA";
-    option7.innerText = "SMA";
-    options.push(option7);
-
-    let option8 = document.createElement("option");
-    option8.value = "StopLoss";
-    option8.id = "exit_SecondIndicator_StopLoss";
-    option8.innerText = "Stop loss";
-    options.push(option8);
-
-    let option9 = document.createElement("option");
-    option9.value = "VWAP";
-    option9.id = "exit_SecondIndicator_VWAP";
-    option9.innerText = "VWAP";
-    options.push(option9);
 
     return options;
 }
@@ -3011,46 +2247,22 @@ function makeOptionsExitClosesAbove()
     options.push(option1);
 
     let option2 = document.createElement("option");
-    option2.value = "HighOfEntryBar";
-    option2.id = "exit_SecondIndicator_HighOfEntryBar";
-    option2.innerText = "High of entry bar";
+    option2.value = "HighOfFirstNPriceUpdates";
+    option2.id = "exit_SecondIndicator_HighOfFirstNPriceUpdates";
+    option2.innerText = "High of first N price updates";
     options.push(option2);
 
     let option3 = document.createElement("option");
-    option3.value = "HighOfFirstNMinutes";
-    option3.id = "exit_SecondIndicator_HighOfFirstNMinutes";
-    option3.innerText = "High of first N minutes";
+    option3.value = "HighOfLastNPriceUpdates";
+    option3.id = "exit_SecondIndicator_HighOfLastNPriceUpdates";
+    option3.innerText = "High of last N price updates";
     options.push(option3);
 
     let option4 = document.createElement("option");
-    option4.value = "HighOfLastNMinutes";
-    option4.id = "exit_SecondIndicator_HighOfLastNMinutes";
-    option4.innerText = "High of last N minutes";
+    option4.value = "SMA";
+    option4.id = "exit_SecondIndicator_SMA";
+    option4.innerText = "SMA";
     options.push(option4);
-
-    let option5 = document.createElement("option");
-    option5.value = "PreviousCandleHigh";
-    option5.id = "exit_SecondIndicator_PreviousCandleHigh";
-    option5.innerText = "Previous candle high";
-    options.push(option5);
-
-    let option6 = document.createElement("option");
-    option6.value = "ProfitTarget";
-    option6.id = "exit_SecondIndicator_ProfitTarget";
-    option6.innerText = "Profit target";
-    options.push(option6);
-
-    let option7 = document.createElement("option");
-    option7.value = "SMA";
-    option7.id = "exit_SecondIndicator_SMA";
-    option7.innerText = "SMA";
-    options.push(option7);
-
-    let option8 = document.createElement("option");
-    option8.value = "VWAP";
-    option8.id = "exit_SecondIndicator_VWAP";
-    option8.innerText = "VWAP";
-    options.push(option8);
 
     return options;
 }
@@ -3066,113 +2278,22 @@ function makeOptionsExitClosesBelow()
     options.push(option1);
 
     let option2 = document.createElement("option");
-    option2.value = "LowOfEntryBar";
-    option2.id = "exit_SecondIndicator_LowOfEntryBar";
-    option2.innerText = "Low of entry bar";
+    option2.value = "LowOfFirstNPriceUpdates";
+    option2.id = "exit_SecondIndicator_LowOfFirstNPriceUpdates";
+    option2.innerText = "Low of first N price updates";
     options.push(option2);
 
     let option3 = document.createElement("option");
-    option3.value = "LowOfFirstNMinutes";
-    option3.id = "exit_SecondIndicator_LowOfFirstNMinutes";
-    option3.innerText = "Low of first N minutes";
+    option3.value = "LowOfLastNPriceUpdates";
+    option3.id = "exit_SecondIndicator_LowOfLastNPriceUpdates";
+    option3.innerText = "Low of last N price updates";
     options.push(option3);
 
     let option4 = document.createElement("option");
-    option4.value = "LowOfLastNMinutes";
-    option4.id = "exit_SecondIndicator_LowOfLastNMinutes";
-    option4.innerText = "Low of last N minutes";
+    option4.value = "SMA";
+    option4.id = "exit_SecondIndicator_SMA";
+    option4.innerText = "SMA";
     options.push(option4);
-
-    let option5 = document.createElement("option");
-    option5.value = "PreviousCandleLow";
-    option5.id = "exit_SecondIndicator_PreviousCandleLow";
-    option5.innerText = "Previous candle low";
-    options.push(option5);
-
-    let option6 = document.createElement("option");
-    option6.value = "SMA";
-    option6.id = "exit_SecondIndicator_SMA";
-    option6.innerText = "SMA";
-    options.push(option6);
-
-    let option7 = document.createElement("option");
-    option7.value = "StopLoss";
-    option7.id = "exit_SecondIndicator_StopLoss";
-    option7.innerText = "StopLoss";
-    options.push(option7);
-
-    let option8 = document.createElement("option");
-    option8.value = "VWAP";
-    option8.id = "exit_SecondIndicator_VWAP";
-    option8.innerText = "VWAP";
-    options.push(option8);
-
-    return options;
-}
-
-function makeOptionsExitHas()
-{
-    let options = [];
-
-    let option1 = document.createElement("option");
-    option1.value = "AtLeastNTimesRange";
-    option1.id = "exit_SecondIndicator_AtLeastNTimesRange";
-    option1.innerText = "At least N times range";
-    options.push(option1);
-
-    let option2 = document.createElement("option");
-    option2.value = "AtLeastNTimesVolume";
-    option2.id = "exit_SecondIndicator_AtLeastNTimesVolume";
-    option2.innerText = "At least N times volume";
-    options.push(option2);
-
-    let option3 = document.createElement("option");
-    option3.value = "AtMostNTimesRange";
-    option3.id = "exit_SecondIndicator_AtMostNTimesRange";
-    option3.innerText = "At most N times range";
-    options.push(option3);
-
-    let option4 = document.createElement("option");
-    option4.value = "AtMostNTimesVolume";
-    option4.id = "exit_SecondIndicator_AtMostNTimesVolume";
-    option4.innerText = "At most N times volume";
-    options.push(option4);
-
-    let option5 = document.createElement("option");
-    option5.value = "HigherRange";
-    option5.id = "exit_SecondIndicator_HigherRange";
-    option5.innerText = "Higher range";
-    options.push(option5);
-
-    let option6 = document.createElement("option");
-    option6.value = "HigherVolume";
-    option6.id = "exit_SecondIndicator_HigherVolume";
-    option6.innerText = "Higher volume";
-    options.push(option6);
-
-    let option7 = document.createElement("option");
-    option7.value = "LongBottomTail";
-    option7.id = "exit_SecondIndicator_LongBottomTail";
-    option7.innerText = "Long bottom tail";
-    options.push(option7);
-
-    let option8 = document.createElement("option");
-    option8.value = "LongTopTail";
-    option8.id = "exit_SecondIndicator_LongTopTail";
-    option8.innerText = "Long top tail";
-    options.push(option8);
-
-    let option9 = document.createElement("option");
-    option9.value = "LowerRange";
-    option9.id = "exit_SecondIndicator_LowerRange";
-    option9.innerText = "Lower range";
-    options.push(option9);
-
-    let option10 = document.createElement("option");
-    option10.value = "LowerVolume";
-    option10.id = "exit_SecondIndicator_LowerVolume";
-    option10.innerText = "Lower volume";
-    options.push(option10);
 
     return options;
 }
@@ -3199,12 +2320,6 @@ function makeOptionsExitBouncesHigherOff()
     option3.innerText = "SMA";
     options.push(option3);
 
-    let option4 = document.createElement("option");
-    option4.value = "VWAP";
-    option4.id = "exit_SecondIndicator_VWAP";
-    option4.innerText = "VWAP";
-    options.push(option4);
-
     return options;
 }
 
@@ -3229,12 +2344,6 @@ function makeOptionsExitBouncesLowerOff()
     option3.id = "exit_SecondIndicator_SMA";
     option3.innerText = "SMA";
     options.push(option3);
-
-    let option4 = document.createElement("option");
-    option4.value = "VWAP";
-    option4.id = "exit_SecondIndicator_VWAP";
-    option4.innerText = "VWAP";
-    options.push(option4);
 
     return options;
 }
@@ -3261,12 +2370,6 @@ function makeOptionsExitFallsTo()
     option3.innerText = "SMA";
     options.push(option3);
 
-    let option4 = document.createElement("option");
-    option4.value = "VWAP";
-    option4.id = "exit_SecondIndicator_VWAP";
-    option4.innerText = "VWAP";
-    options.push(option4);
-
     return options;
 }
 
@@ -3292,16 +2395,10 @@ function makeOptionsExitRisesTo()
     option3.innerText = "SMA";
     options.push(option3);
 
-    let option4 = document.createElement("option");
-    option4.value = "VWAP";
-    option4.id = "exit_SecondIndicator_VWAP";
-    option4.innerText = "VWAP";
-    options.push(option4);
-
     return options;
 }
 
-function makeOptionsExitPreviousNCandles()
+function makeOptionsExitPreviousNPriceUpdates()
 {
     let options = [];
 
@@ -3355,7 +2452,7 @@ function makeOptionsExitCrossesBelow()
 
 //COMPARATORS
 
-function makeComparatorsEntryCurrentCandle()
+function makeComparatorsEntryLatestPrice()
 {
     let options = [];
 
@@ -3408,52 +2505,15 @@ function makeComparatorsEntryCurrentCandle()
     options.push(option8);
 
     let option9 = document.createElement("option");
-    option9.value = "Has";
-    option9.id = "entry_Comparator_Has";
-    option9.innerText = "Has";
+    option9.value = "RisesTo";
+    option9.id = "entry_Comparator_RisesTo";
+    option9.innerText = "Rises to";
     options.push(option9);
 
-    let option10 = document.createElement("option");
-    option10.value = "RisesTo";
-    option10.id = "entry_Comparator_RisesTo";
-    option10.innerText = "Rises to";
-    options.push(option10);
-
     return options;
 }
 
-function makeComparatorsEntryGap()
-{
-    let options = [];
-
-    let option1 = document.createElement("option");
-    option1.value = "DownByAtLeast";
-    option1.id = "entry_Comparator_DownByAtLeast";
-    option1.innerText = "Down by at least";
-    options.push(option1);
-
-    let option2 = document.createElement("option");
-    option2.value = "DownByAtMost";
-    option2.id = "entry_Comparator_DownByAtMost";
-    option2.innerText = "Down by at most";
-    options.push(option2);
-
-    let option3 = document.createElement("option");
-    option3.value = "UpByAtLeast";
-    option3.id = "entry_Comparator_UpByAtLeast";
-    option3.innerText = "Up by at least";
-    options.push(option3);
-
-    let option4 = document.createElement("option");
-    option4.value = "UpByAtMost";
-    option4.id = "entry_Comparator_UpByAtMost";
-    option4.innerText = "Up by at most";
-    options.push(option4);
-
-    return options;
-}
-
-function makeComparatorsEntryPreviousNCandles()
+function makeComparatorsEntryPreviousNPriceUpdates()
 {
     let options = [];
 
@@ -3487,12 +2547,6 @@ function makeComparatorsEntryPreviousNCandles()
     option2.innerText = "Fall by at most";
     options.push(option2);
 
-    let option3 = document.createElement("option");
-    option3.value = "Has";
-    option3.id = "entry_Comparator_Has";
-    option3.innerText = "Have";
-    options.push(option3);
-
     let option4 = document.createElement("option");
     option4.value = "RiseByAtLeast";
     option4.id = "entry_Comparator_RiseByAtLeast";
@@ -3504,19 +2558,6 @@ function makeComparatorsEntryPreviousNCandles()
     option5.id = "entry_Comparator_RiseByAtMost";
     option5.innerText = "Rise by at most";
     options.push(option5);
-
-    return options;
-}
-
-function makeComparatorsEntrySignal()
-{
-    let options = [];
-
-    let option1 = document.createElement("option");
-    option1.value = "GivenInFirst";
-    option1.id = "entry_Comparator_GivenInFirst";
-    option1.innerText = "Given in first";
-    options.push(option1);
 
     return options;
 }
@@ -3559,7 +2600,7 @@ function makeComparatorsEntrySMA()
     return options;
 }
 
-function makeComparatorsExitCurrentCandle()
+function makeComparatorsExitLatestPrice()
 {
     let options = [];
 
@@ -3612,21 +2653,15 @@ function makeComparatorsExitCurrentCandle()
     options.push(option8);
 
     let option9 = document.createElement("option");
-    option9.value = "Has";
-    option9.id = "exit_Comparator_Has";
-    option9.innerText = "Has";
+    option9.value = "RisesTo";
+    option9.id = "exit_Comparator_RisesTo";
+    option9.innerText = "Rises to";
     options.push(option9);
-
-    let option10 = document.createElement("option");
-    option10.value = "RisesTo";
-    option10.id = "exit_Comparator_RisesTo";
-    option10.innerText = "Rises to";
-    options.push(option10);
 
     return options;
 }
 
-function makeComparatorsExitPreviousNCandles()
+function makeComparatorsExitPreviousNPriceUpdates()
 {
     let options = [];
 
@@ -3659,12 +2694,6 @@ function makeComparatorsExitPreviousNCandles()
     option2.id = "exit_Comparator_FallByAtMost";
     option2.innerText = "Fall by at most";
     options.push(option2);
-
-    let option3 = document.createElement("option");
-    option3.value = "Has";
-    option3.id = "exit_Comparator_Has";
-    option3.innerText = "Have";
-    options.push(option3);
 
     let option4 = document.createElement("option");
     option4.value = "RiseByAtLeast";

@@ -11,10 +11,13 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto">
     <script src="/js/update_overlay.js"></script>
+    <script>
+        Object.keys(require.cache).forEach(function(key) { delete require.cache[key] });
+    </script>
 </head>
 
 <body class="appBackground">
-    {{>guest_header}}
+    {{>user_header}}
     <div class="main-content" id="main">
         <div class="pageTitle alignCenter maxWidth80">{{strategyName}}</div>
         <div class="maxWidth80">
@@ -24,7 +27,7 @@
             </div>
             <div class="strategyInfoBottom">
                 <div class="strategyInfoLeftSide"><a class="extraWeight">By: </a> {{developedBy}}</div>
-                <button type="button" class="productButton marginRight0 mediaMarginTop30" id="productButton">Purchase</button>
+                <button type="button" class="productButton marginRight0 mediaMarginTop30 floatRightProduct" id="productButton">Checkout</button>
             </div>
         </div>
 
@@ -144,6 +147,13 @@
     </div>
     <input type="hidden" id="sianjitpua" value="{{strategyID}}">
     <input type="hidden" name="sotong" id="sotong" value="{{dataString}}">
+
+    <script type="text/javascript" src="https://unpkg.com/web3@1.2.11/dist/web3.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/web3modal@1.9.0/dist/index.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/evm-chains@0.2.0/dist/umd/index.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/@walletconnect/web3-provider@1.2.1/dist/umd/index.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/fortmatic@2.0.6/dist/fortmatic.js"></script>
+    <script src="/js/connect_wallet_app.js"></script>
     <script src="/js/product_info_app.js"></script>
     <script src="https://www.gstatic.com/charts/loader.js"></script>
     <script>

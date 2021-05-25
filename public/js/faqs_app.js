@@ -1,39 +1,39 @@
 window.addEventListener('DOMContentLoaded', function() {
-    generateContent();
+  generateContent();
 });
 
 function generateContent()
 {
-    for (var i = 1; i < 20; i+=1)
-    {
-        let ID = "faq" + i.toString();
-        let index = i.toString();
-        document.getElementById(ID).addEventListener("click", function() {
-            handleClick(index);
-        })
-    }
+  for (var i = 1; i < 17; i+=1)
+  {
+      let ID = "faq" + i.toString();
+      let index = i.toString();
+      document.getElementById(ID).addEventListener("click", function() {
+          handleClick(index);
+      })
+  }
 }
 
 function handleClick(index)
 {
-    let faq = document.getElementById("faq" + index);
-    let icon = document.getElementById("icon" + index);
-    let text = document.getElementById("text" + index);
+  let faq = document.getElementById("faq" + index);
+  let icon = document.getElementById("icon" + index);
+  let text = document.getElementById("text" + index);
 
-    if (text.style.display != "block")
-    {
-        text.style.display = "block";
-        icon.innerText = "expand_less";
-        icon.style.color = "#3a78f2";
-        faq.style.borderColor = "#007cff";
-    }
-    else
-    {
-        text.style.display = "none";
-        icon.innerText = "expand_more";
-        icon.style.color = "hsla(0, 0%, 53%, 0.40)";
-        faq.style.borderColor = "#e2e0eb";
-    }
+  if (text.style.display != "block")
+  {
+      text.style.display = "block";
+      icon.innerText = "expand_less";
+      icon.style.color = "#3a78f2";
+      faq.style.borderColor = "#007cff";
+  }
+  else
+  {
+      text.style.display = "none";
+      icon.innerText = "expand_more";
+      icon.style.color = "hsla(0, 0%, 53%, 0.40)";
+      faq.style.borderColor = "#e2e0eb";
+  }
 }
 
 // When the user scrolls the page, execute myFunction
@@ -47,13 +47,13 @@ var sticky = header.offsetTop;
 
 // Add the sticky class to the header when you reach its scroll position. Remove "sticky" when you leave the scroll position
 function myFunction() {
-    if (isMobile.any())
-    {
-      return;
-    }
-  if (window.pageYOffset > sticky) {
-    header.classList.add("sticky");
-  } else {
-    header.classList.remove("sticky");
+  if (isMobile.any())
+  {
+    return;
   }
+if (window.pageYOffset > sticky) {
+  header.classList.add("sticky");
+} else {
+  header.classList.remove("sticky");
+}
 }
