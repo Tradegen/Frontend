@@ -22,6 +22,12 @@ document.addEventListener("DOMContentLoaded", async function() {
     document.getElementById("editUsernameModal").style.display = "none";
     document.getElementById("editUsernameModal").style.textAlign = "center";
 
+    document.getElementById("editListingModal").style.display = "none";
+    document.getElementById("editListingModal").style.textAlign = "center";
+
+    document.getElementById("cancelListingModal").style.display = "none";
+    document.getElementById("cancelListingModal").style.textAlign = "center";
+
     document.getElementById("stakeModal").style.display = "none";
     document.getElementById("stakeModal").style.textAlign = "center";
 
@@ -59,6 +65,16 @@ document.addEventListener("DOMContentLoaded", async function() {
     document.getElementById("errorModalUsername").style.display = "none";
     document.getElementById("errorModalUsername").style.textAlign = "center";
 
+    document.getElementById("successModalEditListing").style.display = "none";
+    document.getElementById("successModalEditListing").style.textAlign = "center";
+    document.getElementById("errorModalEditListing").style.display = "none";
+    document.getElementById("errorModalEditListing").style.textAlign = "center";
+
+    document.getElementById("successModalCancelListing").style.display = "none";
+    document.getElementById("successModalCancelListing").style.textAlign = "center";
+    document.getElementById("errorModalCancelListing").style.display = "none";
+    document.getElementById("errorModalCancelListing").style.textAlign = "center";
+
     document.getElementById("successModalStake").style.display = "none";
     document.getElementById("successModalStake").style.textAlign = "center";
     document.getElementById("errorModalStake").style.display = "none";
@@ -85,6 +101,26 @@ document.addEventListener("DOMContentLoaded", async function() {
     if (document.getElementById('errorButtonUsername'))
     {
         document.getElementById('errorButtonUsername').addEventListener('click', hideErrorModalUsername);
+    }
+
+    if (document.getElementById('successButtonEditListing'))
+    {
+        document.getElementById('successButtonEditListing').addEventListener('click', hideSuccessModalEditListing);
+    }
+
+    if (document.getElementById('errorButtonEditListing'))
+    {
+        document.getElementById('errorButtonEditListing').addEventListener('click', hideErrorModalEditListing);
+    }
+
+    if (document.getElementById('successButtonCancelListing'))
+    {
+        document.getElementById('successButtonCancelListing').addEventListener('click', hideSuccessModalCancelListing);
+    }
+
+    if (document.getElementById('errorButtonCancelListing'))
+    {
+        document.getElementById('errorButtonCancelListing').addEventListener('click', hideErrorModalCancelListing);
     }
 
     if (document.getElementById('successButtonStake'))
@@ -182,6 +218,24 @@ document.addEventListener("DOMContentLoaded", async function() {
     document.getElementById("errorModalUsername").style.fontWeight = "500";
     document.getElementById("errorTitleUsername").style.marginBottom = "0px !important";
 
+    document.getElementById("successModalEditListing").style.fontSize = "16px";
+    document.getElementById("successTitleEditListing").style.marginTop = "20px !important";
+    document.getElementById("successModalEditListing").style.fontWeight = "500";
+    document.getElementById("successTitleEditListing").style.marginBottom = "0px !important";
+    document.getElementById("errorModalEditListing").style.fontSize = "16px";
+    document.getElementById("errorTitleEditListing").style.marginTop = "20px !important";
+    document.getElementById("errorModalEditListing").style.fontWeight = "500";
+    document.getElementById("errorTitleEditListing").style.marginBottom = "0px !important";
+
+    document.getElementById("successModalCancelListing").style.fontSize = "16px";
+    document.getElementById("successTitleCancelListing").style.marginTop = "20px !important";
+    document.getElementById("successModalCancelListing").style.fontWeight = "500";
+    document.getElementById("successTitleCancelListing").style.marginBottom = "0px !important";
+    document.getElementById("errorModalCancelListing").style.fontSize = "16px";
+    document.getElementById("errorTitleCancelListing").style.marginTop = "20px !important";
+    document.getElementById("errorModalCancelListing").style.fontWeight = "500";
+    document.getElementById("errorTitleCancelListing").style.marginBottom = "0px !important";
+
     document.getElementById("successModalStake").style.fontSize = "16px";
     document.getElementById("successTitleStake").style.marginTop = "20px !important";
     document.getElementById("successModalStake").style.fontWeight = "500";
@@ -252,6 +306,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     document.getElementById("confirmDeleteButton").style.backgroundColor = "#fe3957";
 
     buildTable();
+    buildTable2();
 
     document.getElementById("loadingPage").remove();
     document.getElementById("mainContent").style.display = "block";
@@ -312,6 +367,24 @@ document.getElementById("depositAmount").addEventListener("input", function() {
 
     document.getElementById("depositAmount").value = depositValue; 
     document.getElementById("amountDeposit").innerText = depositValue.toFixed(2) + " TGEN";   
+});
+
+document.getElementById("newPrice").addEventListener("input", function() {
+    let value = document.getElementById("newPrice").value;
+
+    if (value.length > 7)
+    {
+        value = value.slice(0, 7);
+    }
+
+    if (value.length == 0)
+    {
+        value = "";
+    }
+
+    let newPriceValue = (value == "") ? 0 : parseFloat(value);
+
+    document.getElementById("newPrice").value = newPriceValue;  
 });
 
 function hideEditUsernameModal() 
@@ -463,6 +536,264 @@ function displayErrorModalUsername(message)
         }
     });
     $( "#errorModalUsername" ).show()
+}
+
+function hideEditListingModal() 
+{
+    document.getElementById('pageMask').style.display = "none";
+    $( "#editListingModal" ).dialog('close');
+}
+
+function displayEditListingModal() 
+{
+    let width = (isMobile.any()) ? Math.min(screen.width, 380) : 380;
+    document.getElementById('pageMask').style.display = "block";
+    $( "#editListingModal" ).dialog({
+        height: 240,
+        width: width,
+        closeOnEscape: true,
+        dialogClass: "whiteBackground",
+        open: function(event, ui) {
+            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
+        }
+    });
+    $( "#editListingModal" ).show();
+
+    document.getElementById('confirmEditButtonEditListing').addEventListener('click', editListing);
+    document.getElementById('cancelEditButtonEditListing').addEventListener('click', hideEditListingModal);
+}
+
+function editListing()
+{
+    let newPrice = document.getElementById('newPrice').value;
+    let marketplaceListingID = document.getElementById('marketplaceListingID').value;
+    let csrf = document.getElementById("sotong").value;
+    let temp = JSON.stringify({
+        newPrice: newPrice,
+        marketplaceListingID: marketplaceListingID,
+        csrf: csrf
+      });
+
+    const xhttpRep = new XMLHttpRequest();
+    xhttpRep.onload = async function(e) {
+        // Handling response from the API for GET reports:
+        const response = JSON.parse(xhttpRep.responseText);
+
+        if (response.response == "Success")
+        {
+            displaySuccessModalEditListing();
+            return;
+        }
+        else
+        {
+            displayErrorModalEditListing(response.response);
+        }
+    };
+
+    xhttpRep.open("POST", '/edit_listing', true);
+    xhttpRep.withCredentials = true;
+    xhttpRep.setRequestHeader("Content-Type", "application/json");
+    xhttpRep.send(temp);
+
+    hideEditListingModal();
+}
+
+function hideSuccessModalEditListing() 
+{
+    $( "#successModalEditListing" ).dialog('close');
+}
+
+function displaySuccessModalEditListing() 
+{
+    let position = { my: "right top", at: "right-100 top", of: window };
+    if (isMobile.any())
+    {
+        position = { my: "bottom", at: "bottom", of: window }
+    }
+    let width = (isMobile.any()) ? screen.width : 240;
+    var Y = window.pageYOffset;
+    $( "#successModalEditListing" ).dialog({
+        height: 55,
+        width: width,
+        closeOnEscape: true,
+        dialogClass: 'successModalContent',
+        position: position,
+        open: function(event, ui) {
+            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
+            setTimeout(function () {
+                $("#successModalEditListing").dialog("close");
+                window.location.href = 'https://www.tradegen.io/settings';
+            }, 2000);
+            if (!isMobile.any())
+            {
+                $(this).parent().css({'top': Y+100});
+            }
+        }
+    });
+    $( "#successModalEditListing" ).show()
+}
+
+function hideErrorModalEditListing() 
+{
+    $( "#errorModalEditListing" ).dialog('close');
+}
+
+function displayErrorModalEditListing(message) 
+{
+    document.getElementById("errorTextEditListing").innerText = message;
+    let position = { my: "right top", at: "right-100 top", of: window };
+    if (isMobile.any())
+    {
+        position = { my: "bottom", at: "bottom", of: window }
+    }
+    let width = (isMobile.any()) ? screen.width : 280;
+    var Y = window.pageYOffset;
+    $( "#errorModalEditListing" ).dialog({
+        height: 55,
+        width: width,
+        closeOnEscape: true,
+        dialogClass: 'errorModalContent',
+        position: position,
+        open: function(event, ui) {
+            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
+            setTimeout(function () {
+                $("#errorModalEditListing").dialog("close");
+            }, 2000);
+            if (!isMobile.any())
+            {
+                $(this).parent().css({'top': Y+100});
+            }
+        }
+    });
+    $( "#errorModalEditListing" ).show()
+}
+
+function hideCancelListingModal() 
+{
+    document.getElementById('pageMask').style.display = "none";
+    $( "#cancelListingModal" ).dialog('close');
+}
+
+function displayCancelListingModal() 
+{
+    let width = (isMobile.any()) ? Math.min(screen.width, 380) : 380;
+    document.getElementById('pageMask').style.display = "block";
+    $( "#cancelListingModal" ).dialog({
+        height: 240,
+        width: width,
+        closeOnEscape: true,
+        dialogClass: "whiteBackground",
+        open: function(event, ui) {
+            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
+        }
+    });
+    $( "#cancelListingModal" ).show();
+
+    document.getElementById('confirmCancelListingButton').addEventListener('click', cancelListing);
+    document.getElementById('cancelCancelListingButton').addEventListener('click', hideCancelListingModal);
+}
+
+function cancelListing()
+{
+    let marketplaceListingID = document.getElementById("marketplaceListingID").value;
+    let csrf = document.getElementById("sotong").value;
+    let temp = JSON.stringify({
+        marketplaceListingID: marketplaceListingID,
+        csrf: csrf
+      });
+
+    const xhttpRep = new XMLHttpRequest();
+    xhttpRep.onload = async function(e) {
+        // Handling response from the API for GET reports:
+        const response = JSON.parse(xhttpRep.responseText);
+
+        if (response.response == "Success")
+        {
+            displaySuccessModalCancelListing();
+            return;
+        }
+        else
+        {
+            displayErrorModalCancelListing(response.response);
+        }
+    };
+
+    xhttpRep.open("POST", '/cancel_listing', true);
+    xhttpRep.withCredentials = true;
+    xhttpRep.setRequestHeader("Content-Type", "application/json");
+    xhttpRep.send(temp);
+
+    hideCancelListingModal();
+}
+
+function hideSuccessModalCancelListing() 
+{
+    $( "#successModalCancelListing" ).dialog('close');
+}
+
+function displaySuccessModalCancelListing() 
+{
+    let position = { my: "right top", at: "right-100 top", of: window };
+    if (isMobile.any())
+    {
+        position = { my: "bottom", at: "bottom", of: window }
+    }
+    let width = (isMobile.any()) ? screen.width : 240;
+    var Y = window.pageYOffset;
+    $( "#successModalCancelListing" ).dialog({
+        height: 55,
+        width: width,
+        closeOnEscape: true,
+        dialogClass: 'successModalContent',
+        position: position,
+        open: function(event, ui) {
+            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
+            setTimeout(function () {
+                $("#successModalCancelListing").dialog("close");
+                window.location.href = 'https://www.tradegen.io/profile';
+            }, 2000);
+            if (!isMobile.any())
+            {
+                $(this).parent().css({'top': Y+100});
+            }
+        }
+    });
+    $( "#successModalCancelListing" ).show()
+}
+
+function hideErrorModalCancelListing() 
+{
+    $( "#errorModalCancelListing" ).dialog('close');
+}
+
+function displayErrorModalCancelListing(message) 
+{
+    document.getElementById("errorTextCancelListing").innerText = message;
+    let position = { my: "right top", at: "right-100 top", of: window };
+    if (isMobile.any())
+    {
+        position = { my: "bottom", at: "bottom", of: window }
+    }
+    let width = (isMobile.any()) ? screen.width : 280;
+    var Y = window.pageYOffset;
+    $( "#errorModalCancelListing" ).dialog({
+        height: 55,
+        width: width,
+        closeOnEscape: true,
+        dialogClass: 'errorModalContent',
+        position: position,
+        open: function(event, ui) {
+            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
+            setTimeout(function () {
+                $("#errorModalCancelListing").dialog("close");
+            }, 2000);
+            if (!isMobile.any())
+            {
+                $(this).parent().css({'top': Y+100});
+            }
+        }
+    });
+    $( "#errorModalCancelListing" ).show()
 }
 
 function hideStakeModal() 
@@ -1115,6 +1446,150 @@ function buildTable()
     }
 
     table3.appendChild(table_body3);
+}
+
+function buildTable2()
+{
+    let dataString2 = document.getElementById("dataString2").value;
+    let positionsForSale = JSON.parse(dataString2).marketplaceListings;
+
+    const downColor = "#fe3957";
+    const upColor = "#00cf92";
+
+    let table = document.getElementById("positionsForSaleTable");
+    table.setAttribute("class", "transactionsTable");
+    while (table.hasChildNodes())
+    {
+        table.removeChild(table.firstChild);
+    }
+    let table_body = document.createElement("tbody");
+    let table_head = document.createElement("thead");
+    let header_row = document.createElement("tr");
+    let header_title1 = document.createElement("th");
+    header_title1.innerText = "Strategy Name";
+    header_title1.setAttribute("class", "marketsTableRowName");
+    header_row.appendChild(header_title1);
+    let header_title2 = document.createElement("th");
+    header_title2.innerText = "Tokens";
+    header_title2.setAttribute("class", "marketsTableRowName");
+    header_row.appendChild(header_title2);
+    let header_title3 = document.createElement("th");
+    header_title3.innerText = "Market Price";
+    header_title3.setAttribute("class", "marketsTableRowName");
+    header_row.appendChild(header_title3);
+    let header_title4 = document.createElement("th");
+    header_title4.innerText = "Advertised Price";
+    header_title4.setAttribute("class", "marketsTableRowName");
+    header_row.appendChild(header_title4);
+    let header_title5 = document.createElement("th");
+    header_title5.innerText = "% vs. Market Price";
+    header_title5.setAttribute("class", "marketsTableRowName");
+    header_row.appendChild(header_title5);
+    let header_title6 = document.createElement("th");
+    header_title6.innerText = "Actions";
+    header_title6.setAttribute("class", "marketsTableRowData");
+    header_title6.style.textAlign = "center";
+    header_row.appendChild(header_title6);
+    table_head.appendChild(header_row);
+    table.appendChild(table_head);
+
+    for (let i = 0; i < positionsForSale.length; i++)
+    {
+        let row = document.createElement("tr");
+        row.setAttribute("class", "tableRowHover");
+
+        let percent = positionsForSale[i].percent;
+
+        let strategyName = document.createElement("td");
+        let strategyNameLink = document.createElement("a");
+        strategyNameLink.innerText = positionsForSale[i].strategyName;
+        let strategyID = positionsForSale[i].strategyID;
+        strategyNameLink.addEventListener('click', function(){ window.location.href = '/strategy_info/' + strategyID; });
+        strategyNameLink.addEventListener('mouseover', function(){ strategyNameLink.style.cursor = "pointer"; });
+        strategyName.setAttribute("class", "marketsTableRowName");
+        let strategyNameRight = document.createElement("a");
+        strategyNameRight.innerText = positionsForSale[i].strategySymbol;
+        strategyNameRight.style.color = "rgb(128,138,157)";
+        strategyNameRight.style.paddingLeft = "10px";
+        strategyNameRight.addEventListener('click', function(){ window.location.href = '/token_info/' + strategyID; });
+        strategyNameRight.addEventListener('mouseover', function(){ strategyNameRight.style.cursor = "pointer"; });
+        strategyName.appendChild(strategyNameLink);
+        strategyName.appendChild(strategyNameRight);
+        row.appendChild(strategyName);
+        let numberOfTokens = document.createElement("td");
+        numberOfTokens.innerText = positionsForSale[i].numberOfTokens;
+        numberOfTokens.setAttribute("class", "marketsTableRowName");
+        row.appendChild(numberOfTokens);
+        let marketPrice = document.createElement("td");
+        marketPrice.innerText = positionsForSale[i].marketPrice.toFixed(4) + " TGEN";
+        marketPrice.setAttribute("class", "marketsTableRowName");
+        row.appendChild(marketPrice);
+        let advertisedPrice = document.createElement("td");
+        advertisedPrice.innerText = positionsForSale[i].advertisedPrice.toFixed(4) + " TGEN";
+        advertisedPrice.setAttribute("class", "marketsTableRowName");
+        row.appendChild(advertisedPrice);
+        let change = document.createElement("td");
+        let arrow = document.createElement("i");
+        let text= document.createElement("a");
+        arrow.setAttribute("class", "material-icons");
+        if (percent < 0)
+        {
+            change.style.color = downColor;
+            arrow.innerText = "arrow_drop_down";
+            arrow.style.color = downColor;
+            percent *= -1;
+        }
+        else if (percent == 0)
+        {
+            change.style.color = "#737373";
+            arrow.innerText = "arrow_right";
+            arrow.style.color = "#737373";
+        }
+        else
+        {
+            change.style.color = upColor;
+            arrow.innerText = "arrow_drop_up";
+            arrow.style.color = upColor;
+        }
+        text.innerText = percent.toFixed(2) + "%";
+        change.setAttribute("class", "marketsTableRowName");
+        change.style.display = "flex";
+        arrow.style.paddingTop = "4px";
+        text.style.paddingTop = "7px";
+        change.appendChild(arrow);
+        change.appendChild(text);
+        row.appendChild(change);
+
+        let actions = document.createElement("td");
+        actions.setAttribute("class", "marketsTableRowData");
+        actions.style.textAlign = "center";
+        let editButton = document.createElement("button");
+        editButton.innerText = "Edit";
+        editButton.setAttribute("class", "buyButton");
+        let thisMarketplaceListingID = positionsForSale[i].marketplaceListingID;
+        editButton.addEventListener('click', function(){ 
+            document.getElementById("marketplaceListingID").value = thisMarketplaceListingID;
+            displayEditListingModal();
+         });
+        let cancelButton = document.createElement("button");
+        cancelButton.innerText = "Cancel";
+        cancelButton.setAttribute("class", "cancelButton");
+        let marketplaceListingID = positionsForSale[i].marketplaceListingID;
+        cancelButton.addEventListener('click', function(){ displayCancelListingModal() });
+        actions.appendChild(cancelButton);
+        actions.appendChild(editButton);
+        
+        row.appendChild(actions);
+
+        table_body.appendChild(row);
+    }
+
+    table.appendChild(table_body);
+    
+    if (positionsForSale.length > 0)
+    {
+        document.getElementById("positionsForSaleDiv").style.display = "block";
+    }
 }
 
 function populateStrategyDiv(id)

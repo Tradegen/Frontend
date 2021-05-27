@@ -30,6 +30,57 @@ var isMobile = {
 };
 
 document.addEventListener("DOMContentLoaded", async function() {
+    document.getElementById("buyPositionModal").style.display = "none";
+    document.getElementById("buyPositionModal").style.textAlign = "center";
+    document.getElementById("successModalBuyPosition").style.display = "none";
+    document.getElementById("errorModalBuyPosition").style.display = "none";
+
+    if (document.getElementById('buyPositionButton'))
+    {
+        document.getElementById('buyPositionButton')
+            .addEventListener('click', function()
+            {
+                displayBuyPositionModal();
+            });
+        document.getElementById('buyPositionButton')
+            .addEventListener('mouseover', function()
+            {
+                document.getElementById('buyPositionButton').style.cursor = "pointer";
+            });
+    }
+
+    if (document.getElementById('cancelBuyPosition'))
+    {
+        document.getElementById('cancelBuyPosition')
+            .addEventListener('click', hideBuyPositionModal);
+    }
+
+    if (document.getElementById('successButtonBuyPosition'))
+    {
+        document.getElementById('successButtonBuyPosition')
+        .addEventListener('click', function(){
+            window.location.href = 'https://www.tradegen.io/positions';
+        });
+    }
+
+    if (document.getElementById('errorButtonBuyPosition'))
+    {
+        document.getElementById('errorButtonBuyPosition')
+            .addEventListener('click', hideErrorModalBuyPosition);
+    }
+
+    document.getElementById('confirmBuyPosition').addEventListener('click', buyPosition);
+
+    document.getElementById("successModalBuyPosition").style.fontSize = "16px";
+    document.getElementById("successTitleBuyPosition").style.marginTop = "20px !important";
+    document.getElementById("successModalBuyPosition").style.fontWeight = "500";
+    document.getElementById("successTitleBuyPosition").style.marginBottom = "0px !important";
+    document.getElementById("errorModalBuyPosition").style.fontSize = "16px";
+    document.getElementById("errorTitleBuyPosition").style.marginTop = "20px !important";
+    document.getElementById("errorModalBuyPosition").style.fontWeight = "500";
+    document.getElementById("errorTitleBuyPosition").style.marginBottom = "0px !important";
+
+
     //display fewer positions per page on mobile
     if (isMobile.any())
     {
@@ -172,7 +223,7 @@ function buildTable()
         let row = document.createElement("tr");
         row.setAttribute("class", "tableRowHover");
 
-        let percent = (100 * (FILTERED_LISTINGS[i].listingPrice - FILTERED_LISTINGS[i].sharePrice)) / FILTERED_LISTINGS[i].sharePrice;
+        let percent = FILTERED_LISTINGS[i].percent;
 
         let strategyName = document.createElement("td");
         let strategyNameLink = document.createElement("a");
@@ -199,16 +250,16 @@ function buildTable()
         seller.setAttribute("class", "marketsTableRowName");
         seller.appendChild(sellerLink);
         row.appendChild(seller);
-        let numberOfShares = document.createElement("td");
-        numberOfShares.innerText = FILTERED_LISTINGS[i].numberOfShares;
-        numberOfShares.setAttribute("class", "marketsTableRowName");
-        row.appendChild(numberOfShares);
+        let numberOfTokens = document.createElement("td");
+        numberOfTokens.innerText = FILTERED_LISTINGS[i].numberOfTokens;
+        numberOfTokens.setAttribute("class", "marketsTableRowName");
+        row.appendChild(numberOfTokens);
         let marketPrice = document.createElement("td");
-        marketPrice.innerText = FILTERED_LISTINGS[i].sharePrice.toFixed(4) + " TGEN";
+        marketPrice.innerText = FILTERED_LISTINGS[i].tokenPrice.toFixed(4) + " TGEN";
         marketPrice.setAttribute("class", "marketsTableRowName");
         row.appendChild(marketPrice);
         let advertisedPrice = document.createElement("td");
-        advertisedPrice.innerText = FILTERED_LISTINGS[i].listingPrice.toFixed(4) + " TGEN";
+        advertisedPrice.innerText = FILTERED_LISTINGS[i].advertisedPrice.toFixed(4) + " TGEN";
         advertisedPrice.setAttribute("class", "marketsTableRowName");
         row.appendChild(advertisedPrice);
         let change = document.createElement("td");
@@ -253,8 +304,12 @@ function buildTable()
         let buyButton = document.createElement("button");
         buyButton.innerText = "Buy";
         buyButton.setAttribute("class", "buyButton");
-        let positionID = FILTERED_LISTINGS[i].positionID;
-        buyButton.addEventListener('click', function(){ window.location.href = '/buy_position/' + positionID; });
+        let marketplaceListingID = FILTERED_LISTINGS[i].marketplaceListingID;
+        let amount = (FILTERED_LISTINGS[i].numberOfTokens * FILTERED_LISTINGS[i].tokenPrice).toFixed(4);
+        buyButton.addEventListener('click', function(){ 
+            document.getElementById("marketplaceListingID").value = marketplaceListingID;
+            document.getElementById("amount").innerText = amount + " TGEN";
+            displayBuyPositionModal() });
         actions.appendChild(viewButton);
         if (FILTERED_LISTINGS[i].userID != document.getElementById("sotong").value)
         {
@@ -299,8 +354,8 @@ function buildPanels()
 
     for (let i = start; i > end; i--)
     {
-        let plus = (LISTINGS[i].listingPrice > LISTINGS[i].sharePrice) ? '+' : '';
-        let percent = (100 * (LISTINGS[i].listingPrice - LISTINGS[i].sharePrice)) / LISTINGS[i].sharePrice;
+        let plus = (FILTERED_LISTINGS[i].advertisedPrice > FILTERED_LISTINGS[i].tokenPrice) ? '+' : '';
+        let percent = FILTERED_LISTINGS[i].percent;
 
         let div = document.createElement("div");
         div.setAttribute("class", "tradingBotStoreProductInfo");
@@ -309,8 +364,8 @@ function buildPanels()
         topRow.setAttribute("class", "tradingBotStoreProductTopRow");
         let title = document.createElement("div");
         title.setAttribute("class", "tradingBotStoreProductTitle");
-        title.innerText = LISTINGS[i].strategyName;
-        let strategyID = LISTINGS[i].strategyID;
+        title.innerText = FILTERED_LISTINGS[i].strategyName;
+        let strategyID = FILTERED_LISTINGS[i].strategyID;
         title.addEventListener('click', function(){ window.location.href = '/strategy_info/' + strategyID; });
         title.addEventListener('mouseover', function(){ title.style.cursor = "pointer"; });
         topRow.appendChild(title);
@@ -326,9 +381,9 @@ function buildPanels()
         let sellerBR = document.createElement("br");
         let sellerData = document.createElement("a");
         sellerData.setAttribute("class", "tradingBotStoreProductBottomText");
-        sellerData.innerText = LISTINGS[i].seller;
+        sellerData.innerText = FILTERED_LISTINGS[i].seller;
         sellerData.style.fontWeight = "500";
-        let sellerAddress = LISTINGS[i].sellerAddress;
+        let sellerAddress = FILTERED_LISTINGS[i].sellerAddress;
         sellerData.addEventListener('click', function(){ window.location.href = '/profile/' + sellerAddress; });
         sellerData.addEventListener('mouseover', function(){ sellerData.style.cursor = "pointer"; });
         seller.appendChild(sellerText);
@@ -342,7 +397,7 @@ function buildPanels()
         let sizeBR = document.createElement("br");
         let sizeData = document.createElement("a");
         sizeData.setAttribute("class", "tradingBotStoreProductBottomText");
-        sizeData.innerText = LISTINGS[i].numberOfShares.toString() + " tokens";
+        sizeData.innerText = FILTERED_LISTINGS[i].numberOfTokens.toString() + " " + FILTERED_LISTINGS[i].symbol;
         sizeData.style.fontWeight = "500";
         size.appendChild(sizeText);
         size.appendChild(sizeBR);
@@ -355,7 +410,7 @@ function buildPanels()
         let currentPriceBR = document.createElement("br");
         let currentPriceData = document.createElement("a");
         currentPriceData.setAttribute("class", "tradingBotStoreProductBottomText");
-        currentPriceData.innerText = LISTINGS[i].sharePrice.toFixed(4) + " TGEN";
+        currentPriceData.innerText = FILTERED_LISTINGS[i].tokenPrice.toFixed(4) + " TGEN";
         currentPriceData.style.fontWeight = "500";
         currentPrice.appendChild(currentPriceText);
         currentPrice.appendChild(currentPriceBR);
@@ -368,7 +423,7 @@ function buildPanels()
         let advertisedPriceBR = document.createElement("br");
         let advertisedPriceData = document.createElement("a");
         advertisedPriceData.setAttribute("class", "tradingBotStoreProductBottomText");
-        advertisedPriceData.innerText = LISTINGS[i].listingPrice.toFixed(4) + " TGEN";
+        advertisedPriceData.innerText = FILTERED_LISTINGS[i].tokenPrice.toFixed(4) + " TGEN";
         advertisedPriceData.style.fontWeight = "500";
         advertisedPrice.appendChild(advertisedPriceText);
         advertisedPrice.appendChild(advertisedPriceBR);
@@ -405,20 +460,25 @@ function buildPanels()
         let viewButton = document.createElement("button");
         viewButton.innerText = "View";
         viewButton.setAttribute("class", "viewButton");
-        let address = LISTINGS[i].address;
+        let address = FILTERED_LISTINGS[i].address;
         viewButton.addEventListener('click', function(){ window.location.href = '/strategy_info/' + address; });
 
         let buyButton = document.createElement("button");
         buyButton.innerText = "Buy";
         buyButton.setAttribute("class", "buyButton");
-        let positionID = LISTINGS[i].positionID
-        buyButton.addEventListener('click', function(){ window.location.href = '/buy_position/' + positionID; });
+        let marketplaceListingID = FILTERED_LISTINGS[i].marketplaceListingID;
+        let amount = (FILTERED_LISTINGS[i].numberOfTokens * FILTERED_LISTINGS[i].tokenPrice).toFixed(4);
+        buyButton.addEventListener('click', function(){ 
+            document.getElementById("marketplaceListingID").value = marketplaceListingID;
+            document.getElementById("amount").innerText = amount + " TGEN";
+            displayBuyPositionModal()
+        });
 
         let buttons = document.createElement("div");
         buttons.setAttribute("class", "tradingBotStoreProductButton");
         buttons.appendChild(viewButton);
 
-        if (LISTINGS[i].userID != document.getElementById("sotong").value)
+        if (FILTERED_LISTINGS[i].userID != document.getElementById("sotong").value)
         {
             buttons.appendChild(buyButton);
         }
@@ -557,4 +617,130 @@ function customSort(ID)
     }
 
     buildTable();
+}
+
+function hideBuyPositionModal() 
+{
+    document.getElementById('pageMask').style.display = "none";
+    $( "#buyPositionModal" ).dialog('close');
+}
+
+function displayBuyPositionModal() 
+{
+    let width = (isMobile.any()) ? Math.min(screen.width, 480) : 480;
+
+    document.getElementById('pageMask').style.display = "block";
+    $( "#buyPositionModal" ).dialog({
+        height: 220,
+        width: width,
+        dialogClass: 'whiteBackground',
+        closeOnEscape: true,
+        open: function(event, ui) {
+            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
+        }
+    });
+    $( "#buyPositionModal" ).show()
+}
+
+function buyPosition()
+{
+    let csrf = document.getElementById("atas").value;
+    let marketplaceListingID = document.getElementById("marketplaceListingID").value;
+    
+    let temp = JSON.stringify({
+        marketplaceListingID: marketplaceListingID,
+        csrf: csrf
+    });
+    const xhttpRep = new XMLHttpRequest();
+    xhttpRep.onload = async function(e) {
+        // Handling response from the API for GET reports:
+        const response = JSON.parse(xhttpRep.responseText);
+
+        if (response.response == "Success")
+        {
+            displaySuccessModalBuyPosition();
+            return;
+        }
+        else
+        {
+            displayErrorModalBuyPosition(response.response);
+            return;
+        }
+    };
+    xhttpRep.open("POST", '/buy_position', true);
+    xhttpRep.withCredentials = true;
+    xhttpRep.setRequestHeader("Content-Type", "application/json");
+    xhttpRep.send(temp);
+
+    hideBuyPositionModal();
+}
+
+function hideSuccessModalBuyPosition() 
+{
+    $( "#successModalBuyPosition" ).dialog('close');
+}
+
+function displaySuccessModalBuyPosition() 
+{
+    let position = { my: "right top", at: "right-100 top", of: window };
+    if (isMobile.any())
+    {
+        position = { my: "bottom", at: "bottom", of: window }
+    }
+    let width = (isMobile.any()) ? screen.width : 320;
+    var Y = window.pageYOffset;
+    $( "#successModalBuyPosition" ).dialog({
+        height: 55,
+        width: width,
+        closeOnEscape: true,
+        dialogClass: 'successModalContent',
+        position: position,
+        open: function(event, ui) {
+            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
+            setTimeout(function () {
+                $("#successModalBuyPosition").dialog("close");
+                window.location.href = 'https://www.tradegen.io/positions';
+            }, 2000);
+            if (!isMobile.any())
+            {
+                $(this).parent().css({'top': Y+100});
+            }
+        }
+    });
+    $( "#successModalBuyPosition" ).show()
+}
+
+function hideErrorModalBuyPosition() 
+{
+    $( "#errorModalBuyPosition" ).dialog('close');
+}
+
+function displayErrorModalBuyPosition(message) 
+{
+    document.getElementById("errorTextBuyPosition").innerText = message;
+    let position = { my: "right top", at: "right-100 top", of: window };
+    if (isMobile.any())
+    {
+        position = { my: "bottom", at: "bottom", of: window }
+    }
+    let width = (isMobile.any()) ? screen.width : 240;
+    var Y = window.pageYOffset;
+    $( "#errorModalBuyPosition" ).dialog({
+        height: 55,
+        width: width,
+        closeOnEscape: true,
+        dialogClass: 'errorModalContent',
+        position: position,
+        open: function(event, ui) {
+            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
+            setTimeout(function () {
+                $("#errorModalBuyPosition").dialog("close");
+            }, 2000);
+            if (!isMobile.any())
+            {
+                $(this).parent().css({'top': Y+100});
+            }
+        }
+    });
+    $( "#errorModalBuyPosition" ).show()
 }

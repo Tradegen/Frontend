@@ -81,6 +81,13 @@
                 <table id="developedStrategiesTable" class="transactionsTable"></table>
             </div>
         </div>
+
+        <div class="tableWrapper initiallyHidden" id="positionsForSaleDiv">
+            <div class="profileTableTitle helvetica">Positions for Sale</div>
+            <div class="mediaTableWrap">
+                <table id="positionsForSaleTable" class="transactionsTable"></table>
+            </div>
+        </div>
     </div>
 
     <div id="editUsernameModal" style="display:none">
@@ -115,6 +122,39 @@
         <p class="paymentModalText ">Are you sure you want to deposit TGEN?</p>
         <button type="button" id="confirmDeposit" class="paymentModalYesButton">YES</button>
         <button type="button" id="cancelDeposit" class="paymentModalCancelButton">CANCEL</button>
+    </div>
+
+    <div id="editListingModal" style="display:none">
+        <div class="modalTitle">Edit Listing</div>
+        <p>
+            <a class="paymentModalText">New price: </a>
+            <input type="text" class="settingsInput extraMarginBottom" name="newPrice" id="newPrice"/>
+            <a class="paymentModalText">TGEN</a>
+        </p>
+        <button type="button" id="confirmEditButtonEditListing" class="paymentModalYesButton">UPDATE</button>
+        <button type="button" id="cancelEditButtonEditListing" class="paymentModalCancelButton">CANCEL</button>
+    </div>
+
+    <div id="cancelListingModal" style="display:none">
+        <div class="modalTitle">Cancel Listing</div>
+        <p id="runBacktestText" class="pageSubtitle"></p>
+        <p class="paymentModalText extraMarginBottom">Would you like to cancel this marketplace listing?</p>
+        <button type="button" id="confirmCancelListingButton" class="paymentModalYesButton">YES</button>
+        <button type="button" id="cancelCancelListingButton" class="paymentModalCancelButton">CANCEL</button>
+    </div>
+
+    <div id="successModalCancelListing" style="display:none">
+        <div class="messageModal" id="successTitleCancelListing">
+            <i class="material-icons marginRight15px messageModalIcon" id="successButtonCancelListing">check_circle_outline</i>
+            <div class="messageModalText">Cancelled listing</div>
+        </div>
+    </div>
+
+    <div id="errorModalCancelListing" style="display:none">
+        <div class="messageModal" id="errorTitleCancelListing">
+            <i class="material-icons marginRight15px messageModalIcon" id="errorButtonCancelListing">error_outline</i>
+            <div class="messageModalText" id="errorTextCancelListing">Error</div>
+        </div>
     </div>
 
     <div id="successModalUsername" style="display:none">
@@ -170,6 +210,20 @@
         <div class="messageModal" id="errorTitleDeposit">
             <i class="material-icons marginRight15px messageModalIcon" id="errorButtonDeposit">error_outline</i>
             <div class="messageModalText" id="errorTextDeposit">Error</div>
+        </div>
+    </div>
+
+    <div id="successModalEditListing" style="display:none">
+        <div class="messageModal" id="successTitleEditListing">
+            <i class="material-icons marginRight15px messageModalIcon" id="successButtonEditListing">check_circle_outline</i>
+            <div class="messageModalText">Updated listing</div>
+        </div>
+    </div>
+
+    <div id="errorModalEditListing" style="display:none">
+        <div class="messageModal" id="errorTitleEditListing">
+            <i class="material-icons marginRight15px messageModalIcon" id="errorButtonEditListing">error_outline</i>
+            <div class="messageModalText" id="errorTextEditListing">Error</div>
         </div>
     </div>
 
@@ -355,6 +409,8 @@
 
     <input type="hidden" id="sotong" value="{{token}}">
     <input type="hidden" id="dataString" value="{{dataString}}">
+    <input type="hidden" id="dataString2" value="{{dataString2}}">
+    <input type="hidden" id="marketplaceListingID" value="">
  
     <script type="text/javascript" src="https://unpkg.com/web3@1.2.11/dist/web3.min.js"></script>
     <script type="text/javascript" src="https://unpkg.com/web3modal@1.9.0/dist/index.js"></script>

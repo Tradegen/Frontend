@@ -34,6 +34,11 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById("successModalClaim").style.display = "none";
     document.getElementById("errorModalClaim").style.display = "none";
 
+    document.getElementById("sellTokensModal").style.display = "none";
+    document.getElementById("sellTokensModal").style.textAlign = "center";
+    document.getElementById("successModalSellTokens").style.display = "none";
+    document.getElementById("errorModalSellTokens").style.display = "none";
+
     if (document.getElementById('depositButton'))
     {
         document.getElementById('depositButton')
@@ -85,6 +90,23 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    if (document.getElementById('sellTokensButton'))
+    {
+        document.getElementById('sellTokensButton')
+            .addEventListener('click', function()
+            {
+                if (document.getElementById("numberOfTokens").innerText != "0")
+                {
+                    displaySellTokensModal();
+                }
+            });
+        document.getElementById('sellTokensButton')
+        .addEventListener('mouseover', function()
+        {
+            document.getElementById('sellTokensButton').style.cursor = "pointer";
+        });
+    }
+
     if (document.getElementById('cancelDeposit'))
     {
         document.getElementById('cancelDeposit')
@@ -101,6 +123,12 @@ document.addEventListener('DOMContentLoaded', function () {
     {
         document.getElementById('cancelClaim')
             .addEventListener('click', hideClaimModal);
+    }
+
+    if (document.getElementById('cancelSell'))
+    {
+        document.getElementById('cancelSell')
+            .addEventListener('click', hideSellModal);
     }
 
     if (document.getElementById('successButtonDeposit'))
@@ -127,6 +155,14 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    if (document.getElementById('successButtonSell'))
+    {
+        document.getElementById('successButtonSell')
+        .addEventListener('click', function(){
+            window.location.href = 'https://www.tradegen.io/settings';
+        });
+    }
+
     if (document.getElementById('errorButtonDeposit'))
     {
         document.getElementById('errorButtonDeposit')
@@ -145,9 +181,16 @@ document.addEventListener('DOMContentLoaded', function () {
             .addEventListener('click', hideErrorModalClaim);
     }
 
+    if (document.getElementById('errorButtonSell'))
+    {
+        document.getElementById('errorButtonSell')
+            .addEventListener('click', hideErrorModalSell);
+    }
+
     document.getElementById('confirmDeposit').addEventListener('click', deposit);
     document.getElementById('confirmWithdraw').addEventListener('click', withdraw);
     document.getElementById('confirmClaim').addEventListener('click', claim);
+    document.getElementById('confirmSell').addEventListener('click', sellTokens);
 
     document.getElementById("successModalDeposit").style.fontSize = "16px";
     document.getElementById("successTitleDeposit").style.marginTop = "20px !important";
@@ -175,6 +218,15 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById("errorTitleClaim").style.marginTop = "20px !important";
     document.getElementById("errorModalClaim").style.fontWeight = "500";
     document.getElementById("errorTitleClaim").style.marginBottom = "0px !important";
+
+    document.getElementById("successModalSellTokens").style.fontSize = "16px";
+    document.getElementById("successTitleSellTokens").style.marginTop = "20px !important";
+    document.getElementById("successModalSellTokens").style.fontWeight = "500";
+    document.getElementById("successTitleSellTokens").style.marginBottom = "0px !important";
+    document.getElementById("errorModalSellTokens").style.fontSize = "16px";
+    document.getElementById("errorTitleSellTokens").style.marginTop = "20px !important";
+    document.getElementById("errorModalSellTokens").style.fontWeight = "500";
+    document.getElementById("errorTitleSellTokens").style.marginBottom = "0px !important";
 });
 
 document.getElementById("deposit").addEventListener("input", function() {
@@ -205,6 +257,32 @@ document.getElementById("withdraw").addEventListener("input", function() {
     document.getElementById("amountWithdraw").innerText = " " + withdrawValue + " TGEN";  
 });
 
+document.getElementById("numberOfTokens").addEventListener("input", function() {
+    let value = document.getElementById("numberOfTokens").value;
+
+    if (value.length == 0)
+    {
+        value = "";
+    }
+
+    let numberOfTokensValue = (value == "") ? 0 : parseFloat(value);
+ 
+    document.getElementById("numberOfTokens").value = numberOfTokensValue;  
+});
+
+document.getElementById("listingPrice").addEventListener("input", function() {
+    let value = document.getElementById("listingPrice").value;
+
+    if (value.length == 0)
+    {
+        value = "";
+    }
+
+    let listingPriceValue = (value == "") ? 0 : parseFloat(value);
+ 
+    document.getElementById("listingPrice").value = listingPriceValue;  
+});
+
 function hideDepositModal() 
 {
     document.getElementById('pageMask').style.display = "none";
@@ -221,6 +299,12 @@ function hideClaimModal()
 {
     document.getElementById('pageMask').style.display = "none";
     $( "#claimModal" ).dialog('close');
+}
+
+function hideSellModal() 
+{
+    document.getElementById('pageMask').style.display = "none";
+    $( "#sellTokensModal" ).dialog('close');
 }
 
 function displayDepositModal() 
@@ -272,6 +356,23 @@ function displayClaimModal()
         }
     });
     $( "#claimModal" ).show()
+}
+
+function displaySellTokensModal() 
+{
+    let width = (isMobile.any()) ? Math.min(screen.width, 480) : 480;
+
+    document.getElementById('pageMask').style.display = "block";
+    $( "#sellTokensModal" ).dialog({
+        height: 360,
+        width: width,
+        dialogClass: 'whiteBackground',
+        closeOnEscape: true,
+        open: function(event, ui) {
+            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
+        }
+    });
+    $( "#sellTokensModal" ).show()
 }
 
 function deposit()
@@ -377,6 +478,43 @@ function claim()
     hideClaimModal();
 }
 
+function sellTokens()
+{
+    let strategyID = document.getElementById("sotong").value;
+    let csrf = document.getElementById("atas").value;
+    let numberOfTokens = parseFloat(document.getElementById("numberOfTokens").value);
+    let price = parseFloat(document.getElementById("listingPrice").value);
+    
+    let temp = JSON.stringify({
+        strategyID: strategyID,
+        csrf: csrf,
+        numberOfTokens: numberOfTokens,
+        price: price
+    });
+    const xhttpRep = new XMLHttpRequest();
+    xhttpRep.onload = async function(e) {
+        // Handling response from the API for GET reports:
+        const response = JSON.parse(xhttpRep.responseText);
+
+        if (response.response == "Success")
+        {
+            displaySuccessModalSell();
+            return;
+        }
+        else
+        {
+            displayErrorModalSell(response.response);
+            return;
+        }
+    };
+    xhttpRep.open("POST", '/sellTokens', true);
+    xhttpRep.withCredentials = true;
+    xhttpRep.setRequestHeader("Content-Type", "application/json");
+    xhttpRep.send(temp);
+
+    hideSellModal();
+}
+
 function hideSuccessModalDeposit() 
 {
     $( "#successModalDeposit" ).dialog('close');
@@ -390,6 +528,11 @@ function hideSuccessModalWithdraw()
 function hideSuccessModalClaim() 
 {
     $( "#successModalClaim" ).dialog('close');
+}
+
+function hideSuccessModalSell() 
+{
+    $( "#successModalSellTokens" ).dialog('close');
 }
 
 function displaySuccessModalDeposit() 
@@ -482,6 +625,36 @@ function displaySuccessModalClaim()
     $( "#successModalClaim" ).show()
 }
 
+function displaySuccessModalSell() 
+{
+    let position = { my: "right top", at: "right-100 top", of: window };
+    if (isMobile.any())
+    {
+        position = { my: "bottom", at: "bottom", of: window }
+    }
+    let width = (isMobile.any()) ? screen.width : 320;
+    var Y = window.pageYOffset;
+    $( "#successModalSellTokens" ).dialog({
+        height: 55,
+        width: width,
+        closeOnEscape: true,
+        dialogClass: 'successModalContent',
+        position: position,
+        open: function(event, ui) {
+            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
+            setTimeout(function () {
+                $("#successModalSellTokens").dialog("close");
+                window.location.href = 'https://www.tradegen.io/settings';
+            }, 2000);
+            if (!isMobile.any())
+            {
+                $(this).parent().css({'top': Y+100});
+            }
+        }
+    });
+    $( "#successModalSellTokens" ).show()
+}
+
 function hideErrorModalDeposit() 
 {
     $( "#errorModalDeposit" ).dialog('close');
@@ -495,6 +668,11 @@ function hideErrorModalWithdraw()
 function hideErrorModalClaim() 
 {
     $( "#errorModalClaim" ).dialog('close');
+}
+
+function hideErrorModalSell() 
+{
+    $( "#errorModalSellTokens" ).dialog('close');
 }
 
 function displayErrorModalDeposit(message) 
@@ -585,6 +763,36 @@ function displayErrorModalClaim(message)
         }
     });
     $( "#errorModalClaim" ).show()
+}
+
+function displayErrorModalSell(message) 
+{
+    document.getElementById("errorTextSellTokens").innerText = message;
+    let position = { my: "right top", at: "right-100 top", of: window };
+    if (isMobile.any())
+    {
+        position = { my: "bottom", at: "bottom", of: window }
+    }
+    let width = (isMobile.any()) ? screen.width : 240;
+    var Y = window.pageYOffset;
+    $( "#errorModalSellTokens" ).dialog({
+        height: 55,
+        width: width,
+        closeOnEscape: true,
+        dialogClass: 'errorModalContent',
+        position: position,
+        open: function(event, ui) {
+            $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
+            setTimeout(function () {
+                $("#errorModalSellTokens").dialog("close");
+            }, 2000);
+            if (!isMobile.any())
+            {
+                $(this).parent().css({'top': Y+100});
+            }
+        }
+    });
+    $( "#errorModalSellTokens" ).show()
 }
 
 // When the user scrolls the page, execute myFunction

@@ -44,7 +44,7 @@
                 <p id="marketPrice"><a class="extraWeight">LP Token Price:</a> {{currentMarketValue}} TGEN</p>
                 <p id="currentPoolSize"><a class="extraWeight">Current Pool Size:</a> {{currentPoolSize}} TGEN</p>
                 <p id="maxPoolSize"><a class="extraWeight">Max Pool Size:</a> {{maxPoolSize}} TGEN</p>
-                <p id="amountInvested"><a class="extraWeight">Amount Invested:</a> {{amountInvested}} TGEN</p>
+                <p id="amountInvested"><a class="extraWeight">Amount Invested:</a> {{amountInvested}} TGEN <span id="sellTokensButton" style="margin-left: 30px; margin-top: 10px; color: #5271FF">Sell tokens</span></p>
                 <p id="availableToInvest"><a class="extraWeight">Available to Invest:</a> {{availableToInvest}} TGEN</p>
                 <p></p>
             </div>
@@ -147,6 +147,40 @@
         <div class="messageModal" id="errorTitleClaim">
             <i class="material-icons marginRight15px messageModalIcon" id="errorButtonClaim">error_outline</i>
             <div class="messageModalText" id="errorTextClaim">Error</div>
+        </div>
+    </div>
+
+    <div id="sellTokensModal" style="display:none">
+        <div class="paymentModalTitle">Sell Tokens</div>
+        <div id="availableToSell" class="displayProperty" style="margin-top: 30px">
+            <span><a class="extraWeight">Available tokens:</a> {{availableTokens}} {{symbol}}</span>
+        </div>
+        <div class="displayProperty" style="margin-top: 40px">
+            <span style="margin-top: 10px"><a class="extraWeight">Number of tokens: </a></span>
+            <input type="number" value="0" class="settingsInput" name="numberOfTokens" id="numberOfTokens" style="margin-left: 30px"/>
+        </div>
+        <div class="displayProperty" style="margin-top: 40px">
+            <span style="margin-top: 10px"><a class="extraWeight">Price: </a></span>
+            <input type="number" value="0" class="settingsInput" name="listingPrice" id="listingPrice" style="margin-left: 30px"/>
+            <span style="margin-top: 10px; margin-left: 15px"><a> TGEN</a></span>
+        </div>
+        <div style="margin-top: 40px">
+            <button type="button" id="confirmSell" class="paymentModalYesButton">Sell</button>
+            <button type="button" id="cancelSell" class="paymentModalCancelButton">Cancel</button>
+        </div>
+    </div>
+
+    <div id="successModalSellTokens" style="display:none">
+        <div class="messageModal" id="successTitleSellTokens">
+            <i class="material-icons marginRight15px messageModalIcon" id="successButtonSellTokens">check_circle_outline</i>
+            <div class="messageModalText" id="successTextSellTokens">Listed tokens for sale</div>
+        </div>
+    </div>
+
+    <div id="errorModalSellTokens" style="display:none">
+        <div class="messageModal" id="errorTitleSellTokens">
+            <i class="material-icons marginRight15px messageModalIcon" id="errorButtonSellTokens">error_outline</i>
+            <div class="messageModalText" id="errorTextSellTokens">Error</div>
         </div>
     </div>
 

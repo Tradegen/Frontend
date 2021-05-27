@@ -69,7 +69,8 @@ router.get('/login/:userID', async function (req, res, next) {
         username: username,
         votes: [],
         voteAccuracy: 0,
-        totalYieldClaimed: 0
+        totalYieldClaimed: 0,
+        marketplaceListings: []
       };
 
       let tempDoc = await db.collection("users").doc(userID).set(data);

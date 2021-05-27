@@ -402,6 +402,11 @@ router.get('/settings', function (req, res, next) {
     }
     let dataString = JSON.stringify(dataObject);
 
+    let dataObject2 = {
+      marketplaceListings: response.marketplaceListings
+    }
+    let dataString2 = JSON.stringify(dataObject2);
+
     res.render('settings', { 
       loginStatus: loggedIn,
       username: username.substring(0, 8) + "...",
@@ -409,6 +414,7 @@ router.get('/settings', function (req, res, next) {
       credits: credits,
       token: req.session.csrf,
       dataString: dataString,
+      dataString2: dataString2,
       user: response.username,
       stakedBalance: response.stakedBalance
     });
@@ -1146,7 +1152,8 @@ router.get('/manage_pool/:id', function (req, res, next) {
       amountInvested: amountInvested,
       numberOfLPTokens: numberOfLPTokens,
       availableToInvest: availableToInvest,
-      availableYield: availableYield
+      availableYield: availableYield,
+      availableTokens: (response.numberOfLPTokens - response.numberOfTokensForSale).toFixed(2)
     });
   }
   xhttpRep.open("POST", 'https://us-central1-stocks2-301304.cloudfunctions.net/getBuyNewSharesData', true);
@@ -1646,8 +1653,8 @@ router.post('/claim', function (req, res, next) {
   xhttp.send(temp2);
 });
 
-// Buy position using account balance
-router.post('/buy_position_with_account_balance', function (req, res, next) {
+// Sell tokens from a strategy pool
+router.post('/sellTokens', function (req, res, next) {
   var loggedIn = (typeof req.session.user !== "undefined") ? true : false;
   var username = loggedIn ? req.session.user : "";
 
@@ -1656,13 +1663,58 @@ router.post('/buy_position_with_account_balance', function (req, res, next) {
     return res.redirect("/open_beta");
   }
 
-  let userID = username; 
-  let positionID = req.body.positionID;
+  let userID = username;
+  let strategyID = req.body.strategyID;
+  let numberOfTokens = req.body.numberOfTokens;
+  let price = req.body.price;
   let csrf = req.body.csrf;
 
-  if (typeof positionID !== "string")
+  if (typeof strategyID !== "string")
   {
-    return res.status(500).send("No position ID");
+    return res.status(500).send("No strategy ID");
+  }
+
+  if (typeof numberOfTokens !== "number")
+  {
+    return res.status(500).send("Error");
+  }
+
+  if (typeof price !== "number")
+  {
+    return res.status(500).send("Error");
+  }
+
+  const allowedCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz';
+  let found = false;
+  for (var i = 0; i < strategyID.length; i+=1)
+  {
+    let character = strategyID.charAt(i);
+    for (var j = 0; j < allowedCharacters.length; j+=1)
+    {
+        if (allowedCharacters.charAt(j) == character)
+        {
+            found = true;
+            break;
+        }
+    }
+    if (found == false)
+    {
+      return res.status(200).json({
+        response: "Error",
+      });
+    }
+  }
+
+  //check if numberOfTokens is a number
+  if ((+numberOfTokens === +numberOfTokens) && (typeof numberOfTokens !== "undefined"))
+  {
+    numberOfTokens = parseFloat(numberOfTokens);
+  }
+  else
+  {
+    return res.status(200).json({
+      response: "Error",
+    });
   }
 
   if (csrf != req.session.csrf)
@@ -1672,11 +1724,50 @@ router.post('/buy_position_with_account_balance', function (req, res, next) {
     });
   }
 
+  let temp2 = JSON.stringify({
+    strategyID: strategyID,
+    userID: userID,
+    numberOfTokens: numberOfTokens,
+    price: price
+  });
+  
+  const xhttp = new XMLHttpRequest();
+  xhttp.onload = function(e) {
+    let response = xhttp.responseText;
+
+    return res.status(200).json({
+      response: response,
+    });
+  }
+  xhttp.open("POST", 'https://us-central1-stocks2-301304.cloudfunctions.net/sellTokens', true);
+  xhttp.withCredentials = true;
+  xhttp.setRequestHeader("Content-Type", "application/json");
+  xhttp.send(temp2);
+});
+
+// Buy position from marketplace
+router.post('/buy_position', function (req, res, next) {
+  var loggedIn = (typeof req.session.user !== "undefined") ? true : false;
+  var username = loggedIn ? req.session.user : "";
+
+  if (!loggedIn)
+  {
+    return res.redirect("/open_beta");
+  }
+
+  let userID = username; 
+  let marketplaceListingID = req.body.marketplaceListingID;
+
+  if (typeof marketplaceListingID !== "string")
+  {
+    return res.status(500).send("No marketplace listing ID");
+  }
+
   const allowedCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz';
   let found = false;
-  for (var i = 0; i < positionID.length; i+=1)
+  for (var i = 0; i < marketplaceListingID.length; i+=1)
   {
-    let character = positionID.charAt(i);
+    let character = marketplaceListingID.charAt(i);
     for (var j = 0; j < allowedCharacters.length; j+=1)
     {
         if (allowedCharacters.charAt(j) == character)
@@ -1694,7 +1785,7 @@ router.post('/buy_position_with_account_balance', function (req, res, next) {
   }
 
   let temp2 = JSON.stringify({
-    positionID: positionID,
+    marketplaceListingID: marketplaceListingID,
     userID: userID,
     token: req.session.token
   });
@@ -1730,19 +1821,19 @@ router.post('/cancel_listing', function (req, res, next) {
     return res.redirect("/open_beta");
   }
 
-  let positionID = req.body.positionID;
+  let marketplaceListingID = req.body.marketplaceListingID;
   let csrf = req.body.csrf;
 
-  if (typeof positionID !== "string")
+  if (typeof marketplaceListingID !== "string")
   {
-    return res.status(500).send("No position ID");
+    return res.status(500).send("No marketplace listing ID");
   }
 
   const allowedCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz';
   let found = false;
-  for (var i = 0; i < positionID.length; i+=1)
+  for (var i = 0; i < marketplaceListingID.length; i+=1)
   {
-    let character = positionID.charAt(i);
+    let character = marketplaceListingID.charAt(i);
     for (var j = 0; j < allowedCharacters.length; j+=1)
     {
         if (allowedCharacters.charAt(j) == character)
@@ -1767,9 +1858,8 @@ router.post('/cancel_listing', function (req, res, next) {
   }
 
   let temp2 = JSON.stringify({
-    positionID: positionID,
-    userID: username,
-    token: req.session.token
+    marketplaceListingID: marketplaceListingID,
+    userID: username
   });
   
   const xhttp = new XMLHttpRequest();
@@ -1796,8 +1886,8 @@ router.post('/edit_listing', function (req, res, next) {
     return res.redirect("/open_beta");
   }
 
-  let positionID = req.body.positionID;
-  let price = req.body.price;
+  let marketplaceListingID = req.body.marketplaceListingID;
+  let newPrice = req.body.newPrice;
   let csrf = req.body.csrf;
 
   if (typeof positionID !== "string")
@@ -1807,25 +1897,25 @@ router.post('/edit_listing', function (req, res, next) {
     });
   }
 
-  if (typeof price !== "number")
+  if (typeof newPrice !== "number")
   {
     return res.status(200).json({
       response: "Error",
     });
   }
 
-  if (price < 0.01 || price > 9999.99)
+  if (newPrice <= 0)
   {
     return res.status(200).json({
-      response: "Error",
+      response: "Price cannot be <= 0",
     });
   }
 
   const allowedCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz';
   let found = false;
-  for (var i = 0; i < positionID.length; i+=1)
+  for (var i = 0; i < marketplaceListingID.length; i+=1)
   {
-    let character = positionID.charAt(i);
+    let character = marketplaceListingID.charAt(i);
     for (var j = 0; j < allowedCharacters.length; j+=1)
     {
         if (allowedCharacters.charAt(j) == character)
@@ -1850,10 +1940,9 @@ router.post('/edit_listing', function (req, res, next) {
   }
 
   let temp2 = JSON.stringify({
-    positionID: positionID,
-    price: price,
-    userID: username,
-    token: req.session.token
+    marketplaceListingID: marketplaceListingID,
+    newPrice: newPrice,
+    userID: username
   });
   
   const xhttp = new XMLHttpRequest();

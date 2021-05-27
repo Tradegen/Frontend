@@ -2,7 +2,7 @@ window.addEventListener('DOMContentLoaded', function() {
     updateOverlay();
     
     document.getElementById("white_paper").addEventListener("click", function() {
-        window.location.href = 'https://storage.googleapis.com/stocks2-301304.appspot.com/Tradegen%20Whitepaper%20V1.2.pdf';
+        window.location.href = 'https://storage.googleapis.com/stocks2-301304.appspot.com/Tradegen%20Whitepaper%20V1.3.pdf';
     });
     document.getElementById("token_info").addEventListener("click", function() {
       window.location.href = '/token';
