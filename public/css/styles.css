@@ -994,6 +994,11 @@ label {
   padding-bottom: 20px;
 }
 
+.assetChart {
+  width: 400px;
+  height: 300px;
+}
+
 .chartTitle {
   font-weight: 550;
   font-size: 24px;
@@ -1885,6 +1890,10 @@ i.icon-ProfileNetReturn {
   max-width: 950px;
 }
 
+.maxWidth340 {
+  max-width: 340px;
+}
+
 .orderConfirmationTitle {
   font-size: 36px;
   font-weight: 550;
@@ -2150,7 +2159,7 @@ i.icon-ProfileNetReturn {
 .homePageIcon {
   color: #5271FF !important;
   font-size: 75px !important;
-  margin-left: 20%;
+  margin-left: 35%;
   margin-bottom: 30px;
 }
 
@@ -2158,6 +2167,7 @@ i.icon-ProfileNetReturn {
   font-size: 28px !important;
   font-weight: 550 !important;
   color: #1a2b6b;
+  text-align: center;
 }
 
 .homePageIconText {
@@ -2169,6 +2179,12 @@ i.icon-ProfileNetReturn {
 .width640 {
   width: 640px !important;
   height: 580px !important;
+  display: flex;
+}
+
+.width340 {
+  width: 340px !important;
+  height: 450px !important;
   display: flex;
 }
 

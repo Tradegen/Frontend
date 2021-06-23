@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function () {
     {
         document.getElementById('successButtonDeposit')
         .addEventListener('click', function(){
-            window.location.href = 'https://www.tradegen.io/positions';
+            window.location.href = 'http://localhost:3000/positions';
         });
     }
 
@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', function () {
     {
         document.getElementById('successButtonWithdraw')
         .addEventListener('click', function(){
-            window.location.href = 'https://www.tradegen.io/positions';
+            window.location.href = 'http://localhost:3000/positions';
         });
     }
 
@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', function () {
     {
         document.getElementById('successButtonClaim')
         .addEventListener('click', function(){
-            window.location.href = 'https://www.tradegen.io/profile';
+            window.location.href = 'http://localhost:3000/profile';
         });
     }
 
@@ -159,7 +159,7 @@ document.addEventListener('DOMContentLoaded', function () {
     {
         document.getElementById('successButtonSell')
         .addEventListener('click', function(){
-            window.location.href = 'https://www.tradegen.io/settings';
+            window.location.href = 'http://localhost:3000/settings';
         });
     }
 
@@ -238,10 +238,10 @@ document.getElementById("deposit").addEventListener("input", function() {
     }
 
     let depositValue = (value == "") ? 0 : parseFloat(value);
-    let fee = (0.003 * depositValue).toFixed(4);
+    let fee = (0.003 * depositValue).toFixed(2);
  
-    document.getElementById("amountDeposit").innerText = " " + depositValue + " TGEN";  
-    document.getElementById("fee").innerText = fee; 
+    document.getElementById("amountDeposit").innerText = " $" + depositValue;  
+    document.getElementById("fee").innerText = "$" + fee; 
 });
 
 document.getElementById("withdraw").addEventListener("input", function() {
@@ -254,7 +254,7 @@ document.getElementById("withdraw").addEventListener("input", function() {
 
     let withdrawValue = (value == "") ? 0 : parseFloat(value);
  
-    document.getElementById("amountWithdraw").innerText = " " + withdrawValue + " TGEN";  
+    document.getElementById("amountWithdraw").innerText = " $" + withdrawValue;  
 });
 
 document.getElementById("numberOfTokens").addEventListener("input", function() {
@@ -491,6 +491,7 @@ function sellTokens()
         numberOfTokens: numberOfTokens,
         price: price
     });
+    
     const xhttpRep = new XMLHttpRequest();
     xhttpRep.onload = async function(e) {
         // Handling response from the API for GET reports:
@@ -554,7 +555,7 @@ function displaySuccessModalDeposit()
             $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
             setTimeout(function () {
                 $("#successModalDeposit").dialog("close");
-                window.location.href = 'https://www.tradegen.io/positions';
+                window.location.href = 'http://localhost:3000/positions';
             }, 2000);
             if (!isMobile.any())
             {
@@ -584,7 +585,7 @@ function displaySuccessModalWithdraw()
             $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
             setTimeout(function () {
                 $("#successModalWithdraw").dialog("close");
-                window.location.href = 'https://www.tradegen.io/positions';
+                window.location.href = 'http://localhost:3000/positions';
             }, 2000);
             if (!isMobile.any())
             {
@@ -614,7 +615,7 @@ function displaySuccessModalClaim()
             $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
             setTimeout(function () {
                 $("#successModalClaim").dialog("close");
-                window.location.href = 'https://www.tradegen.io/profile';
+                window.location.href = 'http://localhost:3000/profile';
             }, 2000);
             if (!isMobile.any())
             {
@@ -644,7 +645,7 @@ function displaySuccessModalSell()
             $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
             setTimeout(function () {
                 $("#successModalSellTokens").dialog("close");
-                window.location.href = 'https://www.tradegen.io/settings';
+                window.location.href = 'http://localhost:3000/settings';
             }, 2000);
             if (!isMobile.any())
             {

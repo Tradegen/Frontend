@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     {
         document.getElementById('successButtonBuyPosition')
         .addEventListener('click', function(){
-            window.location.href = 'https://www.tradegen.io/positions';
+            window.location.href = 'http://localhost:3000/positions';
         });
     }
 
@@ -255,11 +255,11 @@ function buildTable()
         numberOfTokens.setAttribute("class", "marketsTableRowName");
         row.appendChild(numberOfTokens);
         let marketPrice = document.createElement("td");
-        marketPrice.innerText = FILTERED_LISTINGS[i].tokenPrice.toFixed(4) + " TGEN";
+        marketPrice.innerText = "$" + FILTERED_LISTINGS[i].tokenPrice.toFixed(2) + " / token";
         marketPrice.setAttribute("class", "marketsTableRowName");
         row.appendChild(marketPrice);
         let advertisedPrice = document.createElement("td");
-        advertisedPrice.innerText = FILTERED_LISTINGS[i].advertisedPrice.toFixed(4) + " TGEN";
+        advertisedPrice.innerText = "$" + FILTERED_LISTINGS[i].advertisedPrice.toFixed(2) + " / token";
         advertisedPrice.setAttribute("class", "marketsTableRowName");
         row.appendChild(advertisedPrice);
         let change = document.createElement("td");
@@ -410,7 +410,7 @@ function buildPanels()
         let currentPriceBR = document.createElement("br");
         let currentPriceData = document.createElement("a");
         currentPriceData.setAttribute("class", "tradingBotStoreProductBottomText");
-        currentPriceData.innerText = FILTERED_LISTINGS[i].tokenPrice.toFixed(4) + " TGEN";
+        currentPriceData.innerText = "$" + FILTERED_LISTINGS[i].tokenPrice.toFixed(2) + " / token";
         currentPriceData.style.fontWeight = "500";
         currentPrice.appendChild(currentPriceText);
         currentPrice.appendChild(currentPriceBR);
@@ -423,7 +423,7 @@ function buildPanels()
         let advertisedPriceBR = document.createElement("br");
         let advertisedPriceData = document.createElement("a");
         advertisedPriceData.setAttribute("class", "tradingBotStoreProductBottomText");
-        advertisedPriceData.innerText = FILTERED_LISTINGS[i].tokenPrice.toFixed(4) + " TGEN";
+        advertisedPriceData.innerText = "$" + FILTERED_LISTINGS[i].tokenPrice.toFixed(2) + " / token";
         advertisedPriceData.style.fontWeight = "500";
         advertisedPrice.appendChild(advertisedPriceText);
         advertisedPrice.appendChild(advertisedPriceBR);
@@ -699,7 +699,7 @@ function displaySuccessModalBuyPosition()
             $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
             setTimeout(function () {
                 $("#successModalBuyPosition").dialog("close");
-                window.location.href = 'https://www.tradegen.io/positions';
+                window.location.href = 'http://localhost:3000/positions';
             }, 2000);
             if (!isMobile.any())
             {

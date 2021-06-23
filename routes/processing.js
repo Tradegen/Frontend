@@ -44,6 +44,45 @@ router.get('/get_transactions', async function (req, res, next) {
     });
 });
 
+// Get invested pools data
+router.get('/get_invested_pools', async function (req, res, next) {
+  const loggedIn = (typeof req.session.user !== "undefined") ? true : false;
+  const userID = loggedIn ? req.session.user : "";
+  let pools = [];
+  var cloud = axios.default.create({});
+  let url = 'https://us-central1-stocks2-301304.cloudfunctions.net/getInvestedPools';
+
+  if (!loggedIn)
+  {
+    return res.status(500).json({
+      response: "Error",
+    });
+  }
+
+  try 
+  {
+      let res2 = await cloud.post(url, { userID: userID });
+      pools = res2.data.pools;
+
+      if (typeof positions === "undefined")
+        {
+          return res.status(500).json({
+            response: "Error",
+          });
+        }
+  } 
+  catch (err) 
+  {
+    return res.status(500).json({
+      response: "Error",
+    });
+  }
+
+  res.status(200).json({
+    pools: pools
+  });
+});
+
 // Get positions data
 router.get('/get_positions', async function (req, res, next) {
   const loggedIn = (typeof req.session.user !== "undefined") ? true : false;
@@ -80,6 +119,36 @@ router.get('/get_positions', async function (req, res, next) {
 
   res.status(200).json({
     positions: positions
+  });
+});
+
+// Get all pool data
+router.get('/get_all_pools', async function (req, res, next) {
+  let pools = [];
+  var cloud = axios.default.create({});
+  let url = 'https://us-central1-stocks2-301304.cloudfunctions.net/getAllPools';
+
+  try 
+  {
+      let res2 = await cloud.post(url, {});
+      pools = res2.data.pools;
+
+      if (typeof pools === "undefined")
+        {
+          return res.status(500).json({
+            response: "Error",
+          });
+        }
+  } 
+  catch (err) 
+  {
+    return res.status(500).json({
+      response: "Error",
+    });
+  }
+
+  res.status(200).json({
+    pools: pools
   });
 });
 
@@ -161,6 +230,8 @@ router.get('/get_marketplace_listings', async function (req, res, next) {
   {
       let res2 = await cloud.post(url, {});
       listings = res2.data.listings;
+
+      console.log(listings);
 
       if (typeof listings === "undefined")
         {

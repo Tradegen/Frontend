@@ -206,12 +206,12 @@ function buildTable()
         sharesBought.appendChild(sharesBoughtRight);
         row.appendChild(sharesBought);
         let currentPoolSize = document.createElement("td");
-        currentPoolSize.innerText = FILTERED_STRATEGIES[i].currentPoolSize.toFixed(2) + " TGEN";
+        currentPoolSize.innerText = "$" + FILTERED_STRATEGIES[i].currentPoolSize.toFixed(2);
         currentPoolSize.setAttribute("class", "marketsTableRowName");
         currentPoolSize.style.fontWeight = "500";
         row.appendChild(currentPoolSize);
         let maxPoolSize = document.createElement("td");
-        maxPoolSize.innerText = FILTERED_STRATEGIES[i].maxPoolSize.toFixed(2) + " TGEN";
+        maxPoolSize.innerText = "$" + FILTERED_STRATEGIES[i].maxPoolSize.toFixed(2);
         maxPoolSize.setAttribute("class", "marketsTableRowName");
         maxPoolSize.style.fontWeight = "500";
         row.appendChild(maxPoolSize);
@@ -259,7 +259,7 @@ function buildTable()
         let buyButton = document.createElement("button");
         buyButton.innerText = "Trade";
         buyButton.setAttribute("class", "buyButton");
-        buyButton.addEventListener('click', function(){ window.location.href = '/manage_pool/' + ID; });
+        buyButton.addEventListener('click', function(){ window.location.href = '/manage_position/' + ID; });
         actions.appendChild(viewButton);
 
         if (loginStatus == "true")
@@ -299,7 +299,7 @@ function buildPanels()
 
     for (let i = start; i > end; i--)
     {
-        let percent = ((100.0 * (STRATEGIES[i].sharePrice - 1)) / 1);
+        let percent = STRATEGIES[i].totalReturn;
         let plus = (percent >= 0) ? '+' : '';
 
         let div = document.createElement("div");
@@ -332,46 +332,59 @@ function buildPanels()
         sharesBought.appendChild(sharesBoughtText);
         sharesBought.appendChild(sharesBoughtBR);
         sharesBought.appendChild(sharesBoughtData);
-        let currentPrice = document.createElement("div");
-        currentPrice.setAttribute("class", "tradingBotStoreProductFrequency block");
-        let currentPriceText = document.createElement("a");
-        currentPriceText.setAttribute("class", "tradingBotStoreProductTopText");
-        currentPriceText.innerText = "Token Price";
-        let currentPriceBR = document.createElement("br");
-        let currentPriceData = document.createElement("a");
-        currentPriceData.setAttribute("class", "tradingBotStoreProductBottomText");
-        currentPriceData.innerText = STRATEGIES[i].sharePrice.toFixed(4) + " TGEN";
-        currentPriceData.style.fontWeight = "500";
-        currentPrice.appendChild(currentPriceText);
-        currentPrice.appendChild(currentPriceBR);
-        currentPrice.appendChild(currentPriceData);
-        let change = document.createElement("div");
-        change.setAttribute("class", "tradingBotStoreProductFrequency block");
-        let changeText = document.createElement("a");
-        changeText.setAttribute("class", "tradingBotStoreProductTopText");
-        changeText.innerText = "Change";
-        let changeBR = document.createElement("br");
-        let changeData = document.createElement("div");
-        changeData.setAttribute("class", "tradingBotStoreProductBottomText");
-        let changeAmount = document.createElement("a");
-        changeAmount.innerText = plus + percent.toFixed(2) + "%";
-        changeData.style.fontWeight = "500";
+        let currentPoolSize = document.createElement("div");
+        currentPoolSize.setAttribute("class", "tradingBotStoreProductFrequency block");
+        let currentPoolSizeText = document.createElement("a");
+        currentPoolSizeText.setAttribute("class", "tradingBotStoreProductTopText");
+        currentPoolSizeText.innerText = "Current Pool Size";
+        let currentPoolSizeBR = document.createElement("br");
+        let currentPoolSizeData = document.createElement("a");
+        currentPoolSizeData.setAttribute("class", "tradingBotStoreProductBottomText");
+        currentPoolSizeData.innerText = "$" + STRATEGIES[i].currentPoolSize.toFixed(2);
+        currentPoolSizeData.style.fontWeight = "500";
+        currentPoolSize.appendChild(currentPoolSizeText);
+        currentPoolSize.appendChild(currentPoolSizeBR);
+        currentPoolSize.appendChild(currentPoolSizeData);
+        let maxPoolSize = document.createElement("div");
+        maxPoolSize.setAttribute("class", "tradingBotStoreProductFrequency block");
+        let maxPoolSizeText = document.createElement("a");
+        maxPoolSizeText.setAttribute("class", "tradingBotStoreProductTopText");
+        maxPoolSizeText.innerText = "Max Pool Size";
+        let maxPoolSizeBR = document.createElement("br");
+        let maxPoolSizeData = document.createElement("a");
+        maxPoolSizeData.setAttribute("class", "tradingBotStoreProductBottomText");
+        maxPoolSizeData.innerText = "$" + STRATEGIES[i].maxPoolSize.toFixed(2);
+        maxPoolSizeData.style.fontWeight = "500";
+        maxPoolSize.appendChild(maxPoolSizeText);
+        maxPoolSize.appendChild(maxPoolSizeBR);
+        maxPoolSize.appendChild(maxPoolSizeData);
+        let totalReturn = document.createElement("div");
+        totalReturn.setAttribute("class", "tradingBotStoreProductFrequency block");
+        let totalReturnText = document.createElement("a");
+        totalReturnText.setAttribute("class", "tradingBotStoreProductTopText");
+        totalReturnText.innerText = "Total Return";
+        let totalReturnBR = document.createElement("br");
+        let totalReturnData = document.createElement("div");
+        totalReturnData.setAttribute("class", "tradingBotStoreProductBottomText");
+        let totalReturnAmount = document.createElement("a");
+        totalReturnAmount.innerText = plus + percent.toFixed(2) + "%";
+        totalReturnData.style.fontWeight = "500";
         if (percent > 0)
         {
-            changeData.style.color = upColor;
+            totalReturnData.style.color = upColor;
         }
         else if (percent == 0)
         {
-            changeData.style.color = "#737373";
+            totalReturnData.style.color = "#737373";
         }
         else
         {
-            changeData.style.color = downColor;
+            totalReturnData.style.color = downColor;
         }
-        changeData.appendChild(changeAmount);
-        change.appendChild(changeText);
-        change.appendChild(changeBR);
-        change.appendChild(changeData);
+        totalReturnData.appendChild(totalReturnAmount);
+        totalReturn.appendChild(totalReturnText);
+        totalReturn.appendChild(totalReturnBR);
+        totalReturn.appendChild(totalReturnData);
 
         let viewButton = document.createElement("button");
         viewButton.innerText = "View";
@@ -384,7 +397,7 @@ function buildPanels()
         let buyButton = document.createElement("button");
         buyButton.innerText = "Buy";
         buyButton.setAttribute("class", "buyButton");
-        buyButton.addEventListener('click', function(){ window.location.href = '/manage_pool/' + ID; });
+        buyButton.addEventListener('click', function(){ window.location.href = '/manage_position/' + ID; });
 
         let buttons = document.createElement("div");
         buttons.setAttribute("class", "tradingBotStoreProductButton");

@@ -70,7 +70,8 @@ router.get('/login/:userID', async function (req, res, next) {
         votes: [],
         voteAccuracy: 0,
         totalYieldClaimed: 0,
-        marketplaceListings: []
+        marketplaceListings: [],
+        pools: []
       };
 
       let tempDoc = await db.collection("users").doc(userID).set(data);

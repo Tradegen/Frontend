@@ -29,14 +29,14 @@
             <button type="button" class="symbolButton noHover">{{symbol}}</button>
             <div style="margin-left:60px; font-size: 18px">
                 <span style="font-weight: 550">Current Pool Size</span><br>
-                <span>{{currentPoolSize}} TGEN</span>
+                <span>${{currentPoolSize}}</span>
             </div>
             <span class="priceWrapper" style="background-color: {{backgroundColor}}">{{poolChange}}</span>
             <div style="margin-left:60px; font-size: 18px">
                 <span style="font-weight: 550">Max Pool Size</span><br>
-                <span>{{maxPoolSize}} TGEN</span>
+                <span>${{maxPoolSize}}</span>
             </div>
-            <span class="buyTokensWrapper initiallyHidden" id="buyTokensSpan"><a href="/manage_pool/{{strategyID}}" style="text-decoration: none; color: white">Trade</a></span>
+            <span class="buyTokensWrapper initiallyHidden" id="buyTokensSpan"><a href="/manage_position/{{strategyID}}" style="text-decoration: none; color: white">Trade</a></span>
         </div>
         <div class="maxWidth80 mediaHeaderMobile">
             <div class="displayProperty">
@@ -45,11 +45,11 @@
             </div>
             <div style="text-align: center">
                 <div style="font-weight: 550; font-size: 20px; margin-bottom: 10px">Current Pool Size</div>
-                <div style="margin-bottom: 20px; font-size: 18px">{{currentPoolSize}} TGEN</div>
+                <div style="margin-bottom: 20px; font-size: 18px">${{currentPoolSize}}</div>
                 <span class="priceWrapper" style="background-color: {{backgroundColor1}}; margin-bottom: 20px">{{poolChange}}</span>
                 <div style="font-weight: 550; font-size: 20px; margin-bottom: 10px">Max Pool Size</div>
-                <div style="margin-bottom: 20px; font-size: 18px">{{maxPoolSize}} TGEN</div>
-                <span class="buyTokensWrapper"><a href="/manage_pool/{{strategyID}}" style="text-decoration: none; color: white">Trade</a></span>
+                <div style="margin-bottom: 20px; font-size: 18px">${{maxPoolSize}}</div>
+                <span class="buyTokensWrapper"><a href="/manage_position/{{strategyID}}" style="text-decoration: none; color: white">Trade</a></span>
             </div>
         </div>
         

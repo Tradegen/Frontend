@@ -4,6 +4,8 @@ var LENGTH = 1;
 var MAX_PAGES = 1;
 var TRANSACTIONS = [];
 
+const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
 // get mobile browser
 var isMobile = { 
 	Android: function() { 
@@ -88,7 +90,7 @@ function buildTable()
     let table_head = document.createElement("thead");
     let header_row = document.createElement("tr");
     let header_title1 = document.createElement("th");
-    header_title1.innerText = "Date";
+    header_title1.innerText = "Entry Time";
     header_title1.setAttribute("class", "marketsTableRowName");
     header_row.appendChild(header_title1);
     let header_title2 = document.createElement("th");
@@ -99,10 +101,6 @@ function buildTable()
     header_title3.innerText = "Size";
     header_title3.setAttribute("class", "marketsTableRowName");
     header_row.appendChild(header_title3);
-    let header_title4 = document.createElement("th");
-    header_title4.innerText = "Entry Time";
-    header_title4.setAttribute("class", "marketsTableRowName");
-    header_row.appendChild(header_title4);
     let header_title5 = document.createElement("th");
     header_title5.innerText = "Entry Price";
     header_title5.setAttribute("class", "marketsTableRowName");
@@ -132,10 +130,11 @@ function buildTable()
 
         let plus = (TRANSACTIONS[i].roi >= 0) ? '+' : '';
 
-        let date = document.createElement("td");
-        date.innerText = TRANSACTIONS[i].date;
-        date.setAttribute("class", "marketsTableRowName");
-        row.appendChild(date);
+        let entryTime = document.createElement("td");
+        let entryDateObject = new Date(TRANSACTIONS[i].entryTime);
+        entryTime.innerText = months[entryDateObject.getMonth()] + " " + entryDateObject.getDate() + ", " + entryDateObject.getFullYear() + " " + entryDateObject.getHours() + ":" + ((entryDateObject.getMinutes() < 10) ? "0" + entryDateObject.getMinutes() : entryDateObject.getMinutes());
+        entryTime.setAttribute("class", "marketsTableRowName");
+        row.appendChild(entryTime);
         let symbol = document.createElement("td");
         symbol.innerText = TRANSACTIONS[i].symbol;
         symbol.setAttribute("class", "marketsTableRowName");
@@ -144,20 +143,17 @@ function buildTable()
         size.innerText = TRANSACTIONS[i].size;
         row.appendChild(size);
         size.setAttribute("class", "marketsTableRowName");
-        let entryTime = document.createElement("td");
-        entryTime.innerText = TRANSACTIONS[i].entryTime;
-        entryTime.setAttribute("class", "marketsTableRowName");
-        row.appendChild(entryTime);
         let entryPrice = document.createElement("td");
-        entryPrice.innerText = TRANSACTIONS[i].entryPrice;
+        entryPrice.innerText = "$" + TRANSACTIONS[i].entryPrice;
         entryPrice.setAttribute("class", "marketsTableRowName");
         row.appendChild(entryPrice);
         let exitTime = document.createElement("td");
-        exitTime.innerText = TRANSACTIONS[i].exitTime;
+        let exitDateObject = new Date(TRANSACTIONS[i].exitTime);
+        exitTime.innerText = months[exitDateObject.getMonth()] + " " + exitDateObject.getDate() + ", " + exitDateObject.getFullYear() + " " + exitDateObject.getHours() + ":" + ((exitDateObject.getMinutes() < 10) ? "0" + exitDateObject.getMinutes() : exitDateObject.getMinutes());
         exitTime.setAttribute("class", "marketsTableRowName");
         row.appendChild(exitTime);
         let exitPrice = document.createElement("td");
-        exitPrice.innerText = TRANSACTIONS[i].exitPrice;
+        exitPrice.innerText = "$" + TRANSACTIONS[i].exitPrice;
         exitPrice.setAttribute("class", "marketsTableRowName");
         row.appendChild(exitPrice);
         let ROI = document.createElement("td");
@@ -218,6 +214,8 @@ function buildPanels()
         topRow.setAttribute("class", "tradingBotStoreProductTopRow");
         let title = document.createElement("div");
         title.setAttribute("class", "tradingBotStoreProductTitle");
+        let entryDateObject = new Date(TRANSACTIONS[i].entryTime);
+        title.innerText = months[entryDateObject.getMonth()] + " " + entryDateObject.getDate() + ", " + entryDateObject.getFullYear() + " " + entryDateObject.getHours() + ":" + ((entryDateObject.getMinutes() < 10) ? "0" + entryDateObject.getMinutes() : entryDateObject.getMinutes());
         title.innerText = TRANSACTIONS[i].date;
         topRow.appendChild(title);
 
@@ -250,19 +248,6 @@ function buildPanels()
         size.appendChild(sizeText);
         size.appendChild(sizeBR);
         size.appendChild(sizeData);
-        let entryTime = document.createElement("div");
-        entryTime.setAttribute("class", "tradingBotStoreProductFrequency block");
-        let entryTimeText = document.createElement("a");
-        entryTimeText.setAttribute("class", "tradingBotStoreProductTopText");
-        entryTimeText.innerText = "Entry Time";
-        let entryTimeBR = document.createElement("br");
-        let entryTimeData = document.createElement("a");
-        entryTimeData.setAttribute("class", "tradingBotStoreProductBottomText");
-        entryTimeData.innerText = TRANSACTIONS[i].entryTime;
-        entryTimeData.style.fontWeight = "500";
-        entryTime.appendChild(entryTimeText);
-        entryTime.appendChild(entryTimeBR);
-        entryTime.appendChild(entryTimeData);
         let entryPrice = document.createElement("div");
         entryPrice.setAttribute("class", "tradingBotStoreProductFrequency block");
         let entryPriceText = document.createElement("a");
@@ -271,7 +256,7 @@ function buildPanels()
         let entryPriceBR = document.createElement("br");
         let entryPriceData = document.createElement("a");
         entryPriceData.setAttribute("class", "tradingBotStoreProductBottomText");
-        entryPriceData.innerText = TRANSACTIONS[i].entryPrice;
+        entryPriceData.innerText = "$" + TRANSACTIONS[i].entryPrice;
         entryPriceData.style.fontWeight = "500";
         entryPrice.appendChild(entryPriceText);
         entryPrice.appendChild(entryPriceBR);
@@ -284,7 +269,8 @@ function buildPanels()
         let exitTimeBR = document.createElement("br");
         let exitTimeData = document.createElement("a");
         exitTimeData.setAttribute("class", "tradingBotStoreProductBottomText");
-        exitTimeData.innerText = TRANSACTIONS[i].exitTime;
+        let exitDateObject = new Date(TRANSACTIONS[i].exitTime);
+        exitTimeData.innerText = months[exitDateObject.getMonth()] + " " + exitDateObject.getDate() + ", " + exitDateObject.getFullYear() + " " + exitDateObject.getHours() + ":" + ((exitDateObject.getMinutes() < 10) ? "0" + exitDateObject.getMinutes() : exitDateObject.getMinutes());
         exitTimeData.style.fontWeight = "500";
         exitTime.appendChild(exitTimeText);
         exitTime.appendChild(exitTimeBR);
@@ -297,7 +283,7 @@ function buildPanels()
         let exitPriceBR = document.createElement("br");
         let exitPriceData = document.createElement("a");
         exitPriceData.setAttribute("class", "tradingBotStoreProductBottomText");
-        exitPriceData.innerText = TRANSACTIONS[i].exitPrice;
+        exitPriceData.innerText = "$" + TRANSACTIONS[i].exitPrice;
         exitPriceData.style.fontWeight = "500";
         exitPrice.appendChild(exitPriceText);
         exitPrice.appendChild(exitPriceBR);

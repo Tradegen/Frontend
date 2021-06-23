@@ -167,7 +167,7 @@ function buildTable()
         numberOfLPTokens.appendChild(numberOfLPTokensRight);
         row.appendChild(numberOfLPTokens);
         let amountInvested = document.createElement("td");
-        amountInvested.innerText = positions[i].amountInvested.toFixed(2) + " TGEN";
+        amountInvested.innerText = "$" + positions[i].amountInvested.toFixed(2);
         amountInvested.setAttribute("class", "marketsTableRowName");
         row.appendChild(amountInvested);
         let percentOfPool = document.createElement("td");
@@ -175,11 +175,11 @@ function buildTable()
         percentOfPool.setAttribute("class", "marketsTableRowName");
         row.appendChild(percentOfPool);
         let currentPoolSize = document.createElement("td");
-        currentPoolSize.innerText = positions[i].currentPoolSize.toFixed(2) + " TGEN";
+        currentPoolSize.innerText = "$" + positions[i].currentPoolSize.toFixed(2);
         currentPoolSize.setAttribute("class", "marketsTableRowName");
         row.appendChild(currentPoolSize);
         let maxPoolSize = document.createElement("td");
-        maxPoolSize.innerText = positions[i].maxPoolSize.toFixed(2) + " TGEN";
+        maxPoolSize.innerText = "$" + positions[i].maxPoolSize.toFixed(2);
         maxPoolSize.setAttribute("class", "marketsTableRowName");
         row.appendChild(maxPoolSize);
 
@@ -225,14 +225,14 @@ function buildTable()
         viewButton.innerText = "View";
         viewButton.setAttribute("class", "viewButton");
         viewButton.addEventListener('click', function(){ 
-            window.location.href = 'https://www.tradegen.io/token_info/' + encodeURIComponent(strategyID);
+            window.location.href = 'http://localhost:3000/token_info/' + encodeURIComponent(strategyID);
         });
         viewButton.addEventListener('mouseover', function(){ viewButton.style.cursor = "pointer"; });
         let manageButton = document.createElement("button");
         manageButton.innerText = "Manage";
         manageButton.setAttribute("class", "buyButton");
         manageButton.addEventListener('click', function(){ 
-            window.location.href = 'https://www.tradegen.io/manage_pool/' + encodeURIComponent(strategyID);
+            window.location.href = 'http://localhost:3000/manage_pool/' + encodeURIComponent(strategyID);
         });
         manageButton.style.marginLeft = "10px";
         manageButton.style.width = "80px";

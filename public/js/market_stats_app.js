@@ -90,7 +90,7 @@ function drawChart2() {
             }
         },
         vAxis: {
-            title: "Total Value Locked (TGEN)",
+            title: "Total Value Locked ($)",
             titleTextStyle: {
                 fontSize: 16,
                 italic: false
@@ -152,7 +152,7 @@ function drawChart3() {
             }
         },
         vAxis: {
-            title: "Total Value Locked (TGEN)",
+            title: "Total Value Locked ($)",
             titleTextStyle: {
                 fontSize: 16,
                 italic: false

@@ -90,7 +90,7 @@ function drawChart2() {
             }
         },
         vAxis: {
-            title: "Pool Size (TGEN)",
+            title: "Pool Size ($)",
             titleTextStyle: {
                 fontSize: 16,
                 italic: false
@@ -155,7 +155,7 @@ function drawChart3() {
             }
         },
         vAxis: {
-            title: "Pool Size (TGEN)",
+            title: "Pool Size ($)",
             titleTextStyle: {
                 fontSize: 16,
                 italic: false

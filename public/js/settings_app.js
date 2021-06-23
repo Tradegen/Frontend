@@ -1,3 +1,5 @@
+const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
 // get mobile browser
 var isMobile = { 
 	Android: function() { 
@@ -157,7 +159,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     {
         document.getElementById('successButtonSell')
             .addEventListener('click', function(){
-                window.location.href = 'https://www.tradegen.io/profile';
+                window.location.href = 'http://localhost:3000/profile';
             });
     }
 
@@ -171,7 +173,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     {
         document.getElementById('successButtonDelete')
             .addEventListener('click', function(){
-                window.location.href = 'https://www.tradegen.io/profile';
+                window.location.href = 'http://localhost:3000/profile';
             });
     }
 
@@ -185,7 +187,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     {
         document.getElementById('successButtonRunBacktest')
             .addEventListener('click', function(){
-                window.location.href = 'https://www.tradegen.io/profile';
+                window.location.href = 'http://localhost:3000/profile';
             });
     }
 
@@ -199,7 +201,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     {
         document.getElementById('successButtonEditStrategy')
             .addEventListener('click', function(){
-                window.location.href = 'https://www.tradegen.io/profile';
+                window.location.href = 'http://localhost:3000/profile';
             });
     }
 
@@ -307,6 +309,7 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     buildTable();
     buildTable2();
+    buildTable3();
 
     document.getElementById("loadingPage").remove();
     document.getElementById("mainContent").style.display = "block";
@@ -492,7 +495,7 @@ function displaySuccessModalUsername()
             $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
             setTimeout(function () {
                 $("#successModalUsername").dialog("close");
-                window.location.href = 'https://www.tradegen.io/profile';
+                window.location.href = 'http://localhost:3000/profile';
             }, 2000);
             if (!isMobile.any())
             {
@@ -622,7 +625,7 @@ function displaySuccessModalEditListing()
             $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
             setTimeout(function () {
                 $("#successModalEditListing").dialog("close");
-                window.location.href = 'https://www.tradegen.io/settings';
+                window.location.href = 'http://localhost:3000/settings';
             }, 2000);
             if (!isMobile.any())
             {
@@ -750,7 +753,7 @@ function displaySuccessModalCancelListing()
             $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
             setTimeout(function () {
                 $("#successModalCancelListing").dialog("close");
-                window.location.href = 'https://www.tradegen.io/profile';
+                window.location.href = 'http://localhost:3000/profile';
             }, 2000);
             if (!isMobile.any())
             {
@@ -879,7 +882,7 @@ function displaySuccessModalStake()
             $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
             setTimeout(function () {
                 $("#successModalStake").dialog("close");
-                window.location.href = 'https://www.tradegen.io/profile';
+                window.location.href = 'http://localhost:3000/profile';
             }, 2000);
             if (!isMobile.any())
             {
@@ -1008,7 +1011,7 @@ function displaySuccessModalUnstake()
             $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
             setTimeout(function () {
                 $("#successModalUnstake").dialog("close");
-                window.location.href = 'https://www.tradegen.io/profile';
+                window.location.href = 'http://localhost:3000/profile';
             }, 2000);
             if (!isMobile.any())
             {
@@ -1137,7 +1140,7 @@ function displaySuccessModalDeposit()
             $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
             setTimeout(function () {
                 $("#successModalDeposit").dialog("close");
-                window.location.href = 'https://www.tradegen.io/profile';
+                window.location.href = 'http://localhost:3000/profile';
             }, 2000);
             if (!isMobile.any())
             {
@@ -1521,11 +1524,11 @@ function buildTable2()
         numberOfTokens.setAttribute("class", "marketsTableRowName");
         row.appendChild(numberOfTokens);
         let marketPrice = document.createElement("td");
-        marketPrice.innerText = positionsForSale[i].marketPrice.toFixed(4) + " TGEN";
+        marketPrice.innerText = "$" + positionsForSale[i].marketPrice.toFixed(2) + " / token";
         marketPrice.setAttribute("class", "marketsTableRowName");
         row.appendChild(marketPrice);
         let advertisedPrice = document.createElement("td");
-        advertisedPrice.innerText = positionsForSale[i].advertisedPrice.toFixed(4) + " TGEN";
+        advertisedPrice.innerText = "$" + positionsForSale[i].advertisedPrice.toFixed(2) + " / token";
         advertisedPrice.setAttribute("class", "marketsTableRowName");
         row.appendChild(advertisedPrice);
         let change = document.createElement("td");
@@ -1590,6 +1593,147 @@ function buildTable2()
     {
         document.getElementById("positionsForSaleDiv").style.display = "block";
     }
+}
+
+function buildTable3()
+{
+    let dataString = document.getElementById("dataString3").value;
+    let pools = JSON.parse(dataString).pools;
+
+    const downColor = "#fe3957";
+    const upColor = "#00cf92";
+
+    if (pools.length == 0)
+    {
+        document.getElementById("poolsDiv").style.display = "none";
+    }
+
+    let table3 = document.getElementById("poolsTable");
+    table3.setAttribute("class", "transactionsTable");
+    while (table3.hasChildNodes())
+    {
+        table3.removeChild(table3.firstChild);
+    }
+    let table_body3 = document.createElement("tbody");
+    let table_head3 = document.createElement("thead");
+    let header_row3 = document.createElement("tr");
+    let header_title1 = document.createElement("th");
+    header_title1.innerText = "Pool Name";
+    header_title1.setAttribute("class", "marketsTableRowName");
+    header_row3.appendChild(header_title1);
+    let header_title2 = document.createElement("th");
+    header_title2.innerText = "Created On";
+    header_title2.setAttribute("class", "marketsTableRowName");
+    header_row3.appendChild(header_title2);
+    let header_title3 = document.createElement("th");
+    header_title3.innerText = "Number of Investors";
+    header_title3.setAttribute("class", "marketsTableRowName");
+    header_row3.appendChild(header_title3);
+    let header_title4 = document.createElement("th");
+    header_title4.innerText = "Pool Value";
+    header_title4.setAttribute("class", "marketsTableRowName");
+    header_row3.appendChild(header_title4);
+    let header_title5 = document.createElement("th");
+    header_title5.innerText = "Performance Fee";
+    header_title5.setAttribute("class", "marketsTableRowName");
+    header_row3.appendChild(header_title5);
+    let header_title6 = document.createElement("th");
+    header_title6.innerText = "Total Return";
+    header_title6.setAttribute("class", "marketsTableRowName");
+    header_row3.appendChild(header_title6);
+    let header_title7 = document.createElement("th");
+    header_title7.innerText = "Actions";
+    header_title7.setAttribute("class", "marketsTableRowData");
+    header_title7.style.textAlign = "center";
+    header_row3.appendChild(header_title7);
+
+    table_head3.appendChild(header_row3);
+    table3.appendChild(table_head3);
+
+    for(let i = 0; i < pools.length; i++)
+    {
+        let row = document.createElement("tr");
+
+        let poolName = document.createElement("td");
+        let poolNameLink = document.createElement("a");
+        poolNameLink.innerText = pools[i].poolName;
+        let poolID = pools[i].poolID;
+        poolNameLink.addEventListener('click', function(){ window.location.href = '/pool_info/' + poolID; });
+        poolNameLink.addEventListener('mouseover', function(){ poolNameLink.style.cursor = "pointer"; });
+        poolName.setAttribute("class", "marketsTableRowName");
+        poolName.appendChild(poolNameLink);
+        row.appendChild(poolName);
+        let createdOn = document.createElement("td");
+        let createdOnObject = new Date(pools[i].createdOn);
+        createdOn.innerText = months[createdOnObject.getMonth()] + " " + createdOnObject.getDate() + ", " + createdOnObject.getFullYear();
+        createdOn.setAttribute("class", "marketsTableRowName");
+        row.appendChild(createdOn);
+        let numberOfInvestors = document.createElement("td");
+        numberOfInvestors.innerText = pools[i].numberOfInvestors;
+        numberOfInvestors.setAttribute("class", "marketsTableRowName");
+        row.appendChild(numberOfInvestors);
+        let poolValue = document.createElement("td");
+        poolValue.innerText = "$" + pools[i].poolValue.toFixed(2);
+        poolValue.setAttribute("class", "marketsTableRowName");
+        row.appendChild(poolValue);
+        let performanceFee = document.createElement("td");
+        performanceFee.innerText = pools[i].performanceFee + "%";
+        performanceFee.setAttribute("class", "marketsTableRowName");
+        row.appendChild(performanceFee);
+
+        let totalReturn = document.createElement("td");
+        let arrow2 = document.createElement("i");
+        let text2 = document.createElement("a");
+        arrow2.setAttribute("class", "material-icons");
+        let percent2 = pools[i].totalReturn;
+        if (percent2 > 0)
+        {
+            totalReturn.style.color = upColor;
+            arrow2.innerText = "arrow_drop_up";
+            arrow2.style.color = upColor;
+        }
+        else if (percent2 == 0)
+        {
+            totalReturn.style.color = "#737373";
+            arrow2.innerText = "arrow_right";
+            arrow2.style.color = "#737373";
+        }
+        else
+        {
+            totalReturn.style.color = downColor;
+            arrow2.innerText = "arrow_drop_down";
+            arrow2.style.color = downColor;
+            percent2 *= -1;
+        }
+        text2.innerText = percent2.toFixed(2) + "%";
+        totalReturn.setAttribute("class", "marketsTableRowName");
+        totalReturn.style.display = "flex";
+        arrow2.style.paddingTop = "4px";
+        text2.style.paddingTop = "7px";
+        totalReturn.appendChild(arrow2);
+        totalReturn.appendChild(text2);
+        row.appendChild(totalReturn);
+
+        let actions = document.createElement("td");
+        actions.setAttribute("class", "marketsTableRowData");
+        actions.style.textAlign = "center";
+        let manageButton = document.createElement("button");
+        manageButton.innerText = "Edit";
+        manageButton.setAttribute("class", "buyButton");
+        manageButton.addEventListener('click', function(){ window.location.href = "/manage_pool/" + poolID;});
+        let viewButton = document.createElement("button");
+        viewButton.innerText = "View";
+        viewButton.setAttribute("class", "viewButton");
+        viewButton.addEventListener('click', function(){ window.location.href = "/pool_info/" + poolID; });
+        actions.appendChild(viewButton);
+        actions.appendChild(manageButton);
+        
+        row.appendChild(actions);
+        
+        table_body3.appendChild(row);
+    }
+
+    table3.appendChild(table_body3);
 }
 
 function populateStrategyDiv(id)
@@ -2433,7 +2577,7 @@ function displaySuccessModalSell()
             $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
             setTimeout(function () {
                 $("#successModalSell").dialog("close");
-                window.location.href = 'https://www.tradegen.io/profile';
+                window.location.href = 'http://localhost:3000/profile';
             }, 2000);
             if (!isMobile.any())
             {
@@ -2503,7 +2647,7 @@ function displaySuccessModalDelete()
             $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
             setTimeout(function () {
                 $("#successModalDelete").dialog("close");
-                window.location.href = 'https://www.tradegen.io/profile';
+                window.location.href = 'http://localhost:3000/profile';
             }, 2000);
             if (!isMobile.any())
             {
@@ -2631,7 +2775,7 @@ function displaySuccessModalRunBacktest()
             $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
             setTimeout(function () {
                 $("#successModalRunBacktest").dialog("close");
-                window.location.href = 'https://www.tradegen.io/profile';
+                window.location.href = 'http://localhost:3000/profile';
             }, 2000);
             if (!isMobile.any())
             {
@@ -2785,7 +2929,7 @@ function displaySuccessModalEditStrategy()
             $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
             setTimeout(function () {
                 $("#successModalEditStrategy").dialog("close");
-                window.location.href = 'https://www.tradegen.io/profile';
+                window.location.href = 'http://localhost:3000/profile';
             }, 2000);
             if (!isMobile.any())
             {

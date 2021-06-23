@@ -34,10 +34,13 @@
         <div class="displayProperty marginLeftMinus10">
             <div>
                 <div class="settingsText">
-                    <a class="extraWeight">Net Worth:</a> <a id="netWorth">{{netWorth}} TGEN</a>
+                    <a class="extraWeight">Net Worth:</a> <a id="netWorth">${{netWorth}}</a>
                 </div>
                 <div class="settingsText">
-                    <a class="extraWeight">Balance: </a><a id="balance">{{credits}} TGEN</a>
+                    <a class="extraWeight">TGEN Balance: </a><a id="balance">{{credits}} TGEN</a>
+                </div>
+                <div class="settingsText">
+                    <a class="extraWeight">USD Balance: </a><a id="USDbalance">$0.00</a>
                 </div>
                 <div class="settingsText">
                     <a class="extraWeight">Staked Balance: </a><a id="stakedBalance">{{stakedBalance}} TGEN</a>
@@ -79,6 +82,13 @@
             <div class="profileTableTitle helvetica">My Strategies</div>
             <div class="mediaTableWrap">
                 <table id="developedStrategiesTable" class="transactionsTable"></table>
+            </div>
+        </div>
+
+        <div class="tableWrapper" id="poolsDiv">
+            <div class="profileTableTitle helvetica">My Pools</div>
+            <div class="mediaTableWrap">
+                <table id="poolsTable" class="transactionsTable"></table>
             </div>
         </div>
 
@@ -410,6 +420,7 @@
     <input type="hidden" id="sotong" value="{{token}}">
     <input type="hidden" id="dataString" value="{{dataString}}">
     <input type="hidden" id="dataString2" value="{{dataString2}}">
+    <input type="hidden" id="dataString3" value="{{dataString3}}">
     <input type="hidden" id="marketplaceListingID" value="">
  
     <script type="text/javascript" src="https://unpkg.com/web3@1.2.11/dist/web3.min.js"></script>

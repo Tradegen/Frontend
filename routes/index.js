@@ -122,6 +122,30 @@ router.get('/updates', function (req, res, next) {
   });
 });
 
+// Create Pool Page
+router.get('/create_pool', function (req, res, next) {
+  
+  var loggedIn = (typeof req.session.user !== "undefined") ? true : false;
+  var username = loggedIn ? req.session.user : "";
+  let token = req.session.csrf;
+  let credits = (typeof req.session.credits !== "undefined") ? req.session.credits.toFixed(4) : "0.0000";
+
+  if (loggedIn)
+  {
+    res.render('create_pool', { 
+      loginStatus: loggedIn,
+      username: username.substring(0, 8) + "...",
+      token: token,
+      credits: credits
+    });
+  }
+  else
+  {
+    res.redirect("/open_beta");
+  }
+  
+});
+
 // Build Strategy Page
 router.get('/build_strategy', function (req, res, next) {
   
@@ -297,6 +321,29 @@ router.get('/checkout/:id', function (req, res, next) {
   xhttpRep.send(temp2);
 });
 
+// Invested Pools Page
+router.get('/invested_pools', function (req, res, next) {
+  
+  var loggedIn = (typeof req.session.user !== "undefined") ? true : false;
+  var username = loggedIn ? req.session.user : "";
+  let token = req.session.csrf;
+  let credits = (typeof req.session.credits !== "undefined") ? req.session.credits.toFixed(4) : "0.0000";
+
+  if (loggedIn)
+  {
+    res.render('invested_pools', { 
+      loginStatus: loggedIn,
+      username: username.substring(0, 8) + "...",
+      token: token,
+      credits: credits
+    });
+  }
+  else
+  {
+    res.redirect("/open_beta");
+  }
+});
+
 // Positions Page
 router.get('/positions', function (req, res, next) {
   
@@ -407,6 +454,11 @@ router.get('/settings', function (req, res, next) {
     }
     let dataString2 = JSON.stringify(dataObject2);
 
+    let dataObject3 = {
+      pools: response.managedPools
+    }
+    let dataString3 = JSON.stringify(dataObject3);
+
     res.render('settings', { 
       loginStatus: loggedIn,
       username: username.substring(0, 8) + "...",
@@ -415,6 +467,7 @@ router.get('/settings', function (req, res, next) {
       token: req.session.csrf,
       dataString: dataString,
       dataString2: dataString2,
+      dataString3: dataString3,
       user: response.username,
       stakedBalance: response.stakedBalance
     });
@@ -433,6 +486,20 @@ router.get('/strategies', function (req, res, next) {
   let credits = (typeof req.session.credits !== "undefined") ? req.session.credits.toFixed(4) : "0.0000";
 
   res.render('strategies', { 
+    loginStatus: loggedIn,
+    username: username.substring(0, 8) + "...",
+    credits: credits
+  });
+});
+
+// Pools Page
+router.get('/pools', function (req, res, next) {
+  
+  var loggedIn = (typeof req.session.user !== "undefined") ? true : false;
+  var username = loggedIn ? req.session.user : "";
+  let credits = (typeof req.session.credits !== "undefined") ? req.session.credits.toFixed(4) : "0.0000";
+
+  res.render('pools', { 
     loginStatus: loggedIn,
     username: username.substring(0, 8) + "...",
     credits: credits
@@ -742,7 +809,7 @@ router.get('/token_info/:id', function (req, res, next) {
       loginStatus: loggedIn,
       username: username.substring(0, 8) + "...",
       strategyName: strategyName,
-      tokenPrice: tokenPrice.toFixed(4) + " TGEN",
+      tokenPrice: "$" + tokenPrice.toFixed(2),
       dataString2: dataString2,
       credits: credits,
       deployedOn: deployedOn,
@@ -758,6 +825,116 @@ router.get('/token_info/:id', function (req, res, next) {
     });
   }
   xhttpRep.open("POST", 'https://us-west2-stocks2-301304.cloudfunctions.net/getTokenInfo', true);
+  xhttpRep.withCredentials = true;
+  xhttpRep.setRequestHeader("Content-Type", "application/json");
+  xhttpRep.send(temp2);
+});
+
+// Pool Info Page
+router.get('/pool_info/:id', function (req, res, next) {
+  var loggedIn = (typeof req.session.user !== "undefined") ? "True" : "";
+  var poolID = req.params.id;
+  var username = loggedIn ? req.session.user : "";
+  let credits = (typeof req.session.credits !== "undefined") ? req.session.credits.toFixed(4) : "0.0000";
+
+  if (typeof poolID !== "string")
+  {
+    return res.status(500).send("No pool ID");
+  }
+
+  const allowedCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz';
+  let found = false;
+  for (var i = 0; i < poolID.length; i+=1)
+  {
+    let character = poolID.charAt(i);
+    for (var j = 0; j < allowedCharacters.length; j+=1)
+    {
+        if (allowedCharacters.charAt(j) == character)
+        {
+            found = true;
+            break;
+        }
+    }
+    if (found == false)
+    {
+      return res.status(500).send("Invalid pool ID");
+    }
+  }
+
+  let temp2 = JSON.stringify({poolID: poolID});
+
+  const xhttpRep = new XMLHttpRequest();
+  xhttpRep.onload = function(e) {
+    const response = JSON.parse(xhttpRep.responseText);
+
+    if (response.hasErrors == true)
+    {
+      return res.status(500).send("Error");
+    }
+
+    let poolName = response.poolName;
+    let poolValue = response.poolValue;
+    let circulatingSupply = response.circulatingSupply;
+    let createdOn = response.createdOn;
+    let numberOfInvestors = response.numberOfInvestors;
+    let ownerShare = response.ownerShare;
+    let totalReturn = response.totalReturn;
+    let performanceFee = response.performanceFee;
+    let description = response.description;
+
+    let managerID = response.managerID;
+    let managerUsername = response.managerUsername;
+    let address = response.address;
+
+    let dataObject2 = {
+      poolHistory: response.poolHistory
+    }
+    let dataString2 = JSON.stringify(dataObject2);
+
+    let dataObject = {
+      tokenHistory: response.tokenHistory
+    }
+    let dataString = JSON.stringify(dataObject);
+
+    let dataObject3 = {
+      transactionHistory: response.transactionHistory
+    }
+    let dataString3 = JSON.stringify(dataObject3);
+
+    let dataObject4 = {
+      positions: response.positions
+    }
+    let dataString4 = JSON.stringify(dataObject4);
+
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    let createdOnObject = new Date(createdOn);
+    let dateString = months[createdOnObject.getMonth()] + " " + createdOnObject.getDate() + ", " + createdOnObject.getFullYear();
+
+    res.render('pool_info', { 
+      loginStatus: loggedIn,
+      credits: credits,
+      username: username.substring(0, 8) + "...",
+      poolName: poolName,
+      description: description,
+      poolValue: "$" + poolValue.toFixed(2),
+      circulatingSupply: circulatingSupply.toFixed(4),
+      createdOn: dateString,
+      numberOfInvestors: numberOfInvestors,
+      ownerShare: (100 * ownerShare / circulatingSupply).toFixed(2) + "%",
+      tokenPrice: "$" + (poolValue / circulatingSupply).toFixed(2),
+      totalReturn: totalReturn.toFixed(2) + "%",
+      performanceFee: performanceFee + "%",
+      managerID: managerID,
+      managerUsername: managerUsername,
+      managerAddress: address,
+      poolID: poolID,
+      dataString: dataString,
+      dataString2: dataString2,
+      dataString3: dataString3,
+      dataString4: dataString4
+    });
+  }
+  xhttpRep.open("POST", 'https://us-central1-stocks2-301304.cloudfunctions.net/getPoolInfo', true);
   xhttpRep.withCredentials = true;
   xhttpRep.setRequestHeader("Content-Type", "application/json");
   xhttpRep.send(temp2);
@@ -1069,8 +1246,100 @@ router.get('/buy_position/:id', function (req, res, next) {
   xhttpRep.send(temp2);
 });
 
-//Manage Pool Page
-router.get('/manage_pool/:id', function (req, res, next) {
+//Manage Pool Investment Page
+router.get('/manage_pool_investment/:id', function (req, res, next) {
+  var loggedIn = (typeof req.session.user !== "undefined") ? true : false;
+  var username = loggedIn ? req.session.user : "";
+  let token = req.session.csrf;
+  let credits = (typeof req.session.credits !== "undefined") ? req.session.credits.toFixed(4) : "0.0000";
+
+  if (!loggedIn)
+  {
+    return res.redirect("/open_beta");
+  }
+
+  const poolID = req.params.id;
+
+  if (typeof poolID !== "string")
+  {
+    return res.status(500).send("No pool ID");
+  }
+
+  const allowedCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz';
+  let found = false;
+  for (var i = 0; i < poolID.length; i+=1)
+  {
+    let character = poolID.charAt(i);
+    for (var j = 0; j < allowedCharacters.length; j+=1)
+    {
+        if (allowedCharacters.charAt(j) == character)
+        {
+            found = true;
+            break;
+        }
+    }
+    if (found == false)
+    {
+      return res.status(500).send("Error");
+    }
+  }
+
+  var userID = username;
+  let temp2 = JSON.stringify({
+    poolID: poolID,
+    userID: userID
+  });
+
+  const xhttpRep = new XMLHttpRequest();
+  xhttpRep.onload = function(e) {
+    const response = JSON.parse(xhttpRep.responseText);
+
+    if (response.hasErrors == true)
+    {
+      return res.status(500).send("Error");
+    }
+
+    let poolName = response.poolName;
+    let poolValue = response.poolValue;
+    let circulatingSupply = response.circulatingSupply;
+    let performanceFee = response.performanceFee;
+
+    let managerID = response.managerID;
+    let managerUsername = response.managerUsername;
+    let address = response.address;
+
+    let averagePrice = response.averagePrice;
+    let numberOfTokens = response.numberOfTokens;
+
+    let tokenPrice = poolValue / circulatingSupply;
+
+    res.render('manage_pool_investment', { 
+      username: username.substring(0, 8) + "...",
+      poolID: poolID,
+      userID: userID,
+      token: token,
+      credits: credits,
+      poolName: poolName,
+      poolValue: poolValue.toFixed(2),
+      performanceFee: performanceFee,
+      managerID: managerID,
+      managerUsername: managerUsername,
+      address: address,
+      averagePrice: averagePrice,
+      numberOfTokens: numberOfTokens,
+      amountInvested: (averagePrice * numberOfTokens).toFixed(2),
+      tokenPrice: tokenPrice.toFixed(2),
+      currentROI: (100 * (tokenPrice - averagePrice) / averagePrice).toFixed(2)
+    });
+  }
+  xhttpRep.open("POST", 'https://us-central1-stocks2-301304.cloudfunctions.net/getManagePoolInvestmentData', true);
+  xhttpRep.withCredentials = true;
+  xhttpRep.setRequestHeader("Content-Type", "application/json");
+  xhttpRep.send(temp2);
+});
+
+//Manage Position Page
+router.get('/manage_position/:id', function (req, res, next) {
   var loggedIn = (typeof req.session.user !== "undefined") ? true : false;
   var username = loggedIn ? req.session.user : "";
   let token = req.session.csrf;
@@ -1130,9 +1399,9 @@ router.get('/manage_pool/:id', function (req, res, next) {
     let currentPoolSize = response.currentPoolSize.toFixed(2);
     let maxPoolSize = response.maxPoolSize.toFixed(2);
     let circulatingSupply = response.circulatingSupply.toFixed(4);
-    let amountInvested = response.amountInvested.toFixed(4);
+    let amountInvested = response.amountInvested.toFixed(2);
     let numberOfLPTokens = response.numberOfLPTokens.toFixed(4);
-    let availableToInvest = Math.min(req.session.credits, (response.maxPoolSize - response.currentPoolSize)).toFixed(4);
+    let availableToInvest = Math.min(req.session.credits, (response.maxPoolSize - response.currentPoolSize)).toFixed(2);
     let availableYield = response.availableYield.toFixed(4);
 
     res.render('buy_new_shares', { 
@@ -1390,6 +1659,194 @@ async (req, res) => {
   xhttp.withCredentials = true;
   xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
   xhttp.send(qs.stringify(req.body));
+});
+
+// Deposit funds into a user pool
+router.post('/depositIntoPool', function (req, res, next) {
+  var loggedIn = (typeof req.session.user !== "undefined") ? true : false;
+  var username = loggedIn ? req.session.user : "";
+
+  if (!loggedIn)
+  {
+    return res.redirect("/open_beta");
+  }
+
+  let userID = username;
+  let poolID = req.body.poolID;
+  let amountToDeposit = req.body.amountToDeposit;
+  let csrf = req.body.csrf;
+
+  if (typeof poolID !== "string")
+  {
+    return res.status(500).send("No pool ID");
+  }
+
+  if (typeof amountToDeposit !== "number")
+  {
+    return res.status(500).send("Error");
+  }
+
+  const allowedCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz';
+  let found = false;
+  for (var i = 0; i < poolID.length; i+=1)
+  {
+    let character = poolID.charAt(i);
+    for (var j = 0; j < allowedCharacters.length; j+=1)
+    {
+        if (allowedCharacters.charAt(j) == character)
+        {
+            found = true;
+            break;
+        }
+    }
+    if (found == false)
+    {
+      return res.status(200).json({
+        response: "Error",
+      });
+    }
+  }
+
+  //check if amountToDeposit is a number
+  if ((+amountToDeposit === +amountToDeposit) && (typeof amountToDeposit !== "undefined"))
+  {
+    amountToDeposit = parseFloat(amountToDeposit);
+  }
+  else
+  {
+    return res.status(200).json({
+      response: "Error",
+    });
+  }
+
+  if (csrf != req.session.csrf)
+  {
+    return res.status(200).json({
+      response: "Error",
+    });
+  }
+
+  let temp2 = JSON.stringify({
+    poolID: poolID,
+    userID: userID,
+    amountToInvest: amountToDeposit,
+  });
+  
+  const xhttp = new XMLHttpRequest();
+  xhttp.onload = function(e) {
+    let response = xhttp.responseText;
+
+    console.log(xhttp.responseText);
+
+    if (response.charAt(0) == "0")
+    {
+      let temp = parseFloat(response);
+      req.session.credits = parseFloat(temp);
+      response = "Success";
+    }
+
+    return res.status(200).json({
+      response: response,
+    });
+  }
+  xhttp.open("POST", 'https://us-central1-stocks2-301304.cloudfunctions.net/depositIntoPool', true);
+  xhttp.withCredentials = true;
+  xhttp.setRequestHeader("Content-Type", "application/json");
+  xhttp.send(temp2);
+});
+
+// Withdraw funds from a user pool
+router.post('/withdrawFromPool', function (req, res, next) {
+  var loggedIn = (typeof req.session.user !== "undefined") ? true : false;
+  var username = loggedIn ? req.session.user : "";
+
+  if (!loggedIn)
+  {
+    return res.redirect("/open_beta");
+  }
+
+  let userID = username;
+  let poolID = req.body.poolID;
+  let amountToWithdraw = req.body.amountToWithdraw;
+  let csrf = req.body.csrf;
+
+  if (typeof poolID !== "string")
+  {
+    return res.status(500).send("No pool ID");
+  }
+
+  if (typeof amountToWithdraw !== "number")
+  {
+    return res.status(500).send("Error");
+  }
+
+  const allowedCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz';
+  let found = false;
+  for (var i = 0; i < poolID.length; i+=1)
+  {
+    let character = poolID.charAt(i);
+    for (var j = 0; j < allowedCharacters.length; j+=1)
+    {
+        if (allowedCharacters.charAt(j) == character)
+        {
+            found = true;
+            break;
+        }
+    }
+    if (found == false)
+    {
+      return res.status(200).json({
+        response: "Error",
+      });
+    }
+  }
+
+  //check if amountToWithdraw is a number
+  if ((+amountToWithdraw === +amountToWithdraw) && (typeof amountToWithdraw !== "undefined"))
+  {
+    amountToWithdraw = parseFloat(amountToWithdraw);
+  }
+  else
+  {
+    return res.status(200).json({
+      response: "Error",
+    });
+  }
+
+  if (csrf != req.session.csrf)
+  {
+    return res.status(200).json({
+      response: "Error",
+    });
+  }
+
+  let temp2 = JSON.stringify({
+    poolID: poolID,
+    userID: userID,
+    amountToWithdraw: amountToWithdraw,
+  });
+  
+  const xhttp = new XMLHttpRequest();
+  xhttp.onload = function(e) {
+    let response = xhttp.responseText;
+
+    console.log(xhttp.responseText);
+
+    if (response.charAt(0) == "0")
+    {
+      let temp = parseFloat(response);
+      req.session.credits = parseFloat(temp);
+      response = "Success";
+    }
+
+    return res.status(200).json({
+      response: response,
+    });
+  }
+  xhttp.open("POST", 'https://us-central1-stocks2-301304.cloudfunctions.net/withdrawFromPool', true);
+  xhttp.withCredentials = true;
+  xhttp.setRequestHeader("Content-Type", "application/json");
+  xhttp.send(temp2);
 });
 
 // Deposit funds into a strategy pool
@@ -2447,7 +2904,7 @@ router.post('/start_backtest', function (req, res, next) {
   });
   
   const xhttp = new XMLHttpRequest();
-  xhttp.open("POST", 'https://backtest-dot-stocks2-301304.uc.r.appspot.com/backtest/run_backtest', true);
+  xhttp.open("POST", 'http://localhost:6000/backtest/run_backtest', true);
   xhttp.withCredentials = true;
   xhttp.setRequestHeader("Content-Type", "application/json");
   xhttp.send(temp2);
@@ -2515,6 +2972,212 @@ router.get('/ai-pee-ai-chee-ai-tua-liap-nee/:userID', async function (req, res, 
   xhttp.setRequestHeader("Content-Type", "application/json");
   xhttp.send(temp2);
 
+});
+
+// Create pool
+router.post('/create_pool',
+[
+  check("poolName").notEmpty().withMessage("Please enter a name."),
+  check("description").notEmpty().withMessage("Please enter a description."),
+  check("performanceFee").isNumeric().withMessage("Please enter a number between 0 and 40 for performance fee."),
+  check("performanceFee").custom((value, { req }) => {
+    if(value < 0 || value > 40) {
+        throw new Error ("Please enter a number between 0 and 40 for performance fee.");
+    }
+    return true;
+  }),
+  check("initialInvestment").isNumeric().withMessage("Please enter a number greater than 0 for initial investment"),
+  check("initialInvestment").custom((value, { req }) => {
+    if(value < 0) {
+        throw new Error ("Please enter a number greater than 0 for initial investment.");
+    }
+    return true;
+  }),
+  check("csrf").custom((value, { req }) => {
+    if(!value) {
+        throw new Error ("Bad token.");
+    }
+  
+    if (value != req.session.csrf)
+    {
+      throw new Error ("Bad token.");
+    }
+  
+    return true;
+  })
+]
+, async (req, res) => {
+  var loggedIn = (typeof req.session.user !== "undefined") ? true : false;
+  var username = loggedIn ? req.session.user : "";
+  let credits = (typeof req.session.credits !== "undefined") ? req.session.credits.toFixed(4) : "0.0000";
+
+  let output = req.body;
+  output.userID = username;
+
+  let temp2 = JSON.stringify(output);
+
+  if (!loggedIn)
+  {
+    return res.redirect("/open_beta");
+  }
+
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    var err = errors.array()[0].msg;
+    var tokenResult = (err != "Bad token.") ? req.session.csrf : "";
+    return res.render('create_pool', {
+      message: err,
+      loginStatus: loggedIn,
+      username: username.substring(0, 8) + "...",
+      poolName: req.body.poolName,
+      description: req.body.description,
+      performanceFee: req.body.performanceFee,
+      initialInvestment: req.body.initialInvestment,
+      token: tokenResult,
+      credits: credits
+    });
+  }
+
+  if (req.body.poolName.length > 30)
+  {
+    return res.render('create_pool', {
+      message: "Pool name must be shorter than 30 characters",
+      loginStatus: loggedIn,
+      username: username.substring(0, 8) + "...",
+      poolName: req.body.poolName,
+      description: req.body.description,
+      performanceFee: req.body.performanceFee,
+      initialInvestment: req.body.initialInvestment,
+      token: tokenResult,
+      credits: credits
+    });
+  }
+
+  const allowedCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz !@#$%()';
+  let found = false;
+  for (var i = 0; i < req.body.poolName.length; i+=1)
+  {
+    let character = req.body.poolName.charAt(i);
+    for (var j = 0; j < allowedCharacters.length; j+=1)
+    {
+        if (allowedCharacters.charAt(j) == character)
+        {
+            found = true;
+            break;
+        }
+    }
+    if (found == false)
+    {
+      return res.render('create_pool', {
+        message: "Pool name contains invalid characters.",
+        loginStatus: loggedIn,
+        loginStatus: loggedIn,
+        username: username.substring(0, 8) + "...",
+        poolName: req.body.poolName,
+        description: req.body.description,
+        performanceFee: req.body.performanceFee,
+        initialInvestment: req.body.initialInvestment,
+        token: tokenResult,
+        credits: credits
+      });
+    }
+  }
+
+  if (typeof req.body.description !== "string")
+  {
+    return res.render('create_pool', {
+      message: "Please enter a valid description.",
+      loginStatus: loggedIn,
+      username: username.substring(0, 8) + "...",
+      poolName: req.body.poolName,
+      description: req.body.description,
+      performanceFee: req.body.performanceFee,
+      initialInvestment: req.body.initialInvestment,
+      token: tokenResult,
+      credits: credits
+    });
+  }
+
+  let foundDescription = false;
+  for (var i = 0; i < req.body.description.length; i+=1)
+  {
+    let character = req.body.description.charAt(i);
+    for (var j = 0; j < allowedCharacters.length; j+=1)
+    {
+        if (allowedCharacters.charAt(j) == character)
+        {
+            foundDescription = true;
+            break;
+        }
+    }
+    if (foundDescription == false)
+    {
+      return res.render('create_pool', {
+        message: "Description contains invalid characters.",
+        loginStatus: loggedIn,
+        username: username.substring(0, 8) + "...",
+        poolName: req.body.poolName,
+        description: req.body.description,
+        performanceFee: req.body.performanceFee,
+        initialInvestment: req.body.initialInvestment,
+        token: tokenResult,
+        credits: credits
+      });
+    }
+  }
+
+  const xhttp = new XMLHttpRequest();
+  xhttp.onload = function(e) {
+    const response = xhttp.responseText;
+    if (response == "Success")
+    {
+      return res.render('create_pool', {
+        status: "Success",
+        loginStatus: loggedIn,
+        username: username.substring(0, 8) + "...",
+        poolName: req.body.poolName,
+        description: req.body.description,
+        performanceFee: req.body.performanceFee,
+        initialInvestment: req.body.initialInvestment,
+        token: tokenResult,
+        credits: credits
+      });
+    }
+    else if (response == "Cannot make more than 3 pools.")
+    {
+      return res.render('create_pool', {
+        status: "Error",
+        initialErrorMessage: "Cannot make more than 3 pools",
+        loginStatus: loggedIn,
+        username: username.substring(0, 8) + "...",
+        poolName: req.body.poolName,
+        description: req.body.description,
+        performanceFee: req.body.performanceFee,
+        initialInvestment: req.body.initialInvestment,
+        token: tokenResult,
+        credits: credits
+      });
+    }
+    else
+    {
+      return res.render('create_pool', {
+        status: "Error",
+        initialErrorMessage: "Error when creating pool",
+        loginStatus: loggedIn,
+        username: username.substring(0, 8) + "...",
+        poolName: req.body.poolName,
+        description: req.body.description,
+        performanceFee: req.body.performanceFee,
+        initialInvestment: req.body.initialInvestment,
+        token: tokenResult,
+        credits: credits
+      });
+    }
+  }
+  xhttp.open("POST", 'https://us-central1-stocks2-301304.cloudfunctions.net/createPool', true);
+  xhttp.withCredentials = true;
+  xhttp.setRequestHeader("Content-Type", "application/json");
+  xhttp.send(temp2);
 });
 
 // Create strategy

@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     {
         document.getElementById('successButtonCancel')
             .addEventListener('click', function(){
-                window.location.href = 'https://www.tradegen.io/profile';
+                window.location.href = 'http://localhost:3000/profile';
             });
     }
 
@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     {
         document.getElementById('successButtonEdit')
             .addEventListener('click', function() {
-                window.location.href = 'https://www.tradegen.io/profile';
+                window.location.href = 'http://localhost:3000/profile';
             });
     }
 
@@ -108,7 +108,7 @@ function generateContent()
         let totalNumberOfLPTokens = document.getElementById("totalNumberOfSharesOwned");
         totalNumberOfLPTokens.innerText = response.totalNumberOfLPTokens.toFixed(2);
         let netWorth = document.getElementById("netWorth");
-        netWorth.innerText = response.netWorth.toFixed(2) + " TGEN";
+        netWorth.innerText = "$" + response.netWorth.toFixed(2);
         let totalYieldClaimed = document.getElementById("totalYieldClaimed");
         totalYieldClaimed.innerText = plus + response.totalYieldClaimed.toFixed(4) + " TGEN";
         let memberSince = document.getElementById("memberSince");
@@ -214,15 +214,15 @@ function generateContent()
             sharesBought.appendChild(sharesBoughtRight);
             row.appendChild(sharesBought);
             let currentPoolSize = document.createElement("td");
-            currentPoolSize.innerText = strategies[i].currentPoolSize.toFixed(2) + " TGEN";
+            currentPoolSize.innerText = "$" + strategies[i].currentPoolSize.toFixed(2);
             currentPoolSize.setAttribute("class", "marketsTableRowName");
             row.appendChild(currentPoolSize);
             let maxPoolSize = document.createElement("td");
-            maxPoolSize.innerText = strategies[i].maxPoolSize.toFixed(2) + " TGEN";
+            maxPoolSize.innerText = "$" + strategies[i].maxPoolSize.toFixed(2);
             maxPoolSize.setAttribute("class", "marketsTableRowName");
             row.appendChild(maxPoolSize);
             let totalYieldGenerated = document.createElement("td");
-            totalYieldGenerated.innerText = strategies[i].totalYieldGenerated.toFixed(2) + " TGEN";
+            totalYieldGenerated.innerText = "$" + strategies[i].totalYieldGenerated.toFixed(2);
             totalYieldGenerated.setAttribute("class", "marketsTableRowName");
             row.appendChild(totalYieldGenerated);
             let todayChange = document.createElement("td");
@@ -406,7 +406,7 @@ function generateContent()
             numberOfLPTokens.appendChild(numberOfLPTokensRight);
             row.appendChild(numberOfLPTokens);
             let amountInvested = document.createElement("td");
-            amountInvested.innerText = positions[i].amountInvested.toFixed(2) + " TGEN";
+            amountInvested.innerText = "$" + positions[i].amountInvested.toFixed(2);
             amountInvested.setAttribute("class", "marketsTableRowName");
             row.appendChild(amountInvested);
             let percentOfPool = document.createElement("td");
@@ -414,11 +414,11 @@ function generateContent()
             percentOfPool.setAttribute("class", "marketsTableRowName");
             row.appendChild(percentOfPool);
             let currentPoolSize = document.createElement("td");
-            currentPoolSize.innerText = positions[i].currentPoolSize.toFixed(2) + " TGEN";
+            currentPoolSize.innerText = "$" + positions[i].currentPoolSize.toFixed(2);
             currentPoolSize.setAttribute("class", "marketsTableRowName");
             row.appendChild(currentPoolSize);
             let maxPoolSize = document.createElement("td");
-            maxPoolSize.innerText = positions[i].maxPoolSize.toFixed(2) + " TGEN";
+            maxPoolSize.innerText = "$" + positions[i].maxPoolSize.toFixed(2);
             maxPoolSize.setAttribute("class", "marketsTableRowName");
             row.appendChild(maxPoolSize);
 
@@ -462,7 +462,7 @@ function generateContent()
             viewButton.innerText = "View";
             viewButton.setAttribute("class", "viewButton");
             viewButton.addEventListener('click', function(){ 
-                window.location.href = 'https://www.tradegen.io/token_info/' + encodeURIComponent(strategyID);
+                window.location.href = 'http://localhost:3000/token_info/' + encodeURIComponent(strategyID);
             });
             viewButton.addEventListener('mouseover', function(){ viewButton.style.cursor = "pointer"; });
             actions.appendChild(viewButton);
@@ -649,7 +649,7 @@ function displaySuccessModalCancel()
             $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
             setTimeout(function () {
                 $("#successModalCancel").dialog("close");
-                window.location.href = 'https://www.tradegen.io/profile';
+                window.location.href = 'http://localhost:3000/profile';
             }, 2000);
             if (!isMobile.any())
             {
@@ -719,7 +719,7 @@ function displaySuccessModalEdit()
             $(".ui-dialog-titlebar-close", ui.dialog || ui).hide();
             setTimeout(function () {
                 $("#successModalEdit").dialog("close");
-                window.location.href = 'https://www.tradegen.io/profile';
+                window.location.href = 'http://localhost:3000/profile';
             }, 2000);
             if (!isMobile.any())
             {

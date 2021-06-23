@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Pool Info</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="/img/favicon.png">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="/js/update_overlay.js"></script>
+    <script>
+        Object.keys(require.cache).forEach(function(key) { delete require.cache[key] });
+    </script>
+</head>
+
+<body class="appBackground">
+    {{#if loginStatus}}
+    {{>user_header}}
+    {{else}}
+    {{>guest_header}}
+    {{/if}}
+    <div class="main-content" id="main">
+        <div class="mediaHeaderWeb maxWidth80" id="strategyInfoDesktop">
+            <div class="pageTitle">{{poolName}}</div>
+            <div class="maxWidth80">
+                <div class="strategyInfoTop">
+                    <div class="strategyInfoLeftSide">
+                        <div class="marginTop50"><a class="extraWeight">Created on: </a> {{createdOn}}</div>
+                        <div style="margin-top: 20px"><a class="extraWeight">By: </a> <a id="managerWeb">{{managerUsername}}</a></div>
+                        <div style="margin-top: 20px"><a class="extraWeight">Token price: </a> {{tokenPrice}}</div>
+                        <div style="margin-top: 20px"><a class="extraWeight">Total return: </a> {{totalReturn}}</div>
+                        <button type="button" class="productButton intiallyHidden marginTop50" id="investButtonWeb">Invest in Pool</button>
+                    </div>
+                </div>
+            </div>
+            <div class="displayProperty" style="float: right">
+                <div id="assetChart" class="assetChart"></div>
+            </div>
+        </div>
+        <div class="maxWidth80 initiallyHidden" id="strategyInfoMobile">
+            <div class="pageTitle alignCenter">{{poolName}}</div>
+            <div class="strategyInfoTop">
+                <div class="strategyInfoLeftSide"><a class="extraWeight">Created on: </a> {{createdOn}}</div>
+                <div class="strategyInfoRightSide" id="marketPrice"><a class="extraWeight">By: </a> <a id="managerMobile">{{managerUsername}}</a></div><br>
+            </div>
+            <div class="strategyInfoBottom">
+                <button type="button" class="productButton marginRight0 mediaMarginTop30 marginLeft30" id="investButtonMobile">Invest in Pool</button>
+            </div>
+        </div>
+
+        <div class="tradingBotStoreProductInfo marginTop50 maxWidth80">
+            <div class="tradingBotStoreProductTopRow mediaMarginBottom20">
+                <div class="strategyInfoDescription">{{description}}</div>
+            </div>
+            <div class="tradingBotStoreProductBottomRow">
+                <div class="tradingBotStoreProductFrequency block">
+                    <a class="tradingBotStoreProductTopText">Performance Fee</a><br>
+                    <a class="tradingBotStoreProductBottomText">{{performanceFee}}</a>
+                </div>
+                <div class="tradingBotStoreProductFrequency block">
+                    <a class="tradingBotStoreProductTopText">Number of Investors</a><br>
+                    <a class="tradingBotStoreProductBottomText">{{numberOfInvestors}}</a>
+                </div>
+                <div class="tradingBotStoreProductFrequency block">
+                    <a class="tradingBotStoreProductTopText">Owner's Share</a><br>
+                    <a class="tradingBotStoreProductBottomText">{{ownerShare}}</a>
+                </div>
+                <div class="tradingBotStoreProductFrequency block mediaMarginBottom20">
+                    <a class="tradingBotStoreProductTopText">Pool Value</a><br>
+                    <a class="tradingBotStoreProductBottomText">{{poolValue}}</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="backtestGraphParent extraMarginBottom" id="backtestParent">
+            <div class="chartTitle" id="title2">Token History</div>
+            <div class="temp" id="temp">
+                <div id="chart" class="strategyExplorerChart"></div>
+            </div>
+        </div>
+
+        <div class="backtestGraphParent extraMarginBottom" id="backtestParent2">
+            <div class="chartTitle" id="title3">Pool Value History</div>
+            <div class="temp" id="temp2">
+                <div id="chart2" class="strategyExplorerChart"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="hiddenGraph">
+        <div class="mediaChartTitle">Token History</div>
+        <div class="chartWrapper">
+            <div id="chart4" class="strategyExplorerChart initiallyHidden"></div>
+        </div>
+    </div>
+
+    <div class="hiddenGraph">
+        <div class="mediaChartTitle">Pool Value History</div>
+        <div class="chartWrapper">
+            <div id="chart3" class="strategyExplorerChart initiallyHidden"></div>
+        </div>
+    </div>
+
+    <div id="transactionDiv" class="initiallyHidden">
+        <div class="tableWrapper paddingTop20" id="table">
+            <div class="mediaTableWrap">
+                <table id="transactionsTable" class="transactionsTable"></table>
+            </div>
+        </div>
+        <div id="panels"></div>
+        <div class="textAlignRight pageNumber mediaDisplayFlex">
+            <i class="material-icons icon-AccountCircle" id="decreasePage">chevron_left</i>
+            <a id="pageNumber"></a>
+            <i class="material-icons icon-AccountCircle pageRight" id="increasePage">chevron_right</i>
+        </div>
+    </div>
+
+    <input type="hidden" id="status" value="{{loginStatus}}">
+    <input type="hidden" id="managerAddress" value="{{managerAddress}}">
+    <input type="hidden" name="dataString" id="dataString" value="{{dataString}}">
+    <input type="hidden" name="dataString2" id="dataString2" value="{{dataString2}}">
+    <input type="hidden" name="dataString3" id="dataString3" value="{{dataString3}}">
+    <input type="hidden" name="dataString4" id="dataString4" value="{{dataString4}}">
+    <input type="hidden" name="sianjitpua" id="sianjitpua" value="{{poolID}}">
+    
+    <script type="text/javascript" src="https://unpkg.com/web3@1.2.11/dist/web3.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/web3modal@1.9.0/dist/index.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/evm-chains@0.2.0/dist/umd/index.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/@walletconnect/web3-provider@1.2.1/dist/umd/index.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/fortmatic@2.0.6/dist/fortmatic.js"></script>
+    <script src="/js/connect_wallet_app.js"></script>
+    <script src="/js/pool_info_app.js"></script>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(function(){ 
+          initialize(google);
+        });
+    </script>
+</body>
+
+</html>

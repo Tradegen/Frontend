@@ -3,7 +3,7 @@
 <html>
 
 <head>
-    <title>Manage Position</title>
+    <title>Manage Pool Investment</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="/img/favicon.png">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -28,24 +28,19 @@
 <body class="appBackground">
     {{>user_header}}
     <div class="main-content">
-        <div class="pageTitle">Manage Position</div>
-
         <div class="mediaWidth100">
             <div class="yourPurchase">
                 <p class="buyPageSubtitle">
-                    Strategy Info
+                    Pool Info
                 </p>
                 <div class="buffer"></div>
-                <div class="displayProperty">
-                    <div><a class="extraWeight">Strategy: </a><a href="/strategy_info/{{strategyID}}" style="text-decoration: none; color: #333333">{{strategyName}}</a></div>
-                    <span id="strategyNameSymbol" style="margin-left: 15px"><a href="/token_info/{{strategyID}}" style="text-decoration: none; color: rgb(128,138,157);">{{symbol}}</a></span>
-                </div>
-                <p id="circulatingSupply"><a class="extraWeight">Circulating Supply:</a> {{circulatingSupply}} <span id="strategyNameSymbol" style="margin-left: 10px"><a href="/token_info/{{strategyID}}" style="text-decoration: none; color: rgb(128,138,157);">{{symbol}}</a></span></p>
-                <p id="marketPrice"><a class="extraWeight">LP Token Price:</a> ${{currentMarketValue}}</p>
-                <p id="currentPoolSize"><a class="extraWeight">Current Pool Size:</a> ${{currentPoolSize}}</p>
-                <p id="maxPoolSize"><a class="extraWeight">Max Pool Size:</a> ${{maxPoolSize}}</p>
-                <p id="amountInvested"><a class="extraWeight">Amount Invested:</a> ${{amountInvested}} <span id="sellTokensButton" style="margin-left: 30px; margin-top: 10px; color: #5271FF">Sell tokens</span></p>
-                <p id="availableToInvest"><a class="extraWeight">Available to Invest:</a> ${{availableToInvest}}</p>
+                <div style="margin-bottom: 12px"><a class="extraWeight">Pool: </a><a href="/pool_info/{{poolID}}" style="text-decoration: none; color: #333333;">{{poolName}}</a></div>
+                <div><a class="extraWeight">Managed By: </a><a href="/profile/{{managerAddress}}" style="text-decoration: none; color: #333333">{{managerUsername}}</a></div>
+                <p id="poolValue"><a class="extraWeight">Pool Value:</a> ${{poolValue}}</p>
+                <p id="tokenPrice"><a class="extraWeight">Token Price:</a> ${{tokenPrice}}</p>
+                <p id="performanceFee"><a class="extraWeight">Performance Fee:</a> {{performanceFee}}%</p>
+                <p id="amountInvested"><a class="extraWeight">Amount Invested:</a> ${{amountInvested}}</p>
+                <p id="currentROI"><a class="extraWeight">Current ROI:</a> {{currentROI}}%</p>
                 <p></p>
             </div>
         </div>
@@ -53,7 +48,7 @@
         <div class="mediaWidth100">
             <div class="payment" id="payment">
                 <p class="buyPageSubtitle">
-                    Manage Position
+                    Manage Pool
                 </p><br>
                 <div class="displayProperty">
                     <span style="margin-top: 10px"><a class="extraWeight">Deposit: </a></span>
@@ -65,11 +60,7 @@
                     <input type="number" value="0" class="settingsInput" name="withdraw" id="withdraw" style="margin-left: 30px"/>
                     <span id="withdrawButton" style="margin-left: 30px; margin-top: 10px; color: #5271FF">Withdraw</span>
                 </div>
-                <div class="displayProperty" style="margin-top: 30px">
-                    <span style="margin-top: 10px"><a class="extraWeight">Available Yield: </a> <a id="availableYield">{{availableYield}}</a> TGEN</span>
-                    <span id="claimButton" style="margin-left: 30px; margin-top: 10px; color: #5271FF">Claim</span>
-                </div>
-                <div class="displayProperty" style="margin-top: 15px">
+                <div class="displayProperty marginTop50">
                     <span style="margin-top: 10px"><a class="extraWeight">Fee: </a> <a id="fee">$0.0000</a></span>
                 </div>
                 <p></p>
@@ -77,9 +68,10 @@
         </div>
         
         <input type="hidden" id="atas" value="{{token}}">
-        <input type="hidden" id="sotong" value="{{strategyID}}"/>
+        <input type="hidden" id="sotong" value="{{poolID}}"/>
         <input type="hidden" id="lanjiao" value="{{userID}}"/>
-        <input type="hidden" id="sianjitpua" value="{{currentMarketValue}}"/>
+        <input type="hidden" id="sianjitpua" value="{{currentROI}}"/>
+        <input type="hidden" id="liapnee" value="{{performanceFee}}"/>
     </div>
 
     <div id="depositModal" style="display:none">
@@ -126,69 +118,13 @@
         </div>
     </div>
 
-    <div id="claimModal" style="display:none">
-        <div class="paymentModalTitle">Claim</div>
-        <div id="amountClaim" class="paymentModalPrice">{{availableYield}} TGEN</div>
-        <p class="paymentModalText" id="claimText">Are you sure you want to claim yield?</p>
-        <button type="button" id="confirmClaim" class="paymentModalYesButton">Yes</button>
-        <button type="button" id="cancelClaim" class="paymentModalCancelButton">Cancel</button>
-    </div>
-
-    <div id="successModalClaim" style="display:none">
-        <div class="messageModal" id="successTitleClaim">
-            <i class="material-icons marginRight15px messageModalIcon" id="successButtonClaim">check_circle_outline</i>
-            <div class="messageModalText" id="successTextClaim">Successfully claimed yield</div>
-        </div>
-    </div>
-
-    <div id="errorModalClaim" style="display:none">
-        <div class="messageModal" id="errorTitleClaim">
-            <i class="material-icons marginRight15px messageModalIcon" id="errorButtonClaim">error_outline</i>
-            <div class="messageModalText" id="errorTextClaim">Error</div>
-        </div>
-    </div>
-
-    <div id="sellTokensModal" style="display:none">
-        <div class="paymentModalTitle">Sell Tokens</div>
-        <div id="availableToSell" class="displayProperty" style="margin-top: 30px">
-            <span><a class="extraWeight">Available tokens:</a> {{availableTokens}} {{symbol}}</span>
-        </div>
-        <div class="displayProperty" style="margin-top: 40px">
-            <span style="margin-top: 10px"><a class="extraWeight">Number of tokens: </a></span>
-            <input type="number" value="0" class="settingsInput" name="numberOfTokens" id="numberOfTokens" style="margin-left: 30px"/>
-        </div>
-        <div class="displayProperty" style="margin-top: 40px">
-            <span style="margin-top: 10px"><a class="extraWeight">USD Price: </a></span>
-            <input type="number" value="0" class="settingsInput" name="listingPrice" id="listingPrice" style="margin-left: 30px"/>
-            <span style="margin-top: 10px; margin-left: 15px"><a></a></span>
-        </div>
-        <div style="margin-top: 40px">
-            <button type="button" id="confirmSell" class="paymentModalYesButton">Sell</button>
-            <button type="button" id="cancelSell" class="paymentModalCancelButton">Cancel</button>
-        </div>
-    </div>
-
-    <div id="successModalSellTokens" style="display:none">
-        <div class="messageModal" id="successTitleSellTokens">
-            <i class="material-icons marginRight15px messageModalIcon" id="successButtonSellTokens">check_circle_outline</i>
-            <div class="messageModalText" id="successTextSellTokens">Listed tokens for sale</div>
-        </div>
-    </div>
-
-    <div id="errorModalSellTokens" style="display:none">
-        <div class="messageModal" id="errorTitleSellTokens">
-            <i class="material-icons marginRight15px messageModalIcon" id="errorButtonSellTokens">error_outline</i>
-            <div class="messageModalText" id="errorTextSellTokens">Error</div>
-        </div>
-    </div>
-
     <script type="text/javascript" src="https://unpkg.com/web3@1.2.11/dist/web3.min.js"></script>
     <script type="text/javascript" src="https://unpkg.com/web3modal@1.9.0/dist/index.js"></script>
     <script type="text/javascript" src="https://unpkg.com/evm-chains@0.2.0/dist/umd/index.min.js"></script>
     <script type="text/javascript" src="https://unpkg.com/@walletconnect/web3-provider@1.2.1/dist/umd/index.min.js"></script>
     <script type="text/javascript" src="https://unpkg.com/fortmatic@2.0.6/dist/fortmatic.js"></script>
     <script src="/js/connect_wallet_app.js"></script>
-    <script src="/js/buy_new_shares_app.js"></script>
+    <script src="/js/manage_pool_investment_app.js"></script>
 </body>
 
 <div id="pageMask" class="initiallyHidden"></div>
