@@ -122,6 +122,30 @@ router.get('/updates', function (req, res, next) {
   });
 });
 
+// Add Component Page
+router.get('/add_component', function (req, res, next) {
+  
+  var loggedIn = (typeof req.session.user !== "undefined") ? true : false;
+  var username = loggedIn ? req.session.user : "";
+  let token = req.session.csrf;
+  let credits = (typeof req.session.credits !== "undefined") ? req.session.credits.toFixed(4) : "0.0000";
+
+  if (loggedIn)
+  {
+    res.render('add_component', { 
+      loginStatus: loggedIn,
+      username: username.substring(0, 8) + "...",
+      token: token,
+      credits: credits
+    });
+  }
+  else
+  {
+    res.redirect("/open_beta");
+  }
+  
+});
+
 // Create Pool Page
 router.get('/create_pool', function (req, res, next) {
   
@@ -321,6 +345,29 @@ router.get('/checkout/:id', function (req, res, next) {
   xhttpRep.send(temp2);
 });
 
+// My Components Page
+router.get('/my_components', function (req, res, next) {
+  
+  var loggedIn = (typeof req.session.user !== "undefined") ? true : false;
+  var username = loggedIn ? req.session.user : "";
+  let token = req.session.csrf;
+  let credits = (typeof req.session.credits !== "undefined") ? req.session.credits.toFixed(4) : "0.0000";
+
+  if (loggedIn)
+  {
+    res.render('my_components', { 
+      loginStatus: loggedIn,
+      username: username.substring(0, 8) + "...",
+      token: token,
+      credits: credits
+    });
+  }
+  else
+  {
+    res.redirect("/open_beta");
+  }
+});
+
 // Invested Pools Page
 router.get('/invested_pools', function (req, res, next) {
   
@@ -486,6 +533,20 @@ router.get('/strategies', function (req, res, next) {
   let credits = (typeof req.session.credits !== "undefined") ? req.session.credits.toFixed(4) : "0.0000";
 
   res.render('strategies', { 
+    loginStatus: loggedIn,
+    username: username.substring(0, 8) + "...",
+    credits: credits
+  });
+});
+
+// Components Page
+router.get('/components', function (req, res, next) {
+  
+  var loggedIn = (typeof req.session.user !== "undefined") ? true : false;
+  var username = loggedIn ? req.session.user : "";
+  let credits = (typeof req.session.credits !== "undefined") ? req.session.credits.toFixed(4) : "0.0000";
+
+  res.render('components', { 
     loginStatus: loggedIn,
     username: username.substring(0, 8) + "...",
     credits: credits
@@ -2202,6 +2263,72 @@ router.post('/sellTokens', function (req, res, next) {
   xhttp.send(temp2);
 });
 
+// Buy component
+router.post('/buy_component', function (req, res, next) {
+  var loggedIn = (typeof req.session.user !== "undefined") ? true : false;
+  var username = loggedIn ? req.session.user : "";
+
+  if (!loggedIn)
+  {
+    return res.redirect("/open_beta");
+  }
+
+  let userID = username; 
+  let componentID = req.body.componentID;
+
+  if (typeof componentID !== "string")
+  {
+    return res.status(500).send("No component ID");
+  }
+
+  const allowedCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz';
+  let found = false;
+  for (var i = 0; i < componentID.length; i+=1)
+  {
+    let character = componentID.charAt(i);
+    for (var j = 0; j < allowedCharacters.length; j+=1)
+    {
+        if (allowedCharacters.charAt(j) == character)
+        {
+            found = true;
+            break;
+        }
+    }
+    if (found == false)
+    {
+      return res.status(200).json({
+        response: "Error",
+      });
+    }
+  }
+
+  let temp2 = JSON.stringify({
+    componentID: componentID,
+    userID: userID,
+    token: req.session.token
+  });
+  
+  const xhttp = new XMLHttpRequest();
+  xhttp.onload = function(e) {
+    const response = xhttp.responseText;
+
+    if (response.charAt(0) == "0")
+    {
+      let temp = parseFloat(response);
+      req.session.credits = parseFloat(temp);
+      response = "Success";
+    }
+
+    return res.status(200).json({
+      response: response,
+    });
+  }
+  xhttp.open("POST", 'https://us-central1-stocks2-301304.cloudfunctions.net/buyComponent', true);
+  xhttp.withCredentials = true;
+  xhttp.setRequestHeader("Content-Type", "application/json");
+  xhttp.send(temp2);
+});
+
 // Buy position from marketplace
 router.post('/buy_position', function (req, res, next) {
   var loggedIn = (typeof req.session.user !== "undefined") ? true : false;
@@ -2972,6 +3099,190 @@ router.get('/ai-pee-ai-chee-ai-tua-liap-nee/:userID', async function (req, res, 
   xhttp.setRequestHeader("Content-Type", "application/json");
   xhttp.send(temp2);
 
+});
+
+// Add component
+router.post('/add_component',
+[
+  check("componentName").notEmpty().withMessage("Please enter a name."),
+  check("description").notEmpty().withMessage("Please enter a description."),
+  check("contractAddress").notEmpty().withMessage("Please enter the contract address."),
+  check("price").isNumeric().withMessage("Please enter a number between 0 and 1000 for price."),
+  check("price").custom((value, { req }) => {
+    if(value < 0 || value > 1000) {
+        throw new Error ("Please enter a number between 0 and 1000 for price.");
+    }
+    return true;
+  }),
+  check("csrf").custom((value, { req }) => {
+    if(!value) {
+        throw new Error ("Bad token.");
+    }
+  
+    if (value != req.session.csrf)
+    {
+      throw new Error ("Bad token.");
+    }
+  
+    return true;
+  })
+]
+, async (req, res) => {
+  var loggedIn = (typeof req.session.user !== "undefined") ? true : false;
+  var username = loggedIn ? req.session.user : "";
+  let credits = (typeof req.session.credits !== "undefined") ? req.session.credits.toFixed(4) : "0.0000";
+
+  let output = req.body;
+  output.userID = username;
+
+  let temp2 = JSON.stringify(output);
+
+  if (!loggedIn)
+  {
+    return res.redirect("/open_beta");
+  }
+
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    var err = errors.array()[0].msg;
+    var tokenResult = (err != "Bad token.") ? req.session.csrf : "";
+    return res.render('add_component', {
+      message: err,
+      loginStatus: loggedIn,
+      username: username.substring(0, 8) + "...",
+      componentName: req.body.componentName,
+      description: req.body.description,
+      price: req.body.price,
+      contractAddress: req.body.contractAddress,
+      token: tokenResult,
+      credits: credits
+    });
+  }
+
+  if (req.body.componentName.length > 30)
+  {
+    return res.render('add_component', {
+      message: "Component name must be shorter than 30 characters",
+      loginStatus: loggedIn,
+      username: username.substring(0, 8) + "...",
+      componentName: req.body.componentName,
+      description: req.body.description,
+      price: req.body.price,
+      contractAddress: req.body.contractAddress,
+      token: tokenResult,
+      credits: credits
+    });
+  }
+
+  const allowedCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz !@#$%()';
+  let found = false;
+  for (var i = 0; i < req.body.componentName.length; i+=1)
+  {
+    let character = req.body.componentName.charAt(i);
+    for (var j = 0; j < allowedCharacters.length; j+=1)
+    {
+        if (allowedCharacters.charAt(j) == character)
+        {
+            found = true;
+            break;
+        }
+    }
+  }
+  if (found == false)
+  {
+    return res.render('add_component', {
+      message: "Component name contains invalid characters.",
+      loginStatus: loggedIn,
+      username: username.substring(0, 8) + "...",
+      componentName: req.body.componentName,
+      description: req.body.description,
+      price: req.body.price,
+      contractAddress: req.body.contractAddress,
+      token: tokenResult,
+      credits: credits
+    });
+  }
+
+  if (typeof req.body.description !== "string")
+  {
+    return res.render('add_component', {
+      message: "Please enter a valid description.",
+      loginStatus: loggedIn,
+      username: username.substring(0, 8) + "...",
+      componentName: req.body.componentName,
+      description: req.body.description,
+      price: req.body.price,
+      contractAddress: req.body.contractAddress,
+      token: tokenResult,
+      credits: credits
+    });
+  }
+
+  let foundDescription = false;
+  for (var i = 0; i < req.body.description.length; i+=1)
+  {
+    let character = req.body.description.charAt(i);
+    for (var j = 0; j < allowedCharacters.length; j+=1)
+    {
+        if (allowedCharacters.charAt(j) == character)
+        {
+            foundDescription = true;
+            break;
+        }
+    }
+    if (foundDescription == false)
+    {
+      return res.render('add_component', {
+        message: "Description contains invalid characters.",
+        loginStatus: loggedIn,
+        username: username.substring(0, 8) + "...",
+        componentName: req.body.componentName,
+        description: req.body.description,
+        price: req.body.price,
+        contractAddress: req.body.contractAddress,
+        token: tokenResult,
+        credits: credits
+      });
+    }
+  }
+
+  const xhttp = new XMLHttpRequest();
+  xhttp.onload = function(e) {
+    const response = xhttp.responseText;
+    if (response == "Success")
+    {
+      return res.render('add_component', {
+        status: "Success",
+        loginStatus: loggedIn,
+        username: username.substring(0, 8) + "...",
+        componentName: req.body.componentName,
+        description: req.body.description,
+        price: req.body.price,
+        contractAddress: req.body.contractAddress,
+        token: tokenResult,
+        credits: credits
+      });
+    }
+    else
+    {
+      return res.render('add_component', {
+        status: "Error",
+        initialErrorMessage: "Error when adding component",
+        loginStatus: loggedIn,
+        username: username.substring(0, 8) + "...",
+        componentName: req.body.componentName,
+        description: req.body.description,
+        price: req.body.price,
+        contractAddress: req.body.contractAddress,
+        token: tokenResult,
+        credits: credits
+      });
+    }
+  }
+  xhttp.open("POST", 'https://us-central1-stocks2-301304.cloudfunctions.net/createComponent', true);
+  xhttp.withCredentials = true;
+  xhttp.setRequestHeader("Content-Type", "application/json");
+  xhttp.send(temp2);
 });
 
 // Create pool

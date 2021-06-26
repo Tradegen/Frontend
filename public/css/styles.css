@@ -2184,7 +2184,7 @@ i.icon-ProfileNetReturn {
 
 .width340 {
   width: 340px !important;
-  height: 450px !important;
+  height: 450px;
   display: flex;
 }
 

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>My Components</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="/img/favicon.png">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto">
+    <script
+        src="https://code.jquery.com/jquery-3.1.1.js"
+        crossorigin="anonymous">
+    </script>
+    <script
+        src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+        integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
+        crossorigin="anonymous">
+    </script>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="/js/update_overlay.js"></script>
+    <script>
+        Object.keys(require.cache).forEach(function(key) { delete require.cache[key] });
+    </script>
+</head>
+
+<body class="appBackground">
+    {{>user_header}}
+    <div id="loadingPage" class="loadingPage">Loading components...</div>
+    <div class="main-content initiallyHidden" id="mainContent">
+        <div class="largeMarginBottom mediaHeaderWeb" id="web">
+            <div class="pageTitle footerFloatLeft marginLeftMinus10">My Components</div>
+        </div>
+        <div class="tableWrapper paddingTop20" id="table">
+            <div class="mediaTableWrap">
+                <table id="purchasedComponentsTable" class="transactionsTable"></table>
+            </div>
+        </div>
+        <div id="panels"></div>
+        <div class="textAlignRight pageNumber mediaDisplayFlex">
+            <i class="material-icons icon-AccountCircle" id="decreasePage">chevron_left</i>
+            <a id="pageNumber"></a>
+            <i class="material-icons icon-AccountCircle pageRight" id="increasePage">chevron_right</i>
+        </div>
+        
+        <div class="tableWrapper paddingTop20" id="table2">
+            <div class="mediaTableWrap">
+                <table id="developedComponentsTable" class="transactionsTable"></table>
+            </div>
+        </div>
+        <div id="panels2"></div>
+        <div class="textAlignRight pageNumber mediaDisplayFlex">
+            <i class="material-icons icon-AccountCircle" id="decreasePage2">chevron_left</i>
+            <a id="pageNumber2"></a>
+            <i class="material-icons icon-AccountCircle pageRight" id="increasePage2">chevron_right</i>
+        </div>
+    </div>
+    <div class="main-content initiallyHidden" id="boh"></div>
+
+    <input type="hidden" id="sotong" value="{{token}}">
+
+    <div id="componentInfoModal" style="display:none">
+        <div class="paymentModalTitle">Description</div>
+        <p class="paymentModalText" id="componentDescription"></p>
+        <button type="button" id="closeComponentInfo" class="paymentModalCancelButton">Close</button>
+    </div>
+
+    <script type="text/javascript" src="https://unpkg.com/web3@1.2.11/dist/web3.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/web3modal@1.9.0/dist/index.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/evm-chains@0.2.0/dist/umd/index.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/@walletconnect/web3-provider@1.2.1/dist/umd/index.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/fortmatic@2.0.6/dist/fortmatic.js"></script>
+    <script src="/js/connect_wallet_app.js"></script>
+    <script src="/js/my_components_app.js"></script>
+</body>
+
+<div id="pageMask" class="initiallyHidden mediaPageMask"></div>
+
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-T73ZF84');</script>
+    <!-- End Google Tag Manager -->
+    <title>Components</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="/img/favicon.png">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script
+        src="https://code.jquery.com/jquery-3.1.1.js"
+        crossorigin="anonymous">
+    </script>
+    <script
+        src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+        integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
+        crossorigin="anonymous">
+    </script>
+    <script src="/js/update_overlay.js"></script>
+    <script>
+        Object.keys(require.cache).forEach(function(key) { delete require.cache[key] });
+    </script>
+</head>
+
+<body class="appBackground">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T73ZF84"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    {{#if loginStatus}}
+    {{>user_header}}
+    {{else}}
+    {{>guest_header}}
+    {{/if}}
+    <div id="loadingPage" class="loadingPage">Loading components data...</div>
+    <div class="main-content">
+        <div id="sotong" class="initiallyHidden">
+            <div class="marginLeftMinus10">
+                <div class="strategyInfoLeftSide">
+                    <div class="pageTitle">Components</div>
+                </div>
+                <div style="strategyInfoRightSide">
+                    <button type="button" class="productButton initiallyHidden" id="addComponentButtonWeb" style="float:right; margin-right: 10%">Add Component</button>
+                </div>
+            </div>
+            <div class="buffer" style="width: 100%; height: 50px"></div>
+            <div class="tableWrapper" id="table" style="margin-top: 40px">
+                <div class="mediaTableWrap">
+                    <table id="componentsTable" class="transactionsTable"></table>
+                </div>
+            </div>
+            <div id="panels">
+            </div>
+            <div class="textAlignRight pageNumber mediaDisplayFlex">
+                <i class="material-icons icon-AccountCircle" id="decreasePage">chevron_left</i>
+                <a id="pageNumber"></a>
+                <i class="material-icons icon-AccountCircle pageRight" id="increasePage">chevron_right</i>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="status" value="{{loginStatus}}">
+    <input type="hidden" id="componentID" value=""/>
+    <input type="hidden" id="atas" value="{{token}}">
+
+    <div id="componentInfoModal" style="display:none">
+        <div class="paymentModalTitle">Description</div>
+        <p class="paymentModalText" id="componentDescription"></p>
+        <button type="button" id="closeComponentInfo" class="paymentModalCancelButton">Close</button>
+    </div>
+
+    <div id="buyComponentModal" style="display:none">
+        <div class="paymentModalTitle">Buy Component</div>
+        <div id="amount" class="paymentModalPrice"></div>
+        <p class="paymentModalText">Are you sure you want to buy this component?</p>
+        <button type="button" id="confirmBuyComponent" class="paymentModalYesButton">Yes</button>
+        <button type="button" id="cancelBuyComponent" class="paymentModalCancelButton">Cancel</button>
+    </div>
+
+    <div id="successModalBuyComponent" style="display:none">
+        <div class="messageModal" id="successTitleBuyComponent">
+            <i class="material-icons marginRight15px messageModalIcon" id="successButtonBuyComponent">check_circle_outline</i>
+            <div class="messageModalText">Payment complete</div>
+        </div>
+    </div>
+
+    <div id="errorModalBuyComponent" style="display:none">
+        <div class="messageModal" id="errorTitleBuyComponent">
+            <i class="material-icons marginRight15px messageModalIcon" id="errorButtonBuyComponent">error_outline</i>
+            <div class="messageModalText" id="errorTextBuyComponent">Error</div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="https://unpkg.com/web3@1.2.11/dist/web3.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/web3modal@1.9.0/dist/index.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/evm-chains@0.2.0/dist/umd/index.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/@walletconnect/web3-provider@1.2.1/dist/umd/index.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/fortmatic@2.0.6/dist/fortmatic.js"></script>
+    <script src="/js/connect_wallet_app.js"></script>
+    <script src="/js/components_app.js"></script>
+</body>
+
+<div id="pageMask" class="initiallyHidden"></div>
+
+</html>

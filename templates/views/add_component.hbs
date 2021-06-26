@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Add Component</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="/img/favicon.png">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto">
+    <script
+        src="https://code.jquery.com/jquery-3.1.1.js"
+        crossorigin="anonymous">
+    </script>
+    <script
+        src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+        integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
+        crossorigin="anonymous">
+    </script>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="/js/update_overlay.js"></script>
+    <script>
+        Object.keys(require.cache).forEach(function(key) { delete require.cache[key] });
+    </script>
+</head>
+
+<body class="appBackground">
+    {{>user_header}}
+    <div class="main-content mediaHeaderWeb">
+
+        {{#if message}}
+            <div><p id="sotong">{{message}}</p></div>
+        {{/if}}
+        <div class="tableWrapper maxWidth displayProperty maxWidth340" id="tableWrapperAddComponent" style="margin-left: 30%; margin-top: 150px;">
+            <form id="form1" name="form1" action="/add_component" role="form" method="post" class="width340 formMargin" style="height: 520px">
+                <input type="hidden" name="csrf" value="{{token}}">
+                <div class="width280 leftSide">
+                    <p>Name:  
+                        <label for="componentName"></label>
+                        <input type="text" class="strategyExplorerText" name="componentName" id="componentName" maxlength="30" value="{{componentName}}"/>
+                    </p>
+                    <p>Description:
+                        <label for="description"></label>
+                        <textarea id="description" class="strategyExplorerText" name="description" rows="6" cols="30" maxlength="300" placeholder="Description of your component">{{description}}</textarea>
+                    </p>
+                    <label for="direction">Type:</label>
+                    <div class="selectWrapper">
+                        <select name="componentType" class="selectBoxFilter" id="componentType">
+                            <option value="indicator">Indicator</option>
+                            <option value="comparator">Comparator</option>
+                        </select>
+                    </div>
+                    <p>Price:  
+                        <label for="price"></label>
+                        <input type="number" min="0" max="1000" class="strategyExplorerText" name="price" id="price" value="{{price}}" placeholder="Price in TGEN"/>
+                    </p>
+                    <p>Contract Address:  
+                        <label for="contractAddress"></label>
+                        <input type="text" class="strategyExplorerText" name="contractAddress" id="contractAddress" maxlength="35" value="{{contractAddress}}"/>
+                    </p>
+                    <p>
+                        <button type="submit" class="paymentModalYesButton buildStrategyButton" id="create" value="{{username}}">Add Component</button>
+                    </p>
+                </div>
+            </form>
+            
+        </div>
+    </div>
+
+    <div class="strategyBuilderParentMobile mediaHeaderMobile">
+        <div class="pageTitle">Create Pool</div>
+        {{#if message}}
+            <div><p id="sotong">{{message}}</p></div>
+        {{/if}}
+        <div class="tableWrapper displayProperty">
+            <form id="form1" name="form1" action="/build_strategy" role="form" method="post">
+                <input type="hidden" name="csrf" value="{{token}}">
+                 <p>Name:  
+                    <label for="strategyName"></label>
+                    <input type="text" class="strategyExplorerText" name="poolName" id="poolName" maxlength="30" value="{{poolName}}"/>
+                </p>
+                <p>Description:
+                    <label for="description"></label>
+                    <textarea id="description" class="strategyExplorerText" name="description" rows="6" cols="30" maxlength="300" placeholder="Description of your pool">{{description}}</textarea>
+                </p>
+                <p>Performance Fee:  
+                    <label for="performanceFee"></label>
+                    <input type="number" min="0" max="40" class="strategyExplorerText" name="performanceFee" id="performanceFee" value="{{performanceFee}}"/>
+                </p>
+                <p>Initial Investment:  
+                    <label for="initialInvestment"></label>
+                    <input type="number" min="0" class="strategyExplorerText" name="initialInvestment" id="initialInvestment" value="{{initialInvestment}}"/>
+                </p>
+                <p>
+                    <button type="submit" class="paymentModalYesButton buildStrategyButton" id="create" value="{{username}}">Add Component</button>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <div id="successModal" style="display:none">
+        <div class="messageModal" id="successTitle">
+            <i class="material-icons marginRight15px messageModalIcon" id="successButton">check_circle_outline</i>
+            <div class="messageModalText">Added component</div>
+        </div>
+    </div>
+
+    <div id="errorModal" style="display:none">
+        <div class="messageModal" id="errorTitle">
+            <i class="material-icons marginRight15px messageModalIcon" id="errorButton">error_outline</i>
+            <div class="messageModalText" id="errorText">An unexpected error occurred</div>
+        </div>
+    </div>
+
+    <input type="hidden" id="status" value="{{status}}">
+
+    <script type="text/javascript" src="https://unpkg.com/web3@1.2.11/dist/web3.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/web3modal@1.9.0/dist/index.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/evm-chains@0.2.0/dist/umd/index.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/@walletconnect/web3-provider@1.2.1/dist/umd/index.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/fortmatic@2.0.6/dist/fortmatic.js"></script>
+    <script src="/js/connect_wallet_app.js"></script>
+    <script src="/js/add_component_app.js"></script>
+</body>
+
+<div id="pageMask" class="initiallyHidden"></div>
+
+</html>

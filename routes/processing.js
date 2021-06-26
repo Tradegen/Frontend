@@ -44,6 +44,48 @@ router.get('/get_transactions', async function (req, res, next) {
     });
 });
 
+// Get my components data
+router.get('/get_my_components', async function (req, res, next) {
+  const loggedIn = (typeof req.session.user !== "undefined") ? true : false;
+  const userID = loggedIn ? req.session.user : "";
+  let purchasedComponents = [];
+  let developedComponents = [];
+  var cloud = axios.default.create({});
+  let url = 'https://us-central1-stocks2-301304.cloudfunctions.net/getMyComponentsData';
+
+  if (!loggedIn)
+  {
+    return res.status(500).json({
+      response: "Error",
+    });
+  }
+
+  try 
+  {
+      let res2 = await cloud.post(url, { userID: userID });
+      purchasedComponents = res2.data.purchasedComponents;
+      developedComponents = res2.data.developedComponents;
+
+      if (typeof positions === "undefined")
+        {
+          return res.status(500).json({
+            response: "Error",
+          });
+        }
+  } 
+  catch (err) 
+  {
+    return res.status(500).json({
+      response: "Error",
+    });
+  }
+
+  res.status(200).json({
+    purchasedComponents: purchasedComponents,
+    developedComponents: developedComponents
+  });
+});
+
 // Get invested pools data
 router.get('/get_invested_pools', async function (req, res, next) {
   const loggedIn = (typeof req.session.user !== "undefined") ? true : false;
@@ -119,6 +161,36 @@ router.get('/get_positions', async function (req, res, next) {
 
   res.status(200).json({
     positions: positions
+  });
+});
+
+// Get all components data
+router.get('/get_all_components', async function (req, res, next) {
+  let pools = [];
+  var cloud = axios.default.create({});
+  let url = 'https://us-central1-stocks2-301304.cloudfunctions.net/getAllComponents';
+
+  try 
+  {
+      let res2 = await cloud.post(url, {});
+      components = res2.data.components;
+
+      if (typeof components === "undefined")
+        {
+          return res.status(500).json({
+            response: "Error",
+          });
+        }
+  } 
+  catch (err) 
+  {
+    return res.status(500).json({
+      response: "Error",
+    });
+  }
+
+  res.status(200).json({
+    components: components
   });
 });
 
